@@ -19,7 +19,7 @@ jobs:
       id: convert
       run: |
         JIRA_DESCRIPTION=$(echo "${{ github.event.issue.body }}" | sed \
-          -e 's/^## /h2. /g' \
+          -e 's/## /h2. /g' \
           -e ':a;N;$!ba;s/\n//g'
           # -e ':a;N;$!ba;s/\n/\\n/g'
           # -e 's/^-/ * /' \
