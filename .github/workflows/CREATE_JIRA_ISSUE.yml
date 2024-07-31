@@ -15,8 +15,13 @@ jobs:
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
-    # - name: Print Issue Body
-    #   run: echo "Issue Body: ${{ github.event.issue.body }}"
+    - name: Convert Markdown to Jira Wiki Markup
+      id: convert
+      run: |
+        echo "JIRA_DESCRIPTION=$(echo "${{ github.event.issue.body }}" | sed -e 's/^## /h2. /' -e 's/^### /h3. /' -e 's/^#### /h4. /' -e 's/^##### /h5. /' -e 's/^###### /h6. /' -e 's/^-/ * /')" >> $GITHUB_ENV
+
+    # - name: Print Converted Description
+    #   run: echo "Converted Description: $JIRA_DESCRIPTION"
     
     - name: Create Issue 
       uses: atlassian/gajira-create@v3
@@ -24,4 +29,5 @@ jobs:
         project: FB
         issuetype: Task
         summary: '${{ github.event.issue.title }}'
-        description: '${{ github.event.issue.body }}'
+        # description: '${{ github.event.issue.body }}'
+        description: '${{ env.JIRA_DESCRIPTION }}'
