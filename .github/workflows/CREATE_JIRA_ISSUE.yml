@@ -8,20 +8,20 @@ jobs:
     name: Create Jira issue
     runs-on: ubuntu-latest
     steps:
-#     - name: Login
-#       uses: atlassian/gajira-login@v3
-#       env:
-#         JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-#         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-#         JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+    - name: Login
+      uses: atlassian/gajira-login@v3
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
-    - name: Print Issue Body
-      run: echo "Issue Body: ${{ github.event.issue.body }}"
+    # - name: Print Issue Body
+    #   run: echo "Issue Body: ${{ github.event.issue.body }}"
     
-    # - name: Create Issue 
-    #   uses: atlassian/gajira-create@v3
-    #   with:
-    #     project: FB
-    #     issuetype: Task
-    #     summary: '${{ github.event.issue.title }}'
-    #     description: '${{ github.event.issue.body }}'
+    - name: Create Issue 
+      uses: atlassian/gajira-create@v3
+      with:
+        project: FB
+        issuetype: Task
+        summary: '${{ github.event.issue.title }}'
+        description: '${{ github.event.issue.body }}'
