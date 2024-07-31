@@ -15,27 +15,26 @@ jobs:
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
-    # - name: Convert Markdown to Jira Wiki Markup
-    #   id: convert
-    #   run: |
-    #     # Markdown을 Jira Wiki Markup으로 변환하고 줄바꿈 유지
-    #     JIRA_DESCRIPTION=$(echo "${{ github.event.issue.body }}" | sed \
-    #       -e 's/^## /h2. /' \
-    #       -e 's/^### /h3. /' \
-    #       -e 's/^#### /h4. /' \
-    #       -e 's/^##### /h5. /' \
-    #       -e 's/^###### /h6. /' \
-    #       -e 's/^-/ * /' \
-    #       -e 's/\r$//' \
-    #       -e 's/^\n*/\n/' \
-    #     )
-    #     echo "JIRA_DESCRIPTION=$JIRA_DESCRIPTION" >> $GITHUB_ENV
+    - name: Convert Markdown to Jira Wiki Markup
+      id: convert
+      run: |
+        JIRA_DESCRIPTION=$(echo "${{ github.event.issue.body }}" | sed \
+          -e 's/^## /h2. /' \
+          # -e 's/^### /h3. /' \
+          # -e 's/^#### /h4. /' \
+          # -e 's/^##### /h5. /' \
+          # -e 's/^###### /h6. /' \
+          # -e 's/^-/ * /' \
+          # -e 's/\r$//' \
+          # -e 's/^\n*/\n/' \
+        )
+        echo "JIRA_DESCRIPTION=$JIRA_DESCRIPTION" >> $GITHUB_ENV
     
     - name: Create Issue 
       uses: atlassian/gajira-create@v3
       with:
-        project: FB
+        project: PF
         issuetype: Task
         summary: '${{ github.event.issue.title }}'
-        description: '${{ github.event.issue.body }}'
-        # description: '${{ env.JIRA_DESCRIPTION }}'
+        # description: '${{ github.event.issue.body }}'
+        description: '${{ env.JIRA_DESCRIPTION }}'
