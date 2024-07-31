@@ -3,11 +3,11 @@ on:
   issues: 
     types: [opened, reopened]
     
-# jobs:
-#   create-issue:
-#     name: Create Jira issue
-#     runs-on: ubuntu-latest
-#     steps:
+jobs:
+  create-issue:
+    name: Create Jira issue
+    runs-on: ubuntu-latest
+    steps:
 #     - name: Login
 #       uses: atlassian/gajira-login@v3
 #       env:
