@@ -19,9 +19,16 @@ jobs:
       id: convert
       run: |
         # Markdown을 Jira Wiki Markup으로 변환하고 줄바꿈 유지
-        JIRA_DESCRIPTION=$(echo "${{ github.event.issue.body }}" | sed -e 's/^## /h2. /' -e 's/^### /h3. /' -e 's/^#### /h4. /' -e 's/^##### /h5. /' -e 's/^###### /h6. /' -e 's/^-/ * /')
-        # 줄바꿈 문자를 올바르게 변환
-        JIRA_DESCRIPTION=$(printf "%s" "$JIRA_DESCRIPTION")
+        JIRA_DESCRIPTION=$(echo "${{ github.event.issue.body }}" | sed \
+          -e 's/^## /h2. /' \
+          -e 's/^### /h3. /' \
+          -e 's/^#### /h4. /' \
+          -e 's/^##### /h5. /' \
+          -e 's/^###### /h6. /' \
+          -e 's/^-/ * /' \
+          -e 's/\r$//' \
+          -e 's/^\n*/\n/' \
+        )
         echo "JIRA_DESCRIPTION=$JIRA_DESCRIPTION" >> $GITHUB_ENV
     
     - name: Create Issue 
