@@ -18,12 +18,9 @@ jobs:
     - name: Convert Markdown to Jira Wiki Markup
       id: convert
       run: |
-        JIRA_DESCRIPTION=$(echo "${{ github.event.issue.body }}" | sed \
+        JIRA_DESCRIPTION=$(echo -e "${{ github.event.issue.body }}" | sed \
           -e 's/^## /h2. /' \
-          # -e 's/^### /h3. /' \
-          # -e 's/^#### /h4. /' \
-          # -e 's/^##### /h5. /' \
-          # -e 's/^###### /h6. /' \
+          -e ':a;N;$!ba;s/\n/\\n/g'
           # -e 's/^-/ * /' \
           # -e 's/\r$//' \
           # -e 's/^\n*/\n/' \
