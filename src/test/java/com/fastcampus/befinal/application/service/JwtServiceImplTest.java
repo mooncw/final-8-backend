@@ -36,7 +36,7 @@ class JwtServiceImplTest {
     }
 
     @Test
-    @DisplayName("jwt 토큰 생성 테스트")
+    @DisplayName("JWT 생성 테스트")
     void testCreateToken() {
         //given
         UserInfo user = UserInfo.builder()
