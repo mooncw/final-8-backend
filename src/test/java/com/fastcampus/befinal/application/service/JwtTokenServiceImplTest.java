@@ -35,8 +35,7 @@ class JwtTokenServiceImplTest {
         ReflectionTestUtils.setField(jwtTokenService, "refreshTokenValidityInSeconds", refreshTokenValidityInSeconds);
     }
 
-
-        @Test
+    @Test
     @DisplayName("jwt 토큰 생성 테스트")
     void testCreateToken() {
         //given
