@@ -1,16 +1,18 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.contant.JwtConstant;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
-import com.fastcampus.befinal.common.response.error.info.JwtTokenErrorCode;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
-import com.fastcampus.befinal.domain.service.JwtTokenService;
+import com.fastcampus.befinal.domain.service.JwtService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.time.ZonedDateTime;
@@ -19,7 +21,7 @@ import java.util.Date;
 import static com.fastcampus.befinal.common.response.error.info.JwtTokenErrorCode.*;
 
 @Service
-public class JwtTokenServiceImpl implements JwtTokenService {
+public class JwtServiceImpl implements JwtService {
     private Key key;
 
     @Value("${spring.security.jwt.secret}")
@@ -69,9 +71,26 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public boolean validateJwtToken(String JwtToken) {
+    public String resolveAuthorizationHeader(HttpServletRequest request) {
+        String jwt = getJwt(request);
+
+        validateJwt(jwt);
+
+        return jwt;
+    }
+
+    private String getJwt(HttpServletRequest request) {
+        String bearerToken = request.getHeader(JwtConstant.AUTHORIZATION_HEADER);
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtConstant.JWT_PREFIX)) {
+            return bearerToken.substring(JwtConstant.JWT_PREFIX.length()).trim();
+        }
+        return null;
+    }
+
+    private boolean validateJwt(String Jwt) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(JwtToken);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(Jwt);
 
             return true;
         } catch (SecurityException | MalformedJwtException e) {

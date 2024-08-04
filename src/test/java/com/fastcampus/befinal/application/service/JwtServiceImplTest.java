@@ -17,11 +17,11 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("JwtTokenService 테스트")
+@DisplayName("JwtService 테스트")
 @ExtendWith(MockitoExtension.class)
-class JwtTokenServiceImplTest {
+class JwtServiceImplTest {
     @InjectMocks
-    private JwtTokenServiceImpl jwtTokenService;
+    private JwtServiceImpl JwtService;
 
     @BeforeEach
     public void setUp() {
@@ -30,9 +30,9 @@ class JwtTokenServiceImplTest {
         long refreshTokenValidityInSeconds = 1_209_600;
 
         byte[] keyBytes = Decoders.BASE64.decode(secret);
-        ReflectionTestUtils.setField(jwtTokenService, "key", Keys.hmacShaKeyFor(keyBytes));
-        ReflectionTestUtils.setField(jwtTokenService, "accessTokenValidityInSeconds", accessTokenValidityInSeconds);
-        ReflectionTestUtils.setField(jwtTokenService, "refreshTokenValidityInSeconds", refreshTokenValidityInSeconds);
+        ReflectionTestUtils.setField(JwtService, "key", Keys.hmacShaKeyFor(keyBytes));
+        ReflectionTestUtils.setField(JwtService, "accessTokenValidityInSeconds", accessTokenValidityInSeconds);
+        ReflectionTestUtils.setField(JwtService, "refreshTokenValidityInSeconds", refreshTokenValidityInSeconds);
     }
 
     @Test
@@ -44,7 +44,7 @@ class JwtTokenServiceImplTest {
             .build();
 
         //when
-        TokenInfo tokenInfo = jwtTokenService.createTokenInfo(user);
+        TokenInfo tokenInfo = JwtService.createTokenInfo(user);
 
         //then
         String accessToken = tokenInfo.getAccessToken();

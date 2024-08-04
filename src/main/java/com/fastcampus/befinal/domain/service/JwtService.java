@@ -2,9 +2,10 @@ package com.fastcampus.befinal.domain.service;
 
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
+import jakarta.servlet.http.HttpServletRequest;
 
-public interface JwtTokenService {
+public interface JwtService {
     TokenInfo createTokenInfo(UserInfo user);
 
-    boolean validateJwtToken(String JwtToken);
+    String resolveAuthorizationHeader(HttpServletRequest request);
 }
