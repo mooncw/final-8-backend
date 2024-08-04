@@ -36,7 +36,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public TokenInfo createToken(UserInfo user) {
+    public TokenInfo createTokenInfo(UserInfo user) {
         return TokenInfo.of(createAccessToken(user), createRefreshToken());
     }
 
