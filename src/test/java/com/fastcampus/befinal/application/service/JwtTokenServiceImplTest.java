@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import io.jsonwebtoken.io.Decoders;
@@ -12,6 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DisplayName("JwtTokenService 테스트")
 @ExtendWith(MockitoExtension.class)
 class JwtTokenServiceImplTest {
@@ -20,7 +25,7 @@ class JwtTokenServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        String secret = "G7jK2LqF9xR6tN3vB8pW1yZ0oP4uV5rH9mT6Q7lX2cY8wR1jV3zN4kL5dY0x";
+        String secret = Generator.generate(45);
         long accessTokenValidityInSeconds = 3600;
         long refreshTokenValidityInSeconds = 1_209_600;
 
@@ -34,13 +39,33 @@ class JwtTokenServiceImplTest {
         @Test
     @DisplayName("jwt 토큰 생성 테스트")
     void testCreateToken() {
+        //given
         UserInfo user = UserInfo.builder()
             .ID("ASD")
             .build();
 
+        //when
         TokenInfo tokenInfo = jwtTokenService.createToken(user);
 
-        System.out.println(tokenInfo.getAccessToken());
-        System.out.println(tokenInfo.getRefreshToken());
+        //then
+        String accessToken = tokenInfo.getAccessToken();
+        String refreshToken = tokenInfo.getRefreshToken();
+
+        assertThat(accessToken).isNotNull();
+        assertThat(refreshToken).isNotNull();
+
+        String[] accessTokenParts = accessToken.split("\\.");
+        assertThat(accessTokenParts).hasSize(3);
+
+        String[] refreshTokenParts = refreshToken.split("\\.");
+        assertThat(refreshTokenParts).hasSize(3);
+
+        assertThat(Arrays.stream(accessTokenParts)
+                        .noneMatch(String::isEmpty))
+            .isTrue();
+
+        assertThat(Arrays.stream(refreshTokenParts)
+                        .noneMatch(String::isEmpty))
+            .isTrue();
     }
 }
