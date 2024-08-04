@@ -1,11 +1,11 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.response.error.info.JwtTokenErrorCode;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.service.JwtTokenService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
+
+import static com.fastcampus.befinal.common.response.error.info.JwtTokenErrorCode.*;
 
 @Service
 public class JwtTokenServiceImpl implements JwtTokenService {
@@ -64,5 +66,22 @@ public class JwtTokenServiceImpl implements JwtTokenService {
             .setExpiration(Date.from(tokenValidity.toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
+    }
+
+    @Override
+    public boolean validateJwtToken(String JwtToken) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(JwtToken);
+
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new BusinessException(NOT_VALID_JWT_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new BusinessException(EXPIRED_JWT_TOKEN);
+        } catch (UnsupportedJwtException e) {
+            throw new BusinessException(UNSUPPORTED_JWT_TOKEN);
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException(ILLEGAL_JWT_TOKEN);
+        }
     }
 }
