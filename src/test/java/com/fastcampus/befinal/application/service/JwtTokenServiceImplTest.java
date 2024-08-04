@@ -44,7 +44,7 @@ class JwtTokenServiceImplTest {
             .build();
 
         //when
-        TokenInfo tokenInfo = jwtTokenService.createToken(user);
+        TokenInfo tokenInfo = jwtTokenService.createTokenInfo(user);
 
         //then
         String accessToken = tokenInfo.getAccessToken();
