@@ -7,11 +7,10 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum JwtTokenErrorCode implements ErrorCode {
-    NOT_VALID_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.NOT_VALID_JWT_TOKEN, "유효한 JWT Token이 아닙니다."),
-    EXPIRED_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.EXPIRED_JWT_TOKEN, "만료된 JWT Token입니다."),
-    UNSUPPORTED_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.UNSUPPORTED_JWT_TOKEN,
-        "지원되지 않는 형식의 JWT Token입니다."),
-    ILLEGAL_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.ILLEGAL_JWT_TOKEN, "부적절한 JWT Token입니다.");
+    NOT_VALID_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.NOT_VALID_JWT_TOKEN, "유효한 JWT이 아닙니다."),
+    EXPIRED_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.EXPIRED_JWT_TOKEN, "만료된 JWT입니다."),
+    UNSUPPORTED_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.UNSUPPORTED_JWT_TOKEN, "지원되지 않는 형식의 JWT입니다."),
+    ILLEGAL_JWT_TOKEN(HttpStatus.BAD_REQUEST, JwtTokenCode.ILLEGAL_JWT_TOKEN, "부적절한 JWT입니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;
