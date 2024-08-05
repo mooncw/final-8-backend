@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
@@ -18,15 +19,21 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtService jwtService;
+    private final AccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(configurer -> configurer.disable());
 
         http.authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
-            .requestMatchers("/**").permitAll());
+            //auth
+            .requestMatchers("/api/v1/auth/login").permitAll()
+            .requestMatchers("/api/v1/auth/logout").authenticated());
 
         http.addFilterBefore(new JwtAuthenticationFilter(jwtService), BasicAuthenticationFilter.class);
+
+        http.exceptionHandling(configurer -> configurer
+            .accessDeniedHandler(accessDeniedHandler));
 
         http.sessionManagement(configurer -> configurer
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
