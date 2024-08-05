@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UserInfo {
-    private String ID;
+    private String id;
 }

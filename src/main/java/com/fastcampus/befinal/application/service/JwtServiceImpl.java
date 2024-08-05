@@ -10,7 +10,13 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,7 +27,10 @@ import java.util.Date;
 import static com.fastcampus.befinal.common.response.error.info.JwtTokenErrorCode.*;
 
 @Service
+@RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
+    private final UserDetailsService userDetailsService;
+
     private Key key;
 
     @Value("${spring.security.jwt.secret}")
@@ -46,7 +55,7 @@ public class JwtServiceImpl implements JwtService {
 
     private String createAccessToken(UserInfo user) {
         Claims claims = Jwts.claims();
-        claims.put("userId", user.getID());
+        claims.put("userId", user.getId());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(accessTokenValidityInSeconds);
@@ -102,5 +111,28 @@ public class JwtServiceImpl implements JwtService {
         } catch (IllegalArgumentException e) {
             throw new BusinessException(ILLEGAL_JWT_TOKEN);
         }
+    }
+
+    @Override
+    public void setAuthentication(String jwt) {
+        Authentication authentication = getAuthentication(jwt);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private Authentication getAuthentication(String jwt) {
+        String userId = parseUserId(jwt);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    private String parseUserId(String jwt) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody()
+                .get("userId", String.class);
     }
 }

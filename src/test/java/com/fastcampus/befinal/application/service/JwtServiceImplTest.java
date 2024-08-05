@@ -40,7 +40,7 @@ class JwtServiceImplTest {
     void createTokenInfoTest() {
         //given
         UserInfo user = UserInfo.builder()
-            .ID("ASD")
+            .id("ASD")
             .build();
 
         //when

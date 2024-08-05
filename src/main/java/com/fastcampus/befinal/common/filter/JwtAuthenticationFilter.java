@@ -12,12 +12,13 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService JwtService;
+    private final JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
-        JwtService.resolveAuthorizationHeader(request);
+        String jwt = jwtService.resolveAuthorizationHeader(request);
+        jwtService.setAuthentication(jwt);
         filterChain.doFilter(request, response);
     }
 

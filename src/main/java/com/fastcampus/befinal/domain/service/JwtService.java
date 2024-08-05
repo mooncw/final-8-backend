@@ -8,4 +8,6 @@ public interface JwtService {
     TokenInfo createTokenInfo(UserInfo user);
 
     String resolveAuthorizationHeader(HttpServletRequest request);
+
+    void setAuthentication(String jwt);
 }
