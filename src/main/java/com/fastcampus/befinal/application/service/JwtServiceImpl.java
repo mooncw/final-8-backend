@@ -5,6 +5,8 @@ import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.service.JwtService;
+import com.fastcampus.befinal.presentation.dto.ReissueTokenRequest;
+import com.fastcampus.befinal.presentation.dto.ReissueTokenResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -134,5 +136,31 @@ public class JwtServiceImpl implements JwtService {
                 .parseClaimsJws(jwt)
                 .getBody()
                 .get("userId", String.class);
+    }
+
+    @Override
+    public ReissueTokenResponse reissueTokenInfo(ReissueTokenRequest request) {
+        String userId = parseUserIdFromExpiredAccessToken(request.accessToken());
+        UserInfo userInfo = UserInfo.builder()
+            .id(userId)
+            .build();
+        TokenInfo tokenInfo = createTokenInfo(userInfo);
+
+        return ReissueTokenResponse.from(tokenInfo);
+    }
+
+    private String parseUserIdFromExpiredAccessToken(String accessToken) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
+            throw new BusinessException(NOT_EXPIRED_JWT);
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new BusinessException(NOT_VALID_JWT);
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().get("userId", String.class);
+        } catch (UnsupportedJwtException e) {
+            throw new BusinessException(UNSUPPORTED_JWT);
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException(ILLEGAL_JWT);
+        }
     }
 }

@@ -29,7 +29,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
             //auth
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-            .requestMatchers(HttpMethod.POST,"/api/v1/auth/logout").authenticated());
+            .requestMatchers(HttpMethod.POST,"/api/v1/auth/logout").authenticated()
+            //jwt
+            .requestMatchers(HttpMethod.POST,"/api/v1/jwt/reissue").permitAll());
 
         http.addFilterBefore(new JwtAuthenticationFilter(jwtService), BasicAuthenticationFilter.class);
 
