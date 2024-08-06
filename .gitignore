@@ -38,3 +38,6 @@ out/
 
 ### BE-final ###
 src/test/java/com/fastcampus/befinal/common/config/JasyptConfigTest.java
+docker-compose.yml
+data/**
+src/main/resources/application-local.yml

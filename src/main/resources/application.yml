@@ -1,12 +1,6 @@
 spring:
-  security:
-    jwt:
-      header: Authorization
-      secret: ENC(65h2069y4sNrEcUWWCUBpN21Kl0Cef8XUS85jjld04p8T9iWTq6WF6k2o5lu4cfxLYdGI8FHV5T/drif0KLvj/QuEjF5LVNwzprqksewN9UPbvVJHeG5NUWE/8jGfKTQ56q0RaqBkiZQpYtT6VDZaA==)
-      access-token-validity-in-seconds: 3600     # 1시간
-      refresh-token-validity-in-seconds: 1_209_600  # 2주
-
-jasypt:
-  encryptor:
-    bean: jasyptEncryptorAES
-    password: ${JASYPT_PASSWORD}
+  profiles:
+    active: local
+    group:
+      local: local-server
+      prod: prod-server
