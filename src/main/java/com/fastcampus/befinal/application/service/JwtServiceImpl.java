@@ -24,7 +24,7 @@ import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import static com.fastcampus.befinal.common.response.error.info.JwtTokenErrorCode.*;
+import static com.fastcampus.befinal.common.response.error.info.JwtErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -103,13 +103,13 @@ public class JwtServiceImpl implements JwtService {
 
             return true;
         } catch (SecurityException | MalformedJwtException e) {
-            throw new BusinessException(NOT_VALID_JWT_TOKEN);
+            throw new BusinessException(NOT_VALID_JWT);
         } catch (ExpiredJwtException e) {
-            throw new BusinessException(EXPIRED_JWT_TOKEN);
+            throw new BusinessException(EXPIRED_JWT);
         } catch (UnsupportedJwtException e) {
-            throw new BusinessException(UNSUPPORTED_JWT_TOKEN);
+            throw new BusinessException(UNSUPPORTED_JWT);
         } catch (IllegalArgumentException e) {
-            throw new BusinessException(ILLEGAL_JWT_TOKEN);
+            throw new BusinessException(ILLEGAL_JWT);
         }
     }
 
