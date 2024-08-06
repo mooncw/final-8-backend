@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### BE-final ###
+src/test/java/com/fastcampus/befinal/common/config/JasyptConfigTest.java
