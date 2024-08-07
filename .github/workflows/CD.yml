@@ -62,5 +62,5 @@ jobs:
             sudo docker stop prod || true
             sudo docker rm prod || true
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
-            sudo docker run --name alert -d -p ${{ secrets.PORT_MAPPING }} ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
+            sudo docker run --name prod -d -p ${{ secrets.PORT_MAPPING }} ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
             sudo docker system prune -f
