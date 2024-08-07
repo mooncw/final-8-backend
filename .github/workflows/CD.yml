@@ -29,7 +29,7 @@ jobs:
         with:
           files: ./src/main/resources/application-prod.yml
         env:
-          jasypt.password: ${{ secrets.JASYPT_PASSWORD }}
+          jasypt.encryptor.password: ${{ secrets.JASYPT_PASSWORD }}
 
       - name: Build with Gradle
         run : |
