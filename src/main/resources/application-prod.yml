@@ -11,10 +11,10 @@ spring:
       refresh-token-validity-in-seconds: 1_209_600  # 2주
 
   datasource:
-    url: ENC(5vJHJq4MbDRt4KeGuFvNE289DKbsKTCnkqhKjLnprFvK11EGp68BaVqg/px+qm1IujcBHDmZf1RJ+9y3LpVCEPNRfVv9cio+rXVYHjvn1G6kT5QH1WBr7/UCguq+chU+TBq6QxYMdVkT4tGtA0SOfqvooqsk1dgDc4f9TUfmVLxiD3SFhfvhPfAm5aJMqN6X)
+    url: ENC(8+/bWefYmWQElrDSCzVahUY66cIjhf+6q+VduTzoMlSqHG69XJeXePFB9ew6W1x/8kqF00yMonCyBOKu36JGU8+MjiSqz/OyfWwMIFlK815V2u8Ginum82OhSHaba1DaBQi/nSgTiepZ0wYkULtc/KTO6t9a2GNHqPi5Z1POdjii5RwMfrbBNGxWlVcEAYGh)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: ENC(mIXsC1y08iwYMAsrFZjei8HQiLhhMVcW3BbqG8isI5OFOJoR8ir2OiFQIrJR9uk8kuUO5Lx+0XWQ9E9TkMG7Rw==)
+    username: 8team
+    password: ENC(Az9xEfBQnEAca68JsA/KYmaZtT0ko9oGiLOG7d6qfKuc/ySwUGdJmmj0P1CuG2O7)
 
   jpa:
     database: mysql
