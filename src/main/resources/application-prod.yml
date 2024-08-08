@@ -26,6 +26,11 @@ spring:
       hibernate:
         format_sql: true
 
+  data:
+    redis:
+      port: ENC(wyPfla5qSG4+QZnMJrigZ18Cy4GU0J0dAgUDl2fMN4fJsSgPjVIxSUcapWhzWigA)
+      host: ENC(N41vph2odUQOK9pSYY/MPeTq5uohYLaDusaHc+Rdyf8Nv2RhMRarBtK0/ruVQo6V)
+
 jasypt:
   encryptor:
     bean: jasyptEncryptorAES
