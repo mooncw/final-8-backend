@@ -1,0 +1,40 @@
+spring:
+  config:
+    activate:
+      on-profile: prod-server
+
+  security:
+    jwt:
+      header: Authorization
+      secret: ENC(65h2069y4sNrEcUWWCUBpN21Kl0Cef8XUS85jjld04p8T9iWTq6WF6k2o5lu4cfxLYdGI8FHV5T/drif0KLvj/QuEjF5LVNwzprqksewN9UPbvVJHeG5NUWE/8jGfKTQ56q0RaqBkiZQpYtT6VDZaA==)
+      access-token-validity-in-seconds: 3600     # 1시간
+      refresh-token-validity-in-seconds: 1_209_600  # 2주
+
+  datasource:
+    url: ENC(8+/bWefYmWQElrDSCzVahUY66cIjhf+6q+VduTzoMlSqHG69XJeXePFB9ew6W1x/8kqF00yMonCyBOKu36JGU8+MjiSqz/OyfWwMIFlK815V2u8Ginum82OhSHaba1DaBQi/nSgTiepZ0wYkULtc/KTO6t9a2GNHqPi5Z1POdjii5RwMfrbBNGxWlVcEAYGh)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: 8team
+    password: ENC(Az9xEfBQnEAca68JsA/KYmaZtT0ko9oGiLOG7d6qfKuc/ySwUGdJmmj0P1CuG2O7)
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      port: ENC(wyPfla5qSG4+QZnMJrigZ18Cy4GU0J0dAgUDl2fMN4fJsSgPjVIxSUcapWhzWigA)
+      host: ENC(N41vph2odUQOK9pSYY/MPeTq5uohYLaDusaHc+Rdyf8Nv2RhMRarBtK0/ruVQo6V)
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptorAES
+    password: ${JASYPT_PASSWORD}
+
+server:
+  port: ENC(jBBqJC00hA3ZZmVnfugq+FucDrJ0AZBrC2darLq5gOlFimO+h2zTgeUT3zBxTlgN)

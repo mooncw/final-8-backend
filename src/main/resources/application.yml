@@ -1,7 +1,6 @@
 spring:
-  security:
-    jwt:
-      header: Authorization
-      secret: ${JWT_SECRET_KEY}
-      access-token-validity-in-seconds: 3600     # 1시간
-      refresh-token-validity-in-seconds: 1_209_600  # 2주
+  profiles:
+    active: local
+    group:
+      local: local-server
+      prod: prod-server

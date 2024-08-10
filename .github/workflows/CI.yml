@@ -23,6 +23,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Set up application-prod.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application-prod.yml
+        env:
+          jasypt.encryptor.password: ${{ secrets.JASYPT_PASSWORD }}
+
       - name: Test with Gradle
         run: |
           chmod +x ./gradlew

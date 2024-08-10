@@ -24,22 +24,29 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Set up application-prod.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application-prod.yml
+        env:
+          jasypt.encryptor.password: ${{ secrets.JASYPT_PASSWORD }}
+
       - name: Build with Gradle
         run : |
           chmod +x ./gradlew
-          ./gradlew build
+          ./gradlew build -x test
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build with Docker
-        run : docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/final final-api
+        run : docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow .
 
       - name: Docker push
-        run : docker push ${{ secrets.DOCKERHUB_USERNAME }}/final:latest
+        run : docker push ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow:latest
 
   deploy:
     needs: if-merge
@@ -48,12 +55,12 @@ jobs:
       - name: Execute Server Docker compose
         uses: appleboy/ssh-action@master
         with:
-          username: ${{ secrets.SSH_USER }}
-          host: ${{ env.STOPPED_IP }}
-          key: ${{ secrets.BLUE_SSH_KEY }}
-          script_stop: true
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            sudo docker stop prod
-            sudo docker rm prod
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/final
-            sudo docker-compose up -d
+            sudo docker stop prod || true
+            sudo docker rm prod || true
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
+            sudo docker run --name prod -d -p ${{ secrets.PORT_MAPPING }} ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
+            sudo docker system prune -f
