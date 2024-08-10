@@ -2,6 +2,8 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.contant.JwtConstant;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
+import com.fastcampus.befinal.domain.entity.RefreshToken;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.service.JwtService;
@@ -32,6 +34,7 @@ import static com.fastcampus.befinal.common.response.error.info.JwtErrorCode.*;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
     private final UserDetailsService userDetailsService;
+    private final RefreshTokenStore refreshTokenStore;
 
     private Key key;
 
@@ -52,7 +55,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public TokenInfo createTokenInfo(UserInfo user) {
-        return TokenInfo.of(createAccessToken(user), createRefreshToken());
+        return TokenInfo.of(createAccessToken(user), createRefreshToken(user));
     }
 
     private String createAccessToken(UserInfo user) {
@@ -60,25 +63,36 @@ public class JwtServiceImpl implements JwtService {
         claims.put("userId", user.getId());
 
         ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime tokenValidity = now.plusSeconds(accessTokenValidityInSeconds);
+        ZonedDateTime expirationTime = now.plusSeconds(accessTokenValidityInSeconds);
 
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(Date.from(now.toInstant()))
-            .setExpiration(Date.from(tokenValidity.toInstant()))
+            .setExpiration(Date.from(expirationTime.toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
     }
 
-    private String createRefreshToken() {
+    private String createRefreshToken(UserInfo user) {
         ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime tokenValidity = now.plusSeconds(refreshTokenValidityInSeconds);
+        ZonedDateTime expirationTime = now.plusSeconds(refreshTokenValidityInSeconds);
 
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
             .setIssuedAt(Date.from(now.toInstant()))
-            .setExpiration(Date.from(tokenValidity.toInstant()))
+            .setExpiration(Date.from(expirationTime.toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
+
+        RefreshToken refreshTokenObj = RefreshToken.builder()
+                .token(refreshToken)
+                .userId(user.getId())
+                .creationTime(now)
+                .expirationTime(expirationTime)
+                .build();
+
+        refreshTokenStore.store(refreshTokenObj);
+
+        return refreshToken;
     }
 
     @Override
