@@ -2,6 +2,7 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.contant.JwtConstant;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.domain.dataprovider.RefreshTokenReader;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
 import com.fastcampus.befinal.domain.entity.RefreshToken;
 import com.fastcampus.befinal.domain.info.TokenInfo;
@@ -27,6 +28,7 @@ import org.springframework.util.StringUtils;
 import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.fastcampus.befinal.common.response.error.info.JwtErrorCode.*;
 
@@ -35,6 +37,7 @@ import static com.fastcampus.befinal.common.response.error.info.JwtErrorCode.*;
 public class JwtServiceImpl implements JwtService {
     private final UserDetailsService userDetailsService;
     private final RefreshTokenStore refreshTokenStore;
+    private final RefreshTokenReader refreshTokenReader;
 
     private Key key;
 
@@ -155,12 +158,27 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public ReissueTokenResponse reissueTokenInfo(ReissueTokenRequest request) {
         String userId = parseUserIdFromExpiredAccessToken(request.accessToken());
+
+        RefreshToken refreshTokenObj = refreshTokenReader.find(userId);
+
+        validateRefreshToken(request, refreshTokenObj);
+
         UserInfo userInfo = UserInfo.builder()
             .id(userId)
             .build();
+
         TokenInfo tokenInfo = createTokenInfo(userInfo);
 
         return ReissueTokenResponse.from(tokenInfo);
+    }
+
+    private void validateRefreshToken(ReissueTokenRequest request, RefreshToken refreshTokenObj) {
+        String requestRefreshToken = request.refreshToken();
+        String storeRefreshToken = refreshTokenObj.getToken();
+
+        if (!Objects.equals(requestRefreshToken, storeRefreshToken)) {
+            throw new BusinessException(INCONSISTENT_REFRESHTOKEN);
+        }
     }
 
     private String parseUserIdFromExpiredAccessToken(String accessToken) {

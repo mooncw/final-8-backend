@@ -12,7 +12,9 @@ public enum JwtCode implements Code {
     EXPIRED_JWT(1051),
     UNSUPPORTED_JWT(1052),
     ILLEGAL_JWT(1053),
-    NOT_EXPIRED_JWT(1054);
+    NOT_EXPIRED_JWT(1054),
+    NOT_FOUND_REFRESHTOKEN(1055),
+    INCONSISTENT_REFRESHTOKEN(1056);
 
     private final Integer code;
 
