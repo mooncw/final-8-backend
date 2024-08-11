@@ -1,6 +1,8 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.Generator;
+import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
+import com.fastcampus.befinal.domain.entity.RefreshToken;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import io.jsonwebtoken.io.Decoders;
@@ -10,18 +12,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
-@DisplayName("JwtService 테스트")
+@DisplayName("jwtCreationService 테스트")
 @ExtendWith(MockitoExtension.class)
-class JwtServiceImplTest {
+class JwtCreationServiceImplTest {
     @InjectMocks
-    private JwtServiceImpl JwtService;
+    private JwtCreationServiceImpl jwtCreationService;
+
+    @Mock
+    private RefreshTokenStore refreshTokenStore;
 
     @BeforeEach
     public void setUp() {
@@ -30,9 +38,9 @@ class JwtServiceImplTest {
         long refreshTokenValidityInSeconds = 1_209_600;
 
         byte[] keyBytes = Decoders.BASE64.decode(secret);
-        ReflectionTestUtils.setField(JwtService, "key", Keys.hmacShaKeyFor(keyBytes));
-        ReflectionTestUtils.setField(JwtService, "accessTokenValidityInSeconds", accessTokenValidityInSeconds);
-        ReflectionTestUtils.setField(JwtService, "refreshTokenValidityInSeconds", refreshTokenValidityInSeconds);
+        ReflectionTestUtils.setField(jwtCreationService, "key", Keys.hmacShaKeyFor(keyBytes));
+        ReflectionTestUtils.setField(jwtCreationService, "accessTokenValidityInSeconds", accessTokenValidityInSeconds);
+        ReflectionTestUtils.setField(jwtCreationService, "refreshTokenValidityInSeconds", refreshTokenValidityInSeconds);
     }
 
     @Test
@@ -43,8 +51,12 @@ class JwtServiceImplTest {
             .id("ASD")
             .build();
 
+        doNothing()
+            .when(refreshTokenStore)
+            .store(any(RefreshToken.class));
+
         //when
-        TokenInfo tokenInfo = JwtService.createTokenInfo(user);
+        TokenInfo tokenInfo = jwtCreationService.createTokenInfo(user);
 
         //then
         String accessToken = tokenInfo.getAccessToken();
