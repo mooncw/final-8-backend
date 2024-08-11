@@ -6,7 +6,7 @@ import com.fastcampus.befinal.presentation.dto.ReissueTokenRequest;
 import com.fastcampus.befinal.presentation.dto.ReissueTokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
-public interface JwtService {
+public interface JwtAuthService {
     TokenInfo createTokenInfo(UserInfo user);
 
     String resolveAuthorizationHeader(HttpServletRequest request);

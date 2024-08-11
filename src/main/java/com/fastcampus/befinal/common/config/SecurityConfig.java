@@ -1,7 +1,7 @@
 package com.fastcampus.befinal.common.config;
 
 import com.fastcampus.befinal.common.filter.JwtAuthenticationFilter;
-import com.fastcampus.befinal.domain.service.JwtService;
+import com.fastcampus.befinal.domain.service.JwtAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtService jwtService;
+    private final JwtAuthService jwtAuthService;
     private final AccessDeniedHandler accessDeniedHandler;
 
     @Bean
@@ -30,10 +30,9 @@ public class SecurityConfig {
             //auth
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/logout").authenticated()
-            //jwt
-            .requestMatchers(HttpMethod.POST,"/api/v1/jwt/reissue").permitAll());
+            .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll());
 
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtService), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtAuthService), BasicAuthenticationFilter.class);
 
         http.exceptionHandling(configurer -> configurer
             .accessDeniedHandler(accessDeniedHandler));

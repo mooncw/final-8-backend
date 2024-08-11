@@ -7,7 +7,7 @@ import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
 import com.fastcampus.befinal.domain.entity.RefreshToken;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
-import com.fastcampus.befinal.domain.service.JwtService;
+import com.fastcampus.befinal.domain.service.JwtAuthService;
 import com.fastcampus.befinal.presentation.dto.ReissueTokenRequest;
 import com.fastcampus.befinal.presentation.dto.ReissueTokenResponse;
 import io.jsonwebtoken.*;
@@ -34,7 +34,7 @@ import static com.fastcampus.befinal.common.response.error.info.JwtErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class JwtServiceImpl implements JwtService {
+public class JwtAuthServiceImpl implements JwtAuthService {
     private final UserDetailsService userDetailsService;
     private final RefreshTokenStore refreshTokenStore;
     private final RefreshTokenReader refreshTokenReader;
