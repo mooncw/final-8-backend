@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Final API Docs",
-                description = "Test API",
+                description = "Implemented API Specification",
                 version = "v1"
         )
 )
