@@ -5,17 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Entity(name = "User")
-@Table(name = "user")
+@Entity(name = "UserManagement")
+@Table(name = "user_management")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class UserManagement {
     @Id
     @Column(nullable = false, unique = true, name = "id", columnDefinition = "varchar(15)")
     private String id;
@@ -38,23 +37,4 @@ public class User {
     @Column(nullable = false, name = "signup_datetime", columnDefinition = "datetime")
     private LocalDateTime signUpDateTime;
 
-    @Column(nullable = false, name = "final_login_datetime", columnDefinition = "datetime")
-    private LocalDateTime finalLoginDateTime;
-
-    @Column(nullable = false, name = "role", columnDefinition = "varchar(20)")
-    private String role;
-
-    @Builder
-    public User(String id, String name, String password, String phoneNumber, String empNumber,
-                String email, LocalDateTime signUpDateTime, LocalDateTime finalLoginDateTime) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.empNumber = empNumber;
-        this.email = email;
-        this.signUpDateTime = signUpDateTime;
-        this.finalLoginDateTime = finalLoginDateTime;
-        this.role = "USER";
-    }
 }
