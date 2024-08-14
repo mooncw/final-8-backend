@@ -1,12 +1,10 @@
 package com.fastcampus.befinal.domain.service;
 
-import com.fastcampus.befinal.domain.info.TokenInfo;
-import com.fastcampus.befinal.domain.info.UserInfo;
-import com.fastcampus.befinal.presentation.dto.ReissueTokenRequest;
-import com.fastcampus.befinal.presentation.dto.ReissueTokenResponse;
+import com.fastcampus.befinal.domain.command.AuthCommand;
+import com.fastcampus.befinal.domain.info.AuthInfo;
 
 public interface JwtCreationService {
-    TokenInfo createTokenInfo(UserInfo user);
+    AuthInfo.JwtInfo createJwt(AuthCommand.CreateJwtRequest command);
 
-    ReissueTokenResponse reissueTokenInfo(ReissueTokenRequest request);
+    AuthInfo.JwtInfo reissueJwt(AuthCommand.ReissueJwtRequest command);
 }

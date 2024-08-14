@@ -1,14 +1,12 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenReader;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
 import com.fastcampus.befinal.domain.entity.RefreshToken;
-import com.fastcampus.befinal.domain.info.TokenInfo;
-import com.fastcampus.befinal.domain.info.UserInfo;
+import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.service.JwtCreationService;
-import com.fastcampus.befinal.presentation.dto.ReissueTokenRequest;
-import com.fastcampus.befinal.presentation.dto.ReissueTokenResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -48,13 +46,14 @@ public class JwtCreationServiceImpl implements JwtCreationService {
     }
 
     @Override
-    public TokenInfo createTokenInfo(UserInfo user) {
-        return TokenInfo.of(createAccessToken(user), createRefreshToken(user));
+    public AuthInfo.JwtInfo createJwt(AuthCommand.CreateJwtRequest command) {
+        AuthInfo.UserInfo user = AuthInfo.UserInfo.from(command.userId());
+        return AuthInfo.JwtInfo.of(createAccessToken(user), createRefreshToken(user));
     }
 
-    private String createAccessToken(UserInfo user) {
+    private String createAccessToken(AuthInfo.UserInfo user) {
         Claims claims = Jwts.claims();
-        claims.put("userId", user.getId());
+        claims.put("userId", user.id());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime expirationTime = now.plusSeconds(accessTokenValidityInSeconds);
@@ -67,47 +66,38 @@ public class JwtCreationServiceImpl implements JwtCreationService {
             .compact();
     }
 
-    private String createRefreshToken(UserInfo user) {
+    private String createRefreshToken(AuthInfo.UserInfo user) {
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime expirationTime = now.plusSeconds(refreshTokenValidityInSeconds);
 
-        String refreshToken = Jwts.builder()
+        String jwt = Jwts.builder()
             .setIssuedAt(Date.from(now.toInstant()))
             .setExpiration(Date.from(expirationTime.toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
 
-        RefreshToken refreshTokenObj = RefreshToken.builder()
-            .token(refreshToken)
-            .userId(user.getId())
-            .creationTime(now)
-            .expirationTime(expirationTime)
-            .build();
+        RefreshToken refreshToken = RefreshToken.of(user.id(), jwt, now, expirationTime);
 
-        refreshTokenStore.store(refreshTokenObj);
+        refreshTokenStore.store(refreshToken);
 
-        return refreshToken;
+        return refreshToken.getToken();
     }
 
     @Override
-    public ReissueTokenResponse reissueTokenInfo(ReissueTokenRequest request) {
-        String userId = parseUserIdFromExpiredAccessToken(request.accessToken());
+    public AuthInfo.JwtInfo reissueJwt(AuthCommand.ReissueJwtRequest command) {
+        String userId = parseUserIdFromExpiredAccessToken(command.accessToken());
 
         RefreshToken refreshTokenObj = refreshTokenReader.find(userId);
 
-        validateRefreshToken(request, refreshTokenObj);
+        validateRefreshToken(command, refreshTokenObj);
 
-        UserInfo userInfo = UserInfo.builder()
-            .id(userId)
-            .build();
+        AuthInfo.UserInfo user = AuthInfo.UserInfo.from(userId);
 
-        TokenInfo tokenInfo = createTokenInfo(userInfo);
-
-        return ReissueTokenResponse.from(tokenInfo);
+        return AuthInfo.JwtInfo.of(createAccessToken(user), createRefreshToken(user));
     }
 
-    private void validateRefreshToken(ReissueTokenRequest request, RefreshToken refreshTokenObj) {
-        String requestRefreshToken = request.refreshToken();
+    private void validateRefreshToken(AuthCommand.ReissueJwtRequest command, RefreshToken refreshTokenObj) {
+        String requestRefreshToken = command.refreshToken();
         String storeRefreshToken = refreshTokenObj.getToken();
 
         if (!Objects.equals(requestRefreshToken, storeRefreshToken)) {

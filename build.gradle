@@ -44,6 +44,10 @@ dependencies {
     //jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 
+    //MapStruct
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+
     //MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
 

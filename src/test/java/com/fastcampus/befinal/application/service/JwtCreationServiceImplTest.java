@@ -1,8 +1,10 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.Generator;
+import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
 import com.fastcampus.befinal.domain.entity.RefreshToken;
+import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.TokenInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import io.jsonwebtoken.io.Decoders;
@@ -45,10 +47,10 @@ class JwtCreationServiceImplTest {
 
     @Test
     @DisplayName("JWT 생성 테스트")
-    void createTokenInfoTest() {
+    void createJwtTest() {
         //given
-        UserInfo user = UserInfo.builder()
-            .id("ASD")
+        AuthCommand.CreateJwtRequest command = AuthCommand.CreateJwtRequest.builder()
+            .userId("A12")
             .build();
 
         doNothing()
@@ -56,11 +58,11 @@ class JwtCreationServiceImplTest {
             .store(any(RefreshToken.class));
 
         //when
-        TokenInfo tokenInfo = jwtCreationService.createTokenInfo(user);
+        AuthInfo.JwtInfo jwtInfo = jwtCreationService.createJwt(command);
 
         //then
-        String accessToken = tokenInfo.getAccessToken();
-        String refreshToken = tokenInfo.getRefreshToken();
+        String accessToken = jwtInfo.accessToken();
+        String refreshToken = jwtInfo.refreshToken();
 
         assertThat(accessToken).isNotNull();
         assertThat(refreshToken).isNotNull();

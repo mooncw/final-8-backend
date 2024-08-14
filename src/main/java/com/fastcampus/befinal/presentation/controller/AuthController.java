@@ -3,9 +3,7 @@ package com.fastcampus.befinal.presentation.controller;
 import com.fastcampus.befinal.application.facade.AuthFacade;
 import com.fastcampus.befinal.common.response.ApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
-import com.fastcampus.befinal.domain.service.JwtCreationService;
-import com.fastcampus.befinal.presentation.dto.ReissueTokenRequest;
-import com.fastcampus.befinal.presentation.dto.ReissueTokenResponse;
+import com.fastcampus.befinal.presentation.dto.AuthDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,13 +17,13 @@ import static com.fastcampus.befinal.common.response.success.info.JwtSuccessCode
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final JwtCreationService jwtCreationService;
+    private final AuthFacade authFacade;
 
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResponse<ReissueTokenResponse>> reissueAccessToken(
+    public ResponseEntity<ApiResponse<AuthDto.ReissueJwtResponse>> reissueAccessToken(
         @RequestBody
-        ReissueTokenRequest request) {
-        ReissueTokenResponse response = jwtCreationService.reissueTokenInfo(request);
+        AuthDto.ReissueJwtRequest request) {
+        AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
         return ResponseEntityFactory.toResponseEntity(REISSUE_JWT_TOKEN, response);
     }
 }

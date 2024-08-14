@@ -1,5 +1,7 @@
 package com.fastcampus.befinal.infrastructure.redis.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +14,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisLettuceConfig {
 
-    @Value("${spring.data.reids.host")
+    @Value("${spring.data.redis.host}")
     private String host;
 
     @Value("${spring.data.redis.port}")
@@ -28,7 +30,14 @@ public class RedisLettuceConfig {
         RedisTemplate<String, ?> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setValueSerializer(jsonRedisSerializer());
         return redisTemplate;
+    }
+
+    @Bean
+    GenericJackson2JsonRedisSerializer jsonRedisSerializer() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
 }
