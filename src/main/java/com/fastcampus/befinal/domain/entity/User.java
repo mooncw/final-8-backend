@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
+    @Column(nullable = false, unique = true, name = "id", columnDefinition = "varchar(15)")
     private String id;
 
     @Column(nullable = false, name = "name", columnDefinition = "varchar(10)")
