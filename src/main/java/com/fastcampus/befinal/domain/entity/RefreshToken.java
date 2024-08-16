@@ -1,31 +1,28 @@
 package com.fastcampus.befinal.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class RefreshToken {
+@JsonTypeName(value = "RefreshToken")
+public class RefreshToken implements JwtRedisValue {
     private String userId;
 
     private String token;
 
-    private ZonedDateTime creationTime;
+    private LocalDateTime creationTime;
 
-    private ZonedDateTime expirationTime;
+    private LocalDateTime expirationTime;
 
-    @Builder
-    public RefreshToken(String userId, String token, ZonedDateTime creationTime, ZonedDateTime expirationTime) {
-        this.userId = userId;
-        this.token = token;
-        this.creationTime = creationTime;
-        this.expirationTime = expirationTime;
-    }
-
-    public static RefreshToken of(String userId, String token, ZonedDateTime creationTime, ZonedDateTime expirationTime) {
+    public static RefreshToken of(String userId, String token, LocalDateTime creationTime, LocalDateTime expirationTime) {
         return RefreshToken.builder()
             .userId(userId)
             .token(token)

@@ -3,6 +3,7 @@ package com.fastcampus.befinal.infrastructure.redis.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenReader;
+import com.fastcampus.befinal.domain.entity.RedisValue;
 import com.fastcampus.befinal.domain.entity.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,11 +16,11 @@ import static com.fastcampus.befinal.common.response.error.info.JwtErrorCode.NOT
 @DataProvider
 @RequiredArgsConstructor
 public class RefreshTokenReaderImpl implements RefreshTokenReader {
-    private final RedisTemplate<String, RefreshToken> redisTemplate;
+    private final RedisTemplate<String, RedisValue> redisTemplate;
 
     @Override
     public RefreshToken find(String userId) {
-        return Optional.ofNullable(redisTemplate.opsForValue().get(REFRESHTOKEN_PREFIX + userId))
+        return (RefreshToken) Optional.ofNullable(redisTemplate.opsForValue().get(REFRESHTOKEN_PREFIX + userId))
             .orElseThrow(() -> new BusinessException(NOT_FOUND_REFRESHTOKEN));
     }
 }

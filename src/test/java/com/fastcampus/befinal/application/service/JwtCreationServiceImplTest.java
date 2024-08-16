@@ -5,8 +5,6 @@ import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
 import com.fastcampus.befinal.domain.entity.RefreshToken;
 import com.fastcampus.befinal.domain.info.AuthInfo;
-import com.fastcampus.befinal.domain.info.TokenInfo;
-import com.fastcampus.befinal.domain.info.UserInfo;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;

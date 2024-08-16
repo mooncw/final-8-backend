@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 
@@ -55,24 +56,24 @@ public class JwtCreationServiceImpl implements JwtCreationService {
         Claims claims = Jwts.claims();
         claims.put("userId", user.id());
 
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime expirationTime = now.plusSeconds(accessTokenValidityInSeconds);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expirationTime = now.plusSeconds(accessTokenValidityInSeconds);
 
         return Jwts.builder()
             .setClaims(claims)
-            .setIssuedAt(Date.from(now.toInstant()))
-            .setExpiration(Date.from(expirationTime.toInstant()))
+            .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
+            .setExpiration(Date.from(expirationTime.atZone(ZoneId.systemDefault()).toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
     }
 
     private String createRefreshToken(AuthInfo.UserInfo user) {
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime expirationTime = now.plusSeconds(refreshTokenValidityInSeconds);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expirationTime = now.plusSeconds(refreshTokenValidityInSeconds);
 
         String jwt = Jwts.builder()
-            .setIssuedAt(Date.from(now.toInstant()))
-            .setExpiration(Date.from(expirationTime.toInstant()))
+            .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
+            .setExpiration(Date.from(expirationTime.atZone(ZoneId.systemDefault()).toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
 
