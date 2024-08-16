@@ -2,7 +2,7 @@ package com.fastcampus.befinal.application.facade;
 
 import com.fastcampus.befinal.application.mapper.AuthDtoMapper;
 import com.fastcampus.befinal.common.annotation.Facade;
-import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.domain.service.JwtCreationService;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +14,11 @@ public class AuthFacade {
     private final AuthDtoMapper authDtoMapper;
 
     public void signIn(AuthDto.SignInRequest request) {
-        jwtCreationService.createJwt(authDtoMapper.toCreateJwtCommand(request));
+        jwtCreationService.createJwt(authDtoMapper.toJwtCommand(request));
     }
 
     public AuthDto.ReissueJwtResponse reissueJwt(AuthDto.ReissueJwtRequest request) {
-        AuthInfo.JwtInfo jwtInfo =  jwtCreationService.reissueJwt(authDtoMapper.toReissueJwtCommand(request));
+        JwtInfo.TokenInfo jwtInfo =  jwtCreationService.reissueJwt(authDtoMapper.toJwtCommand(request));
         return authDtoMapper.from(jwtInfo);
     }
 }

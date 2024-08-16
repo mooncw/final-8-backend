@@ -1,11 +1,11 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
-import com.fastcampus.befinal.domain.command.AuthCommand;
+import com.fastcampus.befinal.domain.command.JwtCommand;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenReader;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
 import com.fastcampus.befinal.domain.entity.RefreshToken;
-import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.domain.service.JwtCreationService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -47,12 +47,12 @@ public class JwtCreationServiceImpl implements JwtCreationService {
     }
 
     @Override
-    public AuthInfo.JwtInfo createJwt(AuthCommand.CreateJwtRequest command) {
-        AuthInfo.UserInfo user = AuthInfo.UserInfo.from(command.userId());
-        return AuthInfo.JwtInfo.of(createAccessToken(user), createRefreshToken(user));
+    public JwtInfo.TokenInfo createJwt(JwtCommand.CreateJwtRequest command) {
+        JwtInfo.UserInfo user = JwtInfo.UserInfo.from(command.userId());
+        return JwtInfo.TokenInfo.of(createAccessToken(user), createRefreshToken(user));
     }
 
-    private String createAccessToken(AuthInfo.UserInfo user) {
+    private String createAccessToken(JwtInfo.UserInfo user) {
         Claims claims = Jwts.claims();
         claims.put("userId", user.id());
 
@@ -67,37 +67,37 @@ public class JwtCreationServiceImpl implements JwtCreationService {
             .compact();
     }
 
-    private String createRefreshToken(AuthInfo.UserInfo user) {
+    private String createRefreshToken(JwtInfo.UserInfo user) {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expirationTime = now.plusSeconds(refreshTokenValidityInSeconds);
+        LocalDateTime expirationDateTime = now.plusSeconds(refreshTokenValidityInSeconds);
 
         String jwt = Jwts.builder()
             .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
-            .setExpiration(Date.from(expirationTime.atZone(ZoneId.systemDefault()).toInstant()))
+            .setExpiration(Date.from(expirationDateTime.atZone(ZoneId.systemDefault()).toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
 
-        RefreshToken refreshToken = RefreshToken.of(user.id(), jwt, now, expirationTime);
+        JwtInfo.RefreshTokenInfo refreshTokenInfo = JwtInfo.RefreshTokenInfo.of(user.id(), jwt, now, expirationDateTime);
 
-        refreshTokenStore.store(refreshToken);
+        refreshTokenStore.store(refreshTokenInfo);
 
-        return refreshToken.getToken();
+        return refreshTokenInfo.token();
     }
 
     @Override
-    public AuthInfo.JwtInfo reissueJwt(AuthCommand.ReissueJwtRequest command) {
+    public JwtInfo.TokenInfo reissueJwt(JwtCommand.ReissueJwtRequest command) {
         String userId = parseUserIdFromExpiredAccessToken(command.accessToken());
 
-        RefreshToken refreshTokenObj = refreshTokenReader.find(userId);
+        RefreshToken refreshToken = refreshTokenReader.find(userId);
 
-        validateRefreshToken(command, refreshTokenObj);
+        validateRefreshToken(command, refreshToken);
 
-        AuthInfo.UserInfo user = AuthInfo.UserInfo.from(userId);
+        JwtInfo.UserInfo user = JwtInfo.UserInfo.from(userId);
 
-        return AuthInfo.JwtInfo.of(createAccessToken(user), createRefreshToken(user));
+        return JwtInfo.TokenInfo.of(createAccessToken(user), createRefreshToken(user));
     }
 
-    private void validateRefreshToken(AuthCommand.ReissueJwtRequest command, RefreshToken refreshTokenObj) {
+    private void validateRefreshToken(JwtCommand.ReissueJwtRequest command, RefreshToken refreshTokenObj) {
         String requestRefreshToken = command.refreshToken();
         String storeRefreshToken = refreshTokenObj.getToken();
 

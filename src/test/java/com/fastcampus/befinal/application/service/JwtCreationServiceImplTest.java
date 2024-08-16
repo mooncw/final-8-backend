@@ -1,10 +1,9 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.Generator;
-import com.fastcampus.befinal.domain.command.AuthCommand;
+import com.fastcampus.befinal.domain.command.JwtCommand;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
-import com.fastcampus.befinal.domain.entity.RefreshToken;
-import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.domain.info.JwtInfo;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,16 +46,16 @@ class JwtCreationServiceImplTest {
     @DisplayName("JWT 생성 테스트")
     void createJwtTest() {
         //given
-        AuthCommand.CreateJwtRequest command = AuthCommand.CreateJwtRequest.builder()
+        JwtCommand.CreateJwtRequest command = JwtCommand.CreateJwtRequest.builder()
             .userId("A12")
             .build();
 
         doNothing()
             .when(refreshTokenStore)
-            .store(any(RefreshToken.class));
+            .store(any(JwtInfo.RefreshTokenInfo.class));
 
         //when
-        AuthInfo.JwtInfo jwtInfo = jwtCreationService.createJwt(command);
+        JwtInfo.TokenInfo jwtInfo = jwtCreationService.createJwt(command);
 
         //then
         String accessToken = jwtInfo.accessToken();

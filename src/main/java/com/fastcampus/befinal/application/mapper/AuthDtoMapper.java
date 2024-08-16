@@ -1,7 +1,8 @@
 package com.fastcampus.befinal.application.mapper;
 
 import com.fastcampus.befinal.domain.command.AuthCommand;
-import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.domain.command.JwtCommand;
+import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -13,11 +14,11 @@ import org.mapstruct.ReportingPolicy;
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface AuthDtoMapper {
-    AuthCommand.SignInRequest toSignInCommand(AuthDto.SignInRequest request);
+    AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 
-    AuthCommand.CreateJwtRequest toCreateJwtCommand (AuthDto.SignInRequest request);
+    JwtCommand.CreateJwtRequest toJwtCommand (AuthDto.SignInRequest request);
 
-    AuthCommand.ReissueJwtRequest toReissueJwtCommand(AuthDto.ReissueJwtRequest request);
+    JwtCommand.ReissueJwtRequest toJwtCommand(AuthDto.ReissueJwtRequest request);
 
-    AuthDto.ReissueJwtResponse from(AuthInfo.JwtInfo jwtInfo);
+    AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
 }

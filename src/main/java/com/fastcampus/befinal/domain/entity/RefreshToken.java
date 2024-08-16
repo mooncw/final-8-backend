@@ -14,20 +14,5 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonTypeName(value = "RefreshToken")
 public class RefreshToken implements JwtRedisValue {
-    private String userId;
-
     private String token;
-
-    private LocalDateTime creationTime;
-
-    private LocalDateTime expirationTime;
-
-    public static RefreshToken of(String userId, String token, LocalDateTime creationTime, LocalDateTime expirationTime) {
-        return RefreshToken.builder()
-            .userId(userId)
-            .token(token)
-            .creationTime(creationTime)
-            .expirationTime(expirationTime)
-            .build();
-    }
 }
