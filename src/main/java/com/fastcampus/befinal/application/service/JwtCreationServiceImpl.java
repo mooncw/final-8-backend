@@ -109,7 +109,7 @@ public class JwtCreationServiceImpl implements JwtCreationService {
     private String parseUserIdFromExpiredAccessToken(String accessToken) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
-            throw new BusinessException(NOT_EXPIRED_JWT);
+            throw new BusinessException(NOT_EXPIRED_ACCESSTOKEN);
         } catch (SecurityException | MalformedJwtException e) {
             throw new BusinessException(NOT_VALID_JWT);
         } catch (ExpiredJwtException e) {
