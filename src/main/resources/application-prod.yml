@@ -42,7 +42,7 @@ spring:
       org.springframework.data.elsasticsearch.client.WIRE: TRACE
 
   elasticsearch:
-    host: localhost:9200
+    host: ENC(3CXNdPPQ0Rayk+XAR81xg55lnmWEJUVfOC4Ii/aS8Z+wNVRxZJkKzCYtOXCWiOYL)
 
 jasypt:
   encryptor:
