@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static com.fastcampus.befinal.common.response.error.info.BaseErrorCode.SERVER_ERROR;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,8 +21,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> onBaseException(BaseException e) {
+    public ResponseEntity<ApiResponse> onBaseException(Exception e) {
         log.error(e.getMessage());
-        return ResponseEntityFactory.toResponseEntity(e.getErrorCode());
+        BaseException baseException = new BaseException(SERVER_ERROR);
+        return ResponseEntityFactory.toResponseEntity(baseException.getErrorCode());
     }
 }
