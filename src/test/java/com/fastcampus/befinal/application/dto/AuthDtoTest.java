@@ -23,7 +23,10 @@ public class AuthDtoTest {
     @Test
     @DisplayName("JWT 재발급 요청 검증 테스트 - NotBlank")
     void whenReissueJwtIsBlank_thenValidationFails() {
-        AuthDto.ReissueJwtRequest request = new AuthDto.ReissueJwtRequest(" ", " ");
+        AuthDto.ReissueJwtRequest request = AuthDto.ReissueJwtRequest.builder()
+            .accessToken(" ")
+            .refreshToken(" ")
+            .build();
 
         Set<ConstraintViolation<AuthDto.ReissueJwtRequest>> violations = validator.validate(request);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
