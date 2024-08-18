@@ -4,4 +4,7 @@ public class JwtConstant {
     //HTTP 헤더
     public static final String JWT_PREFIX = "Bearer";
     public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    //Jwt claims key
+    public static final String JWT_USER_KEY = "userId";
 }

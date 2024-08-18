@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.fastcampus.befinal.common.contant.JwtConstant.JWT_USER_KEY;
 import static com.fastcampus.befinal.common.response.error.info.JwtErrorCode.*;
 
 @Service
@@ -54,7 +55,7 @@ public class JwtCreationServiceImpl implements JwtCreationService {
 
     private String createAccessToken(JwtInfo.UserInfo user) {
         Claims claims = Jwts.claims();
-        claims.put("userId", user.id());
+        claims.put(JWT_USER_KEY, user.id());
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expirationTime = now.plusSeconds(accessTokenValidityInSeconds);
@@ -113,7 +114,7 @@ public class JwtCreationServiceImpl implements JwtCreationService {
         } catch (SecurityException | MalformedJwtException e) {
             throw new BusinessException(NOT_VALID_JWT);
         } catch (ExpiredJwtException e) {
-            return e.getClaims().get("userId", String.class);
+            return e.getClaims().get(JWT_USER_KEY, String.class);
         } catch (UnsupportedJwtException e) {
             throw new BusinessException(UNSUPPORTED_JWT);
         } catch (IllegalArgumentException e) {
