@@ -8,6 +8,7 @@ public class JwtCommand {
         String userId
     ) {}
 
+    @Builder
     public record ReissueJwtRequest(
         String accessToken,
         String refreshToken
