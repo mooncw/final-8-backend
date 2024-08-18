@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class AuthController {
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<AuthDto.ReissueJwtResponse>> reissueAccessToken(
         @RequestBody
+        @Validated
         AuthDto.ReissueJwtRequest request) {
         AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
         return ResponseEntityFactory.toResponseEntity(REISSUE_JWT_TOKEN, response);

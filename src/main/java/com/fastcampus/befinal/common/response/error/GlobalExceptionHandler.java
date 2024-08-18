@@ -4,8 +4,10 @@ import com.fastcampus.befinal.common.response.ApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.response.error.exception.BaseException;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.response.error.info.RequestErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,5 +27,13 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage());
         BaseException baseException = new BaseException(SERVER_ERROR);
         return ResponseEntityFactory.toResponseEntity(baseException.getErrorCode());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        RequestErrorCode errorCode = RequestErrorCode.REQUEST_ERROR;
+        errorCode.setMessage(e);
+        log.error(errorCode.getMessage());
+        return ResponseEntityFactory.toResponseEntity(errorCode);
     }
 }
