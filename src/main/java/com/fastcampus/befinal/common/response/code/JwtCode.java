@@ -4,9 +4,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum JwtCode implements Code {
-    //success
-    REISSUE_JWT(1000),
-
     //error
     NOT_VALID_JWT(1050),
     EXPIRED_JWT(1051),

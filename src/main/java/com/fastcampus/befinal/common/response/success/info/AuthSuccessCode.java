@@ -1,13 +1,13 @@
 package com.fastcampus.befinal.common.response.success.info;
 
+import com.fastcampus.befinal.common.response.code.AuthCode;
 import com.fastcampus.befinal.common.response.code.Code;
-import com.fastcampus.befinal.common.response.code.JwtCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public enum JwtSuccessCode implements SuccessCode {
-    REISSUE_JWT_TOKEN(HttpStatus.OK, JwtCode.REISSUE_JWT, "JWT 재발급되었습니다.");
+public enum AuthSuccessCode implements SuccessCode {
+    REISSUE_JWT(HttpStatus.OK, AuthCode.REISSUE_JWT, "JWT 재발급되었습니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

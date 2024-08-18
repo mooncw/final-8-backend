@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.fastcampus.befinal.common.response.success.info.JwtSuccessCode.REISSUE_JWT_TOKEN;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -30,6 +30,6 @@ public class AuthController {
         @Validated
         AuthDto.ReissueJwtRequest request) {
         AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
-        return ResponseEntityFactory.toResponseEntity(REISSUE_JWT_TOKEN, response);
+        return ResponseEntityFactory.toResponseEntity(REISSUE_JWT, response);
     }
 }
