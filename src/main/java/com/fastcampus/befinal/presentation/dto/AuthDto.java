@@ -21,6 +21,7 @@ public class AuthDto {
         String refreshToken
     ) {}
 
+    @Builder
     public record ReissueJwtResponse(
         String accessToken,
         String refreshToken
