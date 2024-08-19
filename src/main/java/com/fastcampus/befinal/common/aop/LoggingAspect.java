@@ -1,19 +1,18 @@
 package com.fastcampus.befinal.common.aop;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+@Slf4j
 @Aspect
 @Component
 public class LoggingAspect {
-    private final static Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("within(com.fastcampus.befinal..*)")
     public void pointcut() {}
@@ -29,7 +28,7 @@ public class LoggingAspect {
         if(ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
         }
-        logger.error("[Exception] {}, exceptionName = {}, exceptionMessage = {}, IP : {}",
+        log.error("[Exception] {}, exceptionName = {}, exceptionMessage = {}, IP : {}",
                 methodName, exceptionName, exceptionMessage, ipAddress, e);
     }
 
@@ -39,7 +38,7 @@ public class LoggingAspect {
         var methodName = joinPoint.getSignature().toShortString();
         Object result = joinPoint.proceed(joinPoint.getArgs());
         var executionTime = System.currentTimeMillis() - startTime;
-        logger.info("methodName : [{}], Execution Time : [{}ms], Response : [{}]", methodName, executionTime, result);
+        log.info("methodName : [{}], Execution Time : [{}ms], Response : [{}]", methodName, executionTime, result);
         return result;
     }
 }
