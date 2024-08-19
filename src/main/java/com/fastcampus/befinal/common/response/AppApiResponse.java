@@ -4,26 +4,26 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 
 @Builder
-public record ApiResponse<T>(
+public record AppApiResponse<T>(
     Integer code,
     String message,
     @JsonInclude(JsonInclude.Include.NON_NULL)
     T data
 ) {
-    public static <T> ApiResponse<T> of(
+    public static <T> AppApiResponse<T> of(
         ResponseCode responseCode,
         T data) {
-        return ApiResponse.<T>builder()
+        return AppApiResponse.<T>builder()
             .code(responseCode.getCode())
             .message(responseCode.getMessage())
             .data(data)
             .build();
     }
 
-    public static <T> ApiResponse<T> of(
+    public static <T> AppApiResponse<T> of(
         ResponseCode responseCode
     ) {
-        return ApiResponse.<T>builder()
+        return AppApiResponse.<T>builder()
             .code(responseCode.getCode())
             .message(responseCode.getMessage())
             .build();

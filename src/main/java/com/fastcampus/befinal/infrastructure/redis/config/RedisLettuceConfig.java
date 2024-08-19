@@ -1,18 +1,22 @@
 package com.fastcampus.befinal.infrastructure.redis.config;
 
+import com.fastcampus.befinal.domain.entity.RedisValue;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisLettuceConfig {
 
-    @Value("${spring.data.reids.host")
+    @Value("${spring.data.redis.host}")
     private String host;
 
     @Value("${spring.data.redis.port}")
@@ -24,11 +28,19 @@ public class RedisLettuceConfig {
     }
 
     @Bean
-    public RedisTemplate<String, ?> redisTemplate() {
-        RedisTemplate<String, ?> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, RedisValue> redisTemplate() {
+        RedisTemplate<String, RedisValue> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setValueSerializer(redisValueSerializer());
         return redisTemplate;
+    }
+
+    private Jackson2JsonRedisSerializer<RedisValue> redisValueSerializer() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        return new Jackson2JsonRedisSerializer<>(objectMapper, RedisValue.class);
     }
 }
