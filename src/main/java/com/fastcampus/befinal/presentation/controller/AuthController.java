@@ -1,10 +1,13 @@
 package com.fastcampus.befinal.presentation.controller;
 
 import com.fastcampus.befinal.application.facade.AuthFacade;
-import com.fastcampus.befinal.common.response.ApiResponse;
+import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN;
+import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN;
 import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT;
 
 @RestController
@@ -23,9 +28,24 @@ import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCod
 public class AuthController {
     private final AuthFacade authFacade;
 
-    @Operation(summary = "JWT 토큰 재발급")
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResponse<AuthDto.ReissueJwtResponse>> reissueAccessToken(
+    @Operation(summary = "JWT 토큰 재발급")
+    @ApiResponse(responseCode = "200", description = "JWT 재발급되었습니다.",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(
+                    example = "{ " +
+                                    "\"code\": 1100, " +
+                                    "\"message\": \"JWT 재발급되었습니다.\", " +
+                                    "\"data\": { " +
+                                        "\"accessToken\": \"" + SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN + "\", " +
+                                        "\"refreshToken\": \"" + SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN + "\" " +
+                                    "} " +
+                                "}"
+                )
+            )
+    )
+    public ResponseEntity<AppApiResponse<AuthDto.ReissueJwtResponse>> reissueAccessToken(
         @RequestBody
         @Validated
         AuthDto.ReissueJwtRequest request) {

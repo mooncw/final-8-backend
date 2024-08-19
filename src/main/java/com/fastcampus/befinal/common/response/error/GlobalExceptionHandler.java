@@ -1,6 +1,6 @@
 package com.fastcampus.befinal.common.response.error;
 
-import com.fastcampus.befinal.common.response.ApiResponse;
+import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.response.error.exception.BaseException;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
@@ -17,20 +17,20 @@ import static com.fastcampus.befinal.common.response.error.info.BaseErrorCode.SE
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse> onBusinessException(BusinessException e) {
+    public ResponseEntity<AppApiResponse> onBusinessException(BusinessException e) {
         log.error(e.getMessage());
         return ResponseEntityFactory.toResponseEntity(e.getErrorCode());
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> onBaseException(Exception e) {
+    public ResponseEntity<AppApiResponse> onBaseException(Exception e) {
         log.error(e.getMessage());
         BaseException baseException = new BaseException(SERVER_ERROR);
         return ResponseEntityFactory.toResponseEntity(baseException.getErrorCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<AppApiResponse> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         RequestErrorCode errorCode = RequestErrorCode.REQUEST_ERROR;
         errorCode.setMessage(e);
         log.error(errorCode.getMessage());
