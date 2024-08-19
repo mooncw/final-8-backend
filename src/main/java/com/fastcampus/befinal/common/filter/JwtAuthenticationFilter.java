@@ -1,7 +1,7 @@
 package com.fastcampus.befinal.common.filter;
 
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
-import com.fastcampus.befinal.domain.service.JwtService;
+import com.fastcampus.befinal.domain.service.JwtAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,14 +17,14 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
+    private final JwtAuthService jwtAuthService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
         try {
-            String jwt = jwtService.resolveAuthorizationHeader(request);
-            jwtService.setAuthentication(jwt);
+            String jwt = jwtAuthService.resolveAuthorizationHeader(request);
+            jwtAuthService.setAuthentication(jwt);
             filterChain.doFilter(request, response);
         } catch (BusinessException e) {
             log.error(e.getErrorCode().getMessage());
@@ -50,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String servletPath = request.getServletPath();
 
-        if (servletPath.contains("/api/v1/auth/login")) {
+        if (servletPath.contains("/api/v1/auth/login") || servletPath.contains("/api/v1/auth/reissue")) {
             return true;
         }
         return false;

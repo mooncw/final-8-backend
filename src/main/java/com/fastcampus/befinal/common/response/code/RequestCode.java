@@ -3,12 +3,9 @@ package com.fastcampus.befinal.common.response.code;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum ExampleCode implements Code {
+public enum RequestCode implements Code {
     //error
-    ERROR(0),
-
-    //success
-    SUCCESS(1);
+    REQUEST_ERROR(400);
 
     private final Integer code;
 
