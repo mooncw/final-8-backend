@@ -98,9 +98,9 @@ public class JwtCreationServiceImpl implements JwtCreationService {
         return JwtInfo.TokenInfo.of(createAccessToken(user), createRefreshToken(user));
     }
 
-    private void validateRefreshToken(JwtCommand.ReissueJwtRequest command, RefreshToken refreshTokenObj) {
+    private void validateRefreshToken(JwtCommand.ReissueJwtRequest command, RefreshToken refreshToken) {
         String requestRefreshToken = command.refreshToken();
-        String storeRefreshToken = refreshTokenObj.getToken();
+        String storeRefreshToken = refreshToken.getToken();
 
         if (!Objects.equals(requestRefreshToken, storeRefreshToken)) {
             throw new BusinessException(INCONSISTENT_REFRESHTOKEN);

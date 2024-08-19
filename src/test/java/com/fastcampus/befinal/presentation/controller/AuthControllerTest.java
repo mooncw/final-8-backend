@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("AuthController 테스트")
 @WebMvcTest(AuthController.class)
@@ -61,6 +61,8 @@ class AuthControllerTest {
             .content(objectMapper.writeValueAsString(request)));
 
         //then
-        perform.andExpect(status().is(REISSUE_JWT.getHttpStatus().value()));
+        perform.andExpect(status().is(REISSUE_JWT.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(REISSUE_JWT.getCode()))
+            .andExpect(jsonPath("message").value(REISSUE_JWT.getMessage()));
     }
 }
