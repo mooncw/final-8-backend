@@ -28,6 +28,16 @@ import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCod
 public class AuthController {
     private final AuthFacade authFacade;
 
+    @PostMapping("/signup")
+    public void signUp(
+        @RequestBody
+        @Validated
+        AuthDto.SignUpRequest request
+    ) {
+//        authFacade.signUp(request);
+//        return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
+    }
+
     @PostMapping("/reissue")
     @Operation(summary = "JWT 토큰 재발급")
     @ApiResponse(responseCode = "200", description = "JWT 재발급되었습니다.",
@@ -45,10 +55,11 @@ public class AuthController {
                 )
             )
     )
-    public ResponseEntity<AppApiResponse<AuthDto.ReissueJwtResponse>> reissueAccessToken(
+    public ResponseEntity<AppApiResponse<AuthDto.ReissueJwtResponse>> reissueJwt(
         @RequestBody
         @Validated
-        AuthDto.ReissueJwtRequest request) {
+        AuthDto.ReissueJwtRequest request
+    ) {
         AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
         return ResponseEntityFactory.toResponseEntity(REISSUE_JWT, response);
     }

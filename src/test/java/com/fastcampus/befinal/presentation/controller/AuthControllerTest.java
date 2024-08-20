@@ -36,7 +36,7 @@ class AuthControllerTest {
     @Test
     @WithMockUser
     @DisplayName("재발급 요청 성공시, 200 OK와 정상 응답을 반환")
-    void reissueAccessTokenTest() throws Exception {
+    void reissueJwtTest() throws Exception {
         //given
         AuthDto.ReissueJwtRequest request = AuthDto.ReissueJwtRequest.builder()
             .accessToken("aa1.ab1.ac1")
