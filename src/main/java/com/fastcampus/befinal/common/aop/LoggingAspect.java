@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.common.aop;
 
+import com.fastcampus.befinal.common.response.AppApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -8,13 +9,11 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,9 +21,6 @@ import java.util.stream.Collectors;
 @Aspect
 @Component
 public class LoggingAspect {
-
-    @Value("${log.request.body:false}")
-    private boolean logRequestBody;
 
     @Pointcut("bean(*Controller)")
     private void controller() {}
@@ -38,13 +34,20 @@ public class LoggingAspect {
     @Pointcut("execution(* com.fastcampus.befinal.domain.service.JwtAuthService.*(..))")
     public void jwtAuthServiceMethods() {}
 
-    @Around("controller() || service()")
+    @Around("controller()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         var startTime = System.currentTimeMillis();
         var methodName = joinPoint.getSignature().toShortString();
         Object result = joinPoint.proceed(joinPoint.getArgs());
         var executionTime = System.currentTimeMillis() - startTime;
-        log.info("methodName = [{}], executionTime = [{}ms], response = [{}]", methodName, executionTime, result);
+
+        ResponseEntity<?> responseEntity = (ResponseEntity<?>) result;
+        Object body = responseEntity.getBody();
+
+        AppApiResponse<?> apiResponse = (AppApiResponse<?>) body;
+        Integer customCode = apiResponse.code();
+
+        log.info("methodName = [{}], executionTime = [{}ms], responseCode = [{}]", methodName, executionTime, customCode);
         return result;
     }
 
@@ -71,7 +74,6 @@ public class LoggingAspect {
                 .collect(Collectors.joining(", "));
     }
 
-
     private void logException(String methodName, Throwable e) throws Throwable {
         String exceptionName = e.getClass().getSimpleName();
         String exceptionMessage = e.getMessage();
@@ -87,33 +89,14 @@ public class LoggingAspect {
         Map<String, String[]> paramMap = request.getParameterMap();
         String params = paramMapToString(paramMap);
 
-        String requestBody = "";
-        if (request instanceof ContentCachingRequestWrapper) {
-            ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-            requestBody = new String(cachingRequest.getContentAsByteArray(), StandardCharsets.UTF_8);
-        }
-
-        if (logRequestBody && "POST".equalsIgnoreCase(request.getMethod())) {
-            log.error("\n[Exception] \n" +
-                            "methodName = {}\n" +
-                            "exceptionName = {}\n" +
-                            "exceptionMessage = {}\n" +
-                            "httpMethod = {}\n" +
-                            "uri = {}\n" +
-                            "parameters = {}\n" +
-                            "requestBody = {}\n" +
-                            "ip = {}\n",
-                    methodName, exceptionName, exceptionMessage, httpMethod, uri, params, requestBody, ipAddress, e);
-        } else {
-            log.error("\n[Exception] \n" +
-                            "methodName = {}\n" +
-                            "exceptionName = {}\n" +
-                            "exceptionMessage = {}\n" +
-                            "httpMethod = {}\n" +
-                            "uri = {}\n" +
-                            "parameters = {}\n" +
-                            "ip = {}\n",
-                    methodName, exceptionName, exceptionMessage, httpMethod, uri, params, ipAddress, e);
-        }
+        log.error("\n[Exception] \n" +
+                        "methodName = {}\n" +
+                        "exceptionName = {}\n" +
+                        "exceptionMessage = {}\n" +
+                        "httpMethod = {}\n" +
+                        "uri = {}\n" +
+                        "parameters = {}\n" +
+                        "ip = {}\n",
+                methodName, exceptionName, exceptionMessage, httpMethod, uri, params, ipAddress, e);
     }
 }
