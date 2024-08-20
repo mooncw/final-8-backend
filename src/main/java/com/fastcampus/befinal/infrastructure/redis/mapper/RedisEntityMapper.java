@@ -1,4 +1,4 @@
-package com.fastcampus.befinal.application.mapper;
+package com.fastcampus.befinal.infrastructure.redis.mapper;
 
 import com.fastcampus.befinal.domain.entity.RefreshToken;
 import com.fastcampus.befinal.domain.info.JwtInfo;
@@ -11,6 +11,6 @@ import org.mapstruct.ReportingPolicy;
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
-public interface JwtDtoMapper {
+public interface RedisEntityMapper {
     RefreshToken from(JwtInfo.RefreshTokenInfo info);
 }
