@@ -45,9 +45,6 @@ dependencies {
     //AOP
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
-    //IO
-    implementation 'commons-io:commons-io:2.11.0'
-
     //jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 
