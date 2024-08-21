@@ -10,10 +10,12 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(
     componentModel = "spring",
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-    unmappedTargetPolicy = ReportingPolicy.ERROR
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    uses = UserPasswordMapper.class
 )
 public interface MysqlEntityMapper {
     @Mapping(source = "empNo", target = "empNumber")
     @Mapping(target = "signUpDateTime", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "password", qualifiedByName = "encodePassword")
     UserManagement from(AuthCommand.SignUpRequest command);
 }
