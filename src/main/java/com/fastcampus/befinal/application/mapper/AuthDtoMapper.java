@@ -14,6 +14,8 @@ import org.mapstruct.ReportingPolicy;
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface AuthDtoMapper {
+    AuthCommand.SignUpRequest toAuthCommand(AuthDto.SignUpRequest request);
+
     AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 
     JwtCommand.CreateJwtRequest toJwtCommand (AuthDto.SignInRequest request);

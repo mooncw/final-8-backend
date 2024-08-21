@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT_SUCCESS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -61,8 +61,8 @@ class AuthControllerTest {
             .content(objectMapper.writeValueAsString(request)));
 
         //then
-        perform.andExpect(status().is(REISSUE_JWT.getHttpStatus().value()))
-            .andExpect(jsonPath("code").value(REISSUE_JWT.getCode()))
-            .andExpect(jsonPath("message").value(REISSUE_JWT.getMessage()));
+        perform.andExpect(status().is(REISSUE_JWT_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(REISSUE_JWT_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(REISSUE_JWT_SUCCESS.getMessage()));
     }
 }

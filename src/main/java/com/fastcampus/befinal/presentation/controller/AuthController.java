@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN;
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.SIGNUP_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -29,13 +30,13 @@ public class AuthController {
     private final AuthFacade authFacade;
 
     @PostMapping("/signup")
-    public void signUp(
+    public ResponseEntity<AppApiResponse> signUp(
         @RequestBody
         @Validated
         AuthDto.SignUpRequest request
     ) {
-//        authFacade.signUp(request);
-//        return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
+        authFacade.signUp(request);
+        return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
     }
 
     @PostMapping("/reissue")
@@ -61,6 +62,6 @@ public class AuthController {
         AuthDto.ReissueJwtRequest request
     ) {
         AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
-        return ResponseEntityFactory.toResponseEntity(REISSUE_JWT, response);
+        return ResponseEntityFactory.toResponseEntity(REISSUE_JWT_SUCCESS, response);
     }
 }
