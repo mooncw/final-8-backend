@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN;
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.SIGNUP_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -40,13 +39,13 @@ public class AuthController {
     }
 
     @PostMapping("/id-check")
-    public void checkId(
+    public ResponseEntity<AppApiResponse> checkId(
         @RequestBody
         @Validated
         AuthDto.CheckIdDuplicationRequest request
     ) {
-//        authFacade.checkIdDuplication(request);
-//        return ResponseEntityFactory.toResponseEntity(CHECK_ID_DUPLICATION_SUCCESS);
+        authFacade.checkIdDuplication(request);
+        return ResponseEntityFactory.toResponseEntity(CHECK_ID_DUPLICATION_SUCCESS);
     }
 
     @PostMapping("/reissue")

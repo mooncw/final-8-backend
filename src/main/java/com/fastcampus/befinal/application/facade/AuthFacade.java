@@ -19,6 +19,10 @@ public class AuthFacade {
         authService.signUp(authDtoMapper.toAuthCommand(request));
     }
 
+    public void checkIdDuplication(AuthDto.CheckIdDuplicationRequest request) {
+        authService.checkIdDuplication(authDtoMapper.toAuthCommand(request));
+    }
+
     public void signIn(AuthDto.SignInRequest request) {
         jwtCreationService.createJwt(authDtoMapper.toJwtCommand(request));
     }

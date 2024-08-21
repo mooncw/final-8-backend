@@ -16,6 +16,8 @@ import org.mapstruct.ReportingPolicy;
 public interface AuthDtoMapper {
     AuthCommand.SignUpRequest toAuthCommand(AuthDto.SignUpRequest request);
 
+    AuthCommand.CheckIdDuplicationRequest toAuthCommand(AuthDto.CheckIdDuplicationRequest request);
+
     AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 
     JwtCommand.CreateJwtRequest toJwtCommand (AuthDto.SignInRequest request);

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.SIGNUP_USER_ALREADY_EXIST;
+import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.USER_ID_ALREADY_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void validateSignUpUser(AuthCommand.SignUpRequest command) {
-        if (userUnionViewReader.exists(command)) {
+        if (userUnionViewReader.existsSignUpUser(command)) {
             throw new BusinessException(SIGNUP_USER_ALREADY_EXIST);
+        }
+    }
+
+    @Override
+    public void checkIdDuplication(AuthCommand.CheckIdDuplicationRequest command) {
+        validateUserIdDuplication(command);
+    }
+
+    private void validateUserIdDuplication(AuthCommand.CheckIdDuplicationRequest command) {
+        if (userUnionViewReader.existsUserId(command)) {
+            throw new BusinessException(USER_ID_ALREADY_EXIST);
         }
     }
 }
