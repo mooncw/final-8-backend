@@ -32,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void checkIdDuplication(AuthCommand.CheckIdDuplicationRequest command) {
         validateUserIdDuplication(command);
     }
