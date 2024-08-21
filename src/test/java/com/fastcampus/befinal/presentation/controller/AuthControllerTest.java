@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.SIGNUP_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -65,6 +64,33 @@ class AuthControllerTest {
         perform.andExpect(status().is(SIGNUP_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(SIGNUP_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(SIGNUP_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("아이디 중복 확인 요청 성공시, 200 OK와 정상 응답을 반환")
+    void checkIdDuplicationTest() throws Exception {
+        //given
+        AuthDto.CheckIdDuplicationRequest request = AuthDto.CheckIdDuplicationRequest.builder()
+            .id("aaaa")
+            .build();
+
+        doNothing()
+            .when(authFacade)
+            .checkIdDuplication(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/id-check")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(CHECK_ID_DUPLICATION_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(CHECK_ID_DUPLICATION_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(CHECK_ID_DUPLICATION_SUCCESS.getMessage()));
     }
 
     @Test

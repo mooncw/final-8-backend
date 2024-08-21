@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/id-check")
-    public ResponseEntity<AppApiResponse> checkId(
+    public ResponseEntity<AppApiResponse> checkIdDuplication(
         @RequestBody
         @Validated
         AuthDto.CheckIdDuplicationRequest request
