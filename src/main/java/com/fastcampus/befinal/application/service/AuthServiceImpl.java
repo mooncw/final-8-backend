@@ -7,6 +7,7 @@ import com.fastcampus.befinal.domain.dataprovider.UserUnionViewReader;
 import com.fastcampus.befinal.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.SIGNUP_USER_ALREADY_EXIST;
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.USER_ID_ALREADY_EXIST;
@@ -18,6 +19,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserManagementStore userManagementStore;
 
     @Override
+    @Transactional
     public void signUp(AuthCommand.SignUpRequest command) {
         validateSignUpUser(command);
         userManagementStore.store(command);
