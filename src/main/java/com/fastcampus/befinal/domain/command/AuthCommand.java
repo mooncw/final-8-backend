@@ -1,6 +1,9 @@
 package com.fastcampus.befinal.domain.command;
 
+import lombok.Builder;
+
 public class AuthCommand {
+    @Builder
     public record SignUpRequest(
         String name,
         String phoneNumber,
