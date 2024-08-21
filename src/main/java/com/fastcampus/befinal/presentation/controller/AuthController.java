@@ -39,6 +39,16 @@ public class AuthController {
         return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
     }
 
+    @PostMapping("/id-check")
+    public void checkId(
+        @RequestBody
+        @Validated
+        AuthDto.CheckIdDuplicationRequest request
+    ) {
+//        authFacade.checkIdDuplication(request);
+//        return ResponseEntityFactory.toResponseEntity(CHECK_ID_DUPLICATION_SUCCESS);
+    }
+
     @PostMapping("/reissue")
     @Operation(summary = "JWT 토큰 재발급")
     @ApiResponse(responseCode = "200", description = "JWT 재발급되었습니다.",
