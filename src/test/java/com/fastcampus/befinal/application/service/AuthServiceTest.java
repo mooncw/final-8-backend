@@ -44,13 +44,32 @@ public class AuthServiceTest {
 
         doReturn(false)
             .when(userUnionViewReader)
-            .exists(any(AuthCommand.SignUpRequest.class));
+            .existsSignUpUser(any(AuthCommand.SignUpRequest.class));
 
         //when
         authService.signUp(command);
 
         //verify
         verify(userManagementStore, times(1)).store(any(AuthCommand.SignUpRequest.class));
-        verify(userUnionViewReader, times(1)).exists(any(AuthCommand.SignUpRequest.class));
+        verify(userUnionViewReader, times(1)).existsSignUpUser(any(AuthCommand.SignUpRequest.class));
+    }
+
+    @Test
+    @DisplayName("아이디 중복 확인 성공 테스트")
+    void checkIdDuplicationTest() {
+        //given
+        AuthCommand.CheckIdDuplicationRequest command = AuthCommand.CheckIdDuplicationRequest.builder()
+            .id("aaaa")
+            .build();
+
+        doReturn(false)
+            .when(userUnionViewReader)
+            .existsUserId(any(AuthCommand.CheckIdDuplicationRequest.class));
+
+        //when
+        authService.checkIdDuplication(command);
+
+        //verify
+        verify(userUnionViewReader, times(1)).existsUserId(any(AuthCommand.CheckIdDuplicationRequest.class));
     }
 }

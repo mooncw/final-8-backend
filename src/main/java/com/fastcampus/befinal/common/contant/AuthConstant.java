@@ -29,7 +29,7 @@ public class AuthConstant {
     public static final String SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ0ZW1wb3JhcnlVc2VyMSIsImlhdCI6MTcyNDA2NDQzNiwiZXhwIjoxNzI0MDY0NDM2fQ.fVLaomRrNk56fFNQrTNL33HK22cYdRfZJBPZqIJ5dKo";
     public static final String SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjQwNjQ0MzYsImV4cCI6MzMyODE2NjQ0MzZ9.jZqipnoDE6SdSMh-YCqqfpLRWHqFUJqJdZjjgbVULu0";
 
-    //Swagger signUp example
+    //Swagger signUp & checkIdDuplication example
     public static final String SWAGGER_SIGN_UP_USER_NAME = "홍길동";
     public static final String SWAGGER_SIGN_UP_PHONE_NUMBER = "01011112222";
     public static final String SWAGGER_SIGN_UP_USER_ID = "abcd";

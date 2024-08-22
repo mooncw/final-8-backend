@@ -12,8 +12,13 @@ public class UserUnionViewReaderImpl implements UserUnionViewReader {
     private final UserUnionViewRepository userUnionViewRepository;
 
     @Override
-    public boolean exists(AuthCommand.SignUpRequest command) {
+    public boolean existsSignUpUser(AuthCommand.SignUpRequest command) {
         return userUnionViewRepository.existsByIdOrPhoneNumberOrEmpNumberOrEmail(command.id(), command.phoneNumber(),
             command.empNo(), command.email());
+    }
+
+    @Override
+    public boolean existsUserId(AuthCommand.CheckIdDuplicationRequest command) {
+        return userUnionViewRepository.existsById(command.id());
     }
 }

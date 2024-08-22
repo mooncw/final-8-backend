@@ -13,6 +13,11 @@ public class AuthCommand {
         String email
     ) {}
 
+    @Builder
+    public record CheckIdDuplicationRequest(
+        String id
+    ) {}
+
     public record SignInRequest(
         String userId,
         String password

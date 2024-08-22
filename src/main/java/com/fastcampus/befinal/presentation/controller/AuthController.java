@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN;
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.SIGNUP_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -49,6 +48,27 @@ public class AuthController {
     ) {
         authFacade.signUp(request);
         return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
+    }
+
+    @PostMapping("/id-check")
+    @ApiResponse(responseCode = "200", description = "중복되지 않는 ID입니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1102, " +
+                    "\"message\": \"중복되지 않는 ID입니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> checkIdDuplication(
+        @RequestBody
+        @Validated
+        AuthDto.CheckIdDuplicationRequest request
+    ) {
+        authFacade.checkIdDuplication(request);
+        return ResponseEntityFactory.toResponseEntity(CHECK_ID_DUPLICATION_SUCCESS);
     }
 
     @PostMapping("/reissue")

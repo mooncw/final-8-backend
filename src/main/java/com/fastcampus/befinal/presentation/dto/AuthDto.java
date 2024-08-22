@@ -52,6 +52,15 @@ public class AuthDto {
         String email
     ) {}
 
+    @Builder
+    public record CheckIdDuplicationRequest(
+        @Schema(example = SWAGGER_SIGN_UP_USER_ID)
+        @NotBlank(message = NOT_BLANK_USER_ID, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 4, max = 12, message = SIZE_MISMATCH_USER_ID, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^[a-zA-Z]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
+        String id
+    ) {}
+
     public record SignInRequest(
         String userId,
         String password

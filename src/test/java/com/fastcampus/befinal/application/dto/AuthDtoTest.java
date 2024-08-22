@@ -102,4 +102,52 @@ public class AuthDtoTest {
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_NAME, PATTERN_MISMATCH_PHONE_NUMBER, PATTERN_MISMATCH_USER_ID,
             PATTERN_MISMATCH_USER_PASSWORD, PATTERN_MISMATCH_USER_EMP_NOMBER, INVALID_FORMAT_USER_EMAIL));
     }
+
+    @Test
+    @DisplayName("ID 중복 확인 요청 검증 테스트 - NotBlank")
+    void whenCheckIdDuplicationRequestIsBlank_thenValidationFails() {
+        //given
+        AuthDto.CheckIdDuplicationRequest request = AuthDto.CheckIdDuplicationRequest.builder()
+            .id(" ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_USER_ID));
+    }
+
+    @Test
+    @DisplayName("ID 중복 확인 요청 검증 테스트 - Size")
+    void whenCheckIdDuplicationRequestMismatchSize_thenValidationFails() {
+        //given
+        AuthDto.CheckIdDuplicationRequest request = AuthDto.CheckIdDuplicationRequest.builder()
+            .id("a")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request, RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_USER_ID));
+    }
+
+    @Test
+    @DisplayName("ID 중복 확인 요청 검증 테스트 - Pattern")
+    void whenCheckIdDuplicationRequestMismatchPatternAndInvalidFormat_thenValidationFails() {
+        //given
+        AuthDto.CheckIdDuplicationRequest request = AuthDto.CheckIdDuplicationRequest.builder()
+            .id("가")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request, RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_ID));
+    }
 }
