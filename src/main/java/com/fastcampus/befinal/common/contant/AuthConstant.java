@@ -28,4 +28,13 @@ public class AuthConstant {
     public static final String SWAGGER_REISSUE_REQUEST_REFRESHTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjQwNjM3MzIsImV4cCI6MzMyODE2NjM3MzJ9.BbE_yPIx03y_RT5K78rEBzCyqBwnb9oJ_urO7mgjiDA";
     public static final String SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ0ZW1wb3JhcnlVc2VyMSIsImlhdCI6MTcyNDA2NDQzNiwiZXhwIjoxNzI0MDY0NDM2fQ.fVLaomRrNk56fFNQrTNL33HK22cYdRfZJBPZqIJ5dKo";
     public static final String SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjQwNjQ0MzYsImV4cCI6MzMyODE2NjQ0MzZ9.jZqipnoDE6SdSMh-YCqqfpLRWHqFUJqJdZjjgbVULu0";
+
+    //Swagger signUp example
+    public static final String SWAGGER_SIGN_UP_USER_NAME = "홍길동";
+    public static final String SWAGGER_SIGN_UP_PHONE_NUMBER = "01011112222";
+    public static final String SWAGGER_SIGN_UP_USER_ID = "abcd";
+    public static final String SWAGGER_SIGN_UP_USER_PASSWORD = "aaaaaaa1";
+    public static final String SWAGGER_SIGN_UP_USER_EMP_NOMBER = "11111111";
+    public static final String SWAGGER_SIGN_UP_USER_EMAIL = "hong@hong.com";
+
 }
