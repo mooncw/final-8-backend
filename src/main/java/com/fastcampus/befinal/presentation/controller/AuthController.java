@@ -30,6 +30,18 @@ public class AuthController {
     private final AuthFacade authFacade;
 
     @PostMapping("/signup")
+    @Operation(summary = "회원가입")
+    @ApiResponse(responseCode = "200", description = "회원가입되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1101, " +
+                    "\"message\": \"회원가입되었습니다.\"" +
+                    "}"
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse> signUp(
         @RequestBody
         @Validated
