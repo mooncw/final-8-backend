@@ -51,6 +51,17 @@ public class AuthController {
     }
 
     @PostMapping("/id-check")
+    @ApiResponse(responseCode = "200", description = "중복되지 않는 ID입니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1102, " +
+                    "\"message\": \"중복되지 않는 ID입니다.\"" +
+                    "}"
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse> checkIdDuplication(
         @RequestBody
         @Validated
