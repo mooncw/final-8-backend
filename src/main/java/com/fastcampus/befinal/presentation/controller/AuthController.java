@@ -51,6 +51,7 @@ public class AuthController {
     }
 
     @PostMapping("/id-check")
+    @Operation(summary = "ID 중복 확인")
     @ApiResponse(responseCode = "200", description = "중복되지 않는 ID입니다.",
         content = @Content(
             mediaType = "application/json",
