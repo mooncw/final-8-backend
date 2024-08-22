@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN;
 import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.SIGNUP_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,6 +28,28 @@ import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCod
 @Tag(name = "Auth", description = "인증 관련 API")
 public class AuthController {
     private final AuthFacade authFacade;
+
+    @PostMapping("/signup")
+    @Operation(summary = "회원가입")
+    @ApiResponse(responseCode = "200", description = "회원가입되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1101, " +
+                    "\"message\": \"회원가입되었습니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> signUp(
+        @RequestBody
+        @Validated
+        AuthDto.SignUpRequest request
+    ) {
+        authFacade.signUp(request);
+        return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
+    }
 
     @PostMapping("/reissue")
     @Operation(summary = "JWT 토큰 재발급")
@@ -45,11 +68,12 @@ public class AuthController {
                 )
             )
     )
-    public ResponseEntity<AppApiResponse<AuthDto.ReissueJwtResponse>> reissueAccessToken(
+    public ResponseEntity<AppApiResponse<AuthDto.ReissueJwtResponse>> reissueJwt(
         @RequestBody
         @Validated
-        AuthDto.ReissueJwtRequest request) {
+        AuthDto.ReissueJwtRequest request
+    ) {
         AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
-        return ResponseEntityFactory.toResponseEntity(REISSUE_JWT, response);
+        return ResponseEntityFactory.toResponseEntity(REISSUE_JWT_SUCCESS, response);
     }
 }
