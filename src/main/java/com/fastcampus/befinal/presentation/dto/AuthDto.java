@@ -61,6 +61,15 @@ public class AuthDto {
         String id
     ) {}
 
+    @Builder
+    public record SendCertificationNumberRequest(
+        @Schema(example = SWAGGER_SIGN_UP_PHONE_NUMBER)
+        @NotBlank(message = NOT_BLANK_PHONE_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
+        String phoneNumber
+    ) {}
+
     public record SignInRequest(
         String userId,
         String password
