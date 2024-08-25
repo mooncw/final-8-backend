@@ -4,6 +4,7 @@ import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.command.SmsCommand;
 import com.fastcampus.befinal.domain.dataprovider.SmsSender;
 import com.fastcampus.befinal.domain.dataprovider.SmsStore;
+import com.fastcampus.befinal.domain.dataprovider.UserUnionViewReader;
 import com.fastcampus.befinal.domain.info.SmsInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,9 @@ class SmsServiceImplTest {
     private SmsServiceImpl smsService;
 
     @Mock
+    private UserUnionViewReader userUnionViewReader;
+
+    @Mock
     private SmsSender smsSender;
 
     @Mock
@@ -37,6 +41,10 @@ class SmsServiceImplTest {
             .build();
 
         String certificationNumber = Generator.generateOnlyNumeric(CERTIFICATION_NUMBER_LENGTH);
+
+        doReturn(false)
+            .when(userUnionViewReader)
+            .existsUserPhoneNumber(any(SmsCommand.SendCertificationNumberRequest.class));
 
         doReturn(certificationNumber)
             .when(smsSender)

@@ -13,7 +13,8 @@ public enum AuthCode implements Code {
     //error
     DENIED_ACCESS(1150),
     SIGNUP_USER_ALREADY_EXIST(1151),
-    USER_ID_ALREADY_EXIST(1152);
+    USER_ID_ALREADY_EXIST(1152),
+    PHONE_NUMBER_ALREADY_EXIST(1153);
 
     private final Integer code;
 
