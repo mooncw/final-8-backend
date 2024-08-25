@@ -18,10 +18,12 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public void sendCertificationNumber(SmsCommand.SendCertificationNumberRequest command) {
-
         ZonedDateTime requestTime = ZonedDateTime.now();
+
         String certificationNumber = smsSender.send(command);
+
         SmsInfo.SmsCertificationInfo smsCertificationInfo = SmsInfo.SmsCertificationInfo.of(command, certificationNumber, requestTime);
+
         smsStore.store(smsCertificationInfo);
     }
 }
