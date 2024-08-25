@@ -62,7 +62,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
             
             IS_GREEN=$(docker ps | grep prod-green)
-            #SERVER_STATUS=$(curl "http://${{ secrets.SERVER_IP }}/healthcheck")
+            #SERVER_STATUS=$(curl "http://${{ secrets.SERVER_IP }}/server/health-check")
             echo $IS_GREEN
 
             max_count=10
@@ -79,15 +79,15 @@ jobs:
                 count=$((count + 1))
                 sleep 20
             
-                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT }}") # /healthcheck 교체 필요
+                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT }}") # /server/health-check 교체 필요
                 if [ -n "$REQUEST" ]; then # $REQUEST = "blue" 교체 필요
                   echo "health check success"
                   check=0
             
                   echo "3. update & reload nginx"
-                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT}};|' /home/ubuntu/nginx.conf
+                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT}};|' /home/ubuntu/neuroflow/nginx/nginx.conf
                 
-                  sudo docker cp /home/ubuntu/nginx.conf nginx:/etc/nginx/nginx.conf
+                  sudo docker cp /home/ubuntu/neuroflow/nginx/nginx.conf nginx:/etc/nginx/nginx.conf
                   sudo docker exec nginx nginx -s reload
 
                   echo "4. blue container down"
@@ -114,15 +114,15 @@ jobs:
                 count=$((count + 1))
                 sleep 20
             
-                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT }}") # /healthcheck 교체 필요
+                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT }}") # /health-check 교체 필요
                 if [ -n "$REQUEST" ]; then # $REQUEST = "green" 교체 필요
                   echo "health check success"
                   check=0
 
                   echo "3. reload nginx"
-                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT}};|' /etc/nginx/nginx.conf
+                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT}};|' /home/ubuntu/neuroflow/nginx/nginx.conf
             
-                  sudo docker cp /home/ubuntu/nginx.conf nginx:/etc/nginx/nginx.conf
+                  sudo docker cp /home/ubuntu/neuroflow/nginx/nginx.conf nginx:/etc/nginx/nginx.conf
                   sudo docker exec nginx nginx -s reload
 
                   echo "4. green container down"
