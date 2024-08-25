@@ -36,7 +36,8 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web)-> web.ignoring()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-            .requestMatchers(SWAGGER.toArray(new String[0]));
+            .requestMatchers(SWAGGER.toArray(new String[0]))
+            .requestMatchers(HttpMethod.GET, "/server/health-check");
     }
 
     @Bean
