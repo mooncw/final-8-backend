@@ -62,29 +62,33 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
             
             IS_GREEN=$(docker ps | grep prod-green)
+            #SERVER_STATUS=$(curl "http://${{ secrets.SERVER_IP }}/healthcheck")
             echo $IS_GREEN
 
             max_count=10
             count=0
             check=1
           
-            if [ -z $IS_GREEN ]; then
+            if [ -z $IS_GREEN ]; then # $SERVER_STATUS = "blue" 교체 필요
               echo "## BLUE => GREEN ###"
               echo "1. green container up"
-              sudo docker run --name prod-green -d -p ${{ secrets.GREEN_PORT }}:${{ secrets.CONTAINER_PORT }} ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
+              sudo docker run --name prod-green -d -p ${{ secrets.GREEN_PORT }}:${{ secrets.CONTAINER_PORT }} -e server.state=green ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
 
               while [ $count -lt $max_count ]; do
                 echo "2. green health check...  ($count)"
                 count=$((count + 1))
                 sleep 20
             
-                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT }}")
-                if [ -n "$REQUEST" ]; then
+                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT }}") # /healthcheck 교체 필요
+                if [ -n "$REQUEST" ]; then # $REQUEST = "blue" 교체 필요
                   echo "health check success"
                   check=0
             
-                  echo "3. reload nginx"
-                  sudo systemctl reload nginx
+                  echo "3. update & reload nginx"
+                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT}};|' /home/ubuntu/nginx.conf
+                
+                  sudo docker cp /home/ubuntu/nginx.conf nginx:/etc/nginx/nginx.conf
+                  sudo docker exec nginx nginx -s reload
 
                   echo "4. blue container down"
                   sudo docker stop prod-blue || true
@@ -92,6 +96,7 @@ jobs:
                   break;
                 fi
               done;
+            
               if [ $check = 1 ]; then
                 echo "3. health check fail"
                 sudo docker stop prod-green || true
@@ -101,7 +106,7 @@ jobs:
             else
               echo "## GREEN => BLUE ###"
               echo "1. blue container up"
-              sudo docker run --name prod-blue -d -p ${{ secrets.BLUE_PORT }}:${{ secrets.CONTAINER_PORT }} ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
+              sudo docker run --name prod-blue -d -p ${{ secrets.BLUE_PORT }}:${{ secrets.CONTAINER_PORT }} -e server.state=blue ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
 
               count=0
               while [ $count -lt $max_count ]; do
@@ -109,13 +114,16 @@ jobs:
                 count=$((count + 1))
                 sleep 20
             
-                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT }}")
-                if [ -n "$REQUEST" ]; then
+                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT }}") # /healthcheck 교체 필요
+                if [ -n "$REQUEST" ]; then # $REQUEST = "green" 교체 필요
                   echo "health check success"
                   check=0
 
                   echo "3. reload nginx"
-                  sudo systemctl reload nginx
+                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT}};|' /etc/nginx/nginx.conf
+            
+                  sudo docker cp /home/ubuntu/nginx.conf nginx:/etc/nginx/nginx.conf
+                  sudo docker exec nginx nginx -s reload
 
                   echo "4. green container down"
                   sudo docker stop prod-green || true
