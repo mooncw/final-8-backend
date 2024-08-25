@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
 
 import static com.fastcampus.befinal.common.contant.RedisConstant.SMSCERTIFICATION_PREFIX;
 import static com.fastcampus.befinal.common.contant.SmsConstant.CERTIFICATION_DURATION;
@@ -24,12 +25,15 @@ public class SmsStoreImpl implements SmsStore {
     public void store(SmsInfo.SmsCertificationInfo info) {
         SmsCertification smsCertification = redisEntityMapper.from(info);
 
-        Duration duration = getDuration();
+        Duration duration = getDuration(info);
 
         redisTemplate.opsForValue().set(SMSCERTIFICATION_PREFIX + info.phoneNumber(), smsCertification, duration);
     }
 
-    private Duration getDuration() {
-        return Duration.ofMinutes(CERTIFICATION_DURATION);
+    private Duration getDuration(SmsInfo.SmsCertificationInfo info) {
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime expirationTime = info.requestTime().plusMinutes(CERTIFICATION_DURATION);
+
+        return Duration.between(now, expirationTime);
     }
 }

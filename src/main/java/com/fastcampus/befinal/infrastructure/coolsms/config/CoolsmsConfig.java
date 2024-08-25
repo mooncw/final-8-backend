@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CoolsmsConfig {
-    @Value("{coolsms.api.key}")
+    @Value("${coolsms.api.key}")
     private String apiKey;
 
-    @Value("{coolsms.api.secret}")
+    @Value("${coolsms.api.secret}")
     private String apiSecret;
 
-    @Value("{coolsms.from.contact}")
+    @Value("${coolsms.from.contact}")
     private String fromContact;
 
     private DefaultMessageService messageService;

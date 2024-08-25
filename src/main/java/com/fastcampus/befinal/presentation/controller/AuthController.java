@@ -74,24 +74,24 @@ public class AuthController {
 
     @PostMapping("/cert-no")
     @Operation(summary = "인증 번호 전송")
-//    @ApiResponse(responseCode = "200", description = "중복되지 않는 ID입니다.",
-//        content = @Content(
-//            mediaType = "application/json",
-//            schema = @Schema(
-//                example = "{ " +
-//                    "\"code\": 1102, " +
-//                    "\"message\": \"중복되지 않는 ID입니다.\"" +
-//                    "}"
-//            )
-//        )
-//    )
-    public void sendCertificationNumber(
+    @ApiResponse(responseCode = "200", description = "인증번호 요청 완료되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1103, " +
+                    "\"message\": \"인증번호 요청 완료되었습니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> sendCertificationNumber(
         @RequestBody
         @Validated
         AuthDto.SendCertificationNumberRequest request
     ) {
         authFacade.sendCertificationNumber(request);
-//        return ResponseEntityFactory.toResponseEntity(SEND_CERTIFICATION_NUMBER_SUCCESS);
+        return ResponseEntityFactory.toResponseEntity(SEND_CERTIFICATION_NUMBER_SUCCESS);
     }
 
     @PostMapping("/reissue")

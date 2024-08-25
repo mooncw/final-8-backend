@@ -8,6 +8,8 @@ import com.fastcampus.befinal.domain.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class SmsServiceImpl implements SmsService {
@@ -16,8 +18,10 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public void sendCertificationNumber(SmsCommand.SendCertificationNumberRequest command) {
+
+        ZonedDateTime requestTime = ZonedDateTime.now();
         String certificationNumber = smsSender.send(command);
-        SmsInfo.SmsCertificationInfo smsCertificationInfo = SmsInfo.SmsCertificationInfo.of(command, certificationNumber);
+        SmsInfo.SmsCertificationInfo smsCertificationInfo = SmsInfo.SmsCertificationInfo.of(command, certificationNumber, requestTime);
         smsStore.store(smsCertificationInfo);
     }
 }
