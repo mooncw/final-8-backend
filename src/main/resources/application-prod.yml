@@ -58,10 +58,13 @@ coolsms:
 
 server:
   state: blue
-  port: ENC(jBBqJC00hA3ZZmVnfugq+FucDrJ0AZBrC2darLq5gOlFimO+h2zTgeUT3zBxTlgN)
+  port: 8880
 
 management:
   endpoints:
     web:
       exposure:
         include: health, info, prometheus
+  health:
+    elasticsearch:
+      enabled: false
