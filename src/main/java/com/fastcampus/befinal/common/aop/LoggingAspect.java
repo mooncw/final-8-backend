@@ -34,7 +34,7 @@ public class LoggingAspect {
     @Pointcut("execution(* com.fastcampus.befinal.domain.service.JwtAuthService.*(..))")
     public void jwtAuthServiceMethods() {}
 
-    @Around("controller()")
+    @Around("controller() && !within(com.fastcampus.befinal.presentation.controller.ServerController)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         var startTime = System.currentTimeMillis();
         var methodName = joinPoint.getSignature().toShortString();
