@@ -61,7 +61,7 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
             
-            SERVER_STATUS=$(curl "http://${{ secrets.SERVER_IP }}/server/health-check")
+            SERVER_STATUS=$(curl "http://${{ secrets.SERVER_IP }}/api/health-check")
             echo $IS_GREEN
 
             max_count=10
@@ -78,7 +78,7 @@ jobs:
                 count=$((count + 1))
                 sleep 20
             
-                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT }}/server/health-check")
+                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT }}/api/health-check")
                 if [ $REQUEST = "blue" ]; then
                   echo "health check success"
                   check=0
@@ -113,7 +113,7 @@ jobs:
                 count=$((count + 1))
                 sleep 20
             
-                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT }}/server/health-check")
+                REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT }}/api/health-check")
                 if [ $REQUEST = "green" ]; then 
                   echo "health check success"
                   check=0
