@@ -122,6 +122,34 @@ class AuthControllerTest {
 
     @Test
     @WithMockUser
+    @DisplayName("인증번호 확인 성공시, 200 OK와 정상 응답을 반환")
+    void checkCertificationNumberTest() throws Exception {
+        //given
+        AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .phoneNumber("01011112222")
+            .certNo("111111")
+            .build();
+
+        doNothing()
+            .when(authFacade)
+            .checkCertificationNumber(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/check-cert-no")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(CHECK_CERTIFICATION_NUMBER_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser
     @DisplayName("재발급 요청 성공시, 200 OK와 정상 응답을 반환")
     void reissueJwtTest() throws Exception {
         //given

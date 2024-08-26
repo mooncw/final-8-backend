@@ -1,8 +1,10 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.command.AuthCommand;
+import com.fastcampus.befinal.domain.dataprovider.SmsCertificationReader;
 import com.fastcampus.befinal.domain.dataprovider.UserManagementStore;
 import com.fastcampus.befinal.domain.dataprovider.UserUnionViewReader;
+import com.fastcampus.befinal.domain.entity.SmsCertification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +26,9 @@ public class AuthServiceImplTest {
 
     @Mock
     private UserManagementStore userManagementStore;
+
+    @Mock
+    private SmsCertificationReader smsCertificationReader;
 
     @Test
     @DisplayName("회원가입 성공 테스트")
@@ -71,5 +76,29 @@ public class AuthServiceImplTest {
 
         //verify
         verify(userUnionViewReader, times(1)).existsUserId(any(AuthCommand.CheckIdDuplicationRequest.class));
+    }
+
+    @Test
+    @DisplayName("인증 번호 확인 성공 테스트")
+    void checkCertificationNumberTest() {
+        //given
+        AuthCommand.CheckCertificationNumberRequest command = AuthCommand.CheckCertificationNumberRequest.builder()
+            .phoneNumber("01011112222")
+            .certificationNumber("111111")
+            .build();
+
+        SmsCertification smsCertification = SmsCertification.builder()
+            .certificationNumber("111111")
+            .build();
+
+        doReturn(smsCertification)
+            .when(smsCertificationReader)
+            .find(any(AuthCommand.CheckCertificationNumberRequest.class));
+
+        //when
+        authService.checkCertificationNumber(command);
+
+        //verify
+        verify(smsCertificationReader, times(1)).find(any(AuthCommand.CheckCertificationNumberRequest.class));
     }
 }
