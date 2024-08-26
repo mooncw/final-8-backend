@@ -57,4 +57,5 @@ coolsms:
     contact: ENC(DjQI+YpK3+2NICV3jFYJPjrjY3q7KEc8sSpOBIUQ3qpFq02LkAI9CKd6qj4eZp1l)
 
 server:
+  state: blue
   port: ENC(jBBqJC00hA3ZZmVnfugq+FucDrJ0AZBrC2darLq5gOlFimO+h2zTgeUT3zBxTlgN)

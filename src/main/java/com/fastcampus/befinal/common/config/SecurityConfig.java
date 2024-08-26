@@ -57,7 +57,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/cert-no").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/logout").authenticated()
-            .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll());
+            .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll()
+            .requestMatchers(HttpMethod.GET, "/server/health-check").permitAll());
 
         http.addFilterBefore(new JwtAuthenticationFilter(jwtAuthService), BasicAuthenticationFilter.class);
 
