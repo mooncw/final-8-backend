@@ -3,7 +3,7 @@ package com.fastcampus.befinal.application.service;
 import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.command.SmsCommand;
 import com.fastcampus.befinal.domain.dataprovider.SmsSender;
-import com.fastcampus.befinal.domain.dataprovider.SmsStore;
+import com.fastcampus.befinal.domain.dataprovider.SmsCertificationStore;
 import com.fastcampus.befinal.domain.dataprovider.UserUnionViewReader;
 import com.fastcampus.befinal.domain.info.SmsInfo;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +30,7 @@ class SmsServiceImplTest {
     private SmsSender smsSender;
 
     @Mock
-    private SmsStore smsStore;
+    private SmsCertificationStore smsCertificationStore;
 
     @Test
     @DisplayName("인증번호 요청 성공 테스트")
@@ -51,7 +51,7 @@ class SmsServiceImplTest {
             .send(any(SmsCommand.SendCertificationNumberRequest.class));
 
         doNothing()
-            .when(smsStore)
+            .when(smsCertificationStore)
                 .store(any(SmsInfo.SmsCertificationInfo.class));
 
         //when
@@ -59,6 +59,6 @@ class SmsServiceImplTest {
 
         //verify
         verify(smsSender, times(1)).send(any(SmsCommand.SendCertificationNumberRequest.class));
-        verify(smsStore, times(1)).store(any(SmsInfo.SmsCertificationInfo.class));
+        verify(smsCertificationStore, times(1)).store(any(SmsInfo.SmsCertificationInfo.class));
     }
 }
