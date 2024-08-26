@@ -203,6 +203,7 @@ public class AuthDtoTest {
     void whenCheckCertificationNumberRequestIsBlank_thenValidationFails() {
         //given
         AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .phoneNumber(" ")
             .certNo(" ")
             .build();
 
@@ -211,7 +212,7 @@ public class AuthDtoTest {
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
-        assertThat(message).isEqualTo(Set.of(NOT_BLANK_CERTIFICATION_NUMBER));
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_PHONE_NUMBER, NOT_BLANK_CERTIFICATION_NUMBER));
     }
 
     @Test
@@ -219,6 +220,7 @@ public class AuthDtoTest {
     void whenCheckCertificationNumberRequestMismatchSize_thenValidationFails() {
         //given
         AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .phoneNumber("1")
             .certNo("1")
             .build();
 
@@ -227,7 +229,7 @@ public class AuthDtoTest {
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
-        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_CERTIFICATION_NUMBER));
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_PHONE_NUMBER, SIZE_MISMATCH_CERTIFICATION_NUMBER));
     }
 
     @Test
@@ -235,6 +237,7 @@ public class AuthDtoTest {
     void whenCheckCertificationNumberRequestMismatchPatternAndInvalidFormat_thenValidationFails() {
         //given
         AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .phoneNumber("ㅁ")
             .certNo("ㅁ")
             .build();
 
@@ -243,6 +246,6 @@ public class AuthDtoTest {
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
-        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_CERTIFICATION_NUMBER));
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_PHONE_NUMBER, PATTERN_MISMATCH_CERTIFICATION_NUMBER));
     }
 }
