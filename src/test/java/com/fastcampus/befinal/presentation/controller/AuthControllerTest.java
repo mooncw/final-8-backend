@@ -15,8 +15,9 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.REISSUE_JWT;
+import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,8 +36,67 @@ class AuthControllerTest {
 
     @Test
     @WithMockUser
+    @DisplayName("회원가입 요청 성공시, 200 OK와 정상 응답을 반환")
+    void signUpTest() throws Exception {
+        //given
+        AuthDto.SignUpRequest request = AuthDto.SignUpRequest.builder()
+            .id("aaaa")
+            .name("홍길동")
+            .password("aaaaaaa1")
+            .phoneNumber("01011112222")
+            .empNo("11111111")
+            .email("hong@hong.com")
+            .build();
+
+        doNothing()
+            .when(authFacade)
+            .signUp(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/signup")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(SIGNUP_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(SIGNUP_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(SIGNUP_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("아이디 중복 확인 요청 성공시, 200 OK와 정상 응답을 반환")
+    void checkIdDuplicationTest() throws Exception {
+        //given
+        AuthDto.CheckIdDuplicationRequest request = AuthDto.CheckIdDuplicationRequest.builder()
+            .id("aaaa")
+            .build();
+
+        doNothing()
+            .when(authFacade)
+            .checkIdDuplication(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/id-check")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(CHECK_ID_DUPLICATION_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(CHECK_ID_DUPLICATION_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(CHECK_ID_DUPLICATION_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser
     @DisplayName("재발급 요청 성공시, 200 OK와 정상 응답을 반환")
-    void reissueAccessTokenTest() throws Exception {
+    void reissueJwtTest() throws Exception {
         //given
         AuthDto.ReissueJwtRequest request = AuthDto.ReissueJwtRequest.builder()
             .accessToken("aa1.ab1.ac1")
@@ -61,8 +121,8 @@ class AuthControllerTest {
             .content(objectMapper.writeValueAsString(request)));
 
         //then
-        perform.andExpect(status().is(REISSUE_JWT.getHttpStatus().value()))
-            .andExpect(jsonPath("code").value(REISSUE_JWT.getCode()))
-            .andExpect(jsonPath("message").value(REISSUE_JWT.getMessage()));
+        perform.andExpect(status().is(REISSUE_JWT_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(REISSUE_JWT_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(REISSUE_JWT_SUCCESS.getMessage()));
     }
 }

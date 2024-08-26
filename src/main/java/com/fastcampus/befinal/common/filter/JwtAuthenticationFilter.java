@@ -8,16 +8,22 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtAuthService jwtAuthService;
+
+    private final List<String> permitAllPathList = List.of(
+        "/api/v1/auth/login",
+        "/api/v1/auth/reissue",
+        "/api/v1/auth/signup",
+        "/api/v1/auth/id-check"
+    );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -27,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwtAuthService.setAuthentication(jwt);
             filterChain.doFilter(request, response);
         } catch (BusinessException e) {
-            log.error(e.getErrorCode().getMessage());
             setErrorResponse(response, e);
         }
     }
@@ -50,9 +55,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String servletPath = request.getServletPath();
 
-        if (servletPath.contains("/api/v1/auth/login") || servletPath.contains("/api/v1/auth/reissue")) {
-            return true;
-        }
-        return false;
+        return permitAllPathList.stream().anyMatch(servletPath::contains);
     }
 }

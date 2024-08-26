@@ -42,6 +42,9 @@ dependencies {
     //lang3
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
+    //AOP
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     //jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 
@@ -61,6 +64,9 @@ dependencies {
     //Flyway
     implementation 'org.flywaydb:flyway-core'
     implementation "org.flywaydb:flyway-mysql"
+
+    //elasticsearch
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 }
 
 tasks.named('test') {
