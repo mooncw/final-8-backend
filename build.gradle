@@ -70,6 +70,12 @@ dependencies {
 
     //CoolSMS
     implementation 'net.nurigo:sdk:4.3.0'
+
+    // Micrometer Prometheus Registry
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    //actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.named('test') {
