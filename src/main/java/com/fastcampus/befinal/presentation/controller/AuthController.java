@@ -112,7 +112,7 @@ public class AuthController {
         @Validated
         AuthDto.CheckCertificationNumberRequest request
     ) {
-//        authFacade.sendCertificationNumber(request);
+        authFacade.checkCertificationNumber(request);
 //        return ResponseEntityFactory.toResponseEntity(SEND_CERTIFICATION_NUMBER_SUCCESS);
     }
 

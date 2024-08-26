@@ -42,4 +42,9 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException(USER_ID_ALREADY_EXIST);
         }
     }
+
+    @Override
+    public void checkCertificationNumber(AuthCommand.CheckCertificationNumberRequest command) {
+
+    }
 }

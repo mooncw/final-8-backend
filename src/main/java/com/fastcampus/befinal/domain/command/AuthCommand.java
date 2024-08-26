@@ -18,6 +18,11 @@ public class AuthCommand {
         String id
     ) {}
 
+    @Builder
+    public record CheckCertificationNumberRequest(
+        String certificationNumber
+    ) {}
+
     public record SignInRequest(
         String userId,
         String password

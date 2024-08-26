@@ -7,6 +7,7 @@ import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(
@@ -20,6 +21,9 @@ public interface AuthDtoMapper {
     AuthCommand.CheckIdDuplicationRequest toAuthCommand(AuthDto.CheckIdDuplicationRequest request);
 
     SmsCommand.SendCertificationNumberRequest toAuthCommand(AuthDto.SendCertificationNumberRequest request);
+
+    @Mapping(source = "certNo", target = "certificationNumber")
+    AuthCommand.CheckCertificationNumberRequest toAuthCommand(AuthDto.CheckCertificationNumberRequest request);
 
     AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 

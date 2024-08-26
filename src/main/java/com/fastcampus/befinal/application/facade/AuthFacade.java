@@ -29,6 +29,10 @@ public class AuthFacade {
         smsService.sendCertificationNumber(authDtoMapper.toAuthCommand(request));
     }
 
+    public void checkCertificationNumber(AuthDto.CheckCertificationNumberRequest request) {
+        authService.checkCertificationNumber(authDtoMapper.toAuthCommand(request));
+    }
+
     public void signIn(AuthDto.SignInRequest request) {
         jwtCreationService.createJwt(authDtoMapper.toJwtCommand(request));
     }
