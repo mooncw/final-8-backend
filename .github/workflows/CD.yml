@@ -79,7 +79,7 @@ jobs:
                 sleep 20
             
                 REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT }}/api/health-check")
-                if [ $REQUEST = "blue" ]; then
+                if [ $REQUEST = "green" ]; then
                   echo "health check success"
                   check=0
             
@@ -114,7 +114,7 @@ jobs:
                 sleep 20
             
                 REQUEST=$(curl "http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT }}/api/health-check")
-                if [ $REQUEST = "green" ]; then 
+                if [ $REQUEST = "blue" ]; then 
                   echo "health check success"
                   check=0
 
