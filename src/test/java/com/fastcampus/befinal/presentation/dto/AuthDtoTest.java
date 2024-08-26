@@ -197,4 +197,52 @@ public class AuthDtoTest {
         //then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_PHONE_NUMBER));
     }
+
+    @Test
+    @DisplayName("인증 번호 확인 요청 검증 테스트 - NotBlank")
+    void whenCheckCertificationNumberRequestIsBlank_thenValidationFails() {
+        //given
+        AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .certNo(" ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_CERTIFICATION_NUMBER));
+    }
+
+    @Test
+    @DisplayName("인증 번호 확인 요청 검증 테스트 - Size")
+    void whenCheckCertificationNumberRequestMismatchSize_thenValidationFails() {
+        //given
+        AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .certNo("1")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_CERTIFICATION_NUMBER));
+    }
+
+    @Test
+    @DisplayName("인증 번호 확인 요청 검증 테스트 - Pattern")
+    void whenCheckCertificationNumberRequestMismatchPatternAndInvalidFormat_thenValidationFails() {
+        //given
+        AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .certNo("ㅁ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_CERTIFICATION_NUMBER));
+    }
 }
