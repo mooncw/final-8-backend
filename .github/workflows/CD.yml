@@ -84,9 +84,9 @@ jobs:
                   check=0
             
                   echo "3. update & reload nginx"
-                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT}};|' /home/ubuntu/neuroflow/nginx/nginx.conf
+                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.GREEN_PORT}};|' ${{ secrete.nginx_path }}
                 
-                  sudo docker cp /home/ubuntu/neuroflow/nginx/nginx.conf nginx:/etc/nginx/nginx.conf
+                  sudo docker cp ${{ secrete.nginx_path }} nginx:/etc/nginx/nginx.conf
                   sudo docker exec nginx nginx -s reload
 
                   echo "4. blue container down"
@@ -119,9 +119,9 @@ jobs:
                   check=0
 
                   echo "3. reload nginx"
-                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT}};|' /home/ubuntu/neuroflow/nginx/nginx.conf
+                  sudo sed -i 's|proxy_pass http://.*;|proxy_pass http://${{ secrets.SERVER_IP }}:${{ secrets.BLUE_PORT}};|' ${{ secrete.nginx_path }}
             
-                  sudo docker cp /home/ubuntu/neuroflow/nginx/nginx.conf nginx:/etc/nginx/nginx.conf
+                  sudo docker cp ${{ secrete.nginx_path }} nginx:/etc/nginx/nginx.conf
                   sudo docker exec nginx nginx -s reload
 
                   echo "4. green container down"
