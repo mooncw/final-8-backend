@@ -20,6 +20,7 @@ public class AuthCommand {
 
     @Builder
     public record CheckCertificationNumberRequest(
+        String phoneNumber,
         String certificationNumber
     ) {}
 
