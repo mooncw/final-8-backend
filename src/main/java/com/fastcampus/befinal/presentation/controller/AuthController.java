@@ -95,25 +95,25 @@ public class AuthController {
     }
 
     @PostMapping("/check-cert-no")
-//    @Operation(summary = "인증 번호 확인")
-//    @ApiResponse(responseCode = "200", description = "유효한 인증번호입니다.",
-//        content = @Content(
-//            mediaType = "application/json",
-//            schema = @Schema(
-//                example = "{ " +
-//                    "\"code\": 1103, " +
-//                    "\"message\": \"인증번호 요청 완료되었습니다.\"" +
-//                    "}"
-//            )
-//        )
-//    )
-    public void checkCertificationNumber(
+    @Operation(summary = "인증 번호 확인")
+    @ApiResponse(responseCode = "200", description = "유효한 인증번호입니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1104, " +
+                    "\"message\": \"유효한 인증번호입니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> checkCertificationNumber(
         @RequestBody
         @Validated
         AuthDto.CheckCertificationNumberRequest request
     ) {
         authFacade.checkCertificationNumber(request);
-//        return ResponseEntityFactory.toResponseEntity(SEND_CERTIFICATION_NUMBER_SUCCESS);
+        return ResponseEntityFactory.toResponseEntity(CHECK_CERTIFICATION_NUMBER_SUCCESS);
     }
 
     @PostMapping("/reissue")
