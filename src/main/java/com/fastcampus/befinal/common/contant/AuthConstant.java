@@ -21,6 +21,9 @@ public class AuthConstant {
     public static final String PATTERN_MISMATCH_USER_EMP_NOMBER = "사원번호에 입력 가능한 패턴을 확인해 주세요.";
     public static final String NOT_BLANK_USER_EMAIL = "이메일을 입력해 주세요.";
     public static final String INVALID_FORMAT_USER_EMAIL = "이메일 형식으로 입력해 주세요.";
+    public static final String NOT_BLANK_CERTIFICATION_NUMBER = "인증번호를 입력해 주세요.";
+    public static final String SIZE_MISMATCH_CERTIFICATION_NUMBER = "인증번호의 글자 수를 확인해 주세요.";
+    public static final String PATTERN_MISMATCH_CERTIFICATION_NUMBER = "인증번호에 입력 가능한 패턴을 확인해 주세요.";
 
 
     //Swagger reissue token example

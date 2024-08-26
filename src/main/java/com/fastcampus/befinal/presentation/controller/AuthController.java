@@ -50,7 +50,7 @@ public class AuthController {
         return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
     }
 
-    @PostMapping("/id-check")
+    @PostMapping("/check-id")
     @Operation(summary = "ID 중복 확인")
     @ApiResponse(responseCode = "200", description = "중복되지 않는 ID입니다.",
         content = @Content(
@@ -92,6 +92,28 @@ public class AuthController {
     ) {
         authFacade.sendCertificationNumber(request);
         return ResponseEntityFactory.toResponseEntity(SEND_CERTIFICATION_NUMBER_SUCCESS);
+    }
+
+    @PostMapping("/check-cert-no")
+//    @Operation(summary = "인증 번호 확인")
+//    @ApiResponse(responseCode = "200", description = "유효한 인증번호입니다.",
+//        content = @Content(
+//            mediaType = "application/json",
+//            schema = @Schema(
+//                example = "{ " +
+//                    "\"code\": 1103, " +
+//                    "\"message\": \"인증번호 요청 완료되었습니다.\"" +
+//                    "}"
+//            )
+//        )
+//    )
+    public void checkCertificationNumber(
+        @RequestBody
+        @Validated
+        AuthDto.CheckCertificationNumberRequest request
+    ) {
+//        authFacade.sendCertificationNumber(request);
+//        return ResponseEntityFactory.toResponseEntity(SEND_CERTIFICATION_NUMBER_SUCCESS);
     }
 
     @PostMapping("/reissue")

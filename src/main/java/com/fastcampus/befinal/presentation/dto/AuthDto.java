@@ -14,7 +14,6 @@ import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 public class AuthDto {
     @Builder
     public record SignUpRequest(
-
         @Schema(example = SWAGGER_SIGN_UP_USER_NAME)
         @NotBlank(message = NOT_BLANK_USER_NAME, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 2, max = 4, message = SIZE_MISMATCH_USER_NAME, groups = RequestValidationGroups.SizeGroup.class)
@@ -68,6 +67,14 @@ public class AuthDto {
         @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
         @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
         String phoneNumber
+    ) {}
+
+    @Builder
+    public record CheckCertificationNumberRequest(
+        @NotBlank(message = NOT_BLANK_CERTIFICATION_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 6, max = 6, message = SIZE_MISMATCH_CERTIFICATION_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_CERTIFICATION_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
+        String certNo
     ) {}
 
     public record SignInRequest(
