@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
 
     private void validateCertificationNumber(AuthCommand.CheckCertificationNumberRequest command,
                                              SmsCertification smsCertification) {
-        if (!Objects.equals(command.certificationNumber(), smsCertification)) {
+        if (!Objects.equals(command.certificationNumber(), smsCertification.getCertificationNumber())) {
             throw new BusinessException(INCONSISTENT_CERTIFICATION_NUMBER);
         }
     }

@@ -27,7 +27,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         "/api/health-check",
         "/actuator/prometheus",
         "/actuator/health",
-        "/actuator/info"
+        "/actuator/info",
+        "/api/v1/auth/check-cert-no"
     );
 
     @Override
