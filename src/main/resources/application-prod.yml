@@ -52,3 +52,9 @@ jasypt:
 server:
   state: blue
   port: ENC(jBBqJC00hA3ZZmVnfugq+FucDrJ0AZBrC2darLq5gOlFimO+h2zTgeUT3zBxTlgN)
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
