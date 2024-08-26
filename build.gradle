@@ -67,6 +67,12 @@ dependencies {
 
     //elasticsearch
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
+    // Micrometer Prometheus Registry
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    //actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.named('test') {
