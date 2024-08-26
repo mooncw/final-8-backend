@@ -9,6 +9,7 @@ import com.fastcampus.befinal.domain.info.SmsInfo;
 import com.fastcampus.befinal.domain.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 
@@ -22,6 +23,7 @@ public class SmsServiceImpl implements SmsService {
     private final UserUnionViewReader userUnionViewReader;
 
     @Override
+    @Transactional(readOnly = true)
     public void sendCertificationNumber(SmsCommand.SendCertificationNumberRequest command) {
         ZonedDateTime requestTime = ZonedDateTime.now();
 
