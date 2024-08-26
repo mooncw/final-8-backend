@@ -1,7 +1,7 @@
 package com.fastcampus.befinal.infrastructure.redis.dataprovider;
 
 import com.fastcampus.befinal.common.annotation.DataProvider;
-import com.fastcampus.befinal.domain.dataprovider.SmsStore;
+import com.fastcampus.befinal.domain.dataprovider.SmsCertificationStore;
 import com.fastcampus.befinal.domain.entity.RedisValue;
 import com.fastcampus.befinal.domain.entity.SmsCertification;
 import com.fastcampus.befinal.domain.info.SmsInfo;
@@ -17,7 +17,7 @@ import static com.fastcampus.befinal.common.contant.SmsConstant.CERTIFICATION_DU
 
 @DataProvider
 @RequiredArgsConstructor
-public class SmsStoreImpl implements SmsStore {
+public class SmsCertificationStoreImpl implements SmsCertificationStore {
     private final RedisTemplate<String, RedisValue> redisTemplate;
     private final RedisEntityMapper redisEntityMapper;
 

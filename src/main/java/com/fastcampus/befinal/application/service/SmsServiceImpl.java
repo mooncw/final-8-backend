@@ -2,8 +2,8 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.domain.command.SmsCommand;
+import com.fastcampus.befinal.domain.dataprovider.SmsCertificationStore;
 import com.fastcampus.befinal.domain.dataprovider.SmsSender;
-import com.fastcampus.befinal.domain.dataprovider.SmsStore;
 import com.fastcampus.befinal.domain.dataprovider.UserUnionViewReader;
 import com.fastcampus.befinal.domain.info.SmsInfo;
 import com.fastcampus.befinal.domain.service.SmsService;
@@ -19,7 +19,7 @@ import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.PH
 @RequiredArgsConstructor
 public class SmsServiceImpl implements SmsService {
     private final SmsSender smsSender;
-    private final SmsStore smsStore;
+    private final SmsCertificationStore smsCertificationStore;
     private final UserUnionViewReader userUnionViewReader;
 
     @Override
@@ -33,7 +33,7 @@ public class SmsServiceImpl implements SmsService {
 
         SmsInfo.SmsCertificationInfo smsCertificationInfo = SmsInfo.SmsCertificationInfo.of(command, certificationNumber, requestTime);
 
-        smsStore.store(smsCertificationInfo);
+        smsCertificationStore.store(smsCertificationInfo);
     }
 
     private void validateUserPhoneNumber(SmsCommand.SendCertificationNumberRequest command) {
