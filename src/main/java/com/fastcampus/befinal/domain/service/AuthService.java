@@ -8,4 +8,6 @@ public interface AuthService {
     void checkIdDuplication(AuthCommand.CheckIdDuplicationRequest command);
 
     void checkCertificationNumber(AuthCommand.CheckCertificationNumberRequest command);
+
+    void updateCheckList(AuthCommand.UpdateCheckListRequest command);
 }

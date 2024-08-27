@@ -25,6 +25,8 @@ public interface AuthDtoMapper {
 
     SmsCommand.SendCertificationNumberRequest toAuthCommand(AuthDto.SendCertificationNumberRequest request);
 
+    AuthCommand.UpdateCheckListRequest toAuthCommand(String type, String phoneNumber);
+
     @Mapping(source = "certNo", target = "certificationNumber")
     AuthCommand.CheckCertificationNumberRequest toAuthCommand(AuthDto.CheckCertificationNumberRequest request);
 

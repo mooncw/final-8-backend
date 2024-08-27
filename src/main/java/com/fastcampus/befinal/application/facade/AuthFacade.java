@@ -27,6 +27,7 @@ public class AuthFacade {
 
     public void sendCertificationNumber(AuthDto.SendCertificationNumberRequest request) {
         smsService.sendCertificationNumber(authDtoMapper.toAuthCommand(request));
+        authService.updateCheckList(authDtoMapper.toAuthCommand(request.type(), request.phoneNumber()));
     }
 
     public void checkCertificationNumber(AuthDto.CheckCertificationNumberRequest request) {
