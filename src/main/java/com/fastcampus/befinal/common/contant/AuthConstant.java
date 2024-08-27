@@ -24,6 +24,8 @@ public class AuthConstant {
     public static final String NOT_BLANK_CERTIFICATION_NUMBER = "인증번호를 입력해 주세요.";
     public static final String SIZE_MISMATCH_CERTIFICATION_NUMBER = "인증번호의 글자 수를 확인해 주세요.";
     public static final String PATTERN_MISMATCH_CERTIFICATION_NUMBER = "인증번호에 입력 가능한 패턴을 확인해 주세요.";
+    public static final String NOT_BLANK_CERTIFICATION_TYPE = "인증 타입을 입력해 주세요.";
+    public static final String PATTERN_MISMATCH_CERTIFICATION_TYPE = "인증 타입에 입력 가능한 패턴을 확인해 주세요.";
 
 
     //Swagger reissue token example
@@ -32,12 +34,12 @@ public class AuthConstant {
     public static final String SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ0ZW1wb3JhcnlVc2VyMSIsImlhdCI6MTcyNDA2NDQzNiwiZXhwIjoxNzI0MDY0NDM2fQ.fVLaomRrNk56fFNQrTNL33HK22cYdRfZJBPZqIJ5dKo";
     public static final String SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjQwNjQ0MzYsImV4cCI6MzMyODE2NjQ0MzZ9.jZqipnoDE6SdSMh-YCqqfpLRWHqFUJqJdZjjgbVULu0";
 
-    //Swagger signUp & checkIdDuplication example
+    //Swagger sign up, check id duplication, check certification number example
     public static final String SWAGGER_SIGN_UP_USER_NAME = "홍길동";
     public static final String SWAGGER_SIGN_UP_PHONE_NUMBER = "01011112222";
     public static final String SWAGGER_SIGN_UP_USER_ID = "abcd";
     public static final String SWAGGER_SIGN_UP_USER_PASSWORD = "aaaaaaa1";
     public static final String SWAGGER_SIGN_UP_USER_EMP_NOMBER = "11111111";
     public static final String SWAGGER_SIGN_UP_USER_EMAIL = "hong@hong.com";
-
+    public static final String SWAGGER_CERTIFICATION_NUMBER_TYPE = "SignUp";
 }

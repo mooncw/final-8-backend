@@ -12,7 +12,8 @@ public enum AuthErrorCode implements ErrorCode {
     USER_ID_ALREADY_EXIST(HttpStatus.UNAUTHORIZED, AuthCode.USER_ID_ALREADY_EXIST, "이미 존재하는 ID입니다."),
     PHONE_NUMBER_ALREADY_EXIST(HttpStatus.UNAUTHORIZED, AuthCode.PHONE_NUMBER_ALREADY_EXIST, "이미 존재하는 연락처입니다."),
     NOT_FOUND_CERTIFICATION_NUMBER(HttpStatus.UNAUTHORIZED, AuthCode.NOT_FOUND_CERTIFICATION_NUMBER, "존재하지 않는 인증번호입니다."),
-    INCONSISTENT_CERTIFICATION_NUMBER(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_CERTIFICATION_NUMBER, "일치하지 않는 인증번호입니다.");
+    INCONSISTENT_CERTIFICATION_NUMBER(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_CERTIFICATION_NUMBER, "일치하지 않는 인증번호입니다."),
+    NOT_VALID_CERTIFICATION_TYPE(HttpStatus.UNAUTHORIZED, AuthCode.NOT_VALID_CERTIFICATION_TYPE, "유효하지 않는 인증 타입입니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;
