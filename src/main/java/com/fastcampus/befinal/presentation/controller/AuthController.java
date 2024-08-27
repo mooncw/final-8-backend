@@ -58,19 +58,22 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1102, " +
-                    "\"message\": \"중복되지 않는 ID입니다.\"" +
+                        "\"code\": 1102, " +
+                        "\"message\": \"중복되지 않는 ID입니다.\", " +
+                        "\"data\": {" +
+                            "\"idCheckToken\": \"dd50d3d8-d542-434b-b447-c50fa6ec06e4\"" +
+                        "}" +
                     "}"
             )
         )
     )
-    public ResponseEntity<AppApiResponse> checkIdDuplication(
+    public ResponseEntity<AppApiResponse<AuthDto.CheckIdDuplicationResponse>> checkIdDuplication(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
         AuthDto.CheckIdDuplicationRequest request
     ) {
-        authFacade.checkIdDuplication(request);
-        return ResponseEntityFactory.toResponseEntity(CHECK_ID_DUPLICATION_SUCCESS);
+        AuthDto.CheckIdDuplicationResponse response = authFacade.checkIdDuplication(request);
+        return ResponseEntityFactory.toResponseEntity(CHECK_ID_DUPLICATION_SUCCESS, response);
     }
 
     @PostMapping("/cert-no")

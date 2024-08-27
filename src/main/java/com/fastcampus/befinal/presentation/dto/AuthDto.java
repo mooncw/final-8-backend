@@ -109,4 +109,9 @@ public class AuthDto {
         String accessToken,
         String refreshToken
     ) {}
+
+    @Builder
+    public record CheckIdDuplicationResponse(
+        String idCheckToken
+    ) {}
 }

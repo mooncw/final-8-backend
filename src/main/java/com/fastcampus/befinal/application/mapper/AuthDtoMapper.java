@@ -5,6 +5,7 @@ import com.fastcampus.befinal.common.type.CertificationType;
 import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.command.JwtCommand;
 import com.fastcampus.befinal.domain.command.SmsCommand;
+import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import org.mapstruct.*;
@@ -25,7 +26,7 @@ public interface AuthDtoMapper {
 
     SmsCommand.SendCertificationNumberRequest toAuthCommand(AuthDto.SendCertificationNumberRequest request);
 
-    AuthCommand.UpdateCheckListRequest toAuthCommand(String type, String phoneNumber);
+//    AuthCommand.UpdateCheckListRequest toAuthCommand(String type, String phoneNumber);
 
     @Mapping(source = "certNo", target = "certificationNumber")
     AuthCommand.CheckCertificationNumberRequest toAuthCommand(AuthDto.CheckCertificationNumberRequest request);
@@ -37,6 +38,9 @@ public interface AuthDtoMapper {
     JwtCommand.ReissueJwtRequest toJwtCommand(AuthDto.ReissueJwtRequest request);
 
     AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
+
+    @Mapping(source = "token", target = "idCheckToken")
+    AuthDto.CheckIdDuplicationResponse from(AuthInfo.CheckIdTokenInfo info);
 
     default CertificationType mapStringToCertificationType(String type) {
         switch (type) {

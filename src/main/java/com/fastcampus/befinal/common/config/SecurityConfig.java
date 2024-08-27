@@ -53,7 +53,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
             //auth
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/id-check").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/check-id").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/cert-no").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/check-cert-no").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()

@@ -1,5 +1,16 @@
 package com.fastcampus.befinal.domain.info;
 
-public class AuthInfo {
+import lombok.Builder;
 
+public class AuthInfo {
+    @Builder
+    public record CheckIdTokenInfo(
+        String token
+    ) {
+        public static CheckIdTokenInfo from(String token) {
+            return CheckIdTokenInfo.builder()
+                .token(token)
+                .build();
+        }
+    }
 }
