@@ -62,6 +62,11 @@ public class AuthDto {
 
     @Builder
     public record SendCertificationNumberRequest(
+        @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE)
+        @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Pattern(regexp = "SignUp", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        String type,
+
         @Schema(example = SWAGGER_SIGN_UP_PHONE_NUMBER)
         @NotBlank(message = NOT_BLANK_PHONE_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)

@@ -68,7 +68,6 @@ public class AuthDtoTest {
             .id("a")
             .password("a1")
             .empNo("1")
-            .email("test@test.com")
             .build();
 
         //when
@@ -155,6 +154,7 @@ public class AuthDtoTest {
     void whenSendCertificationNumberRequestIsBlank_thenValidationFails() {
         //given
         AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .type(" ")
             .phoneNumber(" ")
             .build();
 
@@ -163,7 +163,7 @@ public class AuthDtoTest {
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
-        assertThat(message).isEqualTo(Set.of(NOT_BLANK_PHONE_NUMBER));
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_CERTIFICATION_TYPE, NOT_BLANK_PHONE_NUMBER));
     }
 
     @Test
@@ -187,6 +187,7 @@ public class AuthDtoTest {
     void whenSendCertificationNumberRequestMismatchPatternAndInvalidFormat_thenValidationFails() {
         //given
         AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .type("A")
             .phoneNumber("ㅁ")
             .build();
 
@@ -195,7 +196,7 @@ public class AuthDtoTest {
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
-        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_PHONE_NUMBER));
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_CERTIFICATION_TYPE, PATTERN_MISMATCH_PHONE_NUMBER));
     }
 
     @Test
