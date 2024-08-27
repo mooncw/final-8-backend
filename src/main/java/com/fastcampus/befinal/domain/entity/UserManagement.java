@@ -4,13 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @Entity(name = "UserManagement")
 @Table(name = "user_management")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,5 +36,4 @@ public class UserManagement {
 
     @Column(nullable = false, name = "signup_datetime", columnDefinition = "datetime")
     private LocalDateTime signUpDateTime;
-
 }

@@ -2,6 +2,7 @@ package com.fastcampus.befinal.application.mapper;
 
 import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.command.JwtCommand;
+import com.fastcampus.befinal.domain.command.SmsCommand;
 import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import org.mapstruct.InjectionStrategy;
@@ -14,6 +15,12 @@ import org.mapstruct.ReportingPolicy;
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface AuthDtoMapper {
+    AuthCommand.SignUpRequest toAuthCommand(AuthDto.SignUpRequest request);
+
+    AuthCommand.CheckIdDuplicationRequest toAuthCommand(AuthDto.CheckIdDuplicationRequest request);
+
+    SmsCommand.SendCertificationNumberRequest toAuthCommand(AuthDto.SendCertificationNumberRequest request);
+
     AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 
     JwtCommand.CreateJwtRequest toJwtCommand (AuthDto.SignInRequest request);

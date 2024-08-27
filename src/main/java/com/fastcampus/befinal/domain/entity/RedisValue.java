@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     include = JsonTypeInfo.As.PROPERTY,
     property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = RefreshToken.class, name = "RefreshToken")
+    @JsonSubTypes.Type(value = RefreshToken.class, name = "RefreshToken"),
+    @JsonSubTypes.Type(value = SmsCertification.class, name = "SmsCertification")
 })
 public interface RedisValue {
 }

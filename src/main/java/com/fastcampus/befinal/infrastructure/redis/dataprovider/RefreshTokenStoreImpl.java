@@ -1,6 +1,6 @@
 package com.fastcampus.befinal.infrastructure.redis.dataprovider;
 
-import com.fastcampus.befinal.application.mapper.JwtDtoMapper;
+import com.fastcampus.befinal.infrastructure.redis.mapper.RedisEntityMapper;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.domain.dataprovider.RefreshTokenStore;
 import com.fastcampus.befinal.domain.entity.RedisValue;
@@ -18,11 +18,11 @@ import static com.fastcampus.befinal.common.contant.RedisConstant.REFRESHTOKEN_P
 @RequiredArgsConstructor
 public class RefreshTokenStoreImpl implements RefreshTokenStore {
     private final RedisTemplate<String, RedisValue> redisTemplate;
-    private final JwtDtoMapper jwtDtoMapper;
+    private final RedisEntityMapper redisEntityMapper;
 
     @Override
     public void store(JwtInfo.RefreshTokenInfo info) {
-        RefreshToken refreshToken = jwtDtoMapper.from(info);
+        RefreshToken refreshToken = redisEntityMapper.from(info);
 
         Duration duration = getDuration(info);
 
