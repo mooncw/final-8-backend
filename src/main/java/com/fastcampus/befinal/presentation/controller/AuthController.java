@@ -3,6 +3,7 @@ package com.fastcampus.befinal.presentation.controller;
 import com.fastcampus.befinal.application.facade.AuthFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
+import com.fastcampus.befinal.common.util.DefaultGroupSequence;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,7 +44,7 @@ public class AuthController {
     )
     public ResponseEntity<AppApiResponse> signUp(
         @RequestBody
-        @Validated
+        @Validated(DefaultGroupSequence.class)
         AuthDto.SignUpRequest request
     ) {
         authFacade.signUp(request);
@@ -65,7 +66,7 @@ public class AuthController {
     )
     public ResponseEntity<AppApiResponse> checkIdDuplication(
         @RequestBody
-        @Validated
+        @Validated(DefaultGroupSequence.class)
         AuthDto.CheckIdDuplicationRequest request
     ) {
         authFacade.checkIdDuplication(request);
@@ -73,7 +74,7 @@ public class AuthController {
     }
 
     @PostMapping("/cert-no")
-    @Operation(summary = "인증 번호 전송")
+    @Operation(summary = "인증 번호 전송 - type: \"SignUp\"")
     @ApiResponse(responseCode = "200", description = "인증번호 요청 완료되었습니다.",
         content = @Content(
             mediaType = "application/json",
@@ -87,7 +88,7 @@ public class AuthController {
     )
     public ResponseEntity<AppApiResponse> sendCertificationNumber(
         @RequestBody
-        @Validated
+        @Validated(DefaultGroupSequence.class)
         AuthDto.SendCertificationNumberRequest request
     ) {
         authFacade.sendCertificationNumber(request);
@@ -109,7 +110,7 @@ public class AuthController {
     )
     public ResponseEntity<AppApiResponse> checkCertificationNumber(
         @RequestBody
-        @Validated
+        @Validated(DefaultGroupSequence.class)
         AuthDto.CheckCertificationNumberRequest request
     ) {
         authFacade.checkCertificationNumber(request);
@@ -135,7 +136,7 @@ public class AuthController {
     )
     public ResponseEntity<AppApiResponse<AuthDto.ReissueJwtResponse>> reissueJwt(
         @RequestBody
-        @Validated
+        @Validated(DefaultGroupSequence.class)
         AuthDto.ReissueJwtRequest request
     ) {
         AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
