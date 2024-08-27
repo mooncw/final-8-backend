@@ -49,6 +49,13 @@ jasypt:
     bean: jasyptEncryptorAES
     password: ${JASYPT_PASSWORD}
 
+coolsms:
+  api:
+    key: ENC(ITqSIpefSrAWYUtfl6zaZAxnNCSJIoLJno7wp3qMXukfQzxFxZCYChyghwUlNtH2pYCiXV2t4X/6wOzzA/2s9w==)
+    secret: ENC(hSZH9A9f2cMQ/uHL/bn2aQDJN3PYSwsJeJ3FtBImNZoYozbltZVSsdWxlLUd4u+6rsRkzpTY6x0WcbbvR7vNKh6ltmLfddCOhQ5tzoEQ/KA=)
+  from:
+    contact: ENC(DjQI+YpK3+2NICV3jFYJPjrjY3q7KEc8sSpOBIUQ3qpFq02LkAI9CKd6qj4eZp1l)
+
 server:
   state: blue
   port: 8880

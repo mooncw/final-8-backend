@@ -72,6 +72,28 @@ public class AuthController {
         return ResponseEntityFactory.toResponseEntity(CHECK_ID_DUPLICATION_SUCCESS);
     }
 
+    @PostMapping("/cert-no")
+    @Operation(summary = "인증 번호 전송")
+    @ApiResponse(responseCode = "200", description = "인증번호 요청 완료되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1103, " +
+                    "\"message\": \"인증번호 요청 완료되었습니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> sendCertificationNumber(
+        @RequestBody
+        @Validated
+        AuthDto.SendCertificationNumberRequest request
+    ) {
+        authFacade.sendCertificationNumber(request);
+        return ResponseEntityFactory.toResponseEntity(SEND_CERTIFICATION_NUMBER_SUCCESS);
+    }
+
     @PostMapping("/reissue")
     @Operation(summary = "JWT 토큰 재발급")
     @ApiResponse(responseCode = "200", description = "JWT 재발급되었습니다.",

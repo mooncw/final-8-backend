@@ -1,7 +1,6 @@
-package com.fastcampus.befinal.application.dto;
+package com.fastcampus.befinal.presentation.dto;
 
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
-import com.fastcampus.befinal.presentation.dto.AuthDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -149,5 +148,53 @@ public class AuthDtoTest {
 
         //then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_ID));
+    }
+
+    @Test
+    @DisplayName("인증 번호 전송 요청 검증 테스트 - NotBlank")
+    void whenSendCertificationNumberRequestIsBlank_thenValidationFails() {
+        //given
+        AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .phoneNumber(" ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_PHONE_NUMBER));
+    }
+
+    @Test
+    @DisplayName("인증 번호 전송 요청 검증 테스트 - Size")
+    void whenSendCertificationNumberRequestMismatchSize_thenValidationFails() {
+        //given
+        AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .phoneNumber("1")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_PHONE_NUMBER));
+    }
+
+    @Test
+    @DisplayName("인증 번호 전송 요청 검증 테스트 - Pattern")
+    void whenSendCertificationNumberRequestMismatchPatternAndInvalidFormat_thenValidationFails() {
+        //given
+        AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .phoneNumber("ㅁ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_PHONE_NUMBER));
     }
 }

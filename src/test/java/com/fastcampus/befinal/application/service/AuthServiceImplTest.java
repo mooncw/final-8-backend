@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("AuthService 테스트")
 @ExtendWith(MockitoExtension.class)
-public class AuthServiceTest {
+public class AuthServiceImplTest {
     @InjectMocks
     private AuthServiceImpl authService;
 
