@@ -55,10 +55,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void checkCertificationNumber(AuthCommand.CheckCertificationNumberRequest command) {
+    public AuthInfo.CheckCertificationNumberTokenInfo checkCertificationNumber(AuthCommand.CheckCertificationNumberRequest command) {
         SmsCertification smsCertification = smsCertificationReader.find(command);
 
         validateCertificationNumber(command, smsCertification);
+
+        AuthInfo.CheckCertificationNumberTokenInfo checkCertificationNumberTokenInfo =
+            AuthInfo.CheckCertificationNumberTokenInfo.from(Generator.generateUniqueValue());
+
+        checkTokenStore.store(checkCertificationNumberTokenInfo);
+
+        return checkCertificationNumberTokenInfo;
     }
 
     @Override

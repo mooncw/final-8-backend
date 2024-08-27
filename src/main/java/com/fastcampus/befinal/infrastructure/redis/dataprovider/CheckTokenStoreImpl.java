@@ -21,6 +21,11 @@ public class CheckTokenStoreImpl implements CheckTokenStore {
         redisTemplate.opsForValue().set(info.token(), null, getDuration());
     }
 
+    @Override
+    public void store(AuthInfo.CheckCertificationNumberTokenInfo info) {
+        redisTemplate.opsForValue().set(info.token(), null, getDuration());
+    }
+
     private Duration getDuration() {
         return Duration.ofMinutes(CHECK_TOKEN_DURATION);
     }

@@ -107,17 +107,20 @@ public class AuthController {
                 example = "{ " +
                     "\"code\": 1104, " +
                     "\"message\": \"유효한 인증번호입니다.\"" +
-                    "}"
+                    "\"data\": {" +
+                    "\"certificationNumberCheckToken\": \"95f43709-d81e-4a53-9633-249078713923\"" +
+                    "}" +
+                "}"
             )
         )
     )
-    public ResponseEntity<AppApiResponse> checkCertificationNumber(
+    public ResponseEntity<AppApiResponse<AuthDto.CheckCertificationNumberResponse>> checkCertificationNumber(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
         AuthDto.CheckCertificationNumberRequest request
     ) {
-        authFacade.checkCertificationNumber(request);
-        return ResponseEntityFactory.toResponseEntity(CHECK_CERTIFICATION_NUMBER_SUCCESS);
+        AuthDto.CheckCertificationNumberResponse response = authFacade.checkCertificationNumber(request);
+        return ResponseEntityFactory.toResponseEntity(CHECK_CERTIFICATION_NUMBER_SUCCESS, response);
     }
 
     @PostMapping("/reissue")

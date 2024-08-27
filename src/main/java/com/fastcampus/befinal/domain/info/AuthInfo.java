@@ -13,4 +13,15 @@ public class AuthInfo {
                 .build();
         }
     }
+
+    @Builder
+    public record CheckCertificationNumberTokenInfo(
+        String token
+    ) {
+        public static CheckCertificationNumberTokenInfo from(String token) {
+            return CheckCertificationNumberTokenInfo.builder()
+                .token(token)
+                .build();
+        }
+    }
 }

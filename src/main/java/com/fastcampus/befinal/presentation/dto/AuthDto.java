@@ -114,4 +114,9 @@ public class AuthDto {
     public record CheckIdDuplicationResponse(
         String idCheckToken
     ) {}
+
+    @Builder
+    public record CheckCertificationNumberResponse(
+        String certificationNumberCheckToken
+    ) {}
 }

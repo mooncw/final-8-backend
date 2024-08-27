@@ -31,8 +31,9 @@ public class AuthFacade {
         smsService.sendCertificationNumber(authDtoMapper.toAuthCommand(request));
     }
 
-    public void checkCertificationNumber(AuthDto.CheckCertificationNumberRequest request) {
-        authService.checkCertificationNumber(authDtoMapper.toAuthCommand(request));
+    public AuthDto.CheckCertificationNumberResponse checkCertificationNumber(AuthDto.CheckCertificationNumberRequest request) {
+        AuthInfo.CheckCertificationNumberTokenInfo info = authService.checkCertificationNumber(authDtoMapper.toAuthCommand(request));
+        return authDtoMapper.from(info);
     }
 
     public void signIn(AuthDto.SignInRequest request) {

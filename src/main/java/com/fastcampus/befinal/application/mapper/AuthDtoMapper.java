@@ -37,10 +37,13 @@ public interface AuthDtoMapper {
 
     JwtCommand.ReissueJwtRequest toJwtCommand(AuthDto.ReissueJwtRequest request);
 
-    AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
-
     @Mapping(source = "token", target = "idCheckToken")
     AuthDto.CheckIdDuplicationResponse from(AuthInfo.CheckIdTokenInfo info);
+
+    @Mapping(source = "token", target = "certificationNumberCheckToken")
+    AuthDto.CheckCertificationNumberResponse from(AuthInfo.CheckCertificationNumberTokenInfo info);
+
+    AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
 
     default CertificationType mapStringToCertificationType(String type) {
         switch (type) {
