@@ -1,6 +1,9 @@
 package com.fastcampus.befinal.common.contant;
 
 public class AuthConstant {
+    //권한
+    public static final String ADMIN_AUTHORITY = "ROLE_ADMIN";
+
     //Dto 검증
     public static final String NOT_BLANK_ACCESSTOKEN = "AccessToken을 입력해 주세요.";
     public static final String NOT_BLANK_REFRESHTOKEN = "RefreshToken을 입력해 주세요.";
@@ -21,6 +24,7 @@ public class AuthConstant {
     public static final String PATTERN_MISMATCH_USER_EMP_NOMBER = "사원번호에 입력 가능한 패턴을 확인해 주세요.";
     public static final String NOT_BLANK_USER_EMAIL = "이메일을 입력해 주세요.";
     public static final String INVALID_FORMAT_USER_EMAIL = "이메일 형식으로 입력해 주세요.";
+    public static final String NOT_EMPTY_USER_LIST = "1명 이상의 유저를 입력해 주세요.";
 
 
     //Swagger reissue token example

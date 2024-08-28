@@ -20,6 +20,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import java.util.List;
 
+import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -58,6 +60,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/logout").authenticated()
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll()
+            .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
             .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll());
 
