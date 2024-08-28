@@ -3,6 +3,7 @@ package com.fastcampus.befinal.common.contant;
 public class AuthConstant {
     //권한
     public static final String ADMIN_AUTHORITY = "ROLE_ADMIN";
+    public static final String USER_AUTHORITY = "ROLE_USER";
 
     //Dto 검증
     public static final String NOT_BLANK_ACCESSTOKEN = "AccessToken을 입력해 주세요.";

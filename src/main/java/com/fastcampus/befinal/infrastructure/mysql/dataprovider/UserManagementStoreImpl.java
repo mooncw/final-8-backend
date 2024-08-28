@@ -19,4 +19,9 @@ public class UserManagementStoreImpl implements UserManagementStore {
         UserManagement userManagement = mysqlEntityMapper.from(command);
         userManagementRepository.save(userManagement);
     }
+
+    @Override
+    public void delete(UserManagement userManagement) {
+        userManagementRepository.delete(userManagement);
+    }
 }
