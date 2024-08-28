@@ -2,7 +2,6 @@ package com.fastcampus.befinal.presentation.dto;
 
 import com.fastcampus.befinal.common.annotation.ComplexPattern;
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
