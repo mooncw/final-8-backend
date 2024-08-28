@@ -41,9 +41,9 @@ public class AuthDto {
         String password,
 
         @Schema(example = SWAGGER_SIGN_UP_USER_EMP_NOMBER)
-        @NotBlank(message = NOT_BLANK_USER_EMP_NOMBER, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Size(min = 8, max = 8, message = SIZE_MISMATCH_USER_EMP_NOMBER, groups = RequestValidationGroups.SizeGroup.class)
-        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_USER_EMP_NOMBER, groups = RequestValidationGroups.PatternGroup.class)
+        @NotBlank(message = NOT_BLANK_USER_EMP_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 8, max = 8, message = SIZE_MISMATCH_USER_EMP_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_USER_EMP_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
         String empNo,
 
         @Schema(example = SWAGGER_SIGN_UP_USER_EMAIL)

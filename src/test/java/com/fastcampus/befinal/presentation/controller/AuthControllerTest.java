@@ -1,6 +1,8 @@
 package com.fastcampus.befinal.presentation.controller;
 
 import com.fastcampus.befinal.application.facade.AuthFacade;
+import com.fastcampus.befinal.common.config.SecurityConfig;
+import com.fastcampus.befinal.domain.service.JwtAuthService;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -8,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -21,10 +24,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("AuthController 테스트")
 @WebMvcTest(AuthController.class)
+@Import(SecurityConfig.class)
 class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -32,10 +37,16 @@ class AuthControllerTest {
     @MockBean
     private AuthFacade authFacade;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @MockBean
+    private JwtAuthService jwtAuthService;
+
+    @MockBean
+    private AccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
-    @WithMockUser
     @DisplayName("회원가입 요청 성공시, 200 OK와 정상 응답을 반환")
     void signUpTest() throws Exception {
         //given
@@ -67,7 +78,6 @@ class AuthControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DisplayName("아이디 중복 확인 요청 성공시, 200 OK와 정상 응답을 반환")
     void checkIdDuplicationTest() throws Exception {
         //given
@@ -94,7 +104,6 @@ class AuthControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DisplayName("인증번호 요청 성공시, 200 OK와 정상 응답을 반환")
     void sendCertificationNumberTest() throws Exception {
         //given
@@ -121,7 +130,6 @@ class AuthControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DisplayName("재발급 요청 성공시, 200 OK와 정상 응답을 반환")
     void reissueJwtTest() throws Exception {
         //given
