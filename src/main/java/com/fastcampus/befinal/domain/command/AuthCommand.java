@@ -11,7 +11,9 @@ public class AuthCommand {
         String id,
         String password,
         String empNo,
-        String email
+        String email,
+        String idCheckToken,
+        String certificationNumberCheckToken
     ) {}
 
     @Builder
@@ -20,13 +22,8 @@ public class AuthCommand {
     ) {}
 
     @Builder
-    public record UpdateCheckListRequest(
-        CertificationType certificationType,
-        String phoneNumber
-    ) {}
-
-    @Builder
     public record CheckCertificationNumberRequest(
+        CertificationType type,
         String phoneNumber,
         String certificationNumber
     ) {}

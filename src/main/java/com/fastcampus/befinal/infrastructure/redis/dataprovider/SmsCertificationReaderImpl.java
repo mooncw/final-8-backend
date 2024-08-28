@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Optional;
 
-import static com.fastcampus.befinal.common.contant.RedisConstant.SMSCERTIFICATION_PREFIX;
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NOT_FOUND_CERTIFICATION_NUMBER;
 
 @DataProvider
@@ -22,7 +21,7 @@ public class SmsCertificationReaderImpl implements SmsCertificationReader {
     @Override
     public SmsCertification find(AuthCommand.CheckCertificationNumberRequest command) {
         return (SmsCertification) Optional.ofNullable(redisTemplate.opsForValue()
-                .get(SMSCERTIFICATION_PREFIX + command.phoneNumber()))
+                .get(command.type() + "_" + command.phoneNumber()))
             .orElseThrow(() -> new BusinessException(NOT_FOUND_CERTIFICATION_NUMBER));
     }
 }

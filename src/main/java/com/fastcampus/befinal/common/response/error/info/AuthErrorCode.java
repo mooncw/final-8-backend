@@ -9,11 +9,14 @@ import org.springframework.http.HttpStatus;
 public enum AuthErrorCode implements ErrorCode {
     DENIED_ACCESS(HttpStatus.FORBIDDEN, AuthCode.DENIED_ACCESS, "접근 권한이 없습니다."),
     SIGNUP_USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, AuthCode.SIGNUP_USER_ALREADY_EXIST, "이미 회원가입 된 유저입니다."),
-    USER_ID_ALREADY_EXIST(HttpStatus.UNAUTHORIZED, AuthCode.USER_ID_ALREADY_EXIST, "이미 존재하는 ID입니다."),
+    USER_ID_ALREADY_EXIST(HttpStatus.UNAUTHORIZED, AuthCode.USER_ID_ALREADY_EXIST, "이미 존재하는 아이디입니다."),
     PHONE_NUMBER_ALREADY_EXIST(HttpStatus.UNAUTHORIZED, AuthCode.PHONE_NUMBER_ALREADY_EXIST, "이미 존재하는 연락처입니다."),
     NOT_FOUND_CERTIFICATION_NUMBER(HttpStatus.UNAUTHORIZED, AuthCode.NOT_FOUND_CERTIFICATION_NUMBER, "존재하지 않는 인증번호입니다."),
     INCONSISTENT_CERTIFICATION_NUMBER(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_CERTIFICATION_NUMBER, "일치하지 않는 인증번호입니다."),
-    NOT_VALID_CERTIFICATION_TYPE(HttpStatus.UNAUTHORIZED, AuthCode.NOT_VALID_CERTIFICATION_TYPE, "유효하지 않는 인증 타입입니다.");
+    INVALID_CERTIFICATION_TYPE(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_CERTIFICATION_TYPE, "유효하지 않는 인증 타입입니다."),
+    INVALID_ID_CHECK_TOKEN(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_ID_CHECK_TOKEN, "유효하지 않는 아이디 중복 확인 토큰입니다."),
+    INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN,
+        "유효하지 않는 인증번호 확인 토큰입니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

@@ -8,11 +8,12 @@ import com.fastcampus.befinal.domain.command.SmsCommand;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
-import org.mapstruct.*;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-import java.util.Objects;
-
-import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NOT_VALID_CERTIFICATION_TYPE;
+import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.INVALID_CERTIFICATION_TYPE;
 
 @Mapper(
     componentModel = "spring",
@@ -20,13 +21,12 @@ import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NO
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface AuthDtoMapper {
+    @Mapping(source = "certNoCheckToken", target = "certificationNumberCheckToken")
     AuthCommand.SignUpRequest toAuthCommand(AuthDto.SignUpRequest request);
 
     AuthCommand.CheckIdDuplicationRequest toAuthCommand(AuthDto.CheckIdDuplicationRequest request);
 
     SmsCommand.SendCertificationNumberRequest toAuthCommand(AuthDto.SendCertificationNumberRequest request);
-
-//    AuthCommand.UpdateCheckListRequest toAuthCommand(String type, String phoneNumber);
 
     @Mapping(source = "certNo", target = "certificationNumber")
     AuthCommand.CheckCertificationNumberRequest toAuthCommand(AuthDto.CheckCertificationNumberRequest request);
@@ -40,7 +40,7 @@ public interface AuthDtoMapper {
     @Mapping(source = "token", target = "idCheckToken")
     AuthDto.CheckIdDuplicationResponse from(AuthInfo.CheckIdTokenInfo info);
 
-    @Mapping(source = "token", target = "certificationNumberCheckToken")
+    @Mapping(source = "token", target = "certNoCheckToken")
     AuthDto.CheckCertificationNumberResponse from(AuthInfo.CheckCertificationNumberTokenInfo info);
 
     AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
@@ -50,7 +50,7 @@ public interface AuthDtoMapper {
             case "SignUp" -> {
                 return CertificationType.SIGN_UP;
             }
-            default -> throw new BusinessException(NOT_VALID_CERTIFICATION_TYPE);
+            default -> throw new BusinessException(INVALID_CERTIFICATION_TYPE);
         }
     }
 }

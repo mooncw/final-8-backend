@@ -22,11 +22,18 @@ public class AuthServiceImpl implements AuthService {
     private final UserManagementStore userManagementStore;
     private final SmsCertificationReader smsCertificationReader;
     private final CheckTokenStore checkTokenStore;
+    private final CheckTokenReader checkTokenReader;
 
     @Override
     @Transactional
     public void signUp(AuthCommand.SignUpRequest command) {
+        AuthInfo.CheckTokenInfo idCheckTokenInfo = AuthInfo.CheckTokenInfo.from(command.idCheckToken());
+        AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo = AuthInfo.CheckTokenInfo.from(command.certificationNumberCheckToken());
+
+        validateCheckToken(idCheckTokenInfo, certificationNumberCheckTokenInfo);
+
         validateSignUpUser(command);
+
         userManagementStore.store(command);
     }
 
@@ -36,16 +43,29 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    private void validateCheckToken(AuthInfo.CheckTokenInfo idCheckTokenInfo, AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo) {
+        if (!checkTokenReader.exists(idCheckTokenInfo)) {
+            throw new BusinessException(INVALID_ID_CHECK_TOKEN);
+        }
+
+        if (!checkTokenReader.exists(certificationNumberCheckTokenInfo)) {
+            throw new BusinessException(INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN);
+        }
+
+        checkTokenStore.delete(idCheckTokenInfo);
+        checkTokenStore.delete(certificationNumberCheckTokenInfo);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public AuthInfo.CheckIdTokenInfo checkIdDuplication(AuthCommand.CheckIdDuplicationRequest command) {
         validateUserIdDuplication(command);
 
-        AuthInfo.CheckIdTokenInfo checkIdTokenInfo = AuthInfo.CheckIdTokenInfo.from(Generator.generateUniqueValue());
+        AuthInfo.CheckTokenInfo checkTokenInfo = AuthInfo.CheckTokenInfo.from(Generator.generateUniqueValue());
 
-        checkTokenStore.store(checkIdTokenInfo);
+        checkTokenStore.store(checkTokenInfo);
 
-        return checkIdTokenInfo;
+        return AuthInfo.CheckIdTokenInfo.from(checkTokenInfo.token());
     }
 
     private void validateUserIdDuplication(AuthCommand.CheckIdDuplicationRequest command) {
@@ -60,17 +80,11 @@ public class AuthServiceImpl implements AuthService {
 
         validateCertificationNumber(command, smsCertification);
 
-        AuthInfo.CheckCertificationNumberTokenInfo checkCertificationNumberTokenInfo =
-            AuthInfo.CheckCertificationNumberTokenInfo.from(Generator.generateUniqueValue());
+        AuthInfo.CheckTokenInfo checkTokenInfo = AuthInfo.CheckTokenInfo.from(Generator.generateUniqueValue());
 
-        checkTokenStore.store(checkCertificationNumberTokenInfo);
+        checkTokenStore.store(checkTokenInfo);
 
-        return checkCertificationNumberTokenInfo;
-    }
-
-    @Override
-    public void updateCheckList(AuthCommand.UpdateCheckListRequest command) {
-//        signUpCheckListStore
+        return AuthInfo.CheckCertificationNumberTokenInfo.from(checkTokenInfo.token());
     }
 
     private void validateCertificationNumber(AuthCommand.CheckCertificationNumberRequest command,

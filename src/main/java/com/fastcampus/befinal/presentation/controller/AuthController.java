@@ -106,9 +106,9 @@ public class AuthController {
             schema = @Schema(
                 example = "{ " +
                     "\"code\": 1104, " +
-                    "\"message\": \"유효한 인증번호입니다.\"" +
+                    "\"message\": \"유효한 인증번호입니다.\", " +
                     "\"data\": {" +
-                    "\"certificationNumberCheckToken\": \"95f43709-d81e-4a53-9633-249078713923\"" +
+                    "\"certNoCheckToken\": \"95f43709-d81e-4a53-9633-249078713923\"" +
                     "}" +
                 "}"
             )

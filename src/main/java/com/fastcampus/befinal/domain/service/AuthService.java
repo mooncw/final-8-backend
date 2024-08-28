@@ -9,6 +9,4 @@ public interface AuthService {
     AuthInfo.CheckIdTokenInfo checkIdDuplication(AuthCommand.CheckIdDuplicationRequest command);
 
     AuthInfo.CheckCertificationNumberTokenInfo checkCertificationNumber(AuthCommand.CheckCertificationNumberRequest command);
-
-    void updateCheckList(AuthCommand.UpdateCheckListRequest command);
 }

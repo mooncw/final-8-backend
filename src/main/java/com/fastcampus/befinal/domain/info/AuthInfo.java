@@ -24,4 +24,15 @@ public class AuthInfo {
                 .build();
         }
     }
+
+    @Builder
+    public record CheckTokenInfo(
+        String token
+    ) {
+        public static CheckTokenInfo from(String token) {
+            return CheckTokenInfo.builder()
+                .token(token)
+                .build();
+        }
+    }
 }

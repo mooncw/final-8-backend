@@ -17,13 +17,13 @@ public class CheckTokenStoreImpl implements CheckTokenStore {
     private final RedisTemplate<String, RedisValue> redisTemplate;
 
     @Override
-    public void store(AuthInfo.CheckIdTokenInfo info) {
+    public void store(AuthInfo.CheckTokenInfo info) {
         redisTemplate.opsForValue().set(info.token(), null, getDuration());
     }
 
     @Override
-    public void store(AuthInfo.CheckCertificationNumberTokenInfo info) {
-        redisTemplate.opsForValue().set(info.token(), null, getDuration());
+    public void delete(AuthInfo.CheckTokenInfo info) {
+        redisTemplate.delete(info.token());
     }
 
     private Duration getDuration() {
