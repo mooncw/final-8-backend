@@ -61,9 +61,9 @@ class AuthControllerTest {
             .content(objectMapper.writeValueAsString(request)));
 
         //then
-        perform.andExpect(status().is(SIGNUP_SUCCESS.getHttpStatus().value()))
-            .andExpect(jsonPath("code").value(SIGNUP_SUCCESS.getCode()))
-            .andExpect(jsonPath("message").value(SIGNUP_SUCCESS.getMessage()));
+        perform.andExpect(status().is(SIGN_UP_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(SIGN_UP_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(SIGN_UP_SUCCESS.getMessage()));
     }
 
     @Test

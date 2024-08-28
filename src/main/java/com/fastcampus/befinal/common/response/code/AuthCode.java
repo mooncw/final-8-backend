@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 public enum AuthCode implements Code {
     //success
     REISSUE_JWT_SUCCESS(1100),
-    SIGNUP_SUCCESS(1101),
+    SIGN_UP_SUCCESS(1101),
     CHECK_ID_DUPLICATION_SUCCESS(1102),
     SEND_CERTIFICATION_NUMBER_SUCCESS(1103),
 
