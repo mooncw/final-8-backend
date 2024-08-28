@@ -29,7 +29,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.ReissueJwtRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<ConstraintViolation<AuthDto.ReissueJwtRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -47,15 +48,19 @@ public class AuthDtoTest {
             .password(" ")
             .empNo(" ")
             .email(" ")
+            .idCheckToken(" ")
+            .certNoCheckToken(" ")
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.SignUpRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<ConstraintViolation<AuthDto.SignUpRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
         assertThat(message).isEqualTo(Set.of(NOT_BLANK_USER_NAME, NOT_BLANK_PHONE_NUMBER, NOT_BLANK_USER_ID,
-            NOT_BLANK_USER_PASSWORD, NOT_BLANK_USER_EMP_NOMBER, NOT_BLANK_USER_EMAIL));
+            NOT_BLANK_USER_PASSWORD, NOT_BLANK_USER_EMP_NOMBER, NOT_BLANK_USER_EMAIL, NOT_BLANK_USER_ID_CHECK_TOKEN,
+            NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN));
     }
 
     @Test
@@ -71,7 +76,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.SignUpRequest>> violations = validator.validate(request, RequestValidationGroups.SizeGroup.class);
+        Set<ConstraintViolation<AuthDto.SignUpRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -93,7 +99,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.SignUpRequest>> violations = validator.validate(request, RequestValidationGroups.PatternGroup.class);
+        Set<ConstraintViolation<AuthDto.SignUpRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -110,7 +117,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -126,7 +134,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request, RequestValidationGroups.SizeGroup.class);
+        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -142,7 +151,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request, RequestValidationGroups.PatternGroup.class);
+        Set<ConstraintViolation<AuthDto.CheckIdDuplicationRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -159,7 +169,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -175,7 +186,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.SizeGroup.class);
+        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -192,7 +204,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.PatternGroup.class);
+        Set<ConstraintViolation<AuthDto.SendCertificationNumberRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -204,16 +217,19 @@ public class AuthDtoTest {
     void whenCheckCertificationNumberRequestIsBlank_thenValidationFails() {
         //given
         AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .type(" ")
             .phoneNumber(" ")
             .certNo(" ")
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.NotBlankGroup.class);
+        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
-        assertThat(message).isEqualTo(Set.of(NOT_BLANK_PHONE_NUMBER, NOT_BLANK_CERTIFICATION_NUMBER));
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_PHONE_NUMBER, NOT_BLANK_CERTIFICATION_NUMBER,
+            NOT_BLANK_CERTIFICATION_TYPE));
     }
 
     @Test
@@ -226,7 +242,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.SizeGroup.class);
+        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
@@ -243,7 +260,8 @@ public class AuthDtoTest {
             .build();
 
         //when
-        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request, RequestValidationGroups.PatternGroup.class);
+        Set<ConstraintViolation<AuthDto.CheckCertificationNumberRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then

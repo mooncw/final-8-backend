@@ -37,12 +37,6 @@ public class AuthServiceImpl implements AuthService {
         userManagementStore.store(command);
     }
 
-    private void validateSignUpUser(AuthCommand.SignUpRequest command) {
-        if (userUnionViewReader.existsSignUpUser(command)) {
-            throw new BusinessException(SIGNUP_USER_ALREADY_EXIST);
-        }
-    }
-
     private void validateCheckToken(AuthInfo.CheckTokenInfo idCheckTokenInfo, AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo) {
         if (!checkTokenReader.exists(idCheckTokenInfo)) {
             throw new BusinessException(INVALID_ID_CHECK_TOKEN);
@@ -55,6 +49,13 @@ public class AuthServiceImpl implements AuthService {
         checkTokenStore.delete(idCheckTokenInfo);
         checkTokenStore.delete(certificationNumberCheckTokenInfo);
     }
+
+    private void validateSignUpUser(AuthCommand.SignUpRequest command) {
+        if (userUnionViewReader.existsSignUpUser(command)) {
+            throw new BusinessException(SIGNUP_USER_ALREADY_EXIST);
+        }
+    }
+
 
     @Override
     @Transactional(readOnly = true)

@@ -46,6 +46,8 @@ class AuthControllerTest {
             .phoneNumber("01011112222")
             .empNo("11111111")
             .email("hong@hong.com")
+            .idCheckToken("aaaa-aaaa-aaaa")
+            .certNoCheckToken("bbbb-bbbb-bbbb")
             .build();
 
         doNothing()
@@ -75,12 +77,16 @@ class AuthControllerTest {
             .id("aaaa")
             .build();
 
-        doNothing()
+        AuthDto.CheckIdDuplicationResponse response = AuthDto.CheckIdDuplicationResponse.builder()
+            .idCheckToken("aaaa-aaaa-aaaa")
+            .build();
+
+        doReturn(response)
             .when(authFacade)
             .checkIdDuplication(request);
 
         //when
-        ResultActions perform = mockMvc.perform(post("/api/v1/auth/id-check")
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/check-id")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -99,6 +105,7 @@ class AuthControllerTest {
     void sendCertificationNumberTest() throws Exception {
         //given
         AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .type("SignUp")
             .phoneNumber("01011112222")
             .build();
 
@@ -126,11 +133,16 @@ class AuthControllerTest {
     void checkCertificationNumberTest() throws Exception {
         //given
         AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .type("SignUp")
             .phoneNumber("01011112222")
             .certNo("111111")
             .build();
 
-        doNothing()
+        AuthDto.CheckCertificationNumberResponse response = AuthDto.CheckCertificationNumberResponse.builder()
+            .certNoCheckToken("bbbb-bbbb-bbbb")
+            .build();
+
+        doReturn(response)
             .when(authFacade)
             .checkCertificationNumber(request);
 
