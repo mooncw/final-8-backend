@@ -16,7 +16,8 @@ public enum AuthErrorCode implements ErrorCode {
     INVALID_CERTIFICATION_TYPE(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_CERTIFICATION_TYPE, "유효하지 않는 인증 타입입니다."),
     INVALID_ID_CHECK_TOKEN(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_ID_CHECK_TOKEN, "유효하지 않는 아이디 중복 확인 토큰입니다."),
     INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN,
-        "유효하지 않는 인증번호 확인 토큰입니다.");
+        "유효하지 않는 인증번호 확인 토큰입니다."),
+    NOT_FOUND_USER(HttpStatus.UNAUTHORIZED, AuthCode.NOT_FOUND_USER, "존재하지 않는 유저입니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

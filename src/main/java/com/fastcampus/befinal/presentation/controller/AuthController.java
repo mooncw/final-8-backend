@@ -48,7 +48,7 @@ public class AuthController {
         AuthDto.SignUpRequest request
     ) {
         authFacade.signUp(request);
-        return ResponseEntityFactory.toResponseEntity(SIGNUP_SUCCESS);
+        return ResponseEntityFactory.toResponseEntity(SIGN_UP_SUCCESS);
     }
 
     @PostMapping("/check-id")
