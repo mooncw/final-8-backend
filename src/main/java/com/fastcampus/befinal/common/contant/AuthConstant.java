@@ -25,6 +25,13 @@ public class AuthConstant {
     public static final String PATTERN_MISMATCH_USER_EMP_NUMBER = "사원번호에 입력 가능한 패턴을 확인해 주세요.";
     public static final String NOT_BLANK_USER_EMAIL = "이메일을 입력해 주세요.";
     public static final String INVALID_FORMAT_USER_EMAIL = "이메일 형식으로 입력해 주세요.";
+    public static final String NOT_BLANK_CERTIFICATION_NUMBER = "인증번호를 입력해 주세요.";
+    public static final String SIZE_MISMATCH_CERTIFICATION_NUMBER = "인증번호의 글자 수를 확인해 주세요.";
+    public static final String PATTERN_MISMATCH_CERTIFICATION_NUMBER = "인증번호에 입력 가능한 패턴을 확인해 주세요.";
+    public static final String NOT_BLANK_CERTIFICATION_TYPE = "인증 타입을 입력해 주세요.";
+    public static final String PATTERN_MISMATCH_CERTIFICATION_TYPE = "인증 타입에 입력 가능한 패턴을 확인해 주세요.";
+    public static final String NOT_BLANK_USER_ID_CHECK_TOKEN = "아이디 확인 토큰을 입력해 주세요.";
+    public static final String NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN = "인증번호 확인 토큰을 입력해 주세요.";
     public static final String NOT_EMPTY_USER_LIST = "1명 이상의 유저를 입력해 주세요.";
 
 
@@ -34,12 +41,14 @@ public class AuthConstant {
     public static final String SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ0ZW1wb3JhcnlVc2VyMSIsImlhdCI6MTcyNDA2NDQzNiwiZXhwIjoxNzI0MDY0NDM2fQ.fVLaomRrNk56fFNQrTNL33HK22cYdRfZJBPZqIJ5dKo";
     public static final String SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjQwNjQ0MzYsImV4cCI6MzMyODE2NjQ0MzZ9.jZqipnoDE6SdSMh-YCqqfpLRWHqFUJqJdZjjgbVULu0";
 
-    //Swagger signUp & checkIdDuplication example
+    //Swagger signUp & checkIdDuplication & checkCertificationNumber example
     public static final String SWAGGER_SIGN_UP_USER_NAME = "홍길동";
     public static final String SWAGGER_SIGN_UP_PHONE_NUMBER = "01011112222";
     public static final String SWAGGER_SIGN_UP_USER_ID = "abcd";
     public static final String SWAGGER_SIGN_UP_USER_PASSWORD = "aaaaaaa1";
     public static final String SWAGGER_SIGN_UP_USER_EMP_NOMBER = "11111111";
     public static final String SWAGGER_SIGN_UP_USER_EMAIL = "hong@hong.com";
-
+    public static final String SWAGGER_CERTIFICATION_NUMBER_TYPE = "SignUp";
+    public static final String SWAGGER_SIGN_UP_USER_ID_CHECK_TOKEN = "dd50d3d8-d542-434b-b447-c50fa6ec06e4";
+    public static final String SWAGGER_SIGN_UP_CERTIFICATION_NUMBER_CHECK_TOKEN = "95f43709-d81e-4a53-9633-249078713923";
 }

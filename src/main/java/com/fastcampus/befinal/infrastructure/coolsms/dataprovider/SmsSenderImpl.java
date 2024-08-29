@@ -23,6 +23,6 @@ public class SmsSenderImpl implements SmsSender {
     }
 
     private String createCertificationMessage(String certificationNumber) {
-        return "[" + CERTIFICATION_SENDER_NAME + "] 본인확인 인증번호 [" + certificationNumber + "]를 입력해주세요.";
+        return "[" + CERTIFICATION_SENDER_NAME + "] 인증번호 [" + certificationNumber + "]를 입력해주세요.";
     }
 }
