@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonTypeName(value = "SmsCertification")
-public class SmsCertification implements SmsValue {
+public class SmsCertification implements SmsRedisValue {
     private String certificationNumber;
 }

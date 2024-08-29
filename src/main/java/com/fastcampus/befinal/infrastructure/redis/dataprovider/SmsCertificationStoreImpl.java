@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
-import static com.fastcampus.befinal.common.contant.RedisConstant.SMSCERTIFICATION_PREFIX;
 import static com.fastcampus.befinal.common.contant.SmsConstant.CERTIFICATION_DURATION;
 
 @DataProvider
@@ -27,7 +26,7 @@ public class SmsCertificationStoreImpl implements SmsCertificationStore {
 
         Duration duration = getDuration(info);
 
-        redisTemplate.opsForValue().set(SMSCERTIFICATION_PREFIX + info.phoneNumber(), smsCertification, duration);
+        redisTemplate.opsForValue().set(info.type() + "_" + info.phoneNumber(), smsCertification, duration);
     }
 
     private Duration getDuration(SmsInfo.SmsCertificationInfo info) {

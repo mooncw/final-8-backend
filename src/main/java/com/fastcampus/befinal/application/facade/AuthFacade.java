@@ -2,6 +2,7 @@ package com.fastcampus.befinal.application.facade;
 
 import com.fastcampus.befinal.application.mapper.AuthDtoMapper;
 import com.fastcampus.befinal.common.annotation.Facade;
+import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.domain.service.AuthService;
 import com.fastcampus.befinal.domain.service.JwtCreationService;
@@ -21,12 +22,18 @@ public class AuthFacade {
         authService.signUp(authDtoMapper.toAuthCommand(request));
     }
 
-    public void checkIdDuplication(AuthDto.CheckIdDuplicationRequest request) {
-        authService.checkIdDuplication(authDtoMapper.toAuthCommand(request));
+    public AuthDto.CheckIdDuplicationResponse checkIdDuplication(AuthDto.CheckIdDuplicationRequest request) {
+        AuthInfo.CheckIdTokenInfo info = authService.checkIdDuplication(authDtoMapper.toAuthCommand(request));
+        return authDtoMapper.from(info);
     }
 
     public void sendCertificationNumber(AuthDto.SendCertificationNumberRequest request) {
         smsService.sendCertificationNumber(authDtoMapper.toAuthCommand(request));
+    }
+
+    public AuthDto.CheckCertificationNumberResponse checkCertificationNumber(AuthDto.CheckCertificationNumberRequest request) {
+        AuthInfo.CheckCertificationNumberTokenInfo info = authService.checkCertificationNumber(authDtoMapper.toAuthCommand(request));
+        return authDtoMapper.from(info);
     }
 
     public void signIn(AuthDto.SignInRequest request) {

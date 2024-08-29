@@ -1,6 +1,8 @@
 package com.fastcampus.befinal.presentation.controller;
 
 import com.fastcampus.befinal.application.facade.AuthFacade;
+import com.fastcampus.befinal.common.config.SecurityConfig;
+import com.fastcampus.befinal.domain.service.JwtAuthService;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -8,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -21,10 +24,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("AuthController 테스트")
 @WebMvcTest(AuthController.class)
+@Import(SecurityConfig.class)
 class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -32,10 +37,16 @@ class AuthControllerTest {
     @MockBean
     private AuthFacade authFacade;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @MockBean
+    private JwtAuthService jwtAuthService;
+
+    @MockBean
+    private AccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
-    @WithMockUser
     @DisplayName("회원가입 요청 성공시, 200 OK와 정상 응답을 반환")
     void signUpTest() throws Exception {
         //given
@@ -46,6 +57,8 @@ class AuthControllerTest {
             .phoneNumber("01011112222")
             .empNo("11111111")
             .email("hong@hong.com")
+            .idCheckToken("aaaa-aaaa-aaaa")
+            .certNoCheckToken("bbbb-bbbb-bbbb")
             .build();
 
         doNothing()
@@ -61,13 +74,12 @@ class AuthControllerTest {
             .content(objectMapper.writeValueAsString(request)));
 
         //then
-        perform.andExpect(status().is(SIGNUP_SUCCESS.getHttpStatus().value()))
-            .andExpect(jsonPath("code").value(SIGNUP_SUCCESS.getCode()))
-            .andExpect(jsonPath("message").value(SIGNUP_SUCCESS.getMessage()));
+        perform.andExpect(status().is(SIGN_UP_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(SIGN_UP_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(SIGN_UP_SUCCESS.getMessage()));
     }
 
     @Test
-    @WithMockUser
     @DisplayName("아이디 중복 확인 요청 성공시, 200 OK와 정상 응답을 반환")
     void checkIdDuplicationTest() throws Exception {
         //given
@@ -75,12 +87,16 @@ class AuthControllerTest {
             .id("aaaa")
             .build();
 
-        doNothing()
+        AuthDto.CheckIdDuplicationResponse response = AuthDto.CheckIdDuplicationResponse.builder()
+            .idCheckToken("aaaa-aaaa-aaaa")
+            .build();
+
+        doReturn(response)
             .when(authFacade)
             .checkIdDuplication(request);
 
         //when
-        ResultActions perform = mockMvc.perform(post("/api/v1/auth/id-check")
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/check-id")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -94,11 +110,11 @@ class AuthControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DisplayName("인증번호 요청 성공시, 200 OK와 정상 응답을 반환")
     void sendCertificationNumberTest() throws Exception {
         //given
         AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .type("SignUp")
             .phoneNumber("01011112222")
             .build();
 
@@ -121,7 +137,38 @@ class AuthControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @DisplayName("인증번호 확인 성공시, 200 OK와 정상 응답을 반환")
+    void checkCertificationNumberTest() throws Exception {
+        //given
+        AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .type("SignUp")
+            .phoneNumber("01011112222")
+            .certNo("111111")
+            .build();
+
+        AuthDto.CheckCertificationNumberResponse response = AuthDto.CheckCertificationNumberResponse.builder()
+            .certNoCheckToken("bbbb-bbbb-bbbb")
+            .build();
+
+        doReturn(response)
+            .when(authFacade)
+            .checkCertificationNumber(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/check-cert-no")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(CHECK_CERTIFICATION_NUMBER_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getMessage()));
+    }
+
+    @Test
     @DisplayName("재발급 요청 성공시, 200 OK와 정상 응답을 반환")
     void reissueJwtTest() throws Exception {
         //given
