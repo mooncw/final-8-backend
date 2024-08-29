@@ -13,20 +13,17 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     private final AdvertisementRepositoryCustom advertisementRepositoryCustom;
 
     @Override
-    public DashBoardInfo.DashBoardDataInfo findDashBoardData(String userId) {
-        DashBoardInfo.AdCount adCount = advertisementRepositoryCustom.getAdCount(userId);
-        List<DashBoardInfo.DailyDone> dailyDoneList = advertisementRepositoryCustom.getDailyDoneList(userId);
-        List<DashBoardInfo.RecentDone> recentDoneList = advertisementRepositoryCustom.getRecentDoneList(userId);
+    public DashBoardInfo.AdCount findAdCount(String userId) {
+        return advertisementRepositoryCustom.getAdCount(userId);
+    }
 
-        return DashBoardInfo.DashBoardDataInfo.builder()
-                .totalAd(adCount.totalAd())
-                .myAd(adCount.myAd())
-                .totalDoneAd(adCount.totalDoneAd())
-                .myDoneAd(adCount.myDoneAd())
-                .totalNotDoneAd(adCount.totalNotDoneAd())
-                .myNotDoneAd(adCount.myNotDoneAd())
-                .dailyDoneList(dailyDoneList)
-                .recentDoneList(recentDoneList)
-                .build();
+    @Override
+    public List<DashBoardInfo.DailyDone> findDailyDone(String userId) {
+        return advertisementRepositoryCustom.getDailyDoneList(userId);
+    }
+
+    @Override
+    public List<DashBoardInfo.RecentDone> findRecentDone(String userId) {
+        return advertisementRepositoryCustom.getRecentDoneList(userId);
     }
 }
