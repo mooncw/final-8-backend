@@ -9,14 +9,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @DisplayName("UserBoardService 테스트")
 @ExtendWith(MockitoExtension.class)
-public class UserBoardServiceImplTest {
+class UserBoardServiceImplTest {
     @InjectMocks
     private UserBoardServiceImpl userBoardService;
 
@@ -28,25 +30,38 @@ public class UserBoardServiceImplTest {
     void loadDashBoardTest() {
         // given
         String userId = "testID";
-        LocalDate date = LocalDate.now();
 
-        DashBoardInfo.DashBoardDataInfo info = DashBoardInfo.DashBoardDataInfo.builder()
-                .totalAd(1)
-                .myAd(1)
-                .totalDoneAd(1)
-                .myDoneAd(1)
-                .totalNotDoneAd(1)
-                .myNotDoneAd(1)
-                .dailyDoneList(new ArrayList<>())
-                .recentDoneList(new ArrayList<>())
-                .build();
+        DashBoardInfo.AdCount adCount = DashBoardInfo.AdCount.builder()
+                        .totalAd(1)
+                        .myAd(1)
+                        .totalDoneAd(1)
+                        .myDoneAd(1)
+                        .totalNotDoneAd(1)
+                        .myNotDoneAd(1)
+                        .build();
+        List<DashBoardInfo.DailyDone> dailyDoneList = new ArrayList<>();
+        List<DashBoardInfo.RecentDone> recentDoneList = new ArrayList<>();
 
-        when(advertisementReader.findDashBoardData(userId)).thenReturn(info);
+        when(advertisementReader.findAdCount(userId)).thenReturn(adCount);
+        when(advertisementReader.findDailyDone(userId)).thenReturn(dailyDoneList);
+        when(advertisementReader.findRecentDone(userId)).thenReturn(recentDoneList);
 
         // when
         DashBoardInfo.DashBoardDataInfo result = userBoardService.loadUserDashBoardData(userId);
 
         // then
-        verify(advertisementReader, times(1)).findDashBoardData(userId);
+        assertNotNull(result);
+        assertEquals(adCount.totalAd(), result.totalAd());
+        assertEquals(adCount.myAd(), result.myAd());
+        assertEquals(adCount.totalDoneAd(), result.totalDoneAd());
+        assertEquals(adCount.myDoneAd(), result.myDoneAd());
+        assertEquals(adCount.totalNotDoneAd(), result.totalNotDoneAd());
+        assertEquals(adCount.myNotDoneAd(), result.myNotDoneAd());
+        assertEquals(dailyDoneList, result.dailyDoneList());
+        assertEquals(recentDoneList, result.recentDoneList());
+
+        verify(advertisementReader, times(1)).findAdCount(userId);
+        verify(advertisementReader, times(1)).findDailyDone(userId);
+        verify(advertisementReader, times(1)).findRecentDone(userId);
     }
 }
