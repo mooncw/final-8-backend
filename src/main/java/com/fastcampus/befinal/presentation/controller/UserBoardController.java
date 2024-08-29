@@ -3,6 +3,8 @@ package com.fastcampus.befinal.presentation.controller;
 import com.fastcampus.befinal.application.facade.BoardFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
+import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.response.error.info.DashBoardErrorCode;
 import com.fastcampus.befinal.common.response.success.info.DashBoardSuccessCode;
 import com.fastcampus.befinal.presentation.dto.DashBoardDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +27,11 @@ public class UserBoardController {
 
     ) {
         String userId = "testID";
+        if(userId == null) {
+            throw new BusinessException(DashBoardErrorCode.DENIED_ACCESS_DASHBOARD);
+        }
 
         DashBoardDto.DashBoardDataResponse response = boardFacade.loadUserDashBoardData(userId);
-        return ResponseEntityFactory.toResponseEntity(DashBoardSuccessCode.CHECK_DASHBOARD, response);
+        return ResponseEntityFactory.toResponseEntity(DashBoardSuccessCode.CHECK_DASHBOARD_SUCCESS, response);
     }
 }
