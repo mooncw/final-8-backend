@@ -2,17 +2,10 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
-import com.fastcampus.befinal.domain.entity.QAdvertisement;
 import com.fastcampus.befinal.domain.info.DashBoardInfo;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepositoryCustom;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @DataProvider
 @RequiredArgsConstructor
@@ -21,10 +14,9 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
 
     @Override
     public DashBoardInfo.DashBoardDataInfo findDashBoardData(String userId) {
-        LocalDateTime today = LocalDateTime.now();
-        DashBoardInfo.AdCount adCount = advertisementRepositoryCustom.getAdCount(userId, today);
-        List<DashBoardInfo.DailyDone> dailyDoneList = advertisementRepositoryCustom.getDailyDoneList(userId, today);
-        List<DashBoardInfo.RecentDone> recentDoneList = advertisementRepositoryCustom.getRecentDoneList(userId, today);
+        DashBoardInfo.AdCount adCount = advertisementRepositoryCustom.getAdCount(userId);
+        List<DashBoardInfo.DailyDone> dailyDoneList = advertisementRepositoryCustom.getDailyDoneList(userId);
+        List<DashBoardInfo.RecentDone> recentDoneList = advertisementRepositoryCustom.getRecentDoneList(userId);
 
         return DashBoardInfo.DashBoardDataInfo.builder()
                 .totalAd(adCount.totalAd())
