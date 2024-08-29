@@ -6,4 +6,6 @@ public class RequestValidationGroups {
     public interface SizeGroup {}
 
     public interface PatternGroup {}
+
+    public interface NotEmptyGroup {}
 }

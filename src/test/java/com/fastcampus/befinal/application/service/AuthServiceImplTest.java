@@ -1,8 +1,10 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.type.CertificationType;
 import com.fastcampus.befinal.domain.command.AuthCommand;
-import com.fastcampus.befinal.domain.dataprovider.UserManagementStore;
-import com.fastcampus.befinal.domain.dataprovider.UserUnionViewReader;
+import com.fastcampus.befinal.domain.dataprovider.*;
+import com.fastcampus.befinal.domain.entity.SmsCertification;
+import com.fastcampus.befinal.domain.info.AuthInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +27,15 @@ public class AuthServiceImplTest {
     @Mock
     private UserManagementStore userManagementStore;
 
+    @Mock
+    private SmsCertificationReader smsCertificationReader;
+
+    @Mock
+    private CheckTokenStore checkTokenStore;
+
+    @Mock
+    private CheckTokenReader checkTokenReader;
+
     @Test
     @DisplayName("회원가입 성공 테스트")
     void signUpTest() {
@@ -36,7 +47,17 @@ public class AuthServiceImplTest {
             .phoneNumber("01011112222")
             .empNo("11111111")
             .email("hong@hong.com")
+            .idCheckToken("aaaa-aaaa-aaaa")
+            .certificationNumberCheckToken("bbbb-bbbb-bbbb")
             .build();
+
+        doReturn(true)
+            .when(checkTokenReader)
+            .exists(any(AuthInfo.CheckTokenInfo.class));
+
+        doNothing()
+            .when(checkTokenStore)
+            .delete(any(AuthInfo.CheckTokenInfo.class));
 
         doNothing()
             .when(userManagementStore)
@@ -52,6 +73,8 @@ public class AuthServiceImplTest {
         //verify
         verify(userManagementStore, times(1)).store(any(AuthCommand.SignUpRequest.class));
         verify(userUnionViewReader, times(1)).existsSignUpUser(any(AuthCommand.SignUpRequest.class));
+        verify(checkTokenReader, times(2)).exists(any(AuthInfo.CheckTokenInfo.class));
+        verify(checkTokenStore, times(2)).delete(any(AuthInfo.CheckTokenInfo.class));
     }
 
     @Test
@@ -66,10 +89,45 @@ public class AuthServiceImplTest {
             .when(userUnionViewReader)
             .existsUserId(any(AuthCommand.CheckIdDuplicationRequest.class));
 
+        doNothing()
+            .when(checkTokenStore)
+            .store(any(AuthInfo.CheckTokenInfo.class));
+
         //when
         authService.checkIdDuplication(command);
 
         //verify
         verify(userUnionViewReader, times(1)).existsUserId(any(AuthCommand.CheckIdDuplicationRequest.class));
+        verify(checkTokenStore, times(1)).store(any(AuthInfo.CheckTokenInfo.class));
+    }
+
+    @Test
+    @DisplayName("인증 번호 확인 성공 테스트")
+    void checkCertificationNumberTest() {
+        //given
+        AuthCommand.CheckCertificationNumberRequest command = AuthCommand.CheckCertificationNumberRequest.builder()
+            .type(CertificationType.SIGN_UP)
+            .phoneNumber("01011112222")
+            .certificationNumber("111111")
+            .build();
+
+        SmsCertification smsCertification = SmsCertification.builder()
+            .certificationNumber("111111")
+            .build();
+
+        doReturn(smsCertification)
+            .when(smsCertificationReader)
+            .find(any(AuthCommand.CheckCertificationNumberRequest.class));
+
+        doNothing()
+            .when(checkTokenStore)
+            .store(any(AuthInfo.CheckTokenInfo.class));
+
+        //when
+        authService.checkCertificationNumber(command);
+
+        //verify
+        verify(smsCertificationReader, times(1)).find(any(AuthCommand.CheckCertificationNumberRequest.class));
+        verify(checkTokenStore, times(1)).store(any(AuthInfo.CheckTokenInfo.class));
     }
 }
