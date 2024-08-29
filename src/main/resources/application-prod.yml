@@ -11,7 +11,7 @@ spring:
       refresh-token-validity-in-seconds: 1_209_600  # 2주
 
   datasource:
-    url: ENC(8+/bWefYmWQElrDSCzVahUY66cIjhf+6q+VduTzoMlSqHG69XJeXePFB9ew6W1x/8kqF00yMonCyBOKu36JGU8+MjiSqz/OyfWwMIFlK815V2u8Ginum82OhSHaba1DaBQi/nSgTiepZ0wYkULtc/KTO6t9a2GNHqPi5Z1POdjii5RwMfrbBNGxWlVcEAYGh)
+    url: ENC(N0zD7l80g/xTyjXxRaZ5oT27ncRyrCW6qLuIMRsDMhPJ9m4bLdtilJco4n0T3bbmVWE3PrcRBv9ek2e2iO0frt/EDTnYe46aAkGz+xS5hQff8xVs9HrkS7byp9mDkduiYfj8GxUMNiBNtSeWZctmTlNknkeShu1JQi0sfXC+isV35RaD0KvdRDicOgaGHpLefu+xolCk7EoIP3UzfU9I0Q==)
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: 8team
     password: ENC(Az9xEfBQnEAca68JsA/KYmaZtT0ko9oGiLOG7d6qfKuc/ySwUGdJmmj0P1CuG2O7)
@@ -35,14 +35,14 @@ spring:
   data:
     redis:
       port: ENC(wyPfla5qSG4+QZnMJrigZ18Cy4GU0J0dAgUDl2fMN4fJsSgPjVIxSUcapWhzWigA)
-      host: ENC(N41vph2odUQOK9pSYY/MPeTq5uohYLaDusaHc+Rdyf8Nv2RhMRarBtK0/ruVQo6V)
+      host: ENC(vmm+I3A/tp3Y0KFHuvqfqJJFrdoTCazesn1HOXH2IQC5CRahNIE7e3ZOu2ViYme+)
 
   logging:
     level:
       org.springframework.data.elsasticsearch.client.WIRE: TRACE
 
   elasticsearch:
-    host: ENC(3CXNdPPQ0Rayk+XAR81xg55lnmWEJUVfOC4Ii/aS8Z+wNVRxZJkKzCYtOXCWiOYL)
+    host: ENC(xBCHUjQNTgfwiLYTnyIe/aHFYmrDYiv7eGF1RJ5C3V9MaPwwQ+5iJNIt1ck6LKF8fxfy3vXEYy44UIbN2vySCw==)
 
 jasypt:
   encryptor:

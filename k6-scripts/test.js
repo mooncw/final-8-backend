@@ -7,7 +7,7 @@ export let options = {
 };
 
 export default function () {
-    let res = http.get('http://3.38.252.44/api/health-check');
+    let res = http.get('http://13.124.172.3/api/health-check');
     check(res, {
         'status is 200': (r) => r.status === 200,
     });
