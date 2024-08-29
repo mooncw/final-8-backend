@@ -7,12 +7,11 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum DashBoardSuccessCode implements SuccessCode {
-    CHECK_DASHBOARD(HttpStatus.OK, DashBoardCode.CHECK_DASHBOARD, "대시보드 확인 가능합니다.");
+    CHECK_DASHBOARD_SUCCESS(HttpStatus.OK, DashBoardCode.CHECK_DASHBOARD_SUCCESS, "대시보드 확인 가능합니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;
     private final String message;
-
 
     @Override
     public HttpStatus getHttpStatus() {
