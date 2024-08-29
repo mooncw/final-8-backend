@@ -46,6 +46,8 @@ class AuthControllerTest {
             .phoneNumber("01011112222")
             .empNo("11111111")
             .email("hong@hong.com")
+            .idCheckToken("aaaa-aaaa-aaaa")
+            .certNoCheckToken("bbbb-bbbb-bbbb")
             .build();
 
         doNothing()
@@ -75,12 +77,16 @@ class AuthControllerTest {
             .id("aaaa")
             .build();
 
-        doNothing()
+        AuthDto.CheckIdDuplicationResponse response = AuthDto.CheckIdDuplicationResponse.builder()
+            .idCheckToken("aaaa-aaaa-aaaa")
+            .build();
+
+        doReturn(response)
             .when(authFacade)
             .checkIdDuplication(request);
 
         //when
-        ResultActions perform = mockMvc.perform(post("/api/v1/auth/id-check")
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/check-id")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -99,6 +105,7 @@ class AuthControllerTest {
     void sendCertificationNumberTest() throws Exception {
         //given
         AuthDto.SendCertificationNumberRequest request = AuthDto.SendCertificationNumberRequest.builder()
+            .type("SignUp")
             .phoneNumber("01011112222")
             .build();
 
@@ -118,6 +125,39 @@ class AuthControllerTest {
         perform.andExpect(status().is(SEND_CERTIFICATION_NUMBER_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(SEND_CERTIFICATION_NUMBER_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(SEND_CERTIFICATION_NUMBER_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("인증번호 확인 성공시, 200 OK와 정상 응답을 반환")
+    void checkCertificationNumberTest() throws Exception {
+        //given
+        AuthDto.CheckCertificationNumberRequest request = AuthDto.CheckCertificationNumberRequest.builder()
+            .type("SignUp")
+            .phoneNumber("01011112222")
+            .certNo("111111")
+            .build();
+
+        AuthDto.CheckCertificationNumberResponse response = AuthDto.CheckCertificationNumberResponse.builder()
+            .certNoCheckToken("bbbb-bbbb-bbbb")
+            .build();
+
+        doReturn(response)
+            .when(authFacade)
+            .checkCertificationNumber(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/check-cert-no")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(CHECK_CERTIFICATION_NUMBER_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getMessage()));
     }
 
     @Test

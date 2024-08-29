@@ -13,8 +13,8 @@ import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 
 public class AuthDto {
     @Builder
+    @Schema(description = "회원가입 request")
     public record SignUpRequest(
-
         @Schema(example = SWAGGER_SIGN_UP_USER_NAME)
         @NotBlank(message = NOT_BLANK_USER_NAME, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 2, max = 4, message = SIZE_MISMATCH_USER_NAME, groups = RequestValidationGroups.SizeGroup.class)
@@ -49,10 +49,19 @@ public class AuthDto {
         @Schema(example = SWAGGER_SIGN_UP_USER_EMAIL)
         @NotBlank(message = NOT_BLANK_USER_EMAIL, groups = RequestValidationGroups.NotBlankGroup.class)
         @Email(message = INVALID_FORMAT_USER_EMAIL, groups = RequestValidationGroups.PatternGroup.class)
-        String email
+        String email,
+
+        @Schema(example = SWAGGER_SIGN_UP_USER_ID_CHECK_TOKEN)
+        @NotBlank(message = NOT_BLANK_USER_ID_CHECK_TOKEN, groups = RequestValidationGroups.NotBlankGroup.class)
+        String idCheckToken,
+
+        @Schema(example = SWAGGER_SIGN_UP_CERTIFICATION_NUMBER_CHECK_TOKEN)
+        @NotBlank(message = NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN, groups = RequestValidationGroups.NotBlankGroup.class)
+        String certNoCheckToken
     ) {}
 
     @Builder
+    @Schema(description = "ID 중복 확인 request")
     public record CheckIdDuplicationRequest(
         @Schema(example = SWAGGER_SIGN_UP_USER_ID)
         @NotBlank(message = NOT_BLANK_USER_ID, groups = RequestValidationGroups.NotBlankGroup.class)
@@ -62,12 +71,37 @@ public class AuthDto {
     ) {}
 
     @Builder
+    @Schema(description = "인증번호 요청 request")
     public record SendCertificationNumberRequest(
+        @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE)
+        @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Pattern(regexp = "SignUp", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        String type,
+
         @Schema(example = SWAGGER_SIGN_UP_PHONE_NUMBER)
         @NotBlank(message = NOT_BLANK_PHONE_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
         @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
         String phoneNumber
+    ) {}
+
+    @Builder
+    @Schema(description = "인증번호 확인 request")
+    public record CheckCertificationNumberRequest(
+        @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE)
+        @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Pattern(regexp = "SignUp", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        String type,
+
+        @NotBlank(message = NOT_BLANK_PHONE_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
+        String phoneNumber,
+
+        @NotBlank(message = NOT_BLANK_CERTIFICATION_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 6, max = 6, message = SIZE_MISMATCH_CERTIFICATION_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_CERTIFICATION_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
+        String certNo
     ) {}
 
     public record SignInRequest(
@@ -91,5 +125,15 @@ public class AuthDto {
     public record ReissueJwtResponse(
         String accessToken,
         String refreshToken
+    ) {}
+
+    @Builder
+    public record CheckIdDuplicationResponse(
+        String idCheckToken
+    ) {}
+
+    @Builder
+    public record CheckCertificationNumberResponse(
+        String certNoCheckToken
     ) {}
 }
