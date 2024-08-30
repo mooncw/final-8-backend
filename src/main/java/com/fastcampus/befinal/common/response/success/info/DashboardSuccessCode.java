@@ -1,13 +1,13 @@
 package com.fastcampus.befinal.common.response.success.info;
 
 import com.fastcampus.befinal.common.response.code.Code;
-import com.fastcampus.befinal.common.response.code.DashBoardCode;
+import com.fastcampus.befinal.common.response.code.DashboardCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public enum DashBoardSuccessCode implements SuccessCode {
-    CHECK_DASHBOARD_SUCCESS(HttpStatus.OK, DashBoardCode.CHECK_DASHBOARD_SUCCESS, "대시보드 확인 가능합니다.");
+public enum DashboardSuccessCode implements SuccessCode {
+    CHECK_DASHBOARD_SUCCESS(HttpStatus.OK, DashboardCode.CHECK_DASHBOARD_SUCCESS, "대시보드 확인 가능합니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

@@ -3,12 +3,9 @@ package com.fastcampus.befinal.common.response.code;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum DashBoardCode implements Code {
+public enum DashboardCode implements Code {
     // success
-    CHECK_DASHBOARD_SUCCESS(1200),
-
-    // error
-    DENIED_ACCESS_DASHBOARD(1250);
+    CHECK_DASHBOARD_SUCCESS(1200);
 
     private final Integer code;
 

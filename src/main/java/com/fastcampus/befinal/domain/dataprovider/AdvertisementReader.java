@@ -1,11 +1,11 @@
 package com.fastcampus.befinal.domain.dataprovider;
 
-import com.fastcampus.befinal.domain.info.DashBoardInfo;
+import com.fastcampus.befinal.domain.info.DashboardInfo;
 
 import java.util.List;
 
 public interface AdvertisementReader {
-    DashBoardInfo.AdCount findAdCount(String userId);
-    List<DashBoardInfo.DailyDone> findDailyDone(String userId);
-    List<DashBoardInfo.RecentDone> findRecentDone(String userId);
+    DashboardInfo.AdCount findAdCount(String userId);
+    List<DashboardInfo.DailyDone> findDailyDone(String userId);
+    List<DashboardInfo.RecentDone> findRecentDone(String userId);
 }

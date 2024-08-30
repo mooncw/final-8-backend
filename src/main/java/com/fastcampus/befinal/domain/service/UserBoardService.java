@@ -1,7 +1,7 @@
 package com.fastcampus.befinal.domain.service;
 
-import com.fastcampus.befinal.domain.info.DashBoardInfo;
+import com.fastcampus.befinal.domain.info.DashboardInfo;
 
 public interface UserBoardService {
-    DashBoardInfo.DashBoardDataInfo loadUserDashBoardData(String userId);
+    DashboardInfo.DashboardDataInfo loadUserDashboardData(String userId);
 }
