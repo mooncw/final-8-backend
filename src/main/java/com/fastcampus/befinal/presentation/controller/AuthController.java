@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN;
-import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN;
+import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.*;
 
 @RestController
@@ -61,7 +60,7 @@ public class AuthController {
                         "\"code\": 1102, " +
                         "\"message\": \"중복되지 않는 ID입니다.\", " +
                         "\"data\": {" +
-                            "\"idCheckToken\": \"dd50d3d8-d542-434b-b447-c50fa6ec06e4\"" +
+                            "\"idCheckToken\": \"" + SWAGGER_USER_ID_CHECK_TOKEN + "\"" +
                         "}" +
                     "}"
             )
@@ -108,7 +107,7 @@ public class AuthController {
                     "\"code\": 1104, " +
                     "\"message\": \"유효한 인증번호입니다.\", " +
                     "\"data\": {" +
-                    "\"certNoCheckToken\": \"95f43709-d81e-4a53-9633-249078713923\"" +
+                    "\"certNoCheckToken\": \"" + SWAGGER_CERTIFICATION_NUMBER_CHECK_TOKEN + "\"" +
                     "}" +
                 "}"
             )
@@ -134,16 +133,16 @@ public class AuthController {
                     "\"message\": \"로그인되었습니다.\", " +
                     "\"data\": { " +
                         "\"userInfo\": { " +
-                            "\"id\": \"hong\", " +
-                            "\"name\": \"홍길동\", " +
-                            "\"phoneNumber\": \"01011112222\", " +
-                            "\"empNo\": \"11111111\", " +
-                            "\"email\": \"hong@hong.com\", " +
-                            "\"authority\": \"작업자\"" +
+                            "\"id\": \"" + SWAGGER_USER_ID + "\", " +
+                            "\"name\": \"" + SWAGGER_USER_NAME + "\", " +
+                            "\"phoneNumber\": \"" + SWAGGER_PHONE_NUMBER + "\", " +
+                            "\"empNo\": \"" + SWAGGER_USER_EMP_NUMBER + "\", " +
+                            "\"email\": \"" + SWAGGER_USER_EMAIL + "\", " +
+                            "\"authority\": \"" + SWAGGER_USER_AUTHORITY_NAME + "\"" +
                         "}, " +
                         "\"tokenInfo\": { " +
-                            "\"accessToken\": \"" + SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN + "\", " +
-                            "\"refreshToken\": \"" + SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN + "\" " +
+                            "\"accessToken\": \"" + SWAGGER_ACCESSTOKEN + "\", " +
+                            "\"refreshToken\": \"" + SWAGGER_REFRESHTOKEN + "\" " +
                         "}" +
                     "} " +
                 "}"
@@ -169,8 +168,8 @@ public class AuthController {
                                     "\"code\": 1100, " +
                                     "\"message\": \"JWT 재발급되었습니다.\", " +
                                     "\"data\": { " +
-                                        "\"accessToken\": \"" + SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN + "\", " +
-                                        "\"refreshToken\": \"" + SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN + "\" " +
+                                        "\"accessToken\": \"" + SWAGGER_ACCESSTOKEN + "\", " +
+                                        "\"refreshToken\": \"" + SWAGGER_REFRESHTOKEN + "\" " +
                                     "} " +
                                 "}"
                 )

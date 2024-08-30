@@ -18,7 +18,8 @@ public enum AuthErrorCode implements ErrorCode {
     INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN,
         "유효하지 않는 인증번호 확인 토큰입니다."),
     NOT_FOUND_USER(HttpStatus.UNAUTHORIZED, AuthCode.NOT_FOUND_USER, "존재하지 않는 유저입니다."),
-    INCONSISTENT_USER_PASSWORD(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_USER_PASSWORD, "일치하지 않는 비밀번호입니다.");
+    INCONSISTENT_USER_PASSWORD(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_USER_PASSWORD, "일치하지 않는 비밀번호입니다."),
+    INVALID_AUTHORITY(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_AUTHORITY, "유효하지 않는 권한입니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

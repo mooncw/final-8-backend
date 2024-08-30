@@ -44,7 +44,7 @@ public class AuthInfo {
         String phoneNumber,
         String empNo,
         String email,
-        String authority
+        String role
     ) {
         public static UserInfo from(User user) {
             return UserInfo.builder()
@@ -53,7 +53,7 @@ public class AuthInfo {
                 .phoneNumber(user.getPhoneNumber())
                 .empNo(user.getEmpNumber())
                 .email(user.getEmail())
-                .authority(user.getRole())
+                .role(user.getRole())
                 .build();
         }
     }

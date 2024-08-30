@@ -28,8 +28,9 @@ public class AuthCommand {
         String certificationNumber
     ) {}
 
+    @Builder
     public record SignInRequest(
-        String userId,
+        String id,
         String password
     ) {}
 }

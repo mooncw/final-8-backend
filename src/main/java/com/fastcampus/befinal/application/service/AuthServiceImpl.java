@@ -102,14 +102,16 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public AuthInfo.UserInfo signIn(AuthCommand.SignInRequest command) {
         User user = validateUserIdAndPassword(command);
+
         user.updateFinalLoginDateTime();
+
         return AuthInfo.UserInfo.from(user);
     }
 
     private User validateUserIdAndPassword(AuthCommand.SignInRequest command) {
-        User user = userReader.findUser(command.userId());
+        User user = userReader.findUser(command.id());
 
-        if (!user.getPassword().equals(passwordEncoder.encode(command.password()))) {
+        if (!passwordEncoder.matches(command.password(), user.getPassword())) {
             throw new BusinessException(INCONSISTENT_USER_PASSWORD);
         }
 
