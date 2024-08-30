@@ -1,9 +1,12 @@
 package com.fastcampus.befinal.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DashboardDto {
@@ -35,5 +38,12 @@ public class DashboardDto {
             String adId,
             String adName,
             LocalDateTime adTaskDateTime
-    ) {}
+    ) {
+        @JsonProperty("adTaskDateTime")
+        public String getAdTaskDateTimeAsString() {
+            return adTaskDateTime
+                    .atZone(ZoneId.of("Asia/Seoul"))
+                    .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        }
+    }
 }

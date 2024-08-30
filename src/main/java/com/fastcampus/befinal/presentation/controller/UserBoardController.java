@@ -54,7 +54,7 @@ public class UserBoardController {
                             "      {" +
                             "        \"adId\": a3" +
                             "        \"adName\": toy" +
-                            "        \"adTaskDateTime\": 2024-08-27T09:00:00" +
+                            "        \"adTaskDateTime\": 2024-08-27T09:00:00+09:00" +
                             "      }" +
                             "    ]" +
                             "  }" +
