@@ -43,6 +43,8 @@ public interface AuthDtoMapper {
     @Mapping(source = "token", target = "certNoCheckToken")
     AuthDto.CheckCertificationNumberResponse from(AuthInfo.CheckCertificationNumberTokenInfo info);
 
+    AuthDto.SignInResponse of(AuthInfo.UserInfo userInfo, JwtInfo.TokenInfo tokenInfo);
+
     AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
 
     default CertificationType mapStringToCertificationType(String type) {

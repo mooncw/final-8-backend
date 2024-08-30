@@ -35,4 +35,14 @@ public class AuthInfo {
                 .build();
         }
     }
+
+    @Builder
+    public record UserInfo(
+        String id,
+        String name,
+        String phoneNumber,
+        String empNo,
+        String email,
+        String authority
+    ) {}
 }
