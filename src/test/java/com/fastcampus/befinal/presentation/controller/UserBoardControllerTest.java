@@ -41,11 +41,10 @@ class UserBoardControllerTest {
     private AccessDeniedHandler accessDeniedHandler;
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "testID", authorities = "USER_AUTHORITY")
     @DisplayName("사용자 대시보드 요청 성공시, 200 OK와 정상 응답을 반환")
     void getBoardDataTest() throws Exception {
         // given
-        String userId = "testID";
         DashboardDto.DashboardDataResponse response = new DashboardDto.DashboardDataResponse(
                 new DashboardDto.AdCount(1, 1, 1, 1, 0, 0),
                 new ArrayList<>(), new ArrayList<>()
@@ -53,11 +52,10 @@ class UserBoardControllerTest {
 
         doReturn(response)
                 .when(boardFacade)
-                .loadUserDashboardData(userId);
+                .loadUserDashboardData("testID");
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/v1/dashboard")
-                .param("userId", userId)
                 .accept(MediaType.APPLICATION_JSON));
 
         // then
