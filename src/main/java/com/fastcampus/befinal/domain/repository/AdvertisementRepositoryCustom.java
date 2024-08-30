@@ -1,7 +1,7 @@
 package com.fastcampus.befinal.domain.repository;
 
 import com.fastcampus.befinal.domain.entity.QAdvertisement;
-import com.fastcampus.befinal.domain.info.DashBoardInfo;
+import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
@@ -21,62 +21,65 @@ public class AdvertisementRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private static final QAdvertisement ad = QAdvertisement.advertisement;
 
-    public DashBoardInfo.AdCount getAdCount(String id) {
+    public DashboardInfo.AdCount getAdCount(String id) {
         return queryFactory
-                .select(Projections.constructor(DashBoardInfo.AdCount.class,
-                        ad.count().intValue().coalesce(0),
+                .select(Projections.constructor(DashboardInfo.AdCount.class,
+                        ad.count().intValue(),
                         new CaseBuilder()
                                 .when(userIdEq(id)).then(1)
-                                .otherwise(0).sum().coalesce(0),
+                                .otherwise(0).sum(),
                         new CaseBuilder()
                                 .when(isCompleted()).then(1)
-                                .otherwise(0).sum().coalesce(0),
+                                .otherwise(0).sum(),
                         new CaseBuilder()
                                 .when(isCompleted().and(userIdEq(id))).then(1)
-                                .otherwise(0).sum().coalesce(0),
+                                .otherwise(0).sum(),
                         new CaseBuilder()
                                 .when(isNotCompleted()).then(1)
-                                .otherwise(0).sum().coalesce(0),
+                                .otherwise(0).sum(),
                         new CaseBuilder()
                                 .when(isNotCompleted().and(userIdEq(id))).then(1)
-                                .otherwise(0).sum().coalesce(0)
+                                .otherwise(0).sum()
                 ))
                 .from(ad)
                 .where(isInCurrentPeriod())
                 .fetchOne();
     }
 
-    public List<DashBoardInfo.DailyDone> getDailyDoneList(String id) {
-        DateTemplate<LocalDate> taskDate = Expressions.dateTemplate(LocalDate.class, "DATE({0})", ad.taskDateTime);
-        LocalDate date = LocalDate.now();
-        LocalDate startOfPeriod = date.getDayOfMonth() <= 15 ? date.withDayOfMonth(1) : date.withDayOfMonth(16);
+    public List<DashboardInfo.DailyDone> getDailyDoneList(String id) {
+        // `taskDateTime`을 LocalDateTime으로 받아서 한국 시간으로 변환
+        DateTimeExpression<LocalDate> kstTaskDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.taskDateTime);
+
+        LocalDate todayDate = LocalDate.now();
+        LocalDate startOfPeriod = todayDate.getDayOfMonth() <= 15 ? todayDate.withDayOfMonth(1) : todayDate.withDayOfMonth(16);
 
         List<Tuple> results = queryFactory
-                .select(taskDate, ad.count().intValue())
+                .select(kstTaskDateTime, ad.count().intValue())
                 .from(ad)
                 .where(userIdEq(id)
                         .and(isCompleted())
                         .and(isInCurrentPeriod())
-                        .and(taskDate.goe(startOfPeriod))
-                        .and(taskDate.loe(date)))
-                .groupBy(taskDate)
-                .orderBy(taskDate.asc())
+                        .and(kstTaskDateTime.goe(startOfPeriod))
+                        .and(kstTaskDateTime.loe(todayDate)))
+                .groupBy(kstTaskDateTime)
+                .orderBy(kstTaskDateTime.asc())
                 .fetch();
 
         return results.stream()
-                .map(tuple -> new DashBoardInfo.DailyDone(
+                .map(tuple -> DashboardInfo.DailyDone.of(
                         tuple.get(0, Date.class).toLocalDate(),
                         tuple.get(1, Integer.class)
                 ))
                 .collect(Collectors.toList());
     }
 
-    public List<DashBoardInfo.RecentDone> getRecentDoneList(String id) {
+    public List<DashboardInfo.RecentDone> getRecentDoneList(String id) {
         return queryFactory
-                .select(Projections.constructor(DashBoardInfo.RecentDone.class,
+                .select(Projections.constructor(DashboardInfo.RecentDone.class,
                         ad.id.stringValue().as("adId"),
                         ad.product.as("adName"),
-                        ad.taskDateTime.as("adModifiedDate")
+                        ad.taskDateTime.as("adTaskDateTime")
                 ))
                 .from(ad)
                 .where(userIdEq(id)
@@ -100,23 +103,17 @@ public class AdvertisementRepositoryCustom {
     }
 
     private BooleanExpression isInCurrentPeriod() {
-        LocalDate date = LocalDate.now();
-        int dayOfMonth = date.getDayOfMonth();
-        LocalDate startOfPeriod = dayOfMonth <= 15 ? date.withDayOfMonth(1) : date.withDayOfMonth(16);
-        LocalDate endOfPeriod = dayOfMonth <= 15 ? date.withDayOfMonth(15) : date.with(TemporalAdjusters.lastDayOfMonth());
+        LocalDate todayDate = LocalDate.now();
+        int dayOfMonth = todayDate.getDayOfMonth();
+        LocalDate startOfPeriod = dayOfMonth <= 15 ? todayDate.withDayOfMonth(1) : todayDate.withDayOfMonth(16);
+        LocalDate endOfPeriod = dayOfMonth <= 15 ? todayDate.withDayOfMonth(15) : todayDate.with(TemporalAdjusters.lastDayOfMonth());
 
-        return Expressions.dateTemplate(LocalDate.class, "DATE({0})", ad.postDateTime)
-                .between(startOfPeriod, endOfPeriod)
-                .and(ad.postDateTime.month().eq(date.getMonthValue()));
+        // `ad.postDateTime`을 LocalDateTime으로 변환하고 한국 시간으로 변환
+        DateTimeExpression<LocalDate> kstPostDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.postDateTime);
+
+        // 한국 시간 기준으로 날짜 범위와 비교
+        return kstPostDateTime.between(startOfPeriod, endOfPeriod)
+                .and(ad.postDateTime.month().eq(todayDate.getMonthValue()));
     }
 }
-
-
-
-
-
-
-
-
-
-
