@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.domain.info;
 
+import com.fastcampus.befinal.domain.entity.User;
 import lombok.Builder;
 
 public class AuthInfo {
@@ -44,5 +45,16 @@ public class AuthInfo {
         String empNo,
         String email,
         String authority
-    ) {}
+    ) {
+        public static UserInfo from(User user) {
+            return UserInfo.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .phoneNumber(user.getPhoneNumber())
+                .empNo(user.getEmpNumber())
+                .email(user.getEmail())
+                .authority(user.getRole())
+                .build();
+        }
+    }
 }
