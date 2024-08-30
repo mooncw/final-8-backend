@@ -106,6 +106,7 @@ public class AuthDto {
         String certNo
     ) {}
 
+    @Builder
     public record SignInRequest(
         @Schema(example = SWAGGER_USER_ID)
         @NotBlank(message = NOT_BLANK_USER_ID, groups = RequestValidationGroups.NotBlankGroup.class)

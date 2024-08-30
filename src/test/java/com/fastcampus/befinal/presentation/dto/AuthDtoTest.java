@@ -267,4 +267,58 @@ public class AuthDtoTest {
         //then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_PHONE_NUMBER, PATTERN_MISMATCH_CERTIFICATION_NUMBER));
     }
+
+    @Test
+    @DisplayName("로그인 요청 검증 테스트 - NotBlank")
+    void whenSignInRequestIsBlank_thenValidationFails() {
+        //given
+        AuthDto.SignInRequest request = AuthDto.SignInRequest.builder()
+            .id(" ")
+            .password(" ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.SignInRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_USER_ID, NOT_BLANK_USER_PASSWORD));
+    }
+
+    @Test
+    @DisplayName("로그인 요청 검증 테스트 - Size")
+    void whenSignInRequestMismatchSize_thenValidationFails() {
+        //given
+        AuthDto.SignInRequest request = AuthDto.SignInRequest.builder()
+            .id("a")
+            .password("a1")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.SignInRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_USER_ID, SIZE_MISMATCH_USER_PASSWORD));
+    }
+
+    @Test
+    @DisplayName("로그인 요청 검증 테스트 - Pattern, ComplexPattern")
+    void whenSignInRequestMismatchPattern_thenValidationFails() {
+        //given
+        AuthDto.SignInRequest request = AuthDto.SignInRequest.builder()
+            .id("가")
+            .password("aa")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AuthDto.SignInRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_ID, PATTERN_MISMATCH_USER_PASSWORD));
+    }
 }
