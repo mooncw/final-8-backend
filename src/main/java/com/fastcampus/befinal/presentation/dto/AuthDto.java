@@ -136,4 +136,26 @@ public class AuthDto {
     public record CheckCertificationNumberResponse(
         String certNoCheckToken
     ) {}
+
+    @Builder
+    public record UserInfo(
+        String id,
+        String name,
+        String phoneNumber,
+        String empNo,
+        String email,
+        String authority
+    ) {}
+
+    @Builder
+    public record TokenInfo(
+        String accessToken,
+        String refreshToken
+    ) {}
+
+    @Builder
+    public record SignInResponse(
+        UserInfo userInfo,
+        TokenInfo tokenInfo
+    ) {}
 }

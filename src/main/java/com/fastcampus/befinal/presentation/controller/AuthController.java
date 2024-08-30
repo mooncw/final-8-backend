@@ -123,6 +123,42 @@ public class AuthController {
         return ResponseEntityFactory.toResponseEntity(CHECK_CERTIFICATION_NUMBER_SUCCESS, response);
     }
 
+    @PostMapping("/signin")
+    @Operation(summary = "로그인")
+    @ApiResponse(responseCode = "200", description = "로그인되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1105, " +
+                    "\"message\": \"로그인되었습니다.\", " +
+                    "\"data\": { " +
+                        "\"userInfo\": { " +
+                            "\"id\": \"hong\", " +
+                            "\"name\": \"홍길동\", " +
+                            "\"phoneNumber\": \"01011112222\", " +
+                            "\"empNo\": \"11111111\", " +
+                            "\"email\": \"hong@hong.com\", " +
+                            "\"authority\": \"작업자\"" +
+                        "}, " +
+                        "\"tokenInfo\": { " +
+                            "\"accessToken\": \"" + SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN + "\", " +
+                            "\"refreshToken\": \"" + SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN + "\" " +
+                        "}" +
+                    "} " +
+                "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AuthDto.SignInResponse>> signIn(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AuthDto.SignInRequest request
+    ) {
+        AuthDto.SignInResponse response = authFacade.signIn(request);
+        return ResponseEntityFactory.toResponseEntity(SIGN_IN_SUCCESS, response);
+    }
+
     @PostMapping("/reissue")
     @Operation(summary = "JWT 토큰 재발급")
     @ApiResponse(responseCode = "200", description = "JWT 재발급되었습니다.",
