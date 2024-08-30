@@ -4,7 +4,6 @@ import com.fastcampus.befinal.application.facade.BoardFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode;
-import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,8 +64,8 @@ public class UserBoardController {
     )
     public ResponseEntity<AppApiResponse<DashboardDto.DashboardDataResponse>> getBoardData(
             @AuthenticationPrincipal User user
-    ) {
-        String userId = user.getId();
+        ) {
+        String userId = user.getUsername();
         DashboardDto.DashboardDataResponse response = boardFacade.loadUserDashboardData(userId);
         return ResponseEntityFactory.toResponseEntity(DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS, response);
     }
