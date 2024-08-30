@@ -86,10 +86,6 @@ dependencies {
 
 }
 
-clean {
-    delete file('$buildDir/generated')
-}
-
 tasks.named('test') {
     useJUnitPlatform()
 }
