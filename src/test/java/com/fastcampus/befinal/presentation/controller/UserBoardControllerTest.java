@@ -3,7 +3,7 @@ package com.fastcampus.befinal.presentation.controller;
 import com.fastcampus.befinal.application.facade.BoardFacade;
 import com.fastcampus.befinal.common.config.SecurityConfig;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
-import com.fastcampus.befinal.presentation.dto.DashBoardDto;
+import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 
-import static com.fastcampus.befinal.common.response.success.info.DashBoardSuccessCode.CHECK_DASHBOARD_SUCCESS;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,13 +46,14 @@ class UserBoardControllerTest {
     void getBoardDataTest() throws Exception {
         // given
         String userId = "testID";
-        DashBoardDto.DashBoardDataResponse mockResponse = new DashBoardDto.DashBoardDataResponse(
-                1, 1, 1, 1, 0, 0,
+        DashboardDto.DashboardDataResponse response = new DashboardDto.DashboardDataResponse(
+                new DashboardDto.AdCount(1, 1, 1, 1, 0, 0),
                 new ArrayList<>(), new ArrayList<>()
         );
 
-        when(boardFacade.loadUserDashBoardData(any(String.class)))
-                .thenReturn(mockResponse);
+        doReturn(response)
+                .when(boardFacade)
+                .loadUserDashboardData(userId);
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/v1/dashboard")

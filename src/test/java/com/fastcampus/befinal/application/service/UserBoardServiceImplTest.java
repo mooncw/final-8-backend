@@ -1,7 +1,7 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
-import com.fastcampus.befinal.domain.info.DashBoardInfo;
+import com.fastcampus.befinal.domain.info.DashboardInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,32 +31,34 @@ class UserBoardServiceImplTest {
         // given
         String userId = "testID";
 
-        DashBoardInfo.AdCount adCount = DashBoardInfo.AdCount.builder()
-                        .totalAd(1)
-                        .myAd(1)
-                        .totalDoneAd(1)
-                        .myDoneAd(1)
-                        .totalNotDoneAd(1)
-                        .myNotDoneAd(1)
-                        .build();
-        List<DashBoardInfo.DailyDone> dailyDoneList = new ArrayList<>();
-        List<DashBoardInfo.RecentDone> recentDoneList = new ArrayList<>();
+        DashboardInfo.AdCount adCount = DashboardInfo.AdCount.of(1, 1, 1,
+                1, 0, 0);
+        List<DashboardInfo.DailyDone> dailyDoneList = new ArrayList<>();
+        List<DashboardInfo.RecentDone> recentDoneList = new ArrayList<>();
 
-        when(advertisementReader.findAdCount(userId)).thenReturn(adCount);
-        when(advertisementReader.findDailyDone(userId)).thenReturn(dailyDoneList);
-        when(advertisementReader.findRecentDone(userId)).thenReturn(recentDoneList);
+        doReturn(adCount)
+                .when(advertisementReader)
+                .findAdCount(userId);
+
+        doReturn(dailyDoneList)
+                .when(advertisementReader)
+                .findDailyDone(userId);
+
+        doReturn(recentDoneList)
+                .when(advertisementReader)
+                .findRecentDone(userId);
 
         // when
-        DashBoardInfo.DashBoardDataInfo result = userBoardService.loadUserDashBoardData(userId);
+        DashboardInfo.DashboardDataInfo result = userBoardService.loadUserDashboardData(userId);
 
         // then
         assertNotNull(result);
-        assertEquals(adCount.totalAd(), result.totalAd());
-        assertEquals(adCount.myAd(), result.myAd());
-        assertEquals(adCount.totalDoneAd(), result.totalDoneAd());
-        assertEquals(adCount.myDoneAd(), result.myDoneAd());
-        assertEquals(adCount.totalNotDoneAd(), result.totalNotDoneAd());
-        assertEquals(adCount.myNotDoneAd(), result.myNotDoneAd());
+        assertEquals(adCount.totalAd(), result.adCount().totalAd());
+        assertEquals(adCount.myAd(), result.adCount().myAd());
+        assertEquals(adCount.totalDoneAd(), result.adCount().totalDoneAd());
+        assertEquals(adCount.myDoneAd(), result.adCount().myDoneAd());
+        assertEquals(adCount.totalNotDoneAd(), result.adCount().totalNotDoneAd());
+        assertEquals(adCount.myNotDoneAd(), result.adCount().myNotDoneAd());
         assertEquals(dailyDoneList, result.dailyDoneList());
         assertEquals(recentDoneList, result.recentDoneList());
 
