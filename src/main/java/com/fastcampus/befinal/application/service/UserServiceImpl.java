@@ -1,13 +1,11 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.contant.JwtConstant;
-import com.fastcampus.befinal.common.response.error.exception.BaseException;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.domain.command.UserCommand;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenReader;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenStore;
 import com.fastcampus.befinal.domain.dataprovider.UserStore;
-import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
@@ -59,6 +57,7 @@ public class UserServiceImpl implements UserService {
         validPassword(command);
 
         UserInfo.PasswordUpdateInfo userInfo = UserInfo.PasswordUpdateInfo.from(command);
+        userStore.update(userInfo);
 
         jwtAuthService.setAuthentication(subStringToken(authorizationHeader));
     }

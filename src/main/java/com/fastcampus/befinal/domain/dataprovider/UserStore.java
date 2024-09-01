@@ -8,4 +8,6 @@ public interface UserStore {
     void store(UserManagement userManagement);
 
     void update(UserInfo.UserUpdateInfo userInfo);
+
+    void update(UserInfo.PasswordUpdateInfo userInfo);
 }

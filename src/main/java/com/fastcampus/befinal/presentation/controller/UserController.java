@@ -36,9 +36,11 @@ public class UserController {
         @RequestBody
         UserDto.PasswordUpdateRequest request,
         @AuthenticationPrincipal
-        UserDetailsInfo userDetails
+        UserDetailsInfo userDetails,
+        @RequestHeader("Authorization")
+        String authorizationHeader
     ){
-        userFacade.updatePassword(userDetails, request);
+        userFacade.updatePassword(userDetails, request, authorizationHeader);
         return ResponseEntityFactory.toResponseEntity(UPDATE_PASSWORD_SUCCESS);
     }
 }

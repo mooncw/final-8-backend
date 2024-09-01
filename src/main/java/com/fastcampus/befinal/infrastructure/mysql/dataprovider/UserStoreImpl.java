@@ -24,4 +24,7 @@ public class UserStoreImpl implements UserStore {
 
     @Override
     public void update(UserInfo.UserUpdateInfo userInfo) { userRepository.save(userEntityMapper.from(userInfo)); }
+
+    @Override
+    public void update(UserInfo.PasswordUpdateInfo userInfo) { userRepository.save(userEntityMapper.from(userInfo)); }
 }
