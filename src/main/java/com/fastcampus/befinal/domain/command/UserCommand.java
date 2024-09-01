@@ -7,12 +7,14 @@ public class UserCommand {
     public record UserUpdateRequest(
         String id,
         String phoneNumber,
-        String email
+        String email,
+        String certificationNumberCheckToken
     ){}
 
     @Builder
     public record PasswordUpdateRequest(
         String id,
+        String password,
         String currentPassword,
         String newPassword
     ){}

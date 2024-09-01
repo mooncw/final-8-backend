@@ -13,8 +13,8 @@ public class UserFacade {
     private final UserService userService;
     private final UserDtoMapper userDtoMapper;
 
-    public void updateUser(UserDetails user, UserDto.UserUpdateRequest request){
-        userService.updateUser(userDtoMapper.toUserCommand(request));
+    public void updateUser(UserDetails user, UserDto.UserUpdateRequest request, String authorizationHeader){
+        userService.updateUser(userDtoMapper.toUserCommand(request, user.getUsername()), authorizationHeader);
     }
     public void updatePassword(UserDetails user, UserDto.PasswordUpdateRequest request){}
 }

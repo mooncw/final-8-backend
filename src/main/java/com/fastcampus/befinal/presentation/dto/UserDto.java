@@ -6,7 +6,8 @@ public class UserDto {
     @Builder
     public record UserUpdateRequest(
         String phoneNumber,
-        String email
+        String email,
+        String certNoCheckToken
     ){}
 
     @Builder
