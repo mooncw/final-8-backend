@@ -8,10 +8,9 @@ import com.fastcampus.befinal.presentation.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -24,10 +23,12 @@ public class UserController {
         @RequestBody
         UserDto.UserUpdateRequest request,
         @AuthenticationPrincipal
-        UserDetailsInfo userDetails
+        UserDetailsInfo userDetails,
+        @RequestHeader("Authorization")
+        String authorizationHeader
     ){
-        userFacade.updateUser(userDetails, request);
-        return ResponseEntityFactory.toResponseEntity();
+        userFacade.updateUser(userDetails, request, authorizationHeader);
+        return ResponseEntityFactory.toResponseEntity(UPDATE_USER_SUCCESS);
     }
 
     @PutMapping("/password")
@@ -38,6 +39,6 @@ public class UserController {
         UserDetailsInfo userDetails
     ){
         userFacade.updatePassword(userDetails, request);
-        return ResponseEntityFactory.toResponseEntity();
+        return ResponseEntityFactory.toResponseEntity(UPDATE_PASSWORD_SUCCESS);
     }
 }
