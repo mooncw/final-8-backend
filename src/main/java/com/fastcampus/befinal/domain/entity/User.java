@@ -42,4 +42,8 @@ public class User {
 
     @Column(nullable = false, name = "role", columnDefinition = "varchar(20)")
     private String role;
+
+    public void updateFinalLoginDateTime() {
+        this.finalLoginDateTime = LocalDateTime.now();
+    }
 }

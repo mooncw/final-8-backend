@@ -4,15 +4,25 @@ import com.fastcampus.befinal.common.type.CertificationType;
 import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.SmsCertification;
+import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+
+import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @DisplayName("AuthService 테스트")
@@ -35,6 +45,12 @@ public class AuthServiceImplTest {
 
     @Mock
     private CheckTokenReader checkTokenReader;
+
+    @Mock
+    private UserReader userReader;
+
+    @Spy
+    private PasswordEncoder passwordEncoder = Mockito.spy(BCryptPasswordEncoder.class);;
 
     @Test
     @DisplayName("회원가입 성공 테스트")
@@ -129,5 +145,46 @@ public class AuthServiceImplTest {
         //verify
         verify(smsCertificationReader, times(1)).find(any(AuthCommand.CheckCertificationNumberRequest.class));
         verify(checkTokenStore, times(1)).store(any(AuthInfo.CheckTokenInfo.class));
+    }
+
+    @Test
+    @DisplayName("로그인 성공 테스트")
+    void signInTest() {
+        //given
+        AuthCommand.SignInRequest command = AuthCommand.SignInRequest.builder()
+            .id("aaaa")
+            .password("asdf1234")
+            .build();
+
+        User user = User.builder()
+            .id("aaaa")
+            .name("홍길동")
+            .password(passwordEncoder.encode(command.password()))
+            .phoneNumber("01011112222")
+            .empNumber("11111111")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(USER_AUTHORITY)
+            .build();
+
+        doReturn(user)
+            .when(userReader)
+            .findUser(anyString());
+
+        doReturn(true)
+            .when(passwordEncoder)
+            .matches(anyString(), anyString());
+
+        //when
+        AuthInfo.UserInfo userInfo = authService.signIn(command);
+
+        //then
+        assertThat(userInfo.id()).isEqualTo(user.getId());
+        assertThat(userInfo.name()).isEqualTo(user.getName());
+        assertThat(userInfo.phoneNumber()).isEqualTo(user.getPhoneNumber());
+        assertThat(userInfo.empNo()).isEqualTo(user.getEmpNumber());
+        assertThat(userInfo.email()).isEqualTo(user.getEmail());
+        assertThat(userInfo.role()).isEqualTo(user.getRole());
     }
 }

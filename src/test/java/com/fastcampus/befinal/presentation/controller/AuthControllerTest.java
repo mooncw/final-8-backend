@@ -53,7 +53,7 @@ class AuthControllerTest {
         AuthDto.SignUpRequest request = AuthDto.SignUpRequest.builder()
             .id("aaaa")
             .name("홍길동")
-            .password("aaaaaaa1")
+            .password("asdf1234")
             .phoneNumber("01011112222")
             .empNo("11111111")
             .email("hong@hong.com")
@@ -166,6 +166,52 @@ class AuthControllerTest {
         perform.andExpect(status().is(CHECK_CERTIFICATION_NUMBER_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(CHECK_CERTIFICATION_NUMBER_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @DisplayName("로그인 요청 성공시, 200 OK와 정상 응답을 반환")
+    void signInTest() throws Exception {
+        //given
+        AuthDto.SignInRequest request = AuthDto.SignInRequest.builder()
+            .id("aaaa")
+            .password("asdf1234")
+            .build();
+
+        AuthDto.UserInfo userInfo = AuthDto.UserInfo.builder()
+            .id(request.id())
+            .name("홍길동")
+            .phoneNumber("01011112222")
+            .empNo("11111111")
+            .email("hong@hong.com")
+            .authority("작업자")
+            .build();
+
+        AuthDto.TokenInfo tokenInfo = AuthDto.TokenInfo.builder()
+            .accessToken("aa1.ab1.ac1")
+            .refreshToken("ra1.rb1.rc1")
+            .build();
+
+        AuthDto.SignInResponse response = AuthDto.SignInResponse.builder()
+            .userInfo(userInfo)
+            .tokenInfo(tokenInfo)
+            .build();
+
+        doReturn(response)
+            .when(authFacade)
+            .signIn(any(AuthDto.SignInRequest.class));
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/signin")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(SIGN_IN_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(SIGN_IN_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(SIGN_IN_SUCCESS.getMessage()));
     }
 
     @Test
