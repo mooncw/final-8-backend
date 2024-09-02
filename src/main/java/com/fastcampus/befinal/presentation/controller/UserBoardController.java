@@ -34,7 +34,7 @@ public class UserBoardController {
                 schema = @Schema(
                     implementation = DashboardDto.DashboardDataResponse.class,
                     example = "{" +
-                            "\"code\": 1200, " +
+                            "\"code\": 3200, " +
                             "\"message\": \"대시보드 확인 가능합니다.\", " +
                             "\"data\": {" +
                             "   \"adCount\": {" +
