@@ -15,4 +15,8 @@ public class AdminFacade {
     public void approveUser(AdminDto.ApproveUserRequest request) {
         adminService.approveUser(adminDtoMapper.toAdminCommand(request));
     }
+
+    public AdminDto.FindSignUpUserListResponse findSignUpUserList() {
+        return adminDtoMapper.from(adminService.findSignUpUserList());
+    }
 }
