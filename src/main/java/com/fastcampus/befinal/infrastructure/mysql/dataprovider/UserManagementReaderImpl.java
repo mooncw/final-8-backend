@@ -25,7 +25,7 @@ public class UserManagementReaderImpl implements UserManagementReader {
     }
 
     @Override
-    public ScrollPagination<AdminInfo.SignUpUserInfo> findScrollPageById(Long id) {
-        return userManagementRepositoryCustom.findScrollPageById(id);
+    public ScrollPagination<AdminInfo.SignUpUserInfo> findScrollPageById(Long cursorId) {
+        return userManagementRepositoryCustom.findScrollPageById(cursorId);
     }
 }
