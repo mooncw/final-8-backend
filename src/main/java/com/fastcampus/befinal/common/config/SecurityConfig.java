@@ -64,7 +64,9 @@ public class SecurityConfig {
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
             .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").authenticated()
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
-            .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll());
+            .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+            .requestMatchers("/api/test/signIn").permitAll()
+            .requestMatchers("/test/test").authenticated());
 
         http.addFilterBefore(new JwtAuthenticationFilter(jwtAuthService), BasicAuthenticationFilter.class);
 
