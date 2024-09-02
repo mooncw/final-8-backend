@@ -21,7 +21,7 @@ public class UserManagementRepositoryCustom {
     private static final QUserManagement userManagement = QUserManagement.userManagement;
 
     // id는 UserManagement의 auto_increment id입니다.
-    public ScrollPagination<AdminInfo.SignUpUserInfo> findScrollPageById(Long id) {
+    public ScrollPagination<AdminInfo.SignUpUserInfo> findScrollById(Long id) {
         Long cursorId = id;
 
         List<AdminInfo.SignUpUserInfo> contents = queryFactory
