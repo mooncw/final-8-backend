@@ -22,10 +22,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.nio.charset.StandardCharsets;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
+import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.UPDATE_PASSWORD_SUCCESS;
 import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.UPDATE_USER_SUCCESS;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,17 +69,50 @@ class UserControllerTest {
             .updateUser(userInfo, request, jwtToken);
 
         //when
-        ResultActions perform = mockMvc.perform(post("/api/v1/user/info")
+        ResultActions perform = mockMvc.perform(put("/api/v1/user/info")
             .with(csrf())
+            .header("Authorization", "Bearer " + jwtToken)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding(StandardCharsets.UTF_8)
             .content(objectMapper.writeValueAsString(request)));
 
         //then
+
         perform.andExpect(status().is(UPDATE_USER_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(UPDATE_USER_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(UPDATE_USER_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = USER_AUTHORITY)
+    @DisplayName("비밀번호 변경 요청 성공시, 200 OK 및 정상 응답을 반환")
+    void updatePasswordTest() throws Exception {
+        //given
+        UserDto.PasswordUpdateRequest request = UserDto.PasswordUpdateRequest.builder()
+            .currentPassword("0000")
+            .newPassword("1111")
+            .build();
+
+        UserDetailsInfo userInfo = UserDetailsInfo.builder().build();
+        String jwtToken = "aaaaaaa";
+
+        doNothing()
+            .when(userFacade)
+            .updatePassword(userInfo, request, jwtToken);
+
+        ResultActions perform = mockMvc.perform(put("/api/v1/user/password")
+            .with(csrf())
+            .header("Authorization", "Bearer " + jwtToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(UPDATE_PASSWORD_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(UPDATE_PASSWORD_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(UPDATE_PASSWORD_SUCCESS.getMessage()));
     }
 
 }
