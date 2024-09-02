@@ -35,7 +35,7 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1101, " +
+                    "\"code\": 3101, " +
                     "\"message\": \"회원가입되었습니다.\"" +
                     "}"
             )
@@ -57,7 +57,7 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                        "\"code\": 1102, " +
+                        "\"code\": 3102, " +
                         "\"message\": \"중복되지 않는 ID입니다.\", " +
                         "\"data\": {" +
                             "\"idCheckToken\": \"" + SWAGGER_USER_ID_CHECK_TOKEN + "\"" +
@@ -82,7 +82,7 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1103, " +
+                    "\"code\": 3103, " +
                     "\"message\": \"인증번호 요청 완료되었습니다.\"" +
                     "}"
             )
@@ -104,7 +104,7 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1104, " +
+                    "\"code\": 3104, " +
                     "\"message\": \"유효한 인증번호입니다.\", " +
                     "\"data\": {" +
                     "\"certNoCheckToken\": \"" + SWAGGER_CERTIFICATION_NUMBER_CHECK_TOKEN + "\"" +
@@ -165,7 +165,7 @@ public class AuthController {
                 mediaType = "application/json",
                 schema = @Schema(
                     example = "{ " +
-                                    "\"code\": 1100, " +
+                                    "\"code\": 3100, " +
                                     "\"message\": \"JWT 재발급되었습니다.\", " +
                                     "\"data\": { " +
                                         "\"accessToken\": \"" + SWAGGER_ACCESSTOKEN + "\", " +

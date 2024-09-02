@@ -34,7 +34,7 @@ public class AdminController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1300, " +
+                    "\"code\": 1000, " +
                     "\"message\": \"회원가입 승인되었습니다.\"" +
                     "}"
             )
