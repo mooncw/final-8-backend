@@ -13,12 +13,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.APPROVE_USER_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.FIND_SIGN_UP_USER_LIST_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -27,7 +25,7 @@ import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCo
 public class AdminController {
     private final AdminFacade adminFacade;
 
-    @PostMapping("approve-user")
+    @PostMapping("/approve-user")
     @Operation(summary = "회원가입 승인")
     @ApiResponse(responseCode = "200", description = "회원가입 승인되었습니다.",
         content = @Content(
@@ -47,5 +45,40 @@ public class AdminController {
     ) {
         adminFacade.approveUser(request);
         return ResponseEntityFactory.toResponseEntity(APPROVE_USER_SUCCESS);
+    }
+
+    @GetMapping("/approve-user")
+    @Operation(summary = "회원가입 유저 목록 조회")
+    @ApiResponse(responseCode = "200", description = "회원가입 신청 유저 목록 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                                "\"code\": 1001, " +
+                                "\"message\": \"회원가입 신청 유저 목록 조회되었습니다.\"" +
+                                "\"data\": {" +
+                                    "\"page\":{" +
+                                        "\"currentPage\": \"\"," +
+                                        "\"totalPage\": \"\"," +
+                                        "\"isEnd\": true," +
+                                        "\"pageList\":[" +
+                                            "{" +
+                                                "\"userId\": \"\"," +
+                                                "\"userName\": \"\"," +
+                                                "\"authortiy\": \"\"," +
+                                                "\"phoneNumber\": \"\"," +
+                                                "\"email\": \"\"," +
+                                                "\"date\": \"\"" +
+                                            "}" +
+                                        "]" +
+                                    "}" +
+                                "}" +
+                            "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AdminDto.FindSignUpUserListResponse>> findSignUpUserList() {
+        AdminDto.FindSignUpUserListResponse response = adminFacade.findSignUpUserList();
+        return ResponseEntityFactory.toResponseEntity(FIND_SIGN_UP_USER_LIST_SUCCESS, response);
     }
 }
