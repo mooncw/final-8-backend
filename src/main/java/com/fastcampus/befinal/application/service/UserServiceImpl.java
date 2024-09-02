@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updatePassword(UserCommand.PasswordUpdateRequest command, String authorizationHeader){
         validPassword(command);
 
