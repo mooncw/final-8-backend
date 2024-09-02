@@ -5,9 +5,11 @@ import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.SmsCertification;
+import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,8 @@ public class AuthServiceImpl implements AuthService {
     private final SmsCertificationReader smsCertificationReader;
     private final CheckTokenStore checkTokenStore;
     private final CheckTokenReader checkTokenReader;
+    private final UserReader userReader;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -55,7 +59,6 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException(SIGNUP_USER_ALREADY_EXIST);
         }
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -93,5 +96,25 @@ public class AuthServiceImpl implements AuthService {
         if (!Objects.equals(command.certificationNumber(), smsCertification.getCertificationNumber())) {
             throw new BusinessException(INCONSISTENT_CERTIFICATION_NUMBER);
         }
+    }
+
+    @Override
+    @Transactional
+    public AuthInfo.UserInfo signIn(AuthCommand.SignInRequest command) {
+        User user = validateUserIdAndPassword(command);
+
+        user.updateFinalLoginDateTime();
+
+        return AuthInfo.UserInfo.from(user);
+    }
+
+    private User validateUserIdAndPassword(AuthCommand.SignInRequest command) {
+        User user = userReader.findUser(command.id());
+
+        if (!passwordEncoder.matches(command.password(), user.getPassword())) {
+            throw new BusinessException(INCONSISTENT_USER_PASSWORD);
+        }
+
+        return user;
     }
 }

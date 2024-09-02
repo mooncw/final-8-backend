@@ -17,7 +17,7 @@ import static com.fastcampus.befinal.common.contant.AuthConstant.PATTERN_MISMATC
 public class AdminDto {
     @Builder
     public record ApproveUser(
-        @Schema(example = SWAGGER_SIGN_UP_USER_EMP_NOMBER)
+        @Schema(example = SWAGGER_USER_EMP_NUMBER)
         @NotBlank(message = NOT_BLANK_USER_EMP_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 8, max = 8, message = SIZE_MISMATCH_USER_EMP_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
         @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_USER_EMP_NUMBER, groups = RequestValidationGroups.PatternGroup.class)

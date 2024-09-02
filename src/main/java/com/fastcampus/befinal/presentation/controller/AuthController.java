@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN;
-import static com.fastcampus.befinal.common.contant.AuthConstant.SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN;
+import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.*;
 
 @RestController
@@ -36,7 +35,7 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1101, " +
+                    "\"code\": 3101, " +
                     "\"message\": \"회원가입되었습니다.\"" +
                     "}"
             )
@@ -58,10 +57,10 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                        "\"code\": 1102, " +
+                        "\"code\": 3102, " +
                         "\"message\": \"중복되지 않는 ID입니다.\", " +
                         "\"data\": {" +
-                            "\"idCheckToken\": \"dd50d3d8-d542-434b-b447-c50fa6ec06e4\"" +
+                            "\"idCheckToken\": \"" + SWAGGER_USER_ID_CHECK_TOKEN + "\"" +
                         "}" +
                     "}"
             )
@@ -83,7 +82,7 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1103, " +
+                    "\"code\": 3103, " +
                     "\"message\": \"인증번호 요청 완료되었습니다.\"" +
                     "}"
             )
@@ -105,10 +104,10 @@ public class AuthController {
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
-                    "\"code\": 1104, " +
+                    "\"code\": 3104, " +
                     "\"message\": \"유효한 인증번호입니다.\", " +
                     "\"data\": {" +
-                    "\"certNoCheckToken\": \"95f43709-d81e-4a53-9633-249078713923\"" +
+                    "\"certNoCheckToken\": \"" + SWAGGER_CERTIFICATION_NUMBER_CHECK_TOKEN + "\"" +
                     "}" +
                 "}"
             )
@@ -123,6 +122,42 @@ public class AuthController {
         return ResponseEntityFactory.toResponseEntity(CHECK_CERTIFICATION_NUMBER_SUCCESS, response);
     }
 
+    @PostMapping("/signin")
+    @Operation(summary = "로그인")
+    @ApiResponse(responseCode = "200", description = "로그인되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1105, " +
+                    "\"message\": \"로그인되었습니다.\", " +
+                    "\"data\": { " +
+                        "\"userInfo\": { " +
+                            "\"id\": \"" + SWAGGER_USER_ID + "\", " +
+                            "\"name\": \"" + SWAGGER_USER_NAME + "\", " +
+                            "\"phoneNumber\": \"" + SWAGGER_PHONE_NUMBER + "\", " +
+                            "\"empNo\": \"" + SWAGGER_USER_EMP_NUMBER + "\", " +
+                            "\"email\": \"" + SWAGGER_USER_EMAIL + "\", " +
+                            "\"authority\": \"" + SWAGGER_USER_AUTHORITY_NAME + "\"" +
+                        "}, " +
+                        "\"tokenInfo\": { " +
+                            "\"accessToken\": \"" + SWAGGER_ACCESSTOKEN + "\", " +
+                            "\"refreshToken\": \"" + SWAGGER_REFRESHTOKEN + "\" " +
+                        "}" +
+                    "} " +
+                "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AuthDto.SignInResponse>> signIn(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AuthDto.SignInRequest request
+    ) {
+        AuthDto.SignInResponse response = authFacade.signIn(request);
+        return ResponseEntityFactory.toResponseEntity(SIGN_IN_SUCCESS, response);
+    }
+
     @PostMapping("/reissue")
     @Operation(summary = "JWT 토큰 재발급")
     @ApiResponse(responseCode = "200", description = "JWT 재발급되었습니다.",
@@ -130,11 +165,11 @@ public class AuthController {
                 mediaType = "application/json",
                 schema = @Schema(
                     example = "{ " +
-                                    "\"code\": 1100, " +
+                                    "\"code\": 3100, " +
                                     "\"message\": \"JWT 재발급되었습니다.\", " +
                                     "\"data\": { " +
-                                        "\"accessToken\": \"" + SWAGGER_REISSUE_RESPONSE_ACCESSTOKEN + "\", " +
-                                        "\"refreshToken\": \"" + SWAGGER_REISSUE_RESPONSE_REFRESHTOKEN + "\" " +
+                                        "\"accessToken\": \"" + SWAGGER_ACCESSTOKEN + "\", " +
+                                        "\"refreshToken\": \"" + SWAGGER_REFRESHTOKEN + "\" " +
                                     "} " +
                                 "}"
                 )
