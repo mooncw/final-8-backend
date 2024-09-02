@@ -1,9 +1,9 @@
 package com.fastcampus.befinal.domain.info;
 
 import com.fastcampus.befinal.domain.command.UserCommand;
-import com.fastcampus.befinal.domain.entity.User;
 import lombok.Builder;
-import lombok.Getter;
+
+import java.util.Optional;
 
 public class UserInfo {
 
@@ -15,9 +15,11 @@ public class UserInfo {
     ){
         public static UserUpdateInfo from(UserCommand.UserUpdateRequest command){
             return UserUpdateInfo.builder()
-                .id(command.id())
-                .email(command.email())
-                .phoneNumber(command.phoneNumber())
+                .id(command.user().getId())
+                .email(Optional.ofNullable(command.email())
+                    .orElse(command.user().getEmail()))
+                .phoneNumber(Optional.ofNullable(command.phoneNumber())
+                    .orElse(command.user().getPhoneNumber()))
                 .build();
         }
     }

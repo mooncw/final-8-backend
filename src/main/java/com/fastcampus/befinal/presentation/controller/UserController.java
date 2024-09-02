@@ -30,7 +30,7 @@ public class UserController {
         @RequestHeader("Authorization")
         String authorizationHeader
     ){
-        //userFacade.updateUser(userDetails, request, authorizationHeader);
+        userFacade.updateUser(userDetails, request, authorizationHeader);
         return ResponseEntityFactory.toResponseEntity(UPDATE_USER_SUCCESS);
     }
 

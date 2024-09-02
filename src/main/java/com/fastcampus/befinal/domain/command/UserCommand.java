@@ -1,14 +1,15 @@
 package com.fastcampus.befinal.domain.command;
 
+import com.fastcampus.befinal.domain.entity.User;
 import lombok.Builder;
 
 public class UserCommand {
     @Builder
     public record UserUpdateRequest(
-        String id,
+        User user,
         String phoneNumber,
         String email,
-        String certificationNumberCheckToken
+        String certNoCheckToken
     ){}
 
     @Builder
