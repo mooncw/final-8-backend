@@ -4,6 +4,7 @@ import com.fastcampus.befinal.domain.command.UserCommand;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenReader;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenStore;
 import com.fastcampus.befinal.domain.dataprovider.UserStore;
+import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
@@ -39,11 +40,13 @@ class UserServiceImplTest {
     @DisplayName("회원정보 수정 테스트")
     void updateUserTest() {
         //given
+        User user = User.builder().id("aaaa").build();
+
         UserCommand.UserUpdateRequest command = UserCommand.UserUpdateRequest.builder()
-            .id("aaaa")
+            .user(user)
             .email("hong@gil.com")
             .phoneNumber("01011113333")
-            .certificationNumberCheckToken("aaaa-aaaa-aaaa")
+            .certNoCheckToken("aaaa-aaaa-aaaa")
             .build();
 
         String jwtToken = "Bearer aaaaaaaa";
@@ -60,16 +63,11 @@ class UserServiceImplTest {
             .when(userStore)
             .update(any(UserInfo.UserUpdateInfo.class));
 
-        doNothing()
-            .when(jwtAuthService)
-            .setAuthentication(any(String.class));
-
         //when
-        userService.updateUser(command, jwtToken);
+        userService.updateUser(command);
 
         //verify
         verify(userStore, times(1)).update(any(UserInfo.UserUpdateInfo.class));
-        verify(jwtAuthService, times(1)).setAuthentication(any(String.class));
         verify(checkTokenReader, times(1)).exists(any(AuthInfo.CheckTokenInfo.class));
         verify(checkTokenStore, times(1)).delete(any(AuthInfo.CheckTokenInfo.class));
     }
@@ -78,29 +76,24 @@ class UserServiceImplTest {
     @DisplayName("회원정보 수정 테스트 - 전화번호 없이")
     void updateUserTestWithoutPhoneNumber() {
         //given
+        User user = User.builder().id("aaaa").build();
+
         UserCommand.UserUpdateRequest command = UserCommand.UserUpdateRequest.builder()
-            .id("aaaa")
+            .user(user)
             .email("hong@gil.com")
             .phoneNumber(null)
-            .certificationNumberCheckToken(null)
+            .certNoCheckToken(null)
             .build();
-
-        String jwtToken = "Bearer aaaaaaaa";
 
         doNothing()
             .when(userStore)
             .update(any(UserInfo.UserUpdateInfo.class));
 
-        doNothing()
-            .when(jwtAuthService)
-            .setAuthentication(any(String.class));
-
         //when
-        userService.updateUser(command, jwtToken);
+        userService.updateUser(command);
 
         //verify
         verify(userStore, times(1)).update(any(UserInfo.UserUpdateInfo.class));
-        verify(jwtAuthService, times(1)).setAuthentication(any(String.class));
     }
 
 }

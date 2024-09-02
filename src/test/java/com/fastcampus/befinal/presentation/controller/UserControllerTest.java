@@ -61,7 +61,7 @@ class UserControllerTest {
             .certNoCheckToken("aaaa-aaaa-aaaa")
             .build();
 
-        UserDetails userInfo = UserDetailsInfo.builder().build();
+        UserDetailsInfo userInfo = UserDetailsInfo.builder().build();
         String jwtToken = "aaaaaaa";
 
         doNothing()
