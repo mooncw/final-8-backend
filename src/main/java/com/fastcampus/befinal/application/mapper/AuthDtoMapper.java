@@ -8,6 +8,7 @@ import com.fastcampus.befinal.domain.command.SmsCommand;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
+import com.fastcampus.befinal.presentation.dto.UserDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,9 +28,13 @@ public interface AuthDtoMapper {
     AuthCommand.CheckIdDuplicationRequest toAuthCommand(AuthDto.CheckIdDuplicationRequest request);
 
     SmsCommand.SendCertificationNumberRequest toAuthCommand(AuthDto.SendCertificationNumberRequest request);
+    SmsCommand.SendCertificationNumberRequest toAuthCommand(UserDto.SendCertificationNumberRequest request);
 
     @Mapping(source = "certNo", target = "certificationNumber")
     AuthCommand.CheckCertificationNumberRequest toAuthCommand(AuthDto.CheckCertificationNumberRequest request);
+
+    @Mapping(source = "certNo", target = "certificationNumber")
+    AuthCommand.CheckCertificationNumberRequest toAuthCommand(UserDto.CheckCertificationNumberRequest request);
 
     AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 
@@ -49,6 +54,9 @@ public interface AuthDtoMapper {
         switch (type) {
             case "SignUp" -> {
                 return CertificationType.SIGN_UP;
+            }
+            case "UpdateUser" -> {
+                return CertificationType.UPDATE_USER;
             }
             default -> throw new BusinessException(INVALID_CERTIFICATION_TYPE);
         }
