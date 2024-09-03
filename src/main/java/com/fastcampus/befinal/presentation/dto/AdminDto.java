@@ -29,4 +29,19 @@ public class AdminDto {
         @NotEmpty(message = NOT_EMPTY_USER_LIST, groups = RequestValidationGroups.NotEmptyGroup.class)
         List<@Valid ApproveUser> userList
     ) {}
+
+    @Builder
+    public record RejectUser(
+        @Schema(example = SWAGGER_USER_EMP_NUMBER)
+        @NotBlank(message = NOT_BLANK_USER_EMP_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 8, max = 8, message = SIZE_MISMATCH_USER_EMP_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_USER_EMP_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
+        String empNo
+    ) {}
+
+    @Builder
+    public record RejectUserRequest(
+        @NotEmpty(message = NOT_EMPTY_USER_LIST, groups = RequestValidationGroups.NotEmptyGroup.class)
+        List<@Valid RejectUser> userList
+    ) {}
 }

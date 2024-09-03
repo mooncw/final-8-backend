@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum AdminSuccessCode implements SuccessCode {
-    APPROVE_USER_SUCCESS(HttpStatus.OK, AdminCode.APPROVE_USER_SUCCESS, "회원가입 승인되었습니다.");
+    APPROVE_USER_SUCCESS(HttpStatus.OK, AdminCode.APPROVE_USER_SUCCESS, "회원가입 승인되었습니다."),
+    REJECT_USER_SUCCESS(HttpStatus.OK, AdminCode.REJECT_USER_SUCCESS, "회원가입 반려되었습니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;
