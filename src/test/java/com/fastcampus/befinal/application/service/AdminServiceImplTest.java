@@ -76,4 +76,28 @@ public class AdminServiceImplTest {
         verify(userStore, times(1)).store(any(UserManagement.class));
         verify(userManagementStore, times(1)).delete(any(UserManagement.class));
     }
+
+    @Test
+    @DisplayName("회원가입 반려 성공 테스트")
+    void rejectUserTest() {
+        //given
+        AdminCommand.RejectUser rejectUser = AdminCommand.RejectUser.builder()
+            .empNo("11111111")
+            .build();
+
+        AdminCommand.RejectUserRequest command = AdminCommand.RejectUserRequest.builder()
+            .userList(List.of(rejectUser))
+            .build();
+
+        doNothing()
+            .when(userManagementStore)
+            .deleteByEmpNumber(anyString());
+
+
+        //when
+        adminService.rejectUser(command);
+
+        //verify
+        verify(userManagementStore, times(1)).deleteByEmpNumber(anyString());
+    }
 }
