@@ -1,9 +1,6 @@
 package com.fastcampus.befinal.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,8 +13,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserManagement {
     @Id
-    @Column(nullable = false, unique = true, name = "id", columnDefinition = "varchar(15)")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true, name = "user_id", columnDefinition = "varchar(15)")
+    private String userId;
 
     @Column(nullable = false, name = "name", columnDefinition = "varchar(10)")
     private String name;
