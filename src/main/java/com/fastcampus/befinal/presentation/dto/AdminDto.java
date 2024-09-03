@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
@@ -28,5 +30,24 @@ public class AdminDto {
     public record ApproveUserRequest(
         @NotEmpty(message = NOT_EMPTY_USER_LIST, groups = RequestValidationGroups.NotEmptyGroup.class)
         List<@Valid ApproveUser> userList
+    ) {}
+
+    @Builder
+    public record UserInfo(
+        String empNo,
+        String name,
+        String authority,
+        String id,
+        String phoneNumber,
+        String email,
+        LocalDate signUpDate,
+        LocalDateTime finalLoginDateTime
+    ) {}
+
+    @Builder
+    public record FindUserListResponse(
+        Long totalElements,
+        Long currentCursorId,
+        List<UserInfo> contents
     ) {}
 }
