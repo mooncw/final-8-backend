@@ -30,13 +30,9 @@ public interface AuthDtoMapper {
     AuthCommand.CheckIdDuplicationRequest toAuthCommand(AuthDto.CheckIdDuplicationRequest request);
 
     SmsCommand.SendCertificationNumberRequest toAuthCommand(AuthDto.SendCertificationNumberRequest request);
-    SmsCommand.SendCertificationNumberRequest toAuthCommand(UserDto.SendCertificationNumberRequest request);
 
     @Mapping(source = "certNo", target = "certificationNumber")
     AuthCommand.CheckCertificationNumberRequest toAuthCommand(AuthDto.CheckCertificationNumberRequest request);
-
-    @Mapping(source = "certNo", target = "certificationNumber")
-    AuthCommand.CheckCertificationNumberRequest toAuthCommand(UserDto.CheckCertificationNumberRequest request);
 
     AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 
