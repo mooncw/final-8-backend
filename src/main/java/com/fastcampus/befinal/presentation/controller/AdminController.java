@@ -57,7 +57,6 @@ public class AdminController {
                                 "\"code\": 1001, " +
                                 "\"message\": \"회원가입 신청 유저 목록 조회되었습니다.\"" +
                                 "\"data\": {" +
-                                    "\"page\":{" +
                                         "\"totalElements\": \"\"," +
                                         "\"currentCursorId\": \"\"," +
                                         "\"contents\":[" +
@@ -71,8 +70,7 @@ public class AdminController {
                                             "}" +
                                         "]" +
                                     "}" +
-                                "}" +
-                            "}"
+                                "}"
             )
         )
     )
