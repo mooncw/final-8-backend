@@ -45,38 +45,4 @@ public class UserDto {
             minMatches = 2, message = PATTERN_MISMATCH_USER_PASSWORD, groups = RequestValidationGroups.PatternGroup.class)
         String newPassword
     ){}
-
-    @Builder
-    @Schema(description = "인증번호 요청 request")
-    public record SendCertificationNumberRequest(
-        @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE_UPDATE)
-        @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "UpdateUser", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
-        String type,
-
-        @Schema(example = SWAGGER_PHONE_NUMBER)
-        @NotBlank(message = NOT_BLANK_PHONE_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
-        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
-        String phoneNumber
-    ) {}
-
-    @Builder
-    @Schema(description = "인증번호 확인 request")
-    public record CheckCertificationNumberRequest(
-        @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE_UPDATE)
-        @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "UpdateUser", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
-        String type,
-
-        @NotBlank(message = NOT_BLANK_PHONE_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
-        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
-        String phoneNumber,
-
-        @NotBlank(message = NOT_BLANK_CERTIFICATION_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Size(min = 6, max = 6, message = SIZE_MISMATCH_CERTIFICATION_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
-        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_CERTIFICATION_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
-        String certNo
-    ) {}
 }
