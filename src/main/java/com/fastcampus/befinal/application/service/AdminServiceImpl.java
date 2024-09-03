@@ -32,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ScrollPagination<AdminInfo.SignUpUserInfo> findSignUpUserScroll(Long cursorId) {
+    public ScrollPagination<Long, AdminInfo.SignUpUserInfo> findSignUpUserScroll(Long cursorId) {
         return userManagementReader.findScrollById(cursorId);
     }
 }

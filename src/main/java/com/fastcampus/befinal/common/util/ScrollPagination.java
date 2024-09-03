@@ -5,13 +5,13 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record ScrollPagination<T>(
+public record ScrollPagination<K, T>(
     Long totalElements,
-    Long currentCursorId,
+    K currentCursorId,
     List<T> contents
 ) {
-    public static <T> ScrollPagination<T> of(Long totalElements, Long cursorId, List<T> contents) {
-        return ScrollPagination.<T>builder()
+    public static <K, T> ScrollPagination<K, T> of(Long totalElements, K cursorId, List<T> contents) {
+        return ScrollPagination.<K, T>builder()
             .totalElements(totalElements)
             .currentCursorId(cursorId)
             .contents(contents)
