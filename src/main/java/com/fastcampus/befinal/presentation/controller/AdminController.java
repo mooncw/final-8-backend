@@ -48,7 +48,7 @@ public class AdminController {
     }
 
     @GetMapping("/approve-user")
-    @Operation(summary = "회원가입 유저 목록 조회")
+    @Operation(summary = "회원가입 유저 목록 조회 - Param default 값은 null")
     @ApiResponse(responseCode = "200", description = "회원가입 신청 유저 목록 조회되었습니다.",
         content = @Content(
             mediaType = "application/json",
@@ -64,7 +64,7 @@ public class AdminController {
                                             "{" +
                                                 "\"cursorId\": 2," +
                                                 "\"name\": \"박길동\"," +
-                                                "\"empNumber\": \"11111113\"," +
+                                                "\"empNo\": \"11111113\"," +
                                                 "\"phoneNumber\": \"01011114444\"," +
                                                 "\"email\": \"parkgil@hong.com\"," +
                                                 "\"signUpRequestDateTime\": \"\"" +
