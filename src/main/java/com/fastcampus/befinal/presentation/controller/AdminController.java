@@ -57,14 +57,15 @@ public class AdminController {
                     "\"code\": 1003, " +
                     "\"message\": \"회원 정보 목록이 조회되었습니다.\", " +
                     "\"data\": {" +
-                        "\"totalElements\": \"\"," +
-                        "\"currentCursorId\": \"\"," +
+                        "\"totalElements\": \"3\"," +
+                        "\"currentCursorId\": \"1\"," +
                         "\"contents\":[" +
                                 "{" +
+                                    "\"cursorId\": 1," +
                                     "\"empNo\": \"11111113\"," +
                                     "\"name\": \"박길동\"," +
                                     "\"authority\": \"작업자\"," +
-                                    "\"id\": aaaa," +
+                                    "\"userId\": \"aaaa\"," +
                                     "\"phoneNumber\": \"01011114444\"," +
                                     "\"email\": \"parkgil@hong.com\"," +
                                     "\"signUpDate\": \"2024-09-02\"," +
@@ -78,7 +79,7 @@ public class AdminController {
     )
     public ResponseEntity<AppApiResponse<AdminDto.FindUserListResponse>> findUserList(
         @RequestParam(required = false)
-        String cursorId
+        Long cursorId
     ) {
         AdminDto.FindUserListResponse response = adminFacade.findUserScroll(cursorId);
         return ResponseEntityFactory.toResponseEntity(FIND_USER_LIST_SUCCESS, response);

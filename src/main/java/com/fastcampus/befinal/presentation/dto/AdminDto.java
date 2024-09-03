@@ -34,14 +34,15 @@ public class AdminDto {
 
     @Builder
     public record UserInfo(
+        Long cursorId,
         String empNo,
         String name,
         String authority,
-        String id,
+        String userId,
         String phoneNumber,
         String email,
         LocalDate signUpDate,
-        LocalDateTime finalLoginDateTime
+        String finalLoginDateTime
     ) {}
 
     @Builder
