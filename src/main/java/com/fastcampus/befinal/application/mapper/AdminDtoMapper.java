@@ -4,17 +4,14 @@ import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.info.AdminInfo;
-import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.presentation.dto.AdminDto;
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
-import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY_NAME;
+import static com.fastcampus.befinal.common.contant.UserConstant.INITIAL_FINAL_LOGIN_DATETIME;
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.INVALID_AUTHORITY;
 
 @Mapper(
@@ -25,15 +22,18 @@ import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.IN
 public interface AdminDtoMapper {
     AdminCommand.ApproveUserRequest toAdminCommand(AdminDto.ApproveUserRequest request);
 
-    AdminDto.FindUserListResponse from(ScrollPagination<AdminInfo.UserInfo> info);
+    AdminDto.FindUserListResponse from(ScrollPagination<Long, AdminInfo.UserInfo> info);
 
+    @Mapping(source = "id", target = "cursorId")
     @Mapping(source = "empNumber", target = "empNo")
-    @Mapping(target = "authority", expression = "java(mapRoleToAuthorityName(info))")
+    @Mapping(source = "role", target = "authority", qualifiedByName = "toAuthorityName")
     @Mapping(source = "signUpDateTime", target = "signUpDate")
+    @Mapping(source = "finalLoginDateTime", target = "finalLoginDateTime", qualifiedByName = "toFinalLoginDateTimeValue")
     AdminDto.UserInfo from(AdminInfo.UserInfo info);
 
-    default String mapRoleToAuthorityName(AdminInfo.UserInfo info) {
-        switch (info.role()) {
+    @Named("toAuthorityName")
+    default String toAuthorityName(String role) {
+        switch (role) {
             case USER_AUTHORITY -> {
                 return USER_AUTHORITY_NAME;
             }
@@ -42,6 +42,14 @@ public interface AdminDtoMapper {
             }
             default -> throw new BusinessException(INVALID_AUTHORITY);
         }
+    }
+
+    @Named("toFinalLoginDateTimeValue")
+    default String toFinalLoginDateTimeValue(LocalDateTime finalLoginDateTime) {
+        if (finalLoginDateTime.equals(INITIAL_FINAL_LOGIN_DATETIME)) {
+            return "-";
+        }
+        return finalLoginDateTime.toString();
     }
 
     default List<AdminDto.UserInfo> mapUserInfoList(List<AdminInfo.UserInfo> info) {

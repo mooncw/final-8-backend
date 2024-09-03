@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 public class AdminInfo {
     @Builder
     public record UserInfo(
+        Long id,
         String empNumber,
         String name,
         String role,
-        String id,
+        String userId,
         String phoneNumber,
         String email,
         LocalDateTime signUpDateTime,
