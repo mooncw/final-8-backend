@@ -62,16 +62,14 @@ class UserControllerTest {
             .build();
 
         UserDetailsInfo userInfo = UserDetailsInfo.builder().build();
-        String jwtToken = "aaaaaaa";
 
         doNothing()
             .when(userFacade)
-            .updateUser(userInfo, request, jwtToken);
+            .updateUser(userInfo, request);
 
         //when
         ResultActions perform = mockMvc.perform(put("/api/v1/user/info")
             .with(csrf())
-            .header("Authorization", "Bearer " + jwtToken)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding(StandardCharsets.UTF_8)
@@ -95,15 +93,13 @@ class UserControllerTest {
             .build();
 
         UserDetailsInfo userInfo = UserDetailsInfo.builder().build();
-        String jwtToken = "aaaaaaa";
 
         doNothing()
             .when(userFacade)
-            .updatePassword(userInfo, request, jwtToken);
+            .updatePassword(userInfo, request);
 
         ResultActions perform = mockMvc.perform(put("/api/v1/user/password")
             .with(csrf())
-            .header("Authorization", "Bearer " + jwtToken)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding(StandardCharsets.UTF_8)

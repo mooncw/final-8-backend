@@ -5,7 +5,6 @@ import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.util.DefaultGroupSequence;
 import com.fastcampus.befinal.domain.info.UserDetailsInfo;
-import com.fastcampus.befinal.presentation.dto.AuthDto;
 import com.fastcampus.befinal.presentation.dto.UserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,8 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.CHECK_CERTIFICATION_NUMBER_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AuthSuccessCode.SEND_CERTIFICATION_NUMBER_SUCCESS;
 import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.*;
 
 @RestController
@@ -47,11 +44,9 @@ public class UserController {
         @Validated(DefaultGroupSequence.class)
         UserDto.UserUpdateRequest request,
         @AuthenticationPrincipal
-        UserDetailsInfo userDetails,
-        @RequestHeader("Authorization")
-        String authorizationHeader
+        UserDetailsInfo userDetails
     ){
-        userFacade.updateUser(userDetails, request, authorizationHeader);
+        userFacade.updateUser(userDetails, request);
         return ResponseEntityFactory.toResponseEntity(UPDATE_USER_SUCCESS);
     }
 
@@ -73,11 +68,9 @@ public class UserController {
         @Validated
         UserDto.PasswordUpdateRequest request,
         @AuthenticationPrincipal
-        UserDetailsInfo userDetails,
-        @RequestHeader("Authorization")
-        String authorizationHeader
+        UserDetailsInfo userDetails
     ){
-        userFacade.updatePassword(userDetails, request, authorizationHeader);
+        userFacade.updatePassword(userDetails, request);
         return ResponseEntityFactory.toResponseEntity(UPDATE_PASSWORD_SUCCESS);
     }
 }

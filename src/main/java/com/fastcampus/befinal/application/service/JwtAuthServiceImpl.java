@@ -81,16 +81,6 @@ public class JwtAuthServiceImpl implements JwtAuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    @Override
-    public void setAuthenticationBearer(String header){
-        String jwt = subStringToken(header);
-        setAuthentication(jwt);
-    }
-
-    private String subStringToken(String header){
-        return header.substring(JwtConstant.JWT_PREFIX.length()).trim();
-    }
-
     private Authentication getAuthentication(String jwt) {
         String userId = parseUserId(jwt);
 
