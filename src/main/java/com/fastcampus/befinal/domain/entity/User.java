@@ -22,7 +22,7 @@ public class User {
     @Column(nullable = false, name = "name", columnDefinition = "varchar(10)")
     private String name;
 
-    @Column(nullable = false, name = "password", columnDefinition = "varchar(60)")
+    @Column(nullable = false, name = "password", columnDefinition = "varchar(50)")
     private String password;
 
     @Column(nullable = false, unique = true, name = "phone_number", columnDefinition = "varchar(11)")
@@ -42,4 +42,8 @@ public class User {
 
     @Column(nullable = false, name = "role", columnDefinition = "varchar(20)")
     private String role;
+
+    public void updateFinalLoginDateTime() {
+        this.finalLoginDateTime = LocalDateTime.now();
+    }
 }

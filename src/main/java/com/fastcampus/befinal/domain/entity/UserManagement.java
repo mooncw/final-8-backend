@@ -22,7 +22,7 @@ public class UserManagement {
     @Column(nullable = false, name = "name", columnDefinition = "varchar(10)")
     private String name;
 
-    @Column(nullable = false, name = "password", columnDefinition = "varchar(60)")
+    @Column(nullable = false, name = "password", columnDefinition = "varchar(50)")
     private String password;
 
     @Column(nullable = false, unique = true, name = "phone_number", columnDefinition = "varchar(11)")

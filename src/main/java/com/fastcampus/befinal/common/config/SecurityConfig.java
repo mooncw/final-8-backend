@@ -58,7 +58,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/check-id").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/cert-no").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/check-cert-no").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/logout").authenticated()
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll()
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)

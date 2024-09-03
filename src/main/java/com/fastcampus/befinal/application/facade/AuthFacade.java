@@ -36,8 +36,10 @@ public class AuthFacade {
         return authDtoMapper.from(info);
     }
 
-    public void signIn(AuthDto.SignInRequest request) {
-        jwtCreationService.createJwt(authDtoMapper.toJwtCommand(request));
+    public AuthDto.SignInResponse signIn(AuthDto.SignInRequest request) {
+        AuthInfo.UserInfo userInfo = authService.signIn(authDtoMapper.toAuthCommand(request));
+        JwtInfo.TokenInfo tokenInfo = jwtCreationService.createJwt(authDtoMapper.toJwtCommand(request));
+        return authDtoMapper.of(userInfo, tokenInfo);
     }
 
     public AuthDto.ReissueJwtResponse reissueJwt(AuthDto.ReissueJwtRequest request) {

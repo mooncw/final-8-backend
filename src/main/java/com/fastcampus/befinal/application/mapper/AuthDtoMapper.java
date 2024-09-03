@@ -14,6 +14,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import static com.fastcampus.befinal.common.contant.AuthConstant.*;
+import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.INVALID_AUTHORITY;
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.INVALID_CERTIFICATION_TYPE;
 
 @Mapper(
@@ -38,7 +40,8 @@ public interface AuthDtoMapper {
 
     AuthCommand.SignInRequest toAuthCommand(AuthDto.SignInRequest request);
 
-    JwtCommand.CreateJwtRequest toJwtCommand (AuthDto.SignInRequest request);
+    @Mapping(source = "id", target = "userId")
+    JwtCommand.CreateJwtRequest toJwtCommand(AuthDto.SignInRequest request);
 
     JwtCommand.ReissueJwtRequest toJwtCommand(AuthDto.ReissueJwtRequest request);
 
@@ -47,6 +50,9 @@ public interface AuthDtoMapper {
 
     @Mapping(source = "token", target = "certNoCheckToken")
     AuthDto.CheckCertificationNumberResponse from(AuthInfo.CheckCertificationNumberTokenInfo info);
+
+    @Mapping(target = "userInfo.authority", expression = "java(mapRoleToAuthorityName(userInfo))")
+    AuthDto.SignInResponse of(AuthInfo.UserInfo userInfo, JwtInfo.TokenInfo tokenInfo);
 
     AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
 
@@ -59,6 +65,18 @@ public interface AuthDtoMapper {
                 return CertificationType.UPDATE_USER;
             }
             default -> throw new BusinessException(INVALID_CERTIFICATION_TYPE);
+        }
+    }
+
+    default String mapRoleToAuthorityName(AuthInfo.UserInfo info) {
+        switch (info.role()) {
+            case USER_AUTHORITY -> {
+                return USER_AUTHORITY_NAME;
+            }
+            case ADMIN_AUTHORITY -> {
+                return ADMIN_AUTHORITY_NAME;
+            }
+            default -> throw new BusinessException(INVALID_AUTHORITY);
         }
     }
 }
