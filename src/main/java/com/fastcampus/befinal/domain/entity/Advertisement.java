@@ -37,6 +37,9 @@ public class Advertisement {
     @Column(nullable = false, name = "post_datetime", columnDefinition = "datetime")
     private LocalDateTime postDateTime;
 
+    @Column(name = "task_datetime", columnDefinition = "datetime")
+    private LocalDateTime taskDateTime;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignee_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private User assignee;
