@@ -15,7 +15,6 @@ public class UserCommand {
     @Builder
     public record PasswordUpdateRequest(
         User user,
-        String password,
         String currentPassword,
         String newPassword
     ){}

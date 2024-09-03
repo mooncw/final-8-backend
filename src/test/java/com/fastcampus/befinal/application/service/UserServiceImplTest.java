@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -34,7 +36,7 @@ class UserServiceImplTest {
     private UserStore userStore;
 
     @Mock
-    private JwtAuthService jwtAuthService;
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @DisplayName("회원정보 수정 테스트")
@@ -49,7 +51,6 @@ class UserServiceImplTest {
             .certNoCheckToken("aaaa-aaaa-aaaa")
             .build();
 
-        String jwtToken = "Bearer aaaaaaaa";
 
         doReturn(true)
             .when(checkTokenReader)
@@ -94,6 +95,35 @@ class UserServiceImplTest {
 
         //verify
         verify(userStore, times(1)).update(any(UserInfo.UserUpdateInfo.class));
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 테스트")
+    void updatePasswordTest() {
+        //given
+        String password = "aaaaaaa1";
+        User user = User.builder().id("aaaa").password(password).build();
+
+        UserCommand.PasswordUpdateRequest command = UserCommand.PasswordUpdateRequest.builder()
+            .user(user)
+            .currentPassword(password)
+            .newPassword("aaaaaa2")
+            .build();
+
+        doReturn(true)
+            .when(passwordEncoder)
+            .matches(any(String.class), any(String.class));
+
+        doNothing()
+            .when(userStore)
+            .update(any(UserInfo.PasswordUpdateInfo.class));
+
+        //when
+        userService.updatePassword(command);
+
+        //verify
+        verify(passwordEncoder, times(1)).matches(any(String.class), any(String.class));
+        verify(userStore, times(1)).update(any(UserInfo.PasswordUpdateInfo.class));
     }
 
 }
