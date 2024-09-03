@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.presentation.dto;
 
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
+import com.fastcampus.befinal.domain.info.AdminInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -28,5 +29,12 @@ public class AdminDto {
     public record ApproveUserRequest(
         @NotEmpty(message = NOT_EMPTY_USER_LIST, groups = RequestValidationGroups.NotEmptyGroup.class)
         List<@Valid ApproveUser> userList
+    ) {}
+
+    @Builder
+    public record FindSignUpUserListResponse(
+        Long totalElements,
+        Long currentCursorId,
+        List<AdminInfo.SignUpUserInfo> contents
     ) {}
 }
