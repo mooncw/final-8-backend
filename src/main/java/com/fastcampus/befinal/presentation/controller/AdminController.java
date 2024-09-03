@@ -62,10 +62,10 @@ public class AdminController {
                                         "\"currentCursorId\": \"\"," +
                                         "\"contents\":[" +
                                             "{" +
-                                                "\"id\": 2," +
-                                                "\"userId\": \"박길동\"," +
-                                                "\"userName\": \"11111113\"," +
-                                                "\"phoneNumber\": \"11111113\"," +
+                                                "\"cursorId\": 2," +
+                                                "\"name\": \"박길동\"," +
+                                                "\"empNumber\": \"11111113\"," +
+                                                "\"phoneNumber\": \"01011114444\"," +
                                                 "\"email\": \"parkgil@hong.com\"," +
                                                 "\"signUpRequestDateTime\": \"\"" +
                                             "}" +

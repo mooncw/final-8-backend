@@ -12,6 +12,6 @@ public class AdminInfo {
         String empNumber,
         String phoneNumber,
         String email,
-        LocalDateTime signUpRequestDateTime
+        LocalDateTime signUpDateTime
     ) {}
 }

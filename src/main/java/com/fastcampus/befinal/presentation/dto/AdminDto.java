@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
@@ -32,9 +33,19 @@ public class AdminDto {
     ) {}
 
     @Builder
+    public record SignUpUserInfo(
+        Long cursorId,
+        String name,
+        String empNo,
+        String phoneNumber,
+        String email,
+        LocalDateTime signUpRequestDateTime
+    ) {}
+
+    @Builder
     public record FindSignUpUserListResponse(
         Long totalElements,
         Long currentCursorId,
-        List<AdminInfo.SignUpUserInfo> contents
+        List<SignUpUserInfo> contents
     ) {}
 }
