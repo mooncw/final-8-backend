@@ -20,10 +20,8 @@ public class UserManagementRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private static final QUserManagement userManagement = QUserManagement.userManagement;
 
-    // id는 UserManagement의 auto_increment id입니다.
-    public ScrollPagination<AdminInfo.SignUpUserInfo> findScrollById(Long id) {
-        Long cursorId = id;
-
+    // cursorId는 UserManagement의 auto_increment id와 동일합니다.
+    public ScrollPagination<AdminInfo.SignUpUserInfo> findScrollById(Long cursorId) {
         List<AdminInfo.SignUpUserInfo> contents = queryFactory
             .select(Projections.constructor(AdminInfo.SignUpUserInfo.class,
                 userManagement.id,
@@ -31,31 +29,35 @@ public class UserManagementRepositoryCustom {
                 userManagement.empNumber,
                 userManagement.phoneNumber,
                 userManagement.email,
-                userManagement.signUpDateTime.as("signUpRequestDateTime")
+                userManagement.signUpDateTime
             ))
             .from(userManagement)
             .where(gtCursorId(cursorId))
             .limit(SIGN_UP_USER_LIST_SCROLL_SIZE)
             .fetch();
 
-        if (!contents.isEmpty()) {
-            AdminInfo.SignUpUserInfo lastUserInfo = contents.get(contents.size() - 1);
-            cursorId = lastUserInfo.id();
-        }
+        Long nextCursorId = getNextCursorId(cursorId, contents);
 
         Long totalElements = queryFactory
             .select(userManagement.count())
             .from(userManagement)
             .fetchOne();
 
-        return ScrollPagination.of(totalElements, cursorId, contents);
+        return ScrollPagination.of(totalElements, nextCursorId, contents);
     }
 
     private BooleanExpression gtCursorId(Long userId) {
         if (Objects.isNull(userId)) {
             return null;
         }
-
         return userManagement.id.gt(userId);
+    }
+
+    private Long getNextCursorId(Long cursorId, List<AdminInfo.SignUpUserInfo> contents) {
+        if (!contents.isEmpty()) {
+            AdminInfo.SignUpUserInfo lastUserInfo = contents.get(contents.size() - 1);
+            return lastUserInfo.id();
+        }
+        return cursorId;
     }
 }

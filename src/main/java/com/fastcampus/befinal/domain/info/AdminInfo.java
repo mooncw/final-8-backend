@@ -2,12 +2,9 @@ package com.fastcampus.befinal.domain.info;
 
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 public class AdminInfo {
-    @Builder
-    public record FindSignUpUserListInfo(
-
-    ) {}
-
     @Builder
     public record SignUpUserInfo(
         Long id,
@@ -15,6 +12,6 @@ public class AdminInfo {
         String empNumber,
         String phoneNumber,
         String email,
-        String signUpRequestDateTime
+        LocalDateTime signUpRequestDateTime
     ) {}
 }

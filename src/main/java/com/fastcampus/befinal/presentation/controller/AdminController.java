@@ -62,13 +62,12 @@ public class AdminController {
                                         "\"currentCursorId\": \"\"," +
                                         "\"contents\":[" +
                                             "{" +
-                                                "\"id\": \"\"," +
-                                                "\"userId\": \"\"," +
-                                                "\"userName\": \"\"," +
-                                                "\"authority\": \"\"," +
-                                                "\"phoneNumber\": \"\"," +
-                                                "\"email\": \"\"," +
-                                                "\"date\": \"\"" +
+                                                "\"id\": 2," +
+                                                "\"userId\": \"박길동\"," +
+                                                "\"userName\": \"11111113\"," +
+                                                "\"phoneNumber\": \"11111113\"," +
+                                                "\"email\": \"parkgil@hong.com\"," +
+                                                "\"signUpRequestDateTime\": \"\"" +
                                             "}" +
                                         "]" +
                                     "}" +
@@ -78,7 +77,7 @@ public class AdminController {
         )
     )
     public ResponseEntity<AppApiResponse<AdminDto.FindSignUpUserListResponse>> findSignUpUserScroll(
-        @RequestParam
+        @RequestParam(required = false)
         Long cursorId
     ) {
         AdminDto.FindSignUpUserListResponse response = adminFacade.findSignUpUserScroll(cursorId);
