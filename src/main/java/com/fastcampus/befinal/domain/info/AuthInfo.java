@@ -48,7 +48,7 @@ public class AuthInfo {
     ) {
         public static UserInfo from(User user) {
             return UserInfo.builder()
-                .id(user.getId())
+                .id(user.getUserId())
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())
                 .empNo(user.getEmpNumber())

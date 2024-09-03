@@ -7,5 +7,5 @@ import com.fastcampus.befinal.domain.info.AdminInfo;
 public interface AdminService {
     void approveUser(AdminCommand.ApproveUserRequest command);
 
-    ScrollPagination<AdminInfo.UserInfo> findUserScroll(String cursorId);
+    ScrollPagination<Long, AdminInfo.UserInfo> findUserScroll(Long cursorId);
 }

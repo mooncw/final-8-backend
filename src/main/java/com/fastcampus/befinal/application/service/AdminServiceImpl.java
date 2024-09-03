@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ScrollPagination<AdminInfo.UserInfo> findUserScroll(String cursorId) {
+    public ScrollPagination<Long, AdminInfo.UserInfo> findUserScroll(Long cursorId) {
         return userReader.findScroll(cursorId);
     }
 }

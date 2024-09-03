@@ -28,7 +28,7 @@ public class UserDetailsInfo implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getId();
+        return user.getUserId();
     }
 
     public static UserDetailsInfo from(User user) {
