@@ -66,7 +66,7 @@ public class AdminController {
                                                 "\"empNo\": \"11111113\"," +
                                                 "\"phoneNumber\": \"01011114444\"," +
                                                 "\"email\": \"parkgil@hong.com\"," +
-                                                "\"signUpRequestDateTime\": \"\"" +
+                                                "\"signUpRequestDateTime\": \"2024-09-03T01:32:19\"" +
                                             "}" +
                                         "]" +
                                     "}" +
