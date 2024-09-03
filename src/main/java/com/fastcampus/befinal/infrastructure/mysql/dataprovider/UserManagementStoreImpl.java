@@ -24,4 +24,9 @@ public class UserManagementStoreImpl implements UserManagementStore {
     public void delete(UserManagement userManagement) {
         userManagementRepository.delete(userManagement);
     }
+
+    @Override
+    public void deleteByEmpNumber(String empNumber) {
+        userManagementRepository.deleteByEmpNumber(empNumber);
+    }
 }
