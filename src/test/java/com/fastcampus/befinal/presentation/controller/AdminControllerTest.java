@@ -85,7 +85,7 @@ public class AdminControllerTest {
     @Test
     @WithMockUser(authorities = ADMIN_AUTHORITY)
     @DisplayName("회원가입 신청 유저 목록 조회 성공시, 200 OK와 정상 응답을 반환")
-    void findSignUpUserScrollTest() throws Exception {
+    void findSignUpUserListTest() throws Exception {
         //given
         Long requestParam = null;
 

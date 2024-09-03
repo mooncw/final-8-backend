@@ -76,7 +76,7 @@ public class AdminController {
             )
         )
     )
-    public ResponseEntity<AppApiResponse<AdminDto.FindSignUpUserListResponse>> findSignUpUserScroll(
+    public ResponseEntity<AppApiResponse<AdminDto.FindSignUpUserListResponse>> findSignUpUserList(
         @RequestParam(required = false)
         Long cursorId
     ) {
