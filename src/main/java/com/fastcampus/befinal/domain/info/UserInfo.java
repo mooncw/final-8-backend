@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.domain.info;
 
 import com.fastcampus.befinal.domain.command.UserCommand;
+import com.fastcampus.befinal.domain.entity.User;
 import lombok.Builder;
 
 import java.util.Optional;
@@ -9,30 +10,30 @@ public class UserInfo {
 
     @Builder
     public record UserUpdateInfo(
-        String id,
+        User user,
         String email,
         String phoneNumber
     ){
-        public static UserUpdateInfo from(UserCommand.UserUpdateRequest command){
+        public static UserUpdateInfo of(User user, String email, String phoneNumber){
             return UserUpdateInfo.builder()
-                .id(command.user().getId())
-                .email(Optional.ofNullable(command.email())
-                    .orElse(command.user().getEmail()))
-                .phoneNumber(Optional.ofNullable(command.phoneNumber())
-                    .orElse(command.user().getPhoneNumber()))
+                .user(user)
+                .email(Optional.ofNullable(email)
+                    .orElse(user.getEmail()))
+                .phoneNumber(Optional.ofNullable(phoneNumber)
+                    .orElse(user.getPhoneNumber()))
                 .build();
         }
     }
 
     @Builder
     public record PasswordUpdateInfo(
-        String id,
+        User user,
         String password
     ){
-        public static PasswordUpdateInfo from(UserCommand.PasswordUpdateRequest command){
+        public static PasswordUpdateInfo of(User user, String password){
             return PasswordUpdateInfo.builder()
-                .id(command.id())
-                .password(command.newPassword())
+                .user(user)
+                .password(password)
                 .build();
         }
     }

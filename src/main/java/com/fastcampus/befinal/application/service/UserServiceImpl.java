@@ -5,9 +5,12 @@ import com.fastcampus.befinal.domain.command.UserCommand;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenReader;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenStore;
 import com.fastcampus.befinal.domain.dataprovider.UserStore;
+import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.domain.info.UserDetailsInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.service.UserService;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final CheckTokenReader checkTokenReader;
     private final CheckTokenStore checkTokenStore;
     private final UserStore userStore;
+    private final EntityManager entityManager;
 
     @Override
     @Transactional
@@ -34,7 +38,8 @@ public class UserServiceImpl implements UserService {
             validateCheckToken(certificationNumberCheckTokenInfo);
         }
 
-        UserInfo.UserUpdateInfo userUpdateInfo = UserInfo.UserUpdateInfo.from(command);
+        UserInfo.UserUpdateInfo userUpdateInfo =
+            UserInfo.UserUpdateInfo.of(command.user(), command.email(), command.phoneNumber());
         userStore.update(userUpdateInfo);
     }
 
@@ -50,13 +55,17 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(UserCommand.PasswordUpdateRequest command){
         validPassword(command);
 
-        UserInfo.PasswordUpdateInfo userInfo = UserInfo.PasswordUpdateInfo.from(command);
-        userStore.update(userInfo);
+        UserInfo.PasswordUpdateInfo info = UserInfo.PasswordUpdateInfo.of(command.user(), command.newPassword());
+        userStore.update(info);
     }
 
     private void validPassword(UserCommand.PasswordUpdateRequest command){
         if(!passwordEncoder.matches(command.currentPassword(), command.password())){
             throw new BusinessException(INVALID_CURRENT_PASSWORD);
         }
+    }
+
+    private String EncodedPassWord(String password){
+        return passwordEncoder.encode(password);
     }
 }

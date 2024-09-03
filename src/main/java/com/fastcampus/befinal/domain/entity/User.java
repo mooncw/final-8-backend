@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@DynamicUpdate
 @AllArgsConstructor
 @Entity(name = "User")
 @Table(name = "user")
@@ -22,15 +24,18 @@ public class User {
     @Column(nullable = false, name = "name", columnDefinition = "varchar(10)")
     private String name;
 
+    @Setter
     @Column(nullable = false, name = "password", columnDefinition = "varchar(50)")
     private String password;
 
+    @Setter
     @Column(nullable = false, unique = true, name = "phone_number", columnDefinition = "varchar(11)")
     private String phoneNumber;
 
     @Column(nullable = false, unique = true, name = "emp_number", columnDefinition = "varchar(50)")
     private String empNumber;
 
+    @Setter
     @Column(nullable = false, unique = true, name = "email", columnDefinition = "varchar(30)")
     private String email;
 

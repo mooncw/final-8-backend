@@ -13,6 +13,6 @@ import org.mapstruct.*;
 )
 public interface UserDtoMapper {
     UserCommand.UserUpdateRequest toUserCommand(UserDto.UserUpdateRequest request, UserDetailsInfo userDetailsInfo);
-    UserCommand.PasswordUpdateRequest toUserCommand(UserDto.PasswordUpdateRequest request, User user);
+    UserCommand.PasswordUpdateRequest toUserCommand(UserDto.PasswordUpdateRequest request, UserDetailsInfo userDetailsInfo);
 
 }

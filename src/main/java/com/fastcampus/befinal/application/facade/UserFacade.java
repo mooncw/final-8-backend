@@ -17,6 +17,6 @@ public class UserFacade {
         userService.updateUser(userDtoMapper.toUserCommand(request, user));
     }
     public void updatePassword(UserDetailsInfo user, UserDto.PasswordUpdateRequest request){
-        userService.updatePassword(userDtoMapper.toUserCommand(request, user.getUser()));
+        userService.updatePassword(userDtoMapper.toUserCommand(request, user));
     }
 }
