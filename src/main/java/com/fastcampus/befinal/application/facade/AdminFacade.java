@@ -15,4 +15,8 @@ public class AdminFacade {
     public void approveUser(AdminDto.ApproveUserRequest request) {
         adminService.approveUser(adminDtoMapper.toAdminCommand(request));
     }
+
+    public AdminDto.FindUserListResponse findUserScroll(String cursorId) {
+        return adminDtoMapper.from(adminService.findUserScroll(cursorId));
+    }
 }
