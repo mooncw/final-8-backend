@@ -95,14 +95,14 @@ public class AdminServiceImplTest {
             .signUpDateTime(LocalDateTime.now().minusDays(5L))
             .build();
 
-        ScrollPagination<AdminInfo.SignUpUserInfo> doReturnScroll = ScrollPagination.of(1L, cursorId, List.of(info));
+        ScrollPagination<Long, AdminInfo.SignUpUserInfo> doReturnScroll = ScrollPagination.of(1L, cursorId, List.of(info));
 
         doReturn(doReturnScroll)
             .when(userManagementReader)
             .findScrollById(anyLong());
 
         //when
-        ScrollPagination<AdminInfo.SignUpUserInfo> scroll = adminService.findSignUpUserScroll(cursorId);
+        ScrollPagination<Long, AdminInfo.SignUpUserInfo> scroll = adminService.findSignUpUserScroll(cursorId);
 
         //then
         assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
