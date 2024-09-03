@@ -58,14 +58,14 @@ public class AdminController {
                                 "\"message\": \"회원가입 신청 유저 목록 조회되었습니다.\"" +
                                 "\"data\": {" +
                                     "\"page\":{" +
-                                        "\"currentPage\": \"\"," +
-                                        "\"totalPage\": \"\"," +
-                                        "\"isEnd\": true," +
-                                        "\"pageList\":[" +
+                                        "\"totalElements\": \"\"," +
+                                        "\"currentCursorId\": \"\"," +
+                                        "\"contents\":[" +
                                             "{" +
+                                                "\"id\": \"\"," +
                                                 "\"userId\": \"\"," +
                                                 "\"userName\": \"\"," +
-                                                "\"authortiy\": \"\"," +
+                                                "\"authority\": \"\"," +
                                                 "\"phoneNumber\": \"\"," +
                                                 "\"email\": \"\"," +
                                                 "\"date\": \"\"" +
@@ -77,8 +77,11 @@ public class AdminController {
             )
         )
     )
-    public ResponseEntity<AppApiResponse<AdminDto.FindSignUpUserListResponse>> findSignUpUserList() {
-        AdminDto.FindSignUpUserListResponse response = adminFacade.findSignUpUserList();
+    public ResponseEntity<AppApiResponse<AdminDto.FindSignUpUserListResponse>> findSignUpUserScroll(
+        @RequestParam
+        Long cursorId
+    ) {
+        AdminDto.FindSignUpUserListResponse response = adminFacade.findSignUpUserScroll(cursorId);
         return ResponseEntityFactory.toResponseEntity(FIND_SIGN_UP_USER_LIST_SUCCESS, response);
     }
 }
