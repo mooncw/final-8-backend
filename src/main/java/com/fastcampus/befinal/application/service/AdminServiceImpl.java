@@ -1,10 +1,12 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.dataprovider.UserManagementReader;
 import com.fastcampus.befinal.domain.dataprovider.UserManagementStore;
 import com.fastcampus.befinal.domain.dataprovider.UserStore;
 import com.fastcampus.befinal.domain.entity.UserManagement;
+import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,5 +29,10 @@ public class AdminServiceImpl implements AdminService {
                 userStore.store(userManagement);
                 userManagementStore.delete(userManagement);
             });
+    }
+
+    @Override
+    public ScrollPagination<AdminInfo.SignUpUserInfo> findSignUpUserScroll(Long cursorId) {
+        return userManagementReader.findScrollById(cursorId);
     }
 }
