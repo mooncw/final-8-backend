@@ -23,7 +23,28 @@ import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.IN
 public interface AdminDtoMapper {
     AdminCommand.ApproveUserRequest toAdminCommand(AdminDto.ApproveUserRequest request);
 
-    AdminDto.FindUserListResponse from(ScrollPagination<Long, AdminInfo.UserInfo> info);
+    AdminCommand.RejectUserRequest toAdminCommand(AdminDto.RejectUserRequest request);
+
+    AdminDto.FindSignUpUserListResponse fromSignUpUserScroll(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
+
+    @Mapping(source = "id", target = "cursorId")
+    @Mapping(source = "empNumber", target = "empNo")
+    @Mapping(source = "signUpDateTime", target = "signUpRequestDateTime", qualifiedByName = "toSignUpRequestDateTimeValue")
+    AdminDto.SignUpUserInfo from(AdminInfo.SignUpUserInfo info);
+
+    @Named("toSignUpRequestDateTimeValue")
+    default String toSignUpRequestDateTimeValue(LocalDateTime finalLoginDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return finalLoginDateTime.format(formatter);
+    }
+
+    default List<AdminDto.SignUpUserInfo> mapSignUpUserInfoList(List<AdminInfo.SignUpUserInfo> info) {
+        return info.stream()
+            .map(this::from)
+            .toList();
+    }
+
+    AdminDto.FindUserListResponse fromUserScroll(ScrollPagination<Long, AdminInfo.UserInfo> info);
 
     @Mapping(source = "id", target = "cursorId")
     @Mapping(source = "empNumber", target = "empNo")

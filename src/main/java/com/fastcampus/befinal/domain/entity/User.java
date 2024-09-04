@@ -2,11 +2,13 @@ package com.fastcampus.befinal.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@DynamicUpdate
 @AllArgsConstructor
 @Entity(name = "User")
 @Table(name = "user")
@@ -45,5 +47,14 @@ public class User {
 
     public void updateFinalLoginDateTime() {
         this.finalLoginDateTime = LocalDateTime.now();
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
+    public void updateEmailAndPhoneNumber(String email, String phoneNumber){
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 }

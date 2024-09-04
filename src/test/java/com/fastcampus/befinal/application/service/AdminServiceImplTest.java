@@ -86,6 +86,60 @@ public class AdminServiceImplTest {
     }
 
     @Test
+    @DisplayName("회원가입 반려 성공 테스트")
+    void rejectUserTest() {
+        //given
+        AdminCommand.RejectUser rejectUser = AdminCommand.RejectUser.builder()
+            .empNo("11111111")
+            .build();
+
+        AdminCommand.RejectUserRequest command = AdminCommand.RejectUserRequest.builder()
+            .userList(List.of(rejectUser))
+            .build();
+
+        doNothing()
+            .when(userManagementStore)
+            .deleteByEmpNumber(anyString());
+
+
+        //when
+        adminService.rejectUser(command);
+
+        //verify
+        verify(userManagementStore, times(1)).deleteByEmpNumber(anyString());
+    }
+
+    @Test
+    @DisplayName("회원가입 신청 유저 목록 조회 성공 테스트")
+    void findSignUpUserScrollTest() {
+        //given
+        Long cursorId = 2L;
+
+        AdminInfo.SignUpUserInfo info = AdminInfo.SignUpUserInfo.builder()
+            .id(cursorId)
+            .name("홍길동")
+            .empNumber("11111111")
+            .phoneNumber("01011112222")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(5L))
+            .build();
+
+        ScrollPagination<Long, AdminInfo.SignUpUserInfo> doReturnScroll = ScrollPagination.of(1L, cursorId, List.of(info));
+
+        doReturn(doReturnScroll)
+            .when(userManagementReader)
+            .findScroll(anyLong());
+
+        //when
+        ScrollPagination<Long, AdminInfo.SignUpUserInfo> scroll = adminService.findSignUpUserScroll(cursorId);
+
+        //then
+        assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
+        assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
+        assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
+    }
+
+    @Test
     @DisplayName("회원 정보 목록 조회 성공 테스트")
     void findUserScrollTest() {
         //given

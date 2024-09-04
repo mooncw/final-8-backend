@@ -87,4 +87,72 @@ public class AdminDtoTest {
         //then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_EMP_NUMBER));
     }
+
+    @Test
+    @DisplayName("회원가입 반려 요청 검증 테스트 - NotEmpty")
+    void whenRejectUserRequestIsEmpty_thenValidationFails() {
+        //given
+        AdminDto.RejectUserRequest request = AdminDto.RejectUserRequest.builder()
+            .userList(List.of())
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.RejectUserRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotEmptyGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_EMPTY_USER_LIST));
+    }
+
+    @Test
+    @DisplayName("회원가입 반려 요청 검증 테스트 - NotBlank")
+    void whenRejectUserIsBlank_thenValidationFails() {
+        //given
+        AdminDto.RejectUser request = AdminDto.RejectUser.builder()
+            .empNo(" ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.RejectUser>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_USER_EMP_NUMBER));
+    }
+
+    @Test
+    @DisplayName("회원가입 반려 요청 검증 테스트 - Size")
+    void whenRejectUserMismatchSize_thenValidationFails() {
+        //given
+        AdminDto.RejectUser request = AdminDto.RejectUser.builder()
+            .empNo("1")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.RejectUser>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_USER_EMP_NUMBER));
+    }
+
+    @Test
+    @DisplayName("회원가입 반려 요청 검증 테스트 - Pattern")
+    void whenRejectUserMismatchPattern_thenValidationFails() {
+        //given
+        AdminDto.RejectUser request = AdminDto.RejectUser.builder()
+            .empNo("a")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.RejectUser>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_EMP_NUMBER));
+    }
 }

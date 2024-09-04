@@ -56,6 +56,9 @@ public interface AuthDtoMapper {
             case "SignUp" -> {
                 return CertificationType.SIGN_UP;
             }
+            case "UpdateUser" -> {
+                return CertificationType.UPDATE_USER;
+            }
             default -> throw new BusinessException(INVALID_CERTIFICATION_TYPE);
         }
     }
