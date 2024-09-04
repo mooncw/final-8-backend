@@ -8,4 +8,6 @@ public class RequestValidationGroups {
     public interface PatternGroup {}
 
     public interface NotEmptyGroup {}
+
+    public interface CustomValidateGroup {}
 }

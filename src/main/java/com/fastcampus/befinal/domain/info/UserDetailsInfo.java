@@ -31,6 +31,8 @@ public class UserDetailsInfo implements UserDetails {
         return user.getId();
     }
 
+    public User getUser() { return user;}
+
     public static UserDetailsInfo from(User user) {
         return UserDetailsInfo.builder()
             .user(user)
