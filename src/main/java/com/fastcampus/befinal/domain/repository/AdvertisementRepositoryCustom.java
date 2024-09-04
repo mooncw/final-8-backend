@@ -51,17 +51,12 @@ public class AdvertisementRepositoryCustom {
         DateTimeExpression<LocalDate> kstTaskDateTime = Expressions.dateTimeTemplate(LocalDate.class,
                 "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.taskDateTime);
 
-        LocalDate todayDate = LocalDate.now();
-        LocalDate startOfPeriod = todayDate.getDayOfMonth() <= 15 ? todayDate.withDayOfMonth(1) : todayDate.withDayOfMonth(16);
-
         List<Tuple> results = queryFactory
                 .select(kstTaskDateTime, ad.count().intValue())
                 .from(ad)
                 .where(userIdEq(id)
                         .and(isCompleted())
-                        .and(isInCurrentPeriod())
-                        .and(kstTaskDateTime.goe(startOfPeriod))
-                        .and(kstTaskDateTime.loe(todayDate)))
+                        .and(isInCurrentPeriod()))
                 .groupBy(kstTaskDateTime)
                 .orderBy(kstTaskDateTime.asc())
                 .fetch();
@@ -110,10 +105,10 @@ public class AdvertisementRepositoryCustom {
 
         // `ad.postDateTime`을 LocalDateTime으로 변환하고 한국 시간으로 변환
         DateTimeExpression<LocalDate> kstPostDateTime = Expressions.dateTimeTemplate(LocalDate.class,
-                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.postDateTime);
+                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.taskDateTime);
 
         // 한국 시간 기준으로 날짜 범위와 비교
         return kstPostDateTime.between(startOfPeriod, endOfPeriod)
-                .and(ad.postDateTime.month().eq(todayDate.getMonthValue()));
+                .and(ad.taskDateTime.month().eq(todayDate.getMonthValue()));
     }
 }
