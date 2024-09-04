@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Objects;
 
-import static com.fastcampus.befinal.common.contant.AdminConstant.SIGN_UP_USER_LIST_SCROLL_SIZE;
+import static com.fastcampus.befinal.common.contant.ScrollConstant.SIGN_UP_USER_LIST_SCROLL_SIZE;
 
 @Repository
 @RequiredArgsConstructor

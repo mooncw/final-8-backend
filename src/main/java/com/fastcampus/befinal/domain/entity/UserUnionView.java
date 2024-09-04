@@ -15,7 +15,7 @@ import org.hibernate.annotations.Immutable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserUnionView {
     @Id
-    private String id;
+    private String userId;
 
     private String phoneNumber;
 

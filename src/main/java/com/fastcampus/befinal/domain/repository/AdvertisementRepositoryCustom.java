@@ -91,7 +91,7 @@ public class AdvertisementRepositoryCustom {
     }
 
     private BooleanExpression userIdEq(String id) {
-        return ad.assignee.id.eq(id);
+        return ad.assignee.userId.eq(id);
     }
 
     private BooleanExpression isCompleted() {

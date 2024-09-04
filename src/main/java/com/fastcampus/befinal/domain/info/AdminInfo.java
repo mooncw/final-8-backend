@@ -14,4 +14,17 @@ public class AdminInfo {
         String email,
         LocalDateTime signUpDateTime
     ) {}
+
+    @Builder
+    public record UserInfo(
+        Long id,
+        String empNumber,
+        String name,
+        String role,
+        String userId,
+        String phoneNumber,
+        String email,
+        LocalDateTime signUpDateTime,
+        LocalDateTime finalLoginDateTime
+    ) {}
 }

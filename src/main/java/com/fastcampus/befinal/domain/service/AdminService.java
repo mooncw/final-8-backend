@@ -10,4 +10,6 @@ public interface AdminService {
     void rejectUser(AdminCommand.RejectUserRequest command);
 
     ScrollPagination<Long, AdminInfo.SignUpUserInfo> findSignUpUserScroll(Long cursorId);
+
+    ScrollPagination<Long, AdminInfo.UserInfo> findUserScroll(Long cursorId);
 }

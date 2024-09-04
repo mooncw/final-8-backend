@@ -46,7 +46,6 @@ public class UserDtoTest {
         UserDto.UserUpdateRequest request = UserDto.UserUpdateRequest.builder()
             .phoneNumber("ㅁ")
             .email("g")
-            .certNoCheckToken("1111")
             .build();
 
         //when
@@ -64,8 +63,6 @@ public class UserDtoTest {
         //given
         UserDto.UserUpdateRequest request = UserDto.UserUpdateRequest.builder()
             .phoneNumber("111")
-            .email("g")
-            .certNoCheckToken("1111")
             .build();
 
         //when

@@ -15,6 +15,4 @@ public class UserConstant {
     public static final String SWAGGER_CURRENT_USER_PASSWORD = "aaaaaaa1";
     public static final String SWAGGER_NEW_USER_PASSWORD = "aaaaaaa2";
     public static final String SWAGGER_UPDATE_CERTIFICATION_NUMBER_CHECK_TOKEN = "5gf43709-d81e-4a53-b447-c50fa6ec06e4";
-
-    public static final String SWAGGER_CERTIFICATION_NUMBER_TYPE_UPDATE = "UpdateUser";
 }

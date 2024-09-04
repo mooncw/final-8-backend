@@ -2,6 +2,8 @@ package com.fastcampus.befinal.presentation.controller;
 
 import com.fastcampus.befinal.application.facade.BoardFacade;
 import com.fastcampus.befinal.common.config.SecurityConfig;
+import com.fastcampus.befinal.domain.entity.User;
+import com.fastcampus.befinal.domain.info.UserDetailsInfo;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
 import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import org.junit.jupiter.api.DisplayName;
@@ -16,13 +18,18 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
+import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
 import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 @DisplayName("UserBoardController 테스트")
 @WebMvcTest(UserBoardController.class)
@@ -41,7 +48,6 @@ class UserBoardControllerTest {
     private AccessDeniedHandler accessDeniedHandler;
 
     @Test
-    @WithMockUser(username = "testID", authorities = "USER_AUTHORITY")
     @DisplayName("사용자 대시보드 요청 성공시, 200 OK와 정상 응답을 반환")
     void getBoardDataTest() throws Exception {
         // given
@@ -50,12 +56,28 @@ class UserBoardControllerTest {
                 new ArrayList<>(), new ArrayList<>()
         );
 
+        User user = User.builder()
+            .id(1L)
+            .userId("hong")
+            .name("홍길동")
+            .password("aaaa")
+            .phoneNumber("01011112222")
+            .empNumber("11111111")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(USER_AUTHORITY)
+            .build();
+
+        UserDetailsInfo userDetailsInfo = UserDetailsInfo.from(user);
+
         doReturn(response)
                 .when(boardFacade)
-                .loadUserDashboardData("testID");
+                .loadUserDashboardData(anyString());
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/v1/dashboard")
+                .with(user(userDetailsInfo))
                 .accept(MediaType.APPLICATION_JSON));
 
         // then

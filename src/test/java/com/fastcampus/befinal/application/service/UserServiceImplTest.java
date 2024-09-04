@@ -7,14 +7,12 @@ import com.fastcampus.befinal.domain.dataprovider.UserStore;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.UserInfo;
-import com.fastcampus.befinal.domain.service.JwtAuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,7 +40,9 @@ class UserServiceImplTest {
     @DisplayName("회원정보 수정 테스트")
     void updateUserTest() {
         //given
-        User user = User.builder().id("aaaa").build();
+        User user = User.builder()
+            .userId("aaaa")
+            .build();
 
         UserCommand.UserUpdateRequest command = UserCommand.UserUpdateRequest.builder()
             .user(user)
@@ -77,7 +77,9 @@ class UserServiceImplTest {
     @DisplayName("회원정보 수정 테스트 - 전화번호 없이")
     void updateUserTestWithoutPhoneNumber() {
         //given
-        User user = User.builder().id("aaaa").build();
+        User user = User.builder()
+            .userId("aaaa")
+            .build();
 
         UserCommand.UserUpdateRequest command = UserCommand.UserUpdateRequest.builder()
             .user(user)
@@ -102,7 +104,10 @@ class UserServiceImplTest {
     void updatePasswordTest() {
         //given
         String password = "aaaaaaa1";
-        User user = User.builder().id("aaaa").password(password).build();
+        User user = User.builder()
+            .userId("aaaa")
+            .password(password)
+            .build();
 
         UserCommand.PasswordUpdateRequest command = UserCommand.PasswordUpdateRequest.builder()
             .user(user)
