@@ -39,7 +39,7 @@ public class AdminDto {
         String empNo,
         String phoneNumber,
         String email,
-        LocalDateTime signUpRequestDateTime
+        String signUpRequestDateTime
     ) {}
 
     @Builder

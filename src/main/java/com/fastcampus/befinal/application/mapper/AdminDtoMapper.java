@@ -4,11 +4,10 @@ import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.presentation.dto.AdminDto;
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Mapper(
@@ -23,8 +22,14 @@ public interface AdminDtoMapper {
 
     @Mapping(source = "id", target = "cursorId")
     @Mapping(source = "empNumber", target = "empNo")
-    @Mapping(source = "signUpDateTime", target = "signUpRequestDateTime")
+    @Mapping(source = "signUpDateTime", target = "signUpRequestDateTime", qualifiedByName = "toSignUpRequestDateTimeValue")
     AdminDto.SignUpUserInfo from(AdminInfo.SignUpUserInfo info);
+
+    @Named("toSignUpRequestDateTimeValue")
+    default String toSignUpRequestDateTimeValue(LocalDateTime finalLoginDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return finalLoginDateTime.format(formatter);
+    }
 
     default List<AdminDto.SignUpUserInfo> mapSignUpUserInfoList(List<AdminInfo.SignUpUserInfo> info) {
         return info.stream()
