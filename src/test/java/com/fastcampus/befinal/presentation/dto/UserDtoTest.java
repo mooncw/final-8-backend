@@ -26,7 +26,7 @@ public class UserDtoTest {
         //given
         UserDto.UserUpdateRequest request = UserDto.UserUpdateRequest.builder()
             .phoneNumber(null)
-            .email(null)
+            .email("")
             .certNoCheckToken(null)
             .build();
 
