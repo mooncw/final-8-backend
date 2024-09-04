@@ -14,4 +14,14 @@ public class AdminCommand {
     public record ApproveUserRequest(
         List<ApproveUser> userList
     ) {}
+
+    @Builder
+    public record RejectUser(
+        String empNo
+    ) {}
+
+    @Builder
+    public record RejectUserRequest(
+        List<RejectUser> userList
+    ) {}
 }

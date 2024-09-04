@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UserManagementRepository extends JpaRepository<UserManagement, String> {
     Optional<UserManagement> findByEmpNumber(String empNo);
+
+    void deleteByEmpNumber(String empNumber);
 }

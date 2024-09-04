@@ -13,4 +13,6 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface AdminDtoMapper {
     AdminCommand.ApproveUserRequest toAdminCommand(AdminDto.ApproveUserRequest request);
+
+    AdminCommand.RejectUserRequest toAdminCommand(AdminDto.RejectUserRequest request);
 }

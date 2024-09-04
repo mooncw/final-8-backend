@@ -15,4 +15,8 @@ public class AdminFacade {
     public void approveUser(AdminDto.ApproveUserRequest request) {
         adminService.approveUser(adminDtoMapper.toAdminCommand(request));
     }
+
+    public void rejectUser(AdminDto.RejectUserRequest request) {
+        adminService.rejectUser(adminDtoMapper.toAdminCommand(request));
+    }
 }

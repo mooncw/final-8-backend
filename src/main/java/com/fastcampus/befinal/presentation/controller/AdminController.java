@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.APPROVE_USER_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.REJECT_USER_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -27,7 +28,7 @@ import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCo
 public class AdminController {
     private final AdminFacade adminFacade;
 
-    @PostMapping("approve-user")
+    @PostMapping("/approve-user")
     @Operation(summary = "회원가입 승인")
     @ApiResponse(responseCode = "200", description = "회원가입 승인되었습니다.",
         content = @Content(
@@ -47,5 +48,27 @@ public class AdminController {
     ) {
         adminFacade.approveUser(request);
         return ResponseEntityFactory.toResponseEntity(APPROVE_USER_SUCCESS);
+    }
+
+    @PostMapping("/reject-user")
+    @Operation(summary = "회원가입 반려")
+    @ApiResponse(responseCode = "200", description = "회원가입 반려되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1002, " +
+                    "\"message\": \"회원가입 반려되었습니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> rejectUser(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AdminDto.RejectUserRequest request
+    ) {
+        adminFacade.rejectUser(request);
+        return ResponseEntityFactory.toResponseEntity(REJECT_USER_SUCCESS);
     }
 }

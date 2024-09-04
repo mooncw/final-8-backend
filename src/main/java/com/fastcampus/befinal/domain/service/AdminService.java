@@ -4,4 +4,6 @@ import com.fastcampus.befinal.domain.command.AdminCommand;
 
 public interface AdminService {
     void approveUser(AdminCommand.ApproveUserRequest command);
+
+    void rejectUser(AdminCommand.RejectUserRequest command);
 }

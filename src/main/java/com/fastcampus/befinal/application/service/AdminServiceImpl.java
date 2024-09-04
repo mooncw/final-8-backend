@@ -28,4 +28,12 @@ public class AdminServiceImpl implements AdminService {
                 userManagementStore.delete(userManagement);
             });
     }
+
+    @Override
+    @Transactional
+    public void rejectUser(AdminCommand.RejectUserRequest command) {
+        command.userList().stream()
+            .map(AdminCommand.RejectUser::empNo)
+            .forEach(userManagementStore::deleteByEmpNumber);
+    }
 }
