@@ -8,6 +8,7 @@ import com.fastcampus.befinal.presentation.dto.AdminDto;
 import org.mapstruct.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
@@ -49,7 +50,8 @@ public interface AdminDtoMapper {
         if (finalLoginDateTime.equals(INITIAL_FINAL_LOGIN_DATETIME)) {
             return "-";
         }
-        return finalLoginDateTime.toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return finalLoginDateTime.format(formatter);
     }
 
     default List<AdminDto.UserInfo> mapUserInfoList(List<AdminInfo.UserInfo> info) {
