@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
 import static com.fastcampus.befinal.common.contant.ScrollConstant.MANAGE_USER_SCROLL_SIZE;
 
 @Repository
@@ -34,7 +35,10 @@ public class UserRepositoryCustom {
                 user.finalLoginDateTime
             ))
             .from(user)
-            .where(gtCursorId(cursorId))
+            .where(
+                user.role.ne("ROLE_ADMIN"),
+                gtCursorId(cursorId)
+            )
             .limit(MANAGE_USER_SCROLL_SIZE)
             .fetch();
 
@@ -43,21 +47,22 @@ public class UserRepositoryCustom {
         Long totalElements = queryFactory
             .select(user.count())
             .from(user)
+            .where(user.role.ne(ADMIN_AUTHORITY))
             .fetchOne();
 
         return ScrollPagination.of(totalElements, nextCursorId, contents);
     }
 
-    private BooleanExpression gtCursorId(Long userId) {
-        if (userId == null) {
+    private BooleanExpression gtCursorId(Long cursorId) {
+        if (cursorId == null) {
             return null;
         }
-        return user.id.gt(userId);
+        return user.id.gt(cursorId);
     }
 
     private Long getNextCursorId(Long cursorId, List<AdminInfo.UserInfo> contents) {
         if (!contents.isEmpty()) {
-            AdminInfo.UserInfo lastUserInfo = contents.get(contents.size() - 1);
+            AdminInfo.UserInfo lastUserInfo = contents.getLast();
             return lastUserInfo.id();
         }
         return cursorId;
