@@ -14,12 +14,6 @@ public class UserUpdateValidator implements ConstraintValidator<ValidUserUpdate,
 
     @Override
     public boolean isValid(UserDto.UserUpdateRequest request, ConstraintValidatorContext context){
-        boolean isEmailOrPhoneNumberProvided =
-            request.email() != null || request.phoneNumber() != null;
-
-        boolean isPhoneNumberValid =
-            request.phoneNumber() == null || request.certNoCheckToken() != null;
-
-        return isEmailOrPhoneNumberProvided && isPhoneNumberValid;
+        return request.email() != null || (request.phoneNumber() != null && request.certNoCheckToken() != null);
     }
 }

@@ -25,6 +25,7 @@ public class UserDto {
         @Schema(example = SWAGGER_UPDATE_EMAIL)
         @Email(message = INVALID_FORMAT_USER_EMAIL, groups = RequestValidationGroups.PatternGroup.class)
         String email,
+
         @Schema(example = SWAGGER_UPDATE_CERTIFICATION_NUMBER_CHECK_TOKEN)
         String certNoCheckToken
     ){}

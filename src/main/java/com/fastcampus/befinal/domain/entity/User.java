@@ -24,18 +24,15 @@ public class User {
     @Column(nullable = false, name = "name", columnDefinition = "varchar(10)")
     private String name;
 
-    @Setter
     @Column(nullable = false, name = "password", columnDefinition = "varchar(50)")
     private String password;
 
-    @Setter
     @Column(nullable = false, unique = true, name = "phone_number", columnDefinition = "varchar(11)")
     private String phoneNumber;
 
     @Column(nullable = false, unique = true, name = "emp_number", columnDefinition = "varchar(50)")
     private String empNumber;
 
-    @Setter
     @Column(nullable = false, unique = true, name = "email", columnDefinition = "varchar(30)")
     private String email;
 
@@ -50,5 +47,14 @@ public class User {
 
     public void updateFinalLoginDateTime() {
         this.finalLoginDateTime = LocalDateTime.now();
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
+    public void updateEmailAndPhoneNumber(String email, String phoneNumber){
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 }

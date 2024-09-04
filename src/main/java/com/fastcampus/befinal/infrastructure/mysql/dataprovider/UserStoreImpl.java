@@ -30,13 +30,12 @@ public class UserStoreImpl implements UserStore {
     @Override
     public void update(UserInfo.UserUpdateInfo userInfo) {
         User currentUser = entityManager.merge(userInfo.user());
-        currentUser.setEmail(userInfo.email());
-        currentUser.setPhoneNumber(userInfo.phoneNumber());
+        currentUser.updateEmailAndPhoneNumber(userInfo.email(), userInfo.phoneNumber());
     }
 
     @Override
     public void update(UserInfo.PasswordUpdateInfo userInfo) {
         User currentUser = entityManager.merge(userInfo.user());
-        currentUser.setPassword(passwordEncoder.encode(userInfo.password()));
+        currentUser.updatePassword(passwordEncoder.encode(userInfo.password()));
     }
 }
