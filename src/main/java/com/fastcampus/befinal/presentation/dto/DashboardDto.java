@@ -34,6 +34,6 @@ public class DashboardDto {
     public record RecentDone(
             String adId,
             String adName,
-            ZonedDateTime adTaskDateTime
+            String adTaskDateTime
     ) {}
 }

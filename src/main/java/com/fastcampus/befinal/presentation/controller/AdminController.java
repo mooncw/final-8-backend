@@ -104,7 +104,7 @@ public class AdminController {
     }
 
     @GetMapping("/manage-user")
-    @Operation(summary = "회원 정보 목록 조회")
+    @Operation(summary = "회원 정보 목록 조회 - Param default 값은 null")
     @ApiResponse(responseCode = "200", description = "회원 정보 목록이 조회되었습니다.",
         content = @Content(
             mediaType = "application/json",
