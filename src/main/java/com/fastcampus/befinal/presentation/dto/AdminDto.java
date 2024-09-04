@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.presentation.dto;
 
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
+import com.fastcampus.befinal.domain.info.AdminInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
@@ -43,5 +45,22 @@ public class AdminDto {
     public record RejectUserRequest(
         @NotEmpty(message = NOT_EMPTY_USER_LIST, groups = RequestValidationGroups.NotEmptyGroup.class)
         List<@Valid RejectUser> userList
+    ) {}
+
+    @Builder
+    public record SignUpUserInfo(
+        Long cursorId,
+        String name,
+        String empNo,
+        String phoneNumber,
+        String email,
+        String signUpRequestDateTime
+    ) {}
+
+    @Builder
+    public record FindSignUpUserListResponse(
+        Long totalElements,
+        Long currentCursorId,
+        List<SignUpUserInfo> contents
     ) {}
 }

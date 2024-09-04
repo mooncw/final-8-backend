@@ -19,4 +19,8 @@ public class AdminFacade {
     public void rejectUser(AdminDto.RejectUserRequest request) {
         adminService.rejectUser(adminDtoMapper.toAdminCommand(request));
     }
+
+    public AdminDto.FindSignUpUserListResponse findSignUpUserScroll(Long cursorId) {
+        return adminDtoMapper.from(adminService.findSignUpUserScroll(cursorId));
+    }
 }

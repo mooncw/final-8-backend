@@ -20,11 +20,15 @@ import static com.fastcampus.befinal.common.contant.UserConstant.INITIAL_FINAL_L
     uses = UserPasswordMapper.class
 )
 public interface MysqlEntityMapper {
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "id", target = "userId")
     @Mapping(source = "empNo", target = "empNumber")
     @Mapping(target = "signUpDateTime", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "password", qualifiedByName = "encodePassword")
     UserManagement from(AuthCommand.SignUpRequest command);
 
+    @Mapping(source = "userId", target = "id")
     @Mapping(target = "signUpDateTime", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "finalLoginDateTime", expression = "java(initializeFinalLoginDateTime())")
     @Mapping(target = "role", constant = USER_AUTHORITY)

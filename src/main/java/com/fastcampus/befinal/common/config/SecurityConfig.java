@@ -53,7 +53,7 @@ public class SecurityConfig {
         http.csrf(configurer -> configurer.disable());
 
         http.authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
-            //auth
+            // auth
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/check-id").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/cert-no").permitAll()
@@ -63,10 +63,14 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll()
             // dashboard
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
+            // admin
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
+            // user
             .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/v1/user/**").authenticated()
+            // health-check
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
+            // monitoring
             .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll());
 
         http.addFilterBefore(new JwtAuthenticationFilter(jwtAuthService), BasicAuthenticationFilter.class);
