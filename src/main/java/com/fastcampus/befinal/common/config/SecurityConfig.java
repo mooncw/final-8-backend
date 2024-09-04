@@ -65,6 +65,9 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
             // admin
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
+            // user
+            .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/v1/user/**").authenticated()
             // health-check
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
             // monitoring

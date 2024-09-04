@@ -75,7 +75,7 @@ public class AuthDto {
     public record SendCertificationNumberRequest(
         @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE)
         @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "SignUp", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "SignUp|UpdateUser", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
         String type,
 
         @Schema(example = SWAGGER_PHONE_NUMBER)
@@ -90,7 +90,7 @@ public class AuthDto {
     public record CheckCertificationNumberRequest(
         @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE)
         @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "SignUp", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "SignUp|UpdateUser", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
         String type,
 
         @Schema(example = SWAGGER_PHONE_NUMBER)
