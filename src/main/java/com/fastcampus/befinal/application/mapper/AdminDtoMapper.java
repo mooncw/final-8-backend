@@ -18,6 +18,8 @@ import java.util.List;
 public interface AdminDtoMapper {
     AdminCommand.ApproveUserRequest toAdminCommand(AdminDto.ApproveUserRequest request);
 
+    AdminCommand.RejectUserRequest toAdminCommand(AdminDto.RejectUserRequest request);
+
     AdminDto.FindSignUpUserListResponse from(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
 
     @Mapping(source = "id", target = "cursorId")

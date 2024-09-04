@@ -25,6 +25,7 @@ import java.util.List;
 import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
 import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.APPROVE_USER_SUCCESS;
 import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.FIND_SIGN_UP_USER_LIST_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.REJECT_USER_SUCCESS;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -81,6 +82,37 @@ public class AdminControllerTest {
         perform.andExpect(status().is(APPROVE_USER_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(APPROVE_USER_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(APPROVE_USER_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("회원가입 반려 요청 성공시, 200 OK와 정상 응답을 반환")
+    void rejectUserTest() throws Exception {
+        //given
+        AdminDto.RejectUser rejectUser = AdminDto.RejectUser.builder()
+            .empNo("11111111")
+            .build();
+
+        AdminDto.RejectUserRequest request =AdminDto.RejectUserRequest.builder()
+            .userList(List.of(rejectUser))
+            .build();
+
+        doNothing()
+            .when(adminFacade)
+            .rejectUser(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/admin/reject-user")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(REJECT_USER_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(REJECT_USER_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(REJECT_USER_SUCCESS.getMessage()));
     }
 
     @Test

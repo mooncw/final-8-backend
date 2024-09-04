@@ -32,6 +32,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
+    public void rejectUser(AdminCommand.RejectUserRequest command) {
+        command.userList().stream()
+            .map(AdminCommand.RejectUser::empNo)
+            .forEach(userManagementStore::deleteByEmpNumber);
+    }
+
+    @Override
     public ScrollPagination<Long, AdminInfo.SignUpUserInfo> findSignUpUserScroll(Long cursorId) {
         return userManagementReader.findScrollById(cursorId);
     }
