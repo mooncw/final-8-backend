@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
@@ -89,13 +90,15 @@ public class AdminControllerTest {
         //given
         Long requestParam = null;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         AdminDto.SignUpUserInfo info = AdminDto.SignUpUserInfo.builder()
             .cursorId(2L)
             .name("홍길동")
             .empNo("11111111")
             .phoneNumber("01011112222")
             .email("hong@hong.com")
-            .signUpRequestDateTime(LocalDateTime.now().minusDays(5))
+            .signUpRequestDateTime(LocalDateTime.now().minusDays(5).format(formatter))
             .build();
 
         AdminDto.FindSignUpUserListResponse response = AdminDto.FindSignUpUserListResponse.builder()
