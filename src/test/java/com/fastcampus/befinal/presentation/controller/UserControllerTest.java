@@ -86,8 +86,8 @@ class UserControllerTest {
     void updatePasswordTest() throws Exception {
         //given
         UserDto.PasswordUpdateRequest request = UserDto.PasswordUpdateRequest.builder()
-            .currentPassword("0000")
-            .newPassword("1111")
+            .currentPassword("asdf1234")
+            .newPassword("qwer1234")
             .build();
 
         UserDetailsInfo userInfo = UserDetailsInfo.builder().build();
