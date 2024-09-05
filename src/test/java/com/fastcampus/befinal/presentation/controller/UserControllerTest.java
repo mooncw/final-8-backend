@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,7 +25,6 @@ import static com.fastcampus.befinal.common.response.success.info.UserSuccessCod
 import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.UPDATE_USER_SUCCESS;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -88,8 +86,8 @@ class UserControllerTest {
     void updatePasswordTest() throws Exception {
         //given
         UserDto.PasswordUpdateRequest request = UserDto.PasswordUpdateRequest.builder()
-            .currentPassword("0000")
-            .newPassword("1111")
+            .currentPassword("asdf1234")
+            .newPassword("qwer1234")
             .build();
 
         UserDetailsInfo userInfo = UserDetailsInfo.builder().build();

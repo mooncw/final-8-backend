@@ -1,10 +1,11 @@
 package com.fastcampus.befinal.application.mapper;
 
 import com.fastcampus.befinal.domain.command.UserCommand;
-import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.UserDetailsInfo;
 import com.fastcampus.befinal.presentation.dto.UserDto;
-import org.mapstruct.*;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(
     componentModel = "spring",

@@ -88,7 +88,6 @@
         </root>
 
         <logger name="org.springframework" level="INFO"/>
-        <logger name="org.hibernate.SQL" level="DEBUG"/>
         <logger name="com.fastcampus.befinal" level="DEBUG"/>
     </springProfile>
 

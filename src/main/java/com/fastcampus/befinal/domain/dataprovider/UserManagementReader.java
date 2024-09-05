@@ -7,5 +7,5 @@ import com.fastcampus.befinal.domain.info.AdminInfo;
 public interface UserManagementReader {
     UserManagement findByEmpNo(String empNo);
 
-    ScrollPagination<Long, AdminInfo.SignUpUserInfo> findScrollById(Long id);
+    ScrollPagination<Long, AdminInfo.SignUpUserInfo> findScroll(Long id);
 }

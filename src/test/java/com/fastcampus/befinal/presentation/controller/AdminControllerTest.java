@@ -18,14 +18,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
-import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.APPROVE_USER_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.FIND_SIGN_UP_USER_LIST_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.REJECT_USER_SUCCESS;
+import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY_NAME;
+import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -154,5 +154,47 @@ public class AdminControllerTest {
         perform.andExpect(status().is(FIND_SIGN_UP_USER_LIST_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(FIND_SIGN_UP_USER_LIST_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(FIND_SIGN_UP_USER_LIST_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("회원 정보 목록 조회 성공시, 200 OK와 정상 응답을 반환")
+    void findUserListTest() throws Exception {
+        //given
+        Long requestParam = null;
+
+        AdminDto.UserInfo info = AdminDto.UserInfo.builder()
+            .cursorId(2L)
+            .empNo("11111111")
+            .name("홍길동")
+            .authority(USER_AUTHORITY_NAME)
+            .userId("hong")
+            .phoneNumber("01011112222")
+            .email("hong@hong.com")
+            .signUpDate(LocalDate.now().minusDays(2))
+            .finalLoginDateTime(LocalDateTime.now().toString())
+            .build();
+
+        AdminDto.FindUserListResponse response = AdminDto.FindUserListResponse.builder()
+            .totalElements(4L)
+            .currentCursorId(2L)
+            .contents(List.of(info))
+            .build();
+
+        doReturn(response)
+            .when(adminFacade)
+            .findUserScroll(requestParam);
+
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/admin/manage-user")
+            .param("cursorId", "2")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8));
+
+        //then
+        perform.andExpect(status().is(FIND_USER_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(FIND_USER_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(FIND_USER_LIST_SUCCESS.getMessage()));
     }
 }

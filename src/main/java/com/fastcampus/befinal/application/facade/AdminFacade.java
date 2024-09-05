@@ -21,6 +21,10 @@ public class AdminFacade {
     }
 
     public AdminDto.FindSignUpUserListResponse findSignUpUserScroll(Long cursorId) {
-        return adminDtoMapper.from(adminService.findSignUpUserScroll(cursorId));
+        return adminDtoMapper.fromSignUpUserScroll(adminService.findSignUpUserScroll(cursorId));
+    }
+
+    public AdminDto.FindUserListResponse findUserScroll(Long cursorId) {
+        return adminDtoMapper.fromUserScroll(adminService.findUserScroll(cursorId));
     }
 }

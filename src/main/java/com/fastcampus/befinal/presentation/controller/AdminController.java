@@ -15,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.APPROVE_USER_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.FIND_SIGN_UP_USER_LIST_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.REJECT_USER_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCode.*;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -89,7 +87,7 @@ public class AdminController {
                                                 "\"empNo\": \"11111113\"," +
                                                 "\"phoneNumber\": \"01011114444\"," +
                                                 "\"email\": \"parkgil@hong.com\"," +
-                                                "\"signUpRequestDateTime\": \"2024-09-03T01:32:19\"" +
+                                                "\"signUpRequestDateTime\": \"2024-09-03 01:32\"" +
                                             "}" +
                                         "]" +
                                     "}" +
@@ -103,5 +101,43 @@ public class AdminController {
     ) {
         AdminDto.FindSignUpUserListResponse response = adminFacade.findSignUpUserScroll(cursorId);
         return ResponseEntityFactory.toResponseEntity(FIND_SIGN_UP_USER_LIST_SUCCESS, response);
+    }
+
+    @GetMapping("/manage-user")
+    @Operation(summary = "회원 정보 목록 조회 - Param default 값은 null")
+    @ApiResponse(responseCode = "200", description = "회원 정보 목록이 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1003, " +
+                    "\"message\": \"회원 정보 목록이 조회되었습니다.\", " +
+                    "\"data\": {" +
+                        "\"totalElements\": \"3\"," +
+                        "\"currentCursorId\": \"1\"," +
+                        "\"contents\":[" +
+                                "{" +
+                                    "\"cursorId\": 1," +
+                                    "\"empNo\": \"11111113\"," +
+                                    "\"name\": \"박길동\"," +
+                                    "\"authority\": \"작업자\"," +
+                                    "\"userId\": \"aaaa\"," +
+                                    "\"phoneNumber\": \"01011114444\"," +
+                                    "\"email\": \"parkgil@hong.com\"," +
+                                    "\"signUpDate\": \"2024-09-02\"," +
+                                    "\"finalLoginDateTime\": \"2024-09-03 01:32\"" +
+                                "}" +
+                            "]" +
+                        "}" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AdminDto.FindUserListResponse>> findUserList(
+        @RequestParam(required = false)
+        Long cursorId
+    ) {
+        AdminDto.FindUserListResponse response = adminFacade.findUserScroll(cursorId);
+        return ResponseEntityFactory.toResponseEntity(FIND_USER_LIST_SUCCESS, response);
     }
 }

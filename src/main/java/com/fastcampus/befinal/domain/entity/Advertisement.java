@@ -34,6 +34,9 @@ public class Advertisement {
     @Column(nullable = false, name = "post_datetime", columnDefinition = "datetime")
     private LocalDateTime postDateTime;
 
+    @Column(name = "assign_datetime", columnDefinition = "datetime")
+    private LocalDateTime assignDateTime;
+
     @Column(name = "task_datetime", columnDefinition = "datetime")
     private LocalDateTime taskDateTime;
 

@@ -15,9 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.*;
+import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.UPDATE_PASSWORD_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.UserSuccessCode.UPDATE_USER_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -43,6 +47,7 @@ public class UserController {
         @RequestBody
         @Validated(DefaultGroupSequence.class)
         UserDto.UserUpdateRequest request,
+
         @AuthenticationPrincipal
         UserDetailsInfo userDetails
     ){
@@ -65,8 +70,9 @@ public class UserController {
     )
     public ResponseEntity<AppApiResponse> updatePassword(
         @RequestBody
-        @Validated
+        @Validated(DefaultGroupSequence.class)
         UserDto.PasswordUpdateRequest request,
+
         @AuthenticationPrincipal
         UserDetailsInfo userDetails
     ){

@@ -1,6 +1,5 @@
 package com.fastcampus.befinal.domain.info;
 
-import com.fastcampus.befinal.domain.command.UserCommand;
 import com.fastcampus.befinal.domain.entity.User;
 import lombok.Builder;
 

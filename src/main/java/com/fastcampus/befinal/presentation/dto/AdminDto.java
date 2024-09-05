@@ -1,7 +1,6 @@
 package com.fastcampus.befinal.presentation.dto;
 
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
-import com.fastcampus.befinal.domain.info.AdminInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -10,11 +9,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
-import static com.fastcampus.befinal.common.contant.AuthConstant.PATTERN_MISMATCH_USER_EMP_NUMBER;
 
 public class AdminDto {
     @Builder
@@ -62,5 +60,25 @@ public class AdminDto {
         Long totalElements,
         Long currentCursorId,
         List<SignUpUserInfo> contents
+    ) {}
+
+    @Builder
+    public record UserInfo(
+        Long cursorId,
+        String empNo,
+        String name,
+        String authority,
+        String userId,
+        String phoneNumber,
+        String email,
+        LocalDate signUpDate,
+        String finalLoginDateTime
+    ) {}
+
+    @Builder
+    public record FindUserListResponse(
+        Long totalElements,
+        Long currentCursorId,
+        List<UserInfo> contents
     ) {}
 }

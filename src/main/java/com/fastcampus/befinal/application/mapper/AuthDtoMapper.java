@@ -8,7 +8,6 @@ import com.fastcampus.befinal.domain.command.SmsCommand;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.domain.info.JwtInfo;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
-import com.fastcampus.befinal.presentation.dto.UserDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
