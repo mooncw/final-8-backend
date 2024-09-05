@@ -15,4 +15,16 @@ public class AdminFacade {
     public void approveUser(AdminDto.ApproveUserRequest request) {
         adminService.approveUser(adminDtoMapper.toAdminCommand(request));
     }
+
+    public void rejectUser(AdminDto.RejectUserRequest request) {
+        adminService.rejectUser(adminDtoMapper.toAdminCommand(request));
+    }
+
+    public AdminDto.FindSignUpUserListResponse findSignUpUserScroll(Long cursorId) {
+        return adminDtoMapper.fromSignUpUserScroll(adminService.findSignUpUserScroll(cursorId));
+    }
+
+    public AdminDto.FindUserListResponse findUserScroll(Long cursorId) {
+        return adminDtoMapper.fromUserScroll(adminService.findUserScroll(cursorId));
+    }
 }

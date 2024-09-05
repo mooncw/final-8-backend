@@ -76,7 +76,7 @@ public class AuthController {
     }
 
     @PostMapping("/cert-no")
-    @Operation(summary = "인증 번호 전송 - type: \"SignUp\"")
+    @Operation(summary = "인증 번호 전송 - type: \"SignUp\" or \"UpdateUser\"")
     @ApiResponse(responseCode = "200", description = "인증번호 요청 완료되었습니다.",
         content = @Content(
             mediaType = "application/json",

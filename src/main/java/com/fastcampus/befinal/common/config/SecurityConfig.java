@@ -65,8 +65,14 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
             // my-task
             .requestMatchers(HttpMethod.GET, "api/vq/user/my-task").authenticated()
+            // admin
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
+            // user
+            .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/v1/user/**").authenticated()
+            // health-check
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
+            // monitoring
             .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll());
 
         http.addFilterBefore(new JwtAuthenticationFilter(jwtAuthService), BasicAuthenticationFilter.class);

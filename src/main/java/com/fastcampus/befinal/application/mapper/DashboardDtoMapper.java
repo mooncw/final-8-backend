@@ -5,8 +5,7 @@ import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import org.mapstruct.*;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Mapper(
         componentModel = "spring",
@@ -18,11 +17,12 @@ public interface DashboardDtoMapper {
     DashboardDto.AdCount from(DashboardInfo.AdCount adCount);
     DashboardDto.DailyDone from(DashboardInfo.DailyDone dailyDone);
 
-    @Mapping(source = "adTaskDateTime", target = "adTaskDateTime", qualifiedByName = "toZonedDateTime")
+    @Mapping(source = "adTaskDateTime", target = "adTaskDateTime", qualifiedByName = "toAdTaskDateTimeValue")
     DashboardDto.RecentDone from(DashboardInfo.RecentDone recentDone);
 
-    @Named("toZonedDateTime")
-    default ZonedDateTime toZonedDateTime(LocalDateTime adTaskDateTime) {
-        return adTaskDateTime.atZone(ZoneId.of("Asia/Seoul"));
+    @Named("toAdTaskDateTimeValue")
+    default String toAdTaskDateTimeValue(LocalDateTime finalLoginDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return finalLoginDateTime.format(formatter);
     }
 }

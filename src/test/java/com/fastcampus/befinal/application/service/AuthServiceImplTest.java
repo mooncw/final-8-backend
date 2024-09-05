@@ -157,7 +157,7 @@ public class AuthServiceImplTest {
             .build();
 
         User user = User.builder()
-            .id("aaaa")
+            .userId("aaaa")
             .name("홍길동")
             .password(passwordEncoder.encode(command.password()))
             .phoneNumber("01011112222")
@@ -180,7 +180,7 @@ public class AuthServiceImplTest {
         AuthInfo.UserInfo userInfo = authService.signIn(command);
 
         //then
-        assertThat(userInfo.id()).isEqualTo(user.getId());
+        assertThat(userInfo.id()).isEqualTo(user.getUserId());
         assertThat(userInfo.name()).isEqualTo(user.getName());
         assertThat(userInfo.phoneNumber()).isEqualTo(user.getPhoneNumber());
         assertThat(userInfo.empNo()).isEqualTo(user.getEmpNumber());

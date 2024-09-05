@@ -7,4 +7,6 @@ public interface UserManagementStore {
     void store(AuthCommand.SignUpRequest command);
 
     void delete(UserManagement userManagement);
+
+    void deleteByEmpNumber(String empNumber);
 }

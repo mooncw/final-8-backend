@@ -2,9 +2,12 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.dataprovider.UserReader;
 import com.fastcampus.befinal.domain.entity.User;
+import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.repository.UserRepository;
+import com.fastcampus.befinal.domain.repository.UserRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NOT_FOUND_USER;
@@ -13,10 +16,16 @@ import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NO
 @RequiredArgsConstructor
 public class UserReaderImpl implements UserReader {
     private final UserRepository userRepository;
+    private final UserRepositoryCustom userRepositoryCustom;
 
     @Override
     public User findUser(String userId) {
-        return userRepository.findById(userId)
+        return userRepository.findByUserId(userId)
             .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+    }
+
+    @Override
+    public ScrollPagination<Long, AdminInfo.UserInfo> findScroll(Long cursorId) {
+        return userRepositoryCustom.findScrollByEmpNumber(cursorId);
     }
 }
