@@ -14,6 +14,12 @@ public class UserUpdateValidator implements ConstraintValidator<ValidUserUpdate,
 
     @Override
     public boolean isValid(UserDto.UserUpdateRequest request, ConstraintValidatorContext context){
-        return request.email() != null || (request.phoneNumber() != null && request.certNoCheckToken() != null);
+        boolean emailIsNullOrEmpty = request.email() == null || request.email().isEmpty();
+
+        boolean phoneNumberIsNullOrEmpty = request.phoneNumber() == null || request.phoneNumber().isEmpty();
+
+        boolean certNoCheckTokenIsNullOrEmpty = request.certNoCheckToken() == null || request.certNoCheckToken().isEmpty();
+
+        return !(emailIsNullOrEmpty && (phoneNumberIsNullOrEmpty || certNoCheckTokenIsNullOrEmpty));
     }
 }
