@@ -4,12 +4,14 @@ import com.fastcampus.befinal.application.facade.AdminFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.util.DefaultGroupSequence;
+import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import com.fastcampus.befinal.presentation.dto.AdminDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -69,7 +71,7 @@ public class AdminController {
     }
 
     @GetMapping("/approve-user")
-    @Operation(summary = "회원가입 유저 목록 조회 - Param default 값은 null")
+    @Operation(summary = "회원가입 신청 유저 목록 조회 - Param default 값은 null")
     @ApiResponse(responseCode = "200", description = "회원가입 신청 유저 목록 조회되었습니다.",
         content = @Content(
             mediaType = "application/json",
@@ -140,4 +142,26 @@ public class AdminController {
         AdminDto.FindUserListResponse response = adminFacade.findUserScroll(cursorId);
         return ResponseEntityFactory.toResponseEntity(FIND_USER_LIST_SUCCESS, response);
     }
+
+    @DeleteMapping("/manage-user/{empNo}")
+    @Operation(summary = "회원 정보 삭제")
+    @ApiResponse(responseCode = "200", description = "회원 정보가 삭제되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1003, " +
+                    "\"message\": \"회원 정보가 삭제되었습니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> deleteUser(
+        @PathVariable
+        String empNo
+    ) {
+        adminFacade.deleteUser(empNo);
+        return ResponseEntityFactory.toResponseEntity(DELETE_USER_SUCCESS);
+    }
 }
+
