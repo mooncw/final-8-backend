@@ -63,6 +63,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll()
             // dashboard
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
+            // my-task
+            .requestMatchers(HttpMethod.GET, "api/vq/user/my-task").authenticated()
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
             .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll());
