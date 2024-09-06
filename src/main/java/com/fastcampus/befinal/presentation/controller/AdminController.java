@@ -141,7 +141,7 @@ public class AdminController {
         return ResponseEntityFactory.toResponseEntity(FIND_USER_LIST_SUCCESS, response);
     }
 
-    @DeleteMapping("/manage-user/{empNo}")
+    @DeleteMapping("/manage-user/{userId}")
     @Operation(summary = "회원 정보 삭제")
     @ApiResponse(responseCode = "200", description = "회원 정보가 삭제되었습니다.",
         content = @Content(
