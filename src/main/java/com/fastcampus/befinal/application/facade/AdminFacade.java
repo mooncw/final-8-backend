@@ -28,7 +28,7 @@ public class AdminFacade {
         return adminDtoMapper.fromUserScroll(adminService.findUserScroll(cursorId));
     }
 
-    public void deleteUser(String empNo) {
-        adminService.deleteUser(empNo);
+    public void deleteUser(Long userId) {
+        adminService.deleteUser(userId);
     }
 }

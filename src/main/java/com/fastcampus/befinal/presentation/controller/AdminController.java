@@ -4,14 +4,12 @@ import com.fastcampus.befinal.application.facade.AdminFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.util.DefaultGroupSequence;
-import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import com.fastcampus.befinal.presentation.dto.AdminDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -158,9 +156,9 @@ public class AdminController {
     )
     public ResponseEntity<AppApiResponse> deleteUser(
         @PathVariable
-        String empNo
+        Long userId
     ) {
-        adminFacade.deleteUser(empNo);
+        adminFacade.deleteUser(userId);
         return ResponseEntityFactory.toResponseEntity(DELETE_USER_SUCCESS);
     }
 }
