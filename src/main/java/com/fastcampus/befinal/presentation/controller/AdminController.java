@@ -78,7 +78,7 @@ public class AdminController {
             schema = @Schema(
                 example = "{ " +
                                 "\"code\": 1001, " +
-                                "\"message\": \"회원가입 신청 유저 목록 조회되었습니다.\"" +
+                                "\"message\": \"회원가입 신청 유저 목록 조회되었습니다.\", " +
                                 "\"data\": {" +
                                         "\"totalElements\": \"\"," +
                                         "\"currentCursorId\": \"\"," +
