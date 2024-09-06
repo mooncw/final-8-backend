@@ -92,7 +92,7 @@ public class AdvertisementRepositoryCustom {
                 .fetch();
     }
 
-    public Optional<IssueAdInfo.IssueAdDetailInfo> getIssueAdDetail(String advertisementId){
+    public Optional<IssueAdInfo.IssueAdDetailInfo> findIssueAdDetail(String advertisementId){
         return Optional.ofNullable(queryFactory
             .select(Projections.constructor(IssueAdInfo.IssueAdDetailInfo.class,
                 ad.id,
