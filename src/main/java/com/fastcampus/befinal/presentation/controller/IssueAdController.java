@@ -20,7 +20,7 @@ public class IssueAdController {
     private final IssueAdFacade issueAdFacade;
 
     @GetMapping("/result/{advertisementId}")
-    public ResponseEntity<AppApiResponse<IssueAdDto.IssueAdDetailResponse>> getIssueAdDetail(
+    public ResponseEntity<AppApiResponse<IssueAdDto.IssueAdDetailResponse>> findIssueAdDetail(
         @PathVariable String advertisementId
     ){
         IssueAdDto.IssueAdDetailResponse response = issueAdFacade.findIssueAdDetail(advertisementId);
