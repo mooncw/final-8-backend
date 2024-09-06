@@ -23,4 +23,8 @@ public class AdReview {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_provision_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private AdProvision adProvision;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "advertisement_id", columnDefinition = "varchar(50)", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private Advertisement advertisement;
 }
