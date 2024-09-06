@@ -3,6 +3,7 @@ package com.fastcampus.befinal.presentation.dto;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class IssueAdDto {
         String product,
         String advertiser,
         String category,
-        LocalDateTime postDateTime,
+        LocalDate postDate,
         String assigneeName,
         String modifierName,
         String content,
