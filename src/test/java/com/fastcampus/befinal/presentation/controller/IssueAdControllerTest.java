@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
@@ -68,7 +68,7 @@ class IssueAdControllerTest {
             .id(advertisementId)
             .product("매일경제")
             .advertiser("아무개")
-            .postDateTime(LocalDateTime.now())
+            .postDate(LocalDate.now())
             .assigneeName("홍길동")
             .modifierName("홍길동")
             .content("....")
