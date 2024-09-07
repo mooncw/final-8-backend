@@ -78,7 +78,7 @@ class UserTaskControllerTest {
         TaskDto.AdvertisementListResponse adResponse = TaskDto.AdvertisementListResponse.builder()
                 .adId("A00001")
                 .media("동아일보")
-                .adCategory("음식")
+                .category("음식")
                 .product("상품명")
                 .advertiser("광고주")
                 .state(true)
@@ -87,7 +87,7 @@ class UserTaskControllerTest {
 
         TaskDto.TaskListResponse taskListResponse = TaskDto.TaskListResponse.builder()
                 .totalElements(1L)
-                .currentCursor(new TaskDto.CursorInfo(true, "A00001"))
+                .cursorInfo(new TaskDto.CursorInfo(true, "A00001"))
                 .advertisementList(List.of(adResponse))
                 .build();
 

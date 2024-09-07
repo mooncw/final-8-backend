@@ -18,7 +18,7 @@ public class TaskDto {
             Boolean state,
             Boolean issue,
             List<String> media,
-            List<String> adCategory
+            List<String> category
     ) {}
 
     @Builder
@@ -44,7 +44,7 @@ public class TaskDto {
     public record AdvertisementListResponse (
             String adId,
             String media,
-            String adCategory,
+            String category,
             String product,
             String advertiser,
             Boolean state,
@@ -54,7 +54,7 @@ public class TaskDto {
     @Builder
     public record TaskListResponse(
             Long totalElements,
-            CursorInfo currentCursor,
+            CursorInfo cursorInfo,
             List<AdvertisementListResponse> advertisementList
     ){}
 }

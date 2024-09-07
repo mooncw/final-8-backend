@@ -36,7 +36,7 @@ public class TaskInfo {
     public record AdvertisementListInfo (
             String adId,
             String media,
-            String adCategory,
+            String category,
             String product,
             String advertiser,
             Boolean state,
@@ -46,13 +46,13 @@ public class TaskInfo {
     @Builder
     public record TaskListInfo(
             Long totalElements,
-            CursorInfo currentCursor,
+            CursorInfo cursorInfo,
             List<AdvertisementListInfo> advertisementList
     ){
         public static TaskListInfo of(Long totalElements, CursorInfo cursorInfo, List<AdvertisementListInfo> contents) {
             return TaskListInfo.builder()
                     .totalElements(totalElements)
-                    .currentCursor(cursorInfo)
+                    .cursorInfo(cursorInfo)
                     .advertisementList(contents)
                     .build();
         }

@@ -40,7 +40,7 @@ class UserTaskServiceImplTest {
                 .state(false)
                 .issue(false)
                 .media(List.of("온라인"))
-                .adCategory(List.of("IT"))
+                .category(List.of("IT"))
                 .build();
 
         TaskInfo.AdCountInfo myAdCount = TaskInfo.AdCountInfo.builder()
@@ -52,7 +52,7 @@ class UserTaskServiceImplTest {
         TaskInfo.AdvertisementListInfo adInfo = TaskInfo.AdvertisementListInfo.builder()
                 .adId("A0001")
                 .media("온라인")
-                .adCategory("IT")
+                .category("IT")
                 .product("노트북")
                 .advertiser("테크컴퍼니")
                 .state(false)
@@ -89,14 +89,14 @@ class UserTaskServiceImplTest {
         assertEquals(myAdCount.myNotDoneAd(), result.adCount().myNotDoneAd());
 
         assertEquals(filterTaskPagination.totalElements(), result.taskList().totalElements());
-        assertEquals(filterTaskPagination.currentCursorId().cursorState(), result.taskList().currentCursor().cursorState());
-        assertEquals(filterTaskPagination.currentCursorId().cursorId(), result.taskList().currentCursor().cursorId());
+        assertEquals(filterTaskPagination.currentCursorId().cursorState(), result.taskList().cursorInfo().cursorState());
+        assertEquals(filterTaskPagination.currentCursorId().cursorId(), result.taskList().cursorInfo().cursorId());
 
         assertEquals(1, result.taskList().advertisementList().size());
         TaskInfo.AdvertisementListInfo firstAd = result.taskList().advertisementList().get(0);
         assertEquals("A0001", firstAd.adId());
         assertEquals("온라인", firstAd.media());
-        assertEquals("IT", firstAd.adCategory());
+        assertEquals("IT", firstAd.category());
         assertEquals("노트북", firstAd.product());
         assertEquals("테크컴퍼니", firstAd.advertiser());
         assertEquals(false, firstAd.state());

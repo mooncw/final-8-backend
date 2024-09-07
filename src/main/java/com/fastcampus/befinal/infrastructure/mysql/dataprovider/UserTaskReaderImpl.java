@@ -21,6 +21,6 @@ public class UserTaskReaderImpl implements UserTaskReader {
     @Override
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findFilterMyAdvertisement(String userId, TaskCommand.FilterConditionRequest taskCommand) {
         return advertisementRepositoryCustom.getScrollByCursorInfo(userId, taskCommand.cursorInfo(), taskCommand.keyword(), taskCommand.period(),
-                taskCommand.state(), taskCommand.issue(), taskCommand.media(), taskCommand.adCategory());
+                taskCommand.state(), taskCommand.issue(), taskCommand.media(), taskCommand.category());
     }
 }

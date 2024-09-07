@@ -12,7 +12,7 @@ public class TaskCommand {
         Boolean state,
         Boolean issue,
         List<String> media,
-        List<String> adCategory
+        List<String> category
     ) {}
 
     @Builder
