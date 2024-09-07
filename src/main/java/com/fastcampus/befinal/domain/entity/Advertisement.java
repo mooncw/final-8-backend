@@ -54,7 +54,7 @@ public class Advertisement {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-    private AdCategory adMedia;
+    private AdMedia adMedia;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "ad_decision_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
