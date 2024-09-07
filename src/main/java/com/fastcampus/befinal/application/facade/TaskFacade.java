@@ -13,8 +13,8 @@ public class TaskFacade {
     private final UserTaskService userTaskService;
     private final UserTaskDtoMapper userTaskDtoMapper;
 
-    public TaskDto.MyTaskResponse loadFilterMyTask(String userId, TaskDto.FilterConditionRequest request) {
-        TaskInfo.MyTaskInfo filterTaskInfo = userTaskService.loadFilterTask(userId, userTaskDtoMapper.toTaskCommand(request));
+    public TaskDto.TaskResponse loadFilterMyTask(String userId, TaskDto.FilterConditionRequest request) {
+        TaskInfo.TaskResponse filterTaskInfo = userTaskService.loadFilterTask(userId, userTaskDtoMapper.toTaskCommand(request));
         return userTaskDtoMapper.from(filterTaskInfo);
     }
 }

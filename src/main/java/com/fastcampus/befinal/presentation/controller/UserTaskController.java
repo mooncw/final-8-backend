@@ -19,15 +19,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserTaskController {
     private final TaskFacade taskFacade;
 
-    @GetMapping
-    public ResponseEntity<AppApiResponse<TaskDto.MyTaskResponse>> checkMyTask(
+    @PostMapping
+    public ResponseEntity<AppApiResponse<TaskDto.TaskResponse>> checkMyTask(
             //@AuthenticationPrincipal UserDetailsInfo user,
-            @ModelAttribute
+            @RequestBody
             @Validated(DefaultGroupSequence.class)
             TaskDto.FilterConditionRequest request
     ) {
         //String userId = user.getUsername();
-        TaskDto.MyTaskResponse response = taskFacade.loadFilterMyTask("testID", request);
+        TaskDto.TaskResponse response = taskFacade.loadFilterMyTask("testID", request);
         return ResponseEntityFactory.toResponseEntity(MyTaskSuccessCode.CHECK_MY_TASK_SUCCESS, response);
     }
 }

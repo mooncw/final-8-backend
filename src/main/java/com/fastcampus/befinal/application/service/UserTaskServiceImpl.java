@@ -14,14 +14,14 @@ public class UserTaskServiceImpl implements UserTaskService {
     private final UserTaskReader userTaskReader;
 
     @Override
-    public TaskInfo.MyTaskInfo loadFilterTask(String userId, TaskCommand.FilterConditionRequest taskCommand) {
-        TaskInfo.MyAdCountInfo myAdCount = userTaskReader.findMyAdCount(userId);
+    public TaskInfo.TaskResponse loadFilterTask(String userId, TaskCommand.FilterConditionRequest taskCommand) {
+        TaskInfo.AdCountInfo myAdCount = userTaskReader.findMyAdCount(userId);
 
-        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.MyAdvertisementInfo> filterTaskPagination = userTaskReader.findFilterMyAdvertisement(userId, taskCommand);
+        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> filterTaskPagination = userTaskReader.findFilterMyAdvertisement(userId, taskCommand);
 
-        TaskInfo.MyTaskListResponse myTaskList = TaskInfo.MyTaskListResponse.of(
+        TaskInfo.TaskListInfo myTaskList = TaskInfo.TaskListInfo.of(
                 filterTaskPagination.totalElements(), filterTaskPagination.currentCursorId(), filterTaskPagination.contents());
 
-        return TaskInfo.MyTaskInfo.of(myAdCount, myTaskList);
+        return TaskInfo.TaskResponse.of(myAdCount, myTaskList);
     }
 }
