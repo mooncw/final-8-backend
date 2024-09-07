@@ -122,15 +122,15 @@ public class AdvertisementRepositoryCustom {
 
 
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.CursorInfo cursorInfo, String keyword, String period,
-                                                                                                        Boolean state, Boolean issue, List<String> media, List<String> adCategory) {
+                                                                                                        Boolean state, Boolean issue, List<String> media, List<String> category) {
 
-        BooleanExpression filterExpression = createFilterCondition(keyword, period, state, issue, media, adCategory);
+        BooleanExpression filterExpression = createFilterCondition(keyword, period, state, issue, media, category);
         BooleanExpression cursorExpression = createCursorCondition(cursorInfo);
 
         List<TaskInfo.AdvertisementListInfo> contents = queryFactory
                 .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
                         ad.id.substring(6),
-                        ad.media,
+                        ad.adMedia.name,
                         ad.adCategory.category,
                         ad.product,
                         ad.advertiser,
@@ -157,6 +157,24 @@ public class AdvertisementRepositoryCustom {
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
     }
 
+    public Optional<IssueAdInfo.IssueAdDetailInfo> findIssueAdDetail(String advertisementId){
+        return Optional.ofNullable(queryFactory
+                .select(Projections.constructor(IssueAdInfo.IssueAdDetailInfo.class,
+                        ad.id,
+                        ad.product,
+                        ad.advertiser,
+                        ad.adCategory.category,
+                        ad.postDateTime,
+                        ad.assignee.name,
+                        ad.modifier.name,
+                        ad.adContent.content
+                ))
+                .from(ad)
+                .where(idEq(advertisementId))
+                .fetchOne());
+    }
+
+    // ScrollPagination 다음 페이지 조건 생성
     private BooleanExpression createCursorCondition(TaskCommand.CursorInfo cursorInfo) {
         // 첫 페이지인 경우(조건 없음)
         if(cursorInfo == null) {
@@ -174,6 +192,7 @@ public class AdvertisementRepositoryCustom {
         }
     }
 
+    // 현재 페이지 마지막 데이터 커서 정보
     private TaskInfo.CursorInfo getNextCursorInfo(List<TaskInfo.AdvertisementListInfo> contents) {
         if(!contents.isEmpty()) {
             TaskInfo.AdvertisementListInfo lastData = contents.get(contents.size() - 1);
@@ -183,7 +202,8 @@ public class AdvertisementRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression createFilterCondition(String keyword, String period, Boolean state, Boolean issue, List<String> media, List<String> adCategory) {
+    // 광고 리스트 필터 조건 메서드
+    private BooleanExpression createFilterCondition(String keyword, String period, Boolean state, Boolean issue, List<String> media, List<String> category) {
         BooleanExpression expression;
 
         if(StringUtils.hasText(period)) {
@@ -208,8 +228,8 @@ public class AdvertisementRepositoryCustom {
             expression = expression.and(filterMedia(media));
         }
 
-        if(adCategory != null) {
-            expression = expression.and(filterAdCategory(adCategory));
+        if(category != null) {
+            expression = expression.and(filterCategory(category));
         }
 
         return expression;
@@ -236,21 +256,21 @@ public class AdvertisementRepositoryCustom {
     private BooleanBuilder filterMedia(List<String> media) {
         BooleanBuilder builder = new BooleanBuilder();
         for(String m : media) {
-            builder.or(ad.media.eq(m));
+            builder.or(ad.adMedia.name.eq(m));
         }
         return builder;
     }
 
     // 선택한 업종명이 포함되는 광고 select
-    private BooleanBuilder filterAdCategory(List<String> adCategory) {
+    private BooleanBuilder filterCategory(List<String> category) {
         BooleanBuilder builder = new BooleanBuilder();
-        for(String ac : adCategory) {
-            builder.or(ad.adCategory.category.eq(ac));
+        for(String c : category) {
+            builder.or(ad.adCategory.category.eq(c));
         }
         return builder;
     }
 
-    // 지정한 차수에 포함되는 광고 내용
+    // 지정한 차수에 포함되는 광고
     private BooleanExpression getByPeriod(String period) {
         String[] parts = period.split("-");
         int year = Integer.parseInt(parts[0]);
@@ -268,23 +288,6 @@ public class AdvertisementRepositoryCustom {
         DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
                 "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
         return kstAssignDateTime.between(startDate, endDate);
-    }
-
-    public Optional<IssueAdInfo.IssueAdDetailInfo> findIssueAdDetail(String advertisementId){
-        return Optional.ofNullable(queryFactory
-            .select(Projections.constructor(IssueAdInfo.IssueAdDetailInfo.class,
-                ad.id,
-                ad.product,
-                ad.advertiser,
-                ad.adCategory.category,
-                ad.postDateTime,
-                ad.assignee.name,
-                ad.modifier.name,
-                ad.adContent.content
-                ))
-            .from(ad)
-            .where(idEq(advertisementId))
-            .fetchOne());
     }
 
     private BooleanExpression idEq(String id){ return ad.id.eq(id); }
