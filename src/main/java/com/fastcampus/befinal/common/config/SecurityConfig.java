@@ -64,7 +64,7 @@ public class SecurityConfig {
             // dashboard
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
             // my-task
-            .requestMatchers(HttpMethod.GET, "api/vq/user/my-task").authenticated()
+            .requestMatchers(HttpMethod.POST, "api/v1/user/my-task").authenticated()
             // admin
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
             // user
