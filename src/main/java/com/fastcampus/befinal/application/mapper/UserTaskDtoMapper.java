@@ -13,10 +13,10 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface UserTaskDtoMapper {
-    TaskDto.MyTaskResponse from(TaskInfo.MyTaskInfo myTask);
-    TaskDto.MyAdCountResponse from(TaskInfo.MyAdCountInfo myAdCount);
-    TaskDto.MyAdvertisementResponse from(TaskInfo.MyAdvertisementInfo myAdvertisement);
-    TaskDto.MyTaskListResponse from(TaskInfo.MyTaskListResponse findMyTaskListResponse);
+    TaskDto.TaskResponse from(TaskInfo.TaskResponse myTask);
+    TaskDto.AdCountResponse from(TaskInfo.AdCountInfo adCount);
+    TaskDto.AdvertisementListResponse from(TaskInfo.AdvertisementListInfo advertisementList);
+    TaskDto.TaskListResponse from(TaskInfo.TaskListInfo findMyTaskListResponse);
 
     TaskCommand.CursorInfo toCursorCommand(TaskDto.CursorInfo cursorInfo);
     TaskCommand.FilterConditionRequest toTaskCommand(TaskDto.FilterConditionRequest request);

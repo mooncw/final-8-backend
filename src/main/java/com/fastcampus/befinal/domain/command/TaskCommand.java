@@ -18,6 +18,6 @@ public class TaskCommand {
     @Builder
     public record CursorInfo(
             Boolean cursorState,
-            String cursorAdId
+            String cursorId
     ) {}
 }

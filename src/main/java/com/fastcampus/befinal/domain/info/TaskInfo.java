@@ -9,31 +9,31 @@ public class TaskInfo {
     @Builder
     public record CursorInfo(
             Boolean cursorState,
-            String cursorAdId
+            String cursorId
     ) {}
 
     @Builder
-    public record MyTaskInfo (
-            MyAdCountInfo myAdCount,
-            MyTaskListResponse myAdvertisement
+    public record TaskResponse (
+            AdCountInfo adCount,
+            TaskListInfo taskList
     ) {
-        public static MyTaskInfo of(MyAdCountInfo adCount, MyTaskListResponse myAdvertisement) {
-            return MyTaskInfo.builder()
-                    .myAdCount(adCount)
-                    .myAdvertisement(myAdvertisement)
+        public static TaskResponse of(AdCountInfo adCount, TaskListInfo taskList) {
+            return TaskResponse.builder()
+                    .adCount(adCount)
+                    .taskList(taskList)
                     .build();
         }
     }
 
     @Builder
-    public record MyAdCountInfo (
+    public record AdCountInfo (
             Integer myTotalAd,
             Integer myDoneAd,
             Integer myNotDoneAd
     ) {}
 
     @Builder
-    public record MyAdvertisementInfo (
+    public record AdvertisementListInfo (
             String adId,
             String media,
             String adCategory,
@@ -44,15 +44,15 @@ public class TaskInfo {
     ) {}
 
     @Builder
-    public record MyTaskListResponse(
+    public record TaskListInfo(
             Long totalElements,
-            CursorInfo currentCursorInfo,
-            List<TaskInfo.MyAdvertisementInfo> advertisementList
+            CursorInfo currentCursor,
+            List<AdvertisementListInfo> advertisementList
     ){
-        public static MyTaskListResponse of(Long totalElements, CursorInfo cursorInfo, List<MyAdvertisementInfo> contents) {
-            return MyTaskListResponse.builder()
+        public static TaskListInfo of(Long totalElements, CursorInfo cursorInfo, List<AdvertisementListInfo> contents) {
+            return TaskListInfo.builder()
                     .totalElements(totalElements)
-                    .currentCursorInfo(cursorInfo)
+                    .currentCursor(cursorInfo)
                     .advertisementList(contents)
                     .build();
         }

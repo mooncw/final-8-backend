@@ -24,24 +24,24 @@ public class TaskDto {
     @Builder
     public record CursorInfo(
             Boolean cursorState,
-            String cursorAdId
+            String cursorId
     ) {}
 
     @Builder
-    public record MyTaskResponse(
-            MyAdCountResponse myAdCount,
-            MyTaskListResponse myAdvertisement
+    public record TaskResponse(
+            AdCountResponse adCount,
+            TaskListResponse taskList
     ) {}
 
     @Builder
-    public record MyAdCountResponse(
+    public record AdCountResponse(
             Integer myTotalAd,
             Integer myDoneAd,
             Integer myNotDoneAd
     ) {}
 
     @Builder
-    public record MyAdvertisementResponse (
+    public record AdvertisementListResponse (
             String adId,
             String media,
             String adCategory,
@@ -52,9 +52,9 @@ public class TaskDto {
     ) {}
 
     @Builder
-    public record MyTaskListResponse(
+    public record TaskListResponse(
             Long totalElements,
-            CursorInfo currentCursorInfo,
-            List<MyAdvertisementResponse> advertisementList
+            CursorInfo currentCursor,
+            List<AdvertisementListResponse> advertisementList
     ){}
 }
