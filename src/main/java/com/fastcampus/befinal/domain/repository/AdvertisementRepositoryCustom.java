@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.fastcampus.befinal.common.contant.TaskConstant.MY_TASK_LIST_SCROLL_SIZE;
+import static com.fastcampus.befinal.common.contant.ScrollConstant.MY_TASK_LIST_SCROLL_SIZE;
 
 @Repository
 @RequiredArgsConstructor

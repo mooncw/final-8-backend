@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MyTaskCode implements Code{
     // success
-    CHECK_MY_TASK_SUCCESS(3201);
+    CHECK_MY_TASK_SUCCESS(3500);
 
     private final Integer code;
 
