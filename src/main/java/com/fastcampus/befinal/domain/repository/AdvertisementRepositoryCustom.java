@@ -100,9 +100,9 @@ public class AdvertisementRepositoryCustom {
                 .fetch();
     }
 
-    public TaskInfo.MyAdCountInfo getMyTaskCount(String id) {
+    public TaskInfo.AdCountInfo getMyTaskCount(String id) {
         return queryFactory
-                .select(Projections.constructor(TaskInfo.MyAdCountInfo.class,
+                .select(Projections.constructor(TaskInfo.AdCountInfo.class,
                         new CaseBuilder()
                                 .when(userIdEq(id)).then(1)
                                 .otherwise(0).sum(),
@@ -118,15 +118,15 @@ public class AdvertisementRepositoryCustom {
                 .fetchOne();
     }
 
-    // ScrollPagination용
-    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.MyAdvertisementInfo> getScrollByCursorInfo(String userId, TaskCommand.CursorInfo cursorInfo, String keyword, String period,
+
+    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.CursorInfo cursorInfo, String keyword, String period,
                                                                                                         Boolean state, Boolean issue, List<String> media, List<String> adCategory) {
 
         BooleanExpression filterExpression = createFilterCondition(keyword, period, state, issue, media, adCategory);
         BooleanExpression cursorExpression = createCursorCondition(cursorInfo);
 
-        List<TaskInfo.MyAdvertisementInfo> contents = queryFactory
-                .select(Projections.constructor(TaskInfo.MyAdvertisementInfo.class,
+        List<TaskInfo.AdvertisementListInfo> contents = queryFactory
+                .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
                         ad.id.substring(6),
                         ad.media,
                         ad.adCategory.category,
@@ -163,18 +163,18 @@ public class AdvertisementRepositoryCustom {
 
         // 현재 커서가 false(검수 전)인 경우
         if(!cursorInfo.cursorState()) {
-            return ad.state.eq(false).and(ad.id.substring(6).gt(cursorInfo.cursorAdId()))
+            return ad.state.eq(false).and(ad.id.substring(6).gt(cursorInfo.cursorId()))
                     .or(ad.state.eq(true));
         }
         // 현재 커서가 true(검수 완료)인 경우
         else {
-            return ad.state.eq(true).and(ad.id.substring(6).gt(cursorInfo.cursorAdId()));
+            return ad.state.eq(true).and(ad.id.substring(6).gt(cursorInfo.cursorId()));
         }
     }
 
-    private TaskInfo.CursorInfo getNextCursorInfo(List<TaskInfo.MyAdvertisementInfo> contents) {
+    private TaskInfo.CursorInfo getNextCursorInfo(List<TaskInfo.AdvertisementListInfo> contents) {
         if(!contents.isEmpty()) {
-            TaskInfo.MyAdvertisementInfo lastData = contents.get(contents.size() - 1);
+            TaskInfo.AdvertisementListInfo lastData = contents.get(contents.size() - 1);
             return new TaskInfo.CursorInfo(lastData.state(), lastData.adId());
         }
 
@@ -263,9 +263,9 @@ public class AdvertisementRepositoryCustom {
             startDate = LocalDate.of(year, month, 16);
             endDate = LocalDate.of(year, month, LocalDate.of(year, month, 1).lengthOfMonth());
         }
-        DateTimeExpression<LocalDate> kstPostDateTime = Expressions.dateTimeTemplate(LocalDate.class,
-                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.postDateTime);
-        return kstPostDateTime.between(startDate, endDate);
+        DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
+        return kstAssignDateTime.between(startDate, endDate);
     }
 
     private BooleanExpression userIdEq(String id) {
@@ -287,11 +287,11 @@ public class AdvertisementRepositoryCustom {
         LocalDate endOfPeriod = dayOfMonth <= 15 ? todayDate.withDayOfMonth(15) : todayDate.with(TemporalAdjusters.lastDayOfMonth());
 
         // `ad.assignDateTime`을 LocalDateTime으로 변환하고 한국 시간으로 변환
-        DateTimeExpression<LocalDate> kstPostDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+        DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
                 "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
 
         // 한국 시간 기준으로 날짜 범위와 비교
-        return kstPostDateTime.between(startOfPeriod, endOfPeriod)
+        return kstAssignDateTime.between(startOfPeriod, endOfPeriod)
                 .and(ad.assignDateTime.month().eq(todayDate.getMonthValue()));
     }
 }

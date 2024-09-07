@@ -14,12 +14,12 @@ public class UserTaskReaderImpl implements UserTaskReader {
     private final AdvertisementRepositoryCustom advertisementRepositoryCustom;
 
     @Override
-    public TaskInfo.MyAdCountInfo findMyAdCount(String userId) {
+    public TaskInfo.AdCountInfo findMyAdCount(String userId) {
         return advertisementRepositoryCustom.getMyTaskCount(userId);
     }
 
     @Override
-    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.MyAdvertisementInfo> findFilterMyAdvertisement(String userId, TaskCommand.FilterConditionRequest taskCommand) {
+    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findFilterMyAdvertisement(String userId, TaskCommand.FilterConditionRequest taskCommand) {
         return advertisementRepositoryCustom.getScrollByCursorInfo(userId, taskCommand.cursorInfo(), taskCommand.keyword(), taskCommand.period(),
                 taskCommand.state(), taskCommand.issue(), taskCommand.media(), taskCommand.adCategory());
     }
