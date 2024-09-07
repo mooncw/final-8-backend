@@ -6,6 +6,7 @@ import com.fastcampus.befinal.domain.entity.QAdvertisement;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.querydsl.core.BooleanBuilder;
+import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -21,6 +22,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.fastcampus.befinal.common.contant.TaskConstant.MY_TASK_LIST_SCROLL_SIZE;
@@ -267,6 +269,25 @@ public class AdvertisementRepositoryCustom {
                 "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
         return kstAssignDateTime.between(startDate, endDate);
     }
+
+    public Optional<IssueAdInfo.IssueAdDetailInfo> findIssueAdDetail(String advertisementId){
+        return Optional.ofNullable(queryFactory
+            .select(Projections.constructor(IssueAdInfo.IssueAdDetailInfo.class,
+                ad.id,
+                ad.product,
+                ad.advertiser,
+                ad.adCategory.category,
+                ad.postDateTime,
+                ad.assignee.name,
+                ad.modifier.name,
+                ad.adContent.content
+                ))
+            .from(ad)
+            .where(idEq(advertisementId))
+            .fetchOne());
+    }
+
+    private BooleanExpression idEq(String id){ return ad.id.eq(id); }
 
     private BooleanExpression userIdEq(String id) {
         return ad.assignee.userId.eq(id);
