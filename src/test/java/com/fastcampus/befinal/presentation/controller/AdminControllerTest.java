@@ -29,8 +29,7 @@ import static com.fastcampus.befinal.common.response.success.info.AdminSuccessCo
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -196,5 +195,24 @@ public class AdminControllerTest {
         perform.andExpect(status().is(FIND_USER_LIST_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(FIND_USER_LIST_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(FIND_USER_LIST_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("회원 정보 삭제 성공시, 200 OK와 정상 응답을 반환")
+    void deleteUserTest() throws Exception {
+        //given
+        Long userId = 6L;
+
+        //when
+        ResultActions perform = mockMvc.perform(delete("/api/v1/admin/manage-user/" + userId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8));
+
+        //then
+        perform.andExpect(status().is(DELETE_USER_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(DELETE_USER_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(DELETE_USER_SUCCESS.getMessage()));
     }
 }
