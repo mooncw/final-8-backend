@@ -12,7 +12,8 @@ public enum AdminCode implements Code {
     DELETE_USER_SUCCESS(1004),
 
     //error
-    NOT_FOUND_USER_MANAGEMENT(1050);
+    NOT_FOUND_USER_MANAGEMENT(1050),
+    NOT_FOUND_USER_SUMMARY(1051);
 
     private final Integer code;
 

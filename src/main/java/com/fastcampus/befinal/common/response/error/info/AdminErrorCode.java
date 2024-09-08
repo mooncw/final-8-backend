@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum AdminErrorCode implements ErrorCode {
     NOT_FOUND_USER_MANAGEMENT(HttpStatus.BAD_REQUEST, AdminCode.NOT_FOUND_USER_MANAGEMENT,
-        "회원가입 승인 목록에 없는 유저입니다.");
+        "회원가입 승인 목록에 없는 유저입니다."),
+    NOT_FOUND_USER_SUMMARY(HttpStatus.BAD_REQUEST, AdminCode.NOT_FOUND_USER_SUMMARY, "해당 유저의 요약 정보가 없습니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;
