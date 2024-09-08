@@ -2,11 +2,10 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
-import com.fastcampus.befinal.domain.dataprovider.UserManagementReader;
-import com.fastcampus.befinal.domain.dataprovider.UserManagementStore;
-import com.fastcampus.befinal.domain.dataprovider.UserReader;
-import com.fastcampus.befinal.domain.dataprovider.UserStore;
+import com.fastcampus.befinal.domain.dataprovider.*;
+import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.entity.UserManagement;
+import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,8 @@ public class AdminServiceImpl implements AdminService {
     private final UserManagementStore userManagementStore;
     private final UserReader userReader;
     private final UserStore userStore;
+    private final UserSummaryReader userSummaryReader;
+    private final UserSummaryStore userSummaryStore;
 
     @Override
     @Transactional
@@ -29,6 +30,7 @@ public class AdminServiceImpl implements AdminService {
             .forEach(empNo -> {
                 UserManagement userManagement = userManagementReader.findByEmpNo(empNo);
                 userStore.store(userManagement);
+                userSummaryStore.store(userManagement);
                 userManagementStore.delete(userManagement);
             });
     }
@@ -42,12 +44,26 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ScrollPagination<Long, AdminInfo.SignUpUserInfo> findSignUpUserScroll(Long cursorId) {
         return userManagementReader.findScroll(cursorId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ScrollPagination<Long, AdminInfo.UserInfo> findUserScroll(Long cursorId) {
         return userReader.findScroll(cursorId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = userReader.findById(userId);
+
+        userStore.delete(user);
+
+        UserSummary userSummary = userSummaryReader.findById(userId);
+
+        userSummaryStore.update(userSummary);
     }
 }
