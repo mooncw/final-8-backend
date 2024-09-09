@@ -46,6 +46,13 @@ public class AdminDto {
     ) {}
 
     @Builder
+    public record FindUserTaskListRequest(
+        Long cursorId,
+        String sorted,
+        String period
+    ) {}
+
+    @Builder
     public record SignUpUserInfo(
         Long cursorId,
         String name,
