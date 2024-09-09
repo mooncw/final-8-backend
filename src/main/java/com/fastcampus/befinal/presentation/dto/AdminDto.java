@@ -106,7 +106,8 @@ public class AdminDto {
         String name,
         Integer totalAd,
         Integer notDoneAd,
-        Integer doneAd
+        Integer doneAd,
+        Integer doneRatio
     ) {}
 
     @Builder
