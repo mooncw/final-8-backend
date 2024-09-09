@@ -29,19 +29,19 @@ public class TaskDto {
 
     @Builder
     public record TaskResponse(
-            AdCountResponse adCount,
-            TaskListResponse taskList
+            AdCountInfo adCount,
+            TaskListInfo taskList
     ) {}
 
     @Builder
-    public record AdCountResponse(
+    public record AdCountInfo(
             Integer myTotalAd,
             Integer myDoneAd,
             Integer myNotDoneAd
     ) {}
 
     @Builder
-    public record AdvertisementListResponse (
+    public record AdvertisementListInfo (
             String adId,
             String media,
             String category,
@@ -52,9 +52,9 @@ public class TaskDto {
     ) {}
 
     @Builder
-    public record TaskListResponse(
+    public record TaskListInfo(
             Long totalElements,
             CursorInfo cursorInfo,
-            List<AdvertisementListResponse> advertisementList
+            List<AdvertisementListInfo> advertisementList
     ){}
 }

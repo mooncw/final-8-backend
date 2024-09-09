@@ -14,10 +14,9 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface UserTaskDtoMapper {
     TaskDto.TaskResponse from(TaskInfo.TaskResponse myTask);
-    TaskDto.AdCountResponse from(TaskInfo.AdCountInfo adCount);
-    TaskDto.AdvertisementListResponse from(TaskInfo.AdvertisementListInfo advertisementList);
-    TaskDto.TaskListResponse from(TaskInfo.TaskListInfo findMyTaskListResponse);
+    TaskDto.AdCountInfo from(TaskInfo.AdCountInfo adCount);
+    TaskDto.AdvertisementListInfo from(TaskInfo.AdvertisementListInfo advertisementList);
+    TaskDto.TaskListInfo from(TaskInfo.TaskListInfo findMyTaskListResponse);
 
-    TaskCommand.CursorInfo toCursorCommand(TaskDto.CursorInfo cursorInfo);
     TaskCommand.FilterConditionRequest toTaskCommand(TaskDto.FilterConditionRequest request);
 }
