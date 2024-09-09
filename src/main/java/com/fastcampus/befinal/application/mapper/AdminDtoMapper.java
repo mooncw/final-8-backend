@@ -25,6 +25,8 @@ public interface AdminDtoMapper {
 
     AdminCommand.RejectUserRequest toAdminCommand(AdminDto.RejectUserRequest request);
 
+    AdminCommand.FindUserTaskListRequest toAdminCommand(AdminDto.FindUserTaskListRequest request);
+
     AdminDto.FindSignUpUserListResponse fromSignUpUserScroll(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
 
     @Mapping(source = "id", target = "cursorId")
@@ -80,4 +82,10 @@ public interface AdminDtoMapper {
             .map(this::from)
             .toList();
     }
+
+    AdminDto.FindUserTaskListResponse fromUserTaskScroll(ScrollPagination<Long, AdminInfo.UserTaskInfo> info);
+
+    @Mapping(source = "id", target = "cursorId")
+    @Mapping(source = "empNumber", target = "empNo")
+    AdminDto.UserTaskInfo from(AdminInfo.UserTaskInfo info);
 }

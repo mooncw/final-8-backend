@@ -24,4 +24,11 @@ public class AdminCommand {
     public record RejectUserRequest(
         List<RejectUser> userList
     ) {}
+
+    @Builder
+    public record FindUserTaskListRequest(
+        Long cursorId,
+        String sorted,
+        String period
+    ) {}
 }
