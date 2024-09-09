@@ -128,70 +128,70 @@ class UserControllerTest {
     void checkMyTaskTest() throws Exception {
         // given
         User user = User.builder()
-                .id(1L)
-                .userId("testID")
-                .name("테스트유저")
-                .password("password")
-                .phoneNumber("01012345678")
-                .empNumber("12345678")
-                .email("test@test.com")
-                .signUpDateTime(LocalDateTime.now().minusDays(10))
-                .finalLoginDateTime(LocalDateTime.now().minusDays(5))
-                .role(USER_AUTHORITY)
-                .build();
+            .id(1L)
+            .userId("testID")
+            .name("테스트유저")
+            .password("password")
+            .phoneNumber("01012345678")
+            .empNumber("12345678")
+            .email("test@test.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(USER_AUTHORITY)
+            .build();
 
         UserDetailsInfo userDetailsInfo = UserDetailsInfo.from(user);
 
         TaskDto.AdCountInfo adCountResponse = TaskDto.AdCountInfo.builder()
-                .myTotalAd(1)
-                .myDoneAd(1)
-                .myNotDoneAd(0)
-                .build();
+            .myTotalAd(1)
+            .myDoneAd(1)
+            .myNotDoneAd(0)
+            .build();
 
         TaskDto.AdvertisementListInfo adResponse = TaskDto.AdvertisementListInfo.builder()
-                .adId("A00001")
-                .media("동아일보")
-                .category("음식")
-                .product("상품명")
-                .advertiser("광고주")
-                .state(true)
-                .issue(true)
-                .build();
+            .adId("A00001")
+            .media("동아일보")
+            .category("음식")
+            .product("상품명")
+            .advertiser("광고주")
+            .state(true)
+            .issue(true)
+            .build();
 
         TaskDto.TaskListInfo taskListResponse = TaskDto.TaskListInfo.builder()
-                .totalElements(1L)
-                .cursorInfo(new TaskDto.CursorInfo(true, "A00001"))
-                .advertisementList(List.of(adResponse))
-                .build();
+            .totalElements(1L)
+            .cursorInfo(new TaskDto.CursorInfo(true, "A00001"))
+            .advertisementList(List.of(adResponse))
+            .build();
 
         TaskDto.TaskResponse response = TaskDto.TaskResponse.builder()
-                .adCount(adCountResponse)
-                .taskList(taskListResponse)
-                .build();
+             .adCount(adCountResponse)
+             .taskList(taskListResponse)
+             .build();
 
         doReturn(response)
-                .when(taskFacade)
-                .loadFilterMyTask(anyString(), any(TaskDto.FilterConditionRequest.class));
+            .when(taskFacade)
+            .loadFilterMyTask(anyString(), any(TaskDto.FilterConditionRequest.class));
 
         // when - media : 동아일보, 검수 상태 : 완료
         TaskDto.FilterConditionRequest firstRequest = TaskDto.FilterConditionRequest.builder()
-                .media(List.of("동아일보"))
-                .state(true)
-                .build();
+            .media(List.of("동아일보"))
+            .state(true)
+            .build();
 
         ResultActions firstPerform = mockMvc.perform(post("/api/v1/user/my-task")
-                .with(user(userDetailsInfo))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(firstRequest))
-                .accept(MediaType.APPLICATION_JSON));
+            .with(user(userDetailsInfo))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(firstRequest))
+            .accept(MediaType.APPLICATION_JSON));
 
         // then
         firstPerform.andExpect(status().is(CHECK_MY_TASK_SUCCESS.getHttpStatus().value()))
-                .andExpect(jsonPath("code").value(CHECK_MY_TASK_SUCCESS.getCode()))
-                .andExpect(jsonPath("message").value(CHECK_MY_TASK_SUCCESS.getMessage()))
-                .andExpect(jsonPath("$.data.taskList.advertisementList[0].media").value("동아일보"))
-                .andExpect(jsonPath("$.data.taskList.advertisementList[0].adId").value("A00001"))
-                .andExpect(jsonPath("$.data.taskList.advertisementList[0].state").value(true));
+            .andExpect(jsonPath("code").value(CHECK_MY_TASK_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(CHECK_MY_TASK_SUCCESS.getMessage()))
+            .andExpect(jsonPath("$.data.taskList.advertisementList[0].media").value("동아일보"))
+            .andExpect(jsonPath("$.data.taskList.advertisementList[0].adId").value("A00001"))
+            .andExpect(jsonPath("$.data.taskList.advertisementList[0].state").value(true));
     }
 
 }

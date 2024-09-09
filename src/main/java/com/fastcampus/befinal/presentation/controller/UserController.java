@@ -84,49 +84,50 @@ public class UserController {
     @PostMapping("/my-task")
     @Operation(summary = "사용자 나의 작업 조회")
     @ApiResponse(responseCode = "200", description = "나의 작업 조회가 가능합니다.",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(
-                            example = "{ " +
-                                    "\"code\": 3500, " +
-                                    "\"message\": \"나의 작업 조회가 가능합니다.\", " +
-                                    "\"data\": { " +
-                                    "\"adCount\": { " +
-                                    "\"myTotalAd\": 1, " +
-                                    "\"myDoneAd\": 1, " +
-                                    "\"myNotDoneAd\": 0 " +
-                                    "}, " +
-                                    "\"taskList\": { " +
-                                    "\"totalElements\": 1, " +
-                                    "\"cursorInfo\": { " +
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                        "\"code\": 3500, " +
+                        "\"message\": \"나의 작업 조회가 가능합니다.\", " +
+                        "\"data\": { " +
+                            "\"adCount\": { " +
+                                "\"myTotalAd\": 1, " +
+                                "\"myDoneAd\": 1, " +
+                                "\"myNotDoneAd\": 0 " +
+                            "}, " +
+                            "\"taskList\": { " +
+                                "\"totalElements\": 1, " +
+                                "\"cursorInfo\": { " +
                                     "\"cursorState\": true, " +
                                     "\"cursorId\": \"A00001\" " +
-                                    "}, " +
-                                    "\"advertisementList\": [ " +
-                                    "{ " +
+                                "}, " +
+                            "\"advertisementList\": [ " +
+                                "{ " +
                                     "\"adId\": \"A00001\", " +
                                     "\"media\": \"동아일보\", " +
-                                    "\"category\": \"IT\", " +
+                                    "\"category\": \"가정용품\", " +
                                     "\"product\": \"노트북\", " +
                                     "\"advertiser\": \"테크컴퍼니\", " +
                                     "\"state\": true, " +
                                     "\"issue\": false " +
-                                    "} " +
-                                    "] " +
-                                    "} " +
-                                    "} " +
-                                    "}"
-                    )
+                                "} " +
+                            "] " +
+                        "} " +
+                    "} " +
+                "}"
             )
+        )
     )
     public ResponseEntity<AppApiResponse<TaskDto.TaskResponse>> checkMyTask(
-            //@AuthenticationPrincipal UserDetailsInfo user,
-            @RequestBody
-            @Validated(DefaultGroupSequence.class)
-            TaskDto.FilterConditionRequest request
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        TaskDto.FilterConditionRequest request,
+
+        @AuthenticationPrincipal UserDetailsInfo user
     ) {
-        //String userId = user.getUsername();
-        TaskDto.TaskResponse response = taskFacade.loadFilterMyTask("1", request);
+        String userId = user.getUsername();
+        TaskDto.TaskResponse response = taskFacade.loadFilterMyTask(userId, request);
         return ResponseEntityFactory.toResponseEntity(MyTaskSuccessCode.CHECK_MY_TASK_SUCCESS, response);
     }
 }

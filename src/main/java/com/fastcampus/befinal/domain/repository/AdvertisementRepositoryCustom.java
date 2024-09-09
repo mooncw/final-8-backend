@@ -35,89 +35,89 @@ public class AdvertisementRepositoryCustom {
 
     public DashboardInfo.AdCount getAdCount(String id) {
         return queryFactory
-                .select(Projections.constructor(DashboardInfo.AdCount.class,
-                        ad.count().intValue(),
-                        new CaseBuilder()
-                                .when(userIdEq(id)).then(1)
-                                .otherwise(0).sum(),
-                        new CaseBuilder()
-                                .when(isCompleted()).then(1)
-                                .otherwise(0).sum(),
-                        new CaseBuilder()
-                                .when(isCompleted().and(userIdEq(id))).then(1)
-                                .otherwise(0).sum(),
-                        new CaseBuilder()
-                                .when(isNotCompleted()).then(1)
-                                .otherwise(0).sum(),
-                        new CaseBuilder()
-                                .when(isNotCompleted().and(userIdEq(id))).then(1)
-                                .otherwise(0).sum()
-                ))
-                .from(ad)
-                .where(isInCurrentPeriod())
-                .fetchOne();
+            .select(Projections.constructor(DashboardInfo.AdCount.class,
+                ad.count().intValue(),
+                new CaseBuilder()
+                    .when(userIdEq(id)).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isCompleted()).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isCompleted().and(userIdEq(id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isNotCompleted()).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .otherwise(0).sum()
+            ))
+            .from(ad)
+            .where(isInCurrentPeriod())
+            .fetchOne();
     }
 
     public List<DashboardInfo.DailyDone> getDailyDoneList(String id) {
         // `taskDateTime`을 LocalDateTime으로 받아서 한국 시간으로 변환
         DateTimeExpression<LocalDate> kstTaskDateTime = Expressions.dateTimeTemplate(LocalDate.class,
-                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.taskDateTime);
+            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.taskDateTime);
 
         LocalDate todayDate = LocalDate.now();
         LocalDate startOfPeriod = todayDate.getDayOfMonth() <= 15 ? todayDate.withDayOfMonth(1) : todayDate.withDayOfMonth(16);
 
         List<Tuple> results = queryFactory
-                .select(kstTaskDateTime, ad.count().intValue())
-                .from(ad)
-                .where(userIdEq(id)
-                        .and(isCompleted())
-                        .and(isInCurrentPeriod())
-                        .and(kstTaskDateTime.goe(startOfPeriod))
-                        .and(kstTaskDateTime.loe(todayDate)))
-                .groupBy(kstTaskDateTime)
-                .orderBy(kstTaskDateTime.asc())
-                .fetch();
+            .select(kstTaskDateTime, ad.count().intValue())
+            .from(ad)
+            .where(userIdEq(id)
+                .and(isCompleted())
+                .and(isInCurrentPeriod())
+                .and(kstTaskDateTime.goe(startOfPeriod))
+                .and(kstTaskDateTime.loe(todayDate)))
+            .groupBy(kstTaskDateTime)
+            .orderBy(kstTaskDateTime.asc())
+            .fetch();
 
         return results.stream()
-                .map(tuple -> DashboardInfo.DailyDone.of(
-                        tuple.get(0, Date.class).toLocalDate(),
-                        tuple.get(1, Integer.class)
-                ))
-                .collect(Collectors.toList());
+            .map(tuple -> DashboardInfo.DailyDone.of(
+                tuple.get(0, Date.class).toLocalDate(),
+                tuple.get(1, Integer.class)
+            ))
+            .collect(Collectors.toList());
     }
 
     public List<DashboardInfo.RecentDone> getRecentDoneList(String id) {
         return queryFactory
-                .select(Projections.constructor(DashboardInfo.RecentDone.class,
-                        ad.id.stringValue().as("adId"),
-                        ad.product.as("adName"),
-                        ad.taskDateTime.as("adTaskDateTime")
-                ))
-                .from(ad)
-                .where(userIdEq(id)
-                        .and(isCompleted())
-                        .and(isInCurrentPeriod()))
-                .orderBy(ad.taskDateTime.desc())
-                .limit(5)
-                .fetch();
+            .select(Projections.constructor(DashboardInfo.RecentDone.class,
+                ad.id.stringValue().as("adId"),
+                ad.product.as("adName"),
+                ad.taskDateTime.as("adTaskDateTime")
+            ))
+            .from(ad)
+            .where(userIdEq(id)
+                .and(isCompleted())
+                .and(isInCurrentPeriod()))
+            .orderBy(ad.taskDateTime.desc())
+            .limit(5)
+            .fetch();
     }
 
     public TaskInfo.AdCountInfo getMyTaskCount(String id) {
         return queryFactory
-                .select(Projections.constructor(TaskInfo.AdCountInfo.class,
-                        new CaseBuilder()
-                                .when(userIdEq(id)).then(1)
-                                .otherwise(0).sum(),
-                        new CaseBuilder()
-                                .when(isCompleted().and(userIdEq(id))).then(1)
-                                .otherwise(0).sum(),
-                        new CaseBuilder()
-                                .when(isNotCompleted().and(userIdEq(id))).then(1)
-                                .otherwise(0).sum()
-                ))
-                .from(ad)
-                .where(isInCurrentPeriod())
-                .fetchOne();
+            .select(Projections.constructor(TaskInfo.AdCountInfo.class,
+                new CaseBuilder()
+                    .when(userIdEq(id)).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isCompleted().and(userIdEq(id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .otherwise(0).sum()
+            ))
+            .from(ad)
+            .where(isInCurrentPeriod())
+            .fetchOne();
     }
 
 
@@ -127,50 +127,50 @@ public class AdvertisementRepositoryCustom {
         BooleanExpression cursorExpression = createCursorCondition(taskCommand.cursorInfo());
 
         List<TaskInfo.AdvertisementListInfo> contents = queryFactory
-                .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
-                        ad.id.substring(6),
-                        ad.adMedia.name,
-                        ad.adCategory.category,
-                        ad.product,
-                        ad.advertiser,
-                        ad.state,
-                        ad.issue
-                ))
-                .from(ad)
-                .where(filterExpression.and(cursorExpression).and(userIdEq(userId)))
-                .orderBy(
-                        ad.state.asc(),
-                        ad.id.asc()
-                )
-                .limit(MY_TASK_LIST_SCROLL_SIZE)
-                .fetch();
+            .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
+                ad.id.substring(6),
+                ad.adMedia.name,
+                ad.adCategory.category,
+                ad.product,
+                ad.advertiser,
+                ad.state,
+                ad.issue
+            ))
+            .from(ad)
+            .where(filterExpression.and(cursorExpression).and(userIdEq(userId)))
+            .orderBy(
+                ad.state.asc(),
+                ad.id.asc()
+            )
+            .limit(MY_TASK_LIST_SCROLL_SIZE)
+            .fetch();
 
         TaskInfo.CursorInfo nextCursorInfo = getNextCursorInfo(contents);
 
         Long totalElements = queryFactory
-                .select(ad.count())
-                .from(ad)
-                .where(filterExpression.and(userIdEq(userId)))
-                .fetchOne();
+            .select(ad.count())
+            .from(ad)
+            .where(filterExpression.and(userIdEq(userId)))
+            .fetchOne();
 
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
     }
 
     public Optional<IssueAdInfo.IssueAdDetailInfo> findIssueAdDetail(String advertisementId) {
         return Optional.ofNullable(queryFactory
-                .select(Projections.constructor(IssueAdInfo.IssueAdDetailInfo.class,
-                        ad.id,
-                        ad.product,
-                        ad.advertiser,
-                        ad.adCategory.category,
-                        ad.postDateTime,
-                        ad.assignee.name,
-                        ad.modifier.name,
-                        ad.adContent.content
-                ))
-                .from(ad)
-                .where(idEq(advertisementId))
-                .fetchOne());
+            .select(Projections.constructor(IssueAdInfo.IssueAdDetailInfo.class,
+                ad.id,
+                ad.product,
+                ad.advertiser,
+                ad.adCategory.category,
+                ad.postDateTime,
+                ad.assignee.name,
+                ad.modifier.name,
+                ad.adContent.content
+            ))
+            .from(ad)
+            .where(idEq(advertisementId))
+            .fetchOne());
     }
 
     // ScrollPagination 다음 페이지 조건 생성
@@ -183,7 +183,7 @@ public class AdvertisementRepositoryCustom {
         // 현재 커서가 false(검수 전)인 경우
         if (!cursorInfo.cursorState()) {
             return ad.state.eq(false).and(ad.id.substring(6).gt(cursorInfo.cursorId()))
-                    .or(ad.state.eq(true));
+                .or(ad.state.eq(true));
         }
         // 현재 커서가 true(검수 완료)인 경우
         else {
@@ -247,8 +247,8 @@ public class AdvertisementRepositoryCustom {
     // 키워드로 고유번호, 상품명, 광고주에 포함되는 광고 select
     private BooleanExpression searchKeyword(String keyword) {
         return ad.id.containsIgnoreCase(keyword)
-                .or(ad.product.containsIgnoreCase(keyword))
-                .or(ad.advertiser.containsIgnoreCase(keyword));
+            .or(ad.product.containsIgnoreCase(keyword))
+            .or(ad.advertiser.containsIgnoreCase(keyword));
     }
 
     // 선택한 매체명이 포함되는 광고 select
@@ -285,7 +285,7 @@ public class AdvertisementRepositoryCustom {
             endDate = LocalDate.of(year, month, LocalDate.of(year, month, 1).lengthOfMonth());
         }
         DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
-                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
+            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
         return kstAssignDateTime.between(startDate, endDate);
     }
 
@@ -313,10 +313,10 @@ public class AdvertisementRepositoryCustom {
 
         // `ad.assignDateTime`을 LocalDateTime으로 변환하고 한국 시간으로 변환
         DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
-                "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
+            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
 
         // 한국 시간 기준으로 날짜 범위와 비교
         return kstAssignDateTime.between(startOfPeriod, endOfPeriod)
-                .and(ad.assignDateTime.month().eq(todayDate.getMonthValue()));
+            .and(ad.assignDateTime.month().eq(todayDate.getMonthValue()));
     }
 }
