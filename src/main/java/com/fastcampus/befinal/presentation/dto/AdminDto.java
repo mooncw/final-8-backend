@@ -88,4 +88,21 @@ public class AdminDto {
         Long currentCursorId,
         List<UserInfo> contents
     ) {}
+
+    @Builder
+    public record UserTaskInfo(
+        Long cursorId,
+        String empNo,
+        String name,
+        Integer totalAd,
+        Integer notDoneAd,
+        Integer DoneAd
+    ) {}
+
+    @Builder
+    public record FindUserTaskListResponse(
+        Long totalElements,
+        Long currentCursorId,
+        List<UserTaskInfo> contents
+    ) {}
 }

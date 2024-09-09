@@ -191,13 +191,13 @@ public class AdminController {
             )
         )
     )
-    public ResponseEntity<AppApiResponse> findUserTaskList(
+    public ResponseEntity<AppApiResponse<AdminDto.FindUserTaskListResponse>> findUserTaskList(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
         AdminDto.FindUserTaskListRequest request
     ) {
-        adminFacade.findUserTaskScroll(request);
-        return ResponseEntityFactory.toResponseEntity(FIND_USER_TASK_LIST_SUCCESS);
+        AdminDto.FindUserTaskListResponse response = adminFacade.findUserTaskScroll(request);
+        return ResponseEntityFactory.toResponseEntity(FIND_USER_TASK_LIST_SUCCESS, response);
     }
 }
 
