@@ -14,7 +14,8 @@ public enum AdminCode implements Code {
 
     //error
     NOT_FOUND_USER_MANAGEMENT(1050),
-    NOT_FOUND_USER_SUMMARY(1051);
+    NOT_FOUND_USER_SUMMARY(1051),
+    INVALID_USER_TASK_SORT_TYPE(1052);
 
     private final Integer code;
 

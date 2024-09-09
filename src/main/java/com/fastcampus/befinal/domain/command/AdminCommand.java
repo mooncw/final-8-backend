@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.domain.command;
 
+import com.fastcampus.befinal.common.type.UserTaskSortType;
 import lombok.Builder;
 
 import java.util.List;
@@ -27,8 +28,8 @@ public class AdminCommand {
 
     @Builder
     public record FindUserTaskListRequest(
-        Long cursorId,
-        String sorted,
+        Integer cursorId,
+        UserTaskSortType sorted,
         String period
     ) {}
 }

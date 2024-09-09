@@ -35,6 +35,7 @@ public class AdminInfo {
         String name,
         Integer totalAd,
         Integer notDoneAd,
-        Integer DoneAd
+        Integer doneAd,
+        Double doneRatio
     ) {}
 }

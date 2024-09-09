@@ -21,7 +21,7 @@ public class SwaggerConstant {
     public static final String SWAGGER_CURRENT_USER_PASSWORD = "aaaaaaa1";
     public static final String SWAGGER_NEW_USER_PASSWORD = "aaaaaaa2";
     public static final String SWAGGER_UPDATE_CERTIFICATION_NUMBER_CHECK_TOKEN = "5gf43709-d81e-4a53-b447-c50fa6ec06e4";
-    public static final String SWAGGER_LONG_CURSOR_ID = "1";
+    public static final String SWAGGER_INTEGER_CURSOR_ID = "1";
     public static final String SWAGGER_USER_TASK_SORTED = "EmpNo";
     public static final String SWAGGER_PERIOD = "2024-09-1";
 }

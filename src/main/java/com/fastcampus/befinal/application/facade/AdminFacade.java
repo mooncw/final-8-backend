@@ -35,7 +35,7 @@ public class AdminFacade {
     }
 
     public AdminDto.FindUserTaskListResponse findUserTaskScroll(AdminDto.FindUserTaskListRequest request) {
-        ScrollPagination<Long, AdminInfo.UserTaskInfo> info =
+        ScrollPagination<Integer, AdminInfo.UserTaskInfo> info =
             adminService.findUserTaskScroll(adminDtoMapper.toAdminCommand(request));
         return adminDtoMapper.fromUserTaskScroll(info);
     }
