@@ -19,8 +19,7 @@ public class UserTaskServiceImpl implements UserTaskService {
 
         ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> filterTaskPagination = userTaskReader.findFilterMyAdvertisement(userId, taskCommand);
 
-        TaskInfo.TaskListInfo myTaskList = TaskInfo.TaskListInfo.of(
-                filterTaskPagination.totalElements(), filterTaskPagination.currentCursorId(), filterTaskPagination.contents());
+        TaskInfo.TaskListInfo myTaskList = TaskInfo.TaskListInfo.of(filterTaskPagination);
 
         return TaskInfo.TaskResponse.of(myAdCount, myTaskList);
     }
