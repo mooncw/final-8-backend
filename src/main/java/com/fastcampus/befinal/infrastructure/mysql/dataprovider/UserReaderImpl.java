@@ -3,6 +3,7 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.dataprovider.UserReader;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AdminInfo;
@@ -33,5 +34,10 @@ public class UserReaderImpl implements UserReader {
     public User findById(Long id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+    }
+
+    @Override
+    public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findScroll(AdminCommand.FindUserTaskListRequest request) {
+        return userRepositoryCustom.findScrollOrderByRequest(request);
     }
 }
