@@ -53,12 +53,14 @@ public class AdminDto {
 
         @Schema(example = SWAGGER_USER_TASK_SORTED)
         @NotBlank(message = NOT_BLANK_USER_TASK_SORTED, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "EmpNo|DoneDesc|DoneAsc|DoneRatioDesc|DoneRatioAsc", groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "EmpNo|DoneDesc|DoneAsc|DoneRatioDesc|DoneRatioAsc", message = PATTERN_MISMATCH_SORTED,
+            groups = RequestValidationGroups.PatternGroup.class)
         String sorted,
 
         @Schema(example = SWAGGER_PERIOD)
         @NotBlank(message = NOT_BLANK_PERIOD, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$", groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD,
+            groups = RequestValidationGroups.PatternGroup.class)
         String period
     ) {}
 

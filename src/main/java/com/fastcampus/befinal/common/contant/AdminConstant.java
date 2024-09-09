@@ -5,4 +5,6 @@ public class AdminConstant {
     public static final String SIZE_MISMATCH_INTEGER_CURSOR_ID = "1이상의 커서 ID 값을 입력해 주세요.";
     public static final String NOT_BLANK_USER_TASK_SORTED = "정렬 기준을 입력해 주세요.";
     public static final String NOT_BLANK_PERIOD = "기간을 입력해 주세요.";
+    public static final String PATTERN_MISMATCH_SORTED = "정렬 기준에 입력 가능한 패턴을 확인해 주세요.";
+    public static final String PATTERN_MISMATCH_PERIOD = "기간에 입력 가능한 패턴을 확인해 주세요.";
 }
