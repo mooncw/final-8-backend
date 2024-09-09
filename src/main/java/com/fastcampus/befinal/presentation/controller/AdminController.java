@@ -177,12 +177,13 @@ public class AdminController {
                             "currentCursorId": 1,
                             "contents": [
                                 {
-                                    "cursorId": 1,
+                                    "id": 1,
                                     "empNo": "11111111",
                                     "name": "홍길동",
                                     "totalAd": 345,
                                     "notDoneAd": 45,
-                                    "DoneAd": 300 
+                                    "DoneAd": 300,
+                                    "doneRatio": 87
                                 }
                             ]
                         }
