@@ -70,10 +70,10 @@ public class AdvertisementRepositoryCustom {
                 .select(kstTaskDateTime, ad.count().intValue())
                 .from(ad)
                 .where(userIdEq(id)
-                    .and(isCompleted())
-                    .and(isInCurrentPeriod())
-                    .and(kstTaskDateTime.goe(startOfPeriod))
-                    .and(kstTaskDateTime.loe(todayDate)))
+                        .and(isCompleted())
+                        .and(isInCurrentPeriod())
+                        .and(kstTaskDateTime.goe(startOfPeriod))
+                        .and(kstTaskDateTime.loe(todayDate)))
                 .groupBy(kstTaskDateTime)
                 .orderBy(kstTaskDateTime.asc())
                 .fetch();
@@ -121,11 +121,10 @@ public class AdvertisementRepositoryCustom {
     }
 
 
-    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.CursorInfo cursorInfo, String keyword, String period,
-                                                                                                        Boolean state, Boolean issue, List<String> media, List<String> category) {
+    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.FilterConditionRequest taskCommand) {
 
-        BooleanExpression filterExpression = createFilterCondition(keyword, period, state, issue, media, category);
-        BooleanExpression cursorExpression = createCursorCondition(cursorInfo);
+        BooleanExpression filterExpression = createFilterCondition(taskCommand);
+        BooleanExpression cursorExpression = createCursorCondition(taskCommand.cursorInfo());
 
         List<TaskInfo.AdvertisementListInfo> contents = queryFactory
                 .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
@@ -157,7 +156,7 @@ public class AdvertisementRepositoryCustom {
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
     }
 
-    public Optional<IssueAdInfo.IssueAdDetailInfo> findIssueAdDetail(String advertisementId){
+    public Optional<IssueAdInfo.IssueAdDetailInfo> findIssueAdDetail(String advertisementId) {
         return Optional.ofNullable(queryFactory
                 .select(Projections.constructor(IssueAdInfo.IssueAdDetailInfo.class,
                         ad.id,
@@ -177,12 +176,12 @@ public class AdvertisementRepositoryCustom {
     // ScrollPagination 다음 페이지 조건 생성
     private BooleanExpression createCursorCondition(TaskCommand.CursorInfo cursorInfo) {
         // 첫 페이지인 경우(조건 없음)
-        if(cursorInfo == null) {
+        if (cursorInfo == null) {
             return null;
         }
 
         // 현재 커서가 false(검수 전)인 경우
-        if(!cursorInfo.cursorState()) {
+        if (!cursorInfo.cursorState()) {
             return ad.state.eq(false).and(ad.id.substring(6).gt(cursorInfo.cursorId()))
                     .or(ad.state.eq(true));
         }
@@ -194,7 +193,7 @@ public class AdvertisementRepositoryCustom {
 
     // 현재 페이지 마지막 데이터 커서 정보
     private TaskInfo.CursorInfo getNextCursorInfo(List<TaskInfo.AdvertisementListInfo> contents) {
-        if(!contents.isEmpty()) {
+        if (!contents.isEmpty()) {
             TaskInfo.AdvertisementListInfo lastData = contents.get(contents.size() - 1);
             return new TaskInfo.CursorInfo(lastData.state(), lastData.adId());
         }
@@ -203,33 +202,33 @@ public class AdvertisementRepositoryCustom {
     }
 
     // 광고 리스트 필터 조건 메서드
-    private BooleanExpression createFilterCondition(String keyword, String period, Boolean state, Boolean issue, List<String> media, List<String> category) {
+    private BooleanExpression createFilterCondition(TaskCommand.FilterConditionRequest command) {
         BooleanExpression expression;
 
-        if(StringUtils.hasText(period)) {
-            expression = getByPeriod(period);
+        if (StringUtils.hasText(command.period())) {
+            expression = getByPeriod(command.period());
         } else {
             expression = isInCurrentPeriod();
         }
 
-        if(StringUtils.hasText(keyword)) {
-            expression = expression.and(searchKeyword(keyword));
+        if (StringUtils.hasText(command.keyword())) {
+            expression = expression.and(searchKeyword(command.keyword()));
         }
 
-        if(state != null) {
-            expression = expression.and(filterState(state));
+        if (command.state() != null) {
+            expression = expression.and(filterState(command.state()));
         }
 
-        if(issue != null) {
-            expression = expression.and(filterIssue(issue));
+        if (command.issue() != null) {
+            expression = expression.and(filterIssue(command.issue()));
         }
 
-        if(media != null) {
-            expression = expression.and(filterMedia(media));
+        if (command.media() != null) {
+            expression = expression.and(filterMedia(command.media()));
         }
 
-        if(category != null) {
-            expression = expression.and(filterCategory(category));
+        if (command.category() != null) {
+            expression = expression.and(filterCategory(command.category()));
         }
 
         return expression;
@@ -255,7 +254,7 @@ public class AdvertisementRepositoryCustom {
     // 선택한 매체명이 포함되는 광고 select
     private BooleanBuilder filterMedia(List<String> media) {
         BooleanBuilder builder = new BooleanBuilder();
-        for(String m : media) {
+        for (String m : media) {
             builder.or(ad.adMedia.name.eq(m));
         }
         return builder;
@@ -264,7 +263,7 @@ public class AdvertisementRepositoryCustom {
     // 선택한 업종명이 포함되는 광고 select
     private BooleanBuilder filterCategory(List<String> category) {
         BooleanBuilder builder = new BooleanBuilder();
-        for(String c : category) {
+        for (String c : category) {
             builder.or(ad.adCategory.category.eq(c));
         }
         return builder;
@@ -275,7 +274,7 @@ public class AdvertisementRepositoryCustom {
         String[] parts = period.split("-");
         int year = Integer.parseInt(parts[0]);
         int month = Integer.parseInt(parts[1]);
-        int term = Integer.parseInt(parts[2].substring(0, 1));
+        int term = Integer.parseInt(parts[2]);
 
         LocalDate startDate, endDate;
         if (term == 1) {
@@ -290,7 +289,9 @@ public class AdvertisementRepositoryCustom {
         return kstAssignDateTime.between(startDate, endDate);
     }
 
-    private BooleanExpression idEq(String id){ return ad.id.eq(id); }
+    private BooleanExpression idEq(String id) {
+        return ad.id.eq(id);
+    }
 
     private BooleanExpression userIdEq(String id) {
         return ad.assignee.id.eq(Long.valueOf(id));
