@@ -31,7 +31,7 @@ public class AuthDto {
         @Schema(example = SWAGGER_USER_ID)
         @NotBlank(message = NOT_BLANK_USER_ID, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 4, max = 12, message = SIZE_MISMATCH_USER_ID, groups = RequestValidationGroups.SizeGroup.class)
-        @Pattern(regexp = "^[a-zA-Z]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "^[a-zA-Z0-9]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
         String id,
 
         @Schema(example = SWAGGER_USER_PASSWORD)
@@ -67,7 +67,7 @@ public class AuthDto {
         @Schema(example = SWAGGER_USER_ID)
         @NotBlank(message = NOT_BLANK_USER_ID, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 4, max = 12, message = SIZE_MISMATCH_USER_ID, groups = RequestValidationGroups.SizeGroup.class)
-        @Pattern(regexp = "^[a-zA-Z]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "^[a-zA-Z0-9]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
         String id
     ) {}
 
@@ -108,11 +108,12 @@ public class AuthDto {
     ) {}
 
     @Builder
+    @Schema(description = "로그인 request")
     public record SignInRequest(
         @Schema(example = SWAGGER_USER_ID)
         @NotBlank(message = NOT_BLANK_USER_ID, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 4, max = 12, message = SIZE_MISMATCH_USER_ID, groups = RequestValidationGroups.SizeGroup.class)
-        @Pattern(regexp = "^[a-zA-Z]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "^[a-zA-Z0-9]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
         String id,
 
         @Schema(example = SWAGGER_USER_PASSWORD)
