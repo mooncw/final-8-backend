@@ -12,7 +12,10 @@ import lombok.Builder;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.fastcampus.befinal.common.contant.AdminConstant.NOT_BLANK_PERIOD;
+import static com.fastcampus.befinal.common.contant.AdminConstant.NOT_BLANK_USER_TASK_SORTED;
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
+import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 
 public class AdminDto {
     @Builder
@@ -47,8 +50,17 @@ public class AdminDto {
 
     @Builder
     public record FindUserTaskListRequest(
+        @Schema(example = SWAGGER_LONG_CURSOR_ID)
         Long cursorId,
+
+        @Schema(example = SWAGGER_USER_TASK_SORTED)
+        @NotBlank(message = NOT_BLANK_USER_TASK_SORTED)
+        @Pattern(regexp = "EmpNo|DoneDesc|DoneAsc|DoneRatioDesc|DoneRatioAsc")
         String sorted,
+
+        @Schema(example = SWAGGER_PERIOD)
+        @NotBlank(message = NOT_BLANK_PERIOD)
+        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$")
         String period
     ) {}
 

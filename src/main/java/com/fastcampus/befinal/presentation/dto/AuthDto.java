@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
+import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 
 public class AuthDto {
     @Builder
