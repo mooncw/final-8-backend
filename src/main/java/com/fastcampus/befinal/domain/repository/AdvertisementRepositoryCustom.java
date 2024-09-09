@@ -105,6 +105,8 @@ public class AdvertisementRepositoryCustom {
                 ad.adContent.content
                 ))
             .from(ad)
+            .leftJoin(ad.modifier)
+            .leftJoin(ad.assignee)
             .where(idEq(advertisementId))
             .fetchOne());
     }
