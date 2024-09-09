@@ -9,9 +9,11 @@ public enum AdminCode implements Code {
     FIND_SIGN_UP_USER_LIST_SUCCESS(1001),
     REJECT_USER_SUCCESS(1002),
     FIND_USER_LIST_SUCCESS(1003),
+    DELETE_USER_SUCCESS(1004),
 
     //error
-    NOT_FOUND_USER_MANAGEMENT(1050);
+    NOT_FOUND_USER_MANAGEMENT(1050),
+    NOT_FOUND_USER_SUMMARY(1051);
 
     private final Integer code;
 

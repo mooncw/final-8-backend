@@ -42,11 +42,11 @@ public class Advertisement {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignee_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-    private User assignee;
+    private UserSummary assignee;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modifier_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-    private User modifier;
+    private UserSummary modifier;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_category_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))

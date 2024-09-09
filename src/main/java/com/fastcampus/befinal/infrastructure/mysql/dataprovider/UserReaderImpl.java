@@ -28,4 +28,10 @@ public class UserReaderImpl implements UserReader {
     public ScrollPagination<Long, AdminInfo.UserInfo> findScroll(Long cursorId) {
         return userRepositoryCustom.findScrollByEmpNumber(cursorId);
     }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+    }
 }

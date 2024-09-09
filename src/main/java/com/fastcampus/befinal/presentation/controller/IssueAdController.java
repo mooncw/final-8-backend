@@ -32,28 +32,28 @@ public class IssueAdController {
         content = @Content(
             mediaType = "application/json",
             schema = @Schema(
-                implementation = IssueAdDto.IssueAdDetailResponse.class,
                 example = "{" +
                     "\"code\": 3400, " +
                     "\"message\": \"지적 광고 상세 정보가 조회되었습니다.\", " +
                     "\"data\": {" +
-                    "   \"id\": \"202409A00001\"" +
-                    "   \"product\": \"상품명\"" +
-                    "   \"advertiser\": \"광고주\"" +
-                    "   \"category\": \"업종\"" +
-                    "   \"postDate\": \"2024-09-01\"" +
-                    "   \"assigneeName\": \"담당자\"" +
-                    "   \"modifierName\": \"수정자\"" +
-                    "   \"content\": \"광고내용\"" +
-                    "   \"reviewList\": [" +
-                    "     {" +
-                    "       \"provisionArticle\": 1" +
-                    "       \"provisionContent\": \"조항내용\"" +
-                    "       \"sentence\": \"지적문장\"" +
-                    "       \"opinion\": \"검토내용\"" +
-                    "     }" +
-                    "   ]" +
-                    "}"
+                        "\"id\": \"202409A00001\"," +
+                        "\"product\": \"상품명\"," +
+                        "\"advertiser\": \"광고주\"," +
+                        "\"category\": \"업종\"," +
+                        "\"postDate\": \"2024-09-01\"," +
+                        "\"assigneeName\": \"담당자\"," +
+                        "\"modifierName\": \"수정자\"," +
+                        "\"content\": \"광고내용\"," +
+                        "\"reviewList\": [" +
+                            "{" +
+                                "\"provisionArticle\": 1," +
+                                "\"provisionContent\": \"조항내용\"," +
+                                "\"sentence\": \"지적문장\"," +
+                                "\"opinion\": \"검토내용\"" +
+                            "}" +
+                        "]" +
+                    "}" +
+                "}"
             )
         )
     )

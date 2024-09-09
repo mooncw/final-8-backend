@@ -293,7 +293,7 @@ public class AdvertisementRepositoryCustom {
     private BooleanExpression idEq(String id){ return ad.id.eq(id); }
 
     private BooleanExpression userIdEq(String id) {
-        return ad.assignee.userId.eq(id);
+        return ad.assignee.id.eq(Long.valueOf(id));
     }
 
     private BooleanExpression isCompleted() {
