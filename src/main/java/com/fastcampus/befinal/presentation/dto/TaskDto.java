@@ -1,60 +1,83 @@
 package com.fastcampus.befinal.presentation.dto;
 
+import com.fastcampus.befinal.common.annotation.ValidPeriod;
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 import java.util.List;
-
-import static com.fastcampus.befinal.common.contant.TaskConstant.MIN_LENGTH_KEYWORD;
+import static com.fastcampus.befinal.common.contant.TaskConstant.*;
 
 public class TaskDto {
     @Builder
+    @Schema(description = "필터 조건 request")
     public record FilterConditionRequest(
-            CursorInfo cursorInfo,
-            @Size(min = 2, message = MIN_LENGTH_KEYWORD, groups = RequestValidationGroups.SizeGroup.class)
-            String keyword,
-            String period,
-            Boolean state,
-            Boolean issue,
-            List<String> media,
-            List<String> category
+        @Valid
+        CursorInfo cursorInfo,
+
+        @Schema(example = SWAGGER_KEYWORD)
+        @Size(min = 2, message = MIN_LENGTH_KEYWORD, groups = RequestValidationGroups.SizeGroup.class)
+        String keyword,
+
+        @Schema(example = SWAGGER_PERIOD)
+        @ValidPeriod(groups = RequestValidationGroups.PatternGroup.class)
+        String period,
+
+        @Schema(example = SWAGGER_STATE)
+        Boolean state,
+
+        @Schema(example = SWAGGER_ISSUE)
+        Boolean issue,
+
+        @Schema(example = SWAGGER_MEDIA)
+        List<@Pattern(regexp = "^[가-힣/]+$", message = PATTERN_MISMATCH_MEDIA, groups = RequestValidationGroups.PatternGroup.class) String> media,
+
+        @Schema(example = SWAGGER_CATEGORY)
+        List<@Pattern(regexp = "^[가-힣/]+$", message = PATTERN_MISMATCH_CATEGORY, groups = RequestValidationGroups.PatternGroup.class)String> category
     ) {}
 
     @Builder
+    @Schema(description = "Cursor 조건 request")
     public record CursorInfo(
-            Boolean cursorState,
-            String cursorId
+        @Schema(example = SWAGGER_STATE)
+        Boolean cursorState,
+
+        @Schema(example = SWAGGER_AD_ID)
+        @Pattern(regexp = "^[A-Z]\\d{5}$", message = PATTERN_MISMATCH_AD_ID, groups = RequestValidationGroups.PatternGroup.class)
+        String cursorId
     ) {}
 
     @Builder
     public record TaskResponse(
-            AdCountInfo adCount,
-            TaskListInfo taskList
+        AdCountInfo adCount,
+        TaskListInfo taskList
     ) {}
 
     @Builder
     public record AdCountInfo(
-            Integer myTotalAd,
-            Integer myDoneAd,
-            Integer myNotDoneAd
+        Integer myTotalAd,
+        Integer myDoneAd,
+        Integer myNotDoneAd
     ) {}
 
     @Builder
     public record AdvertisementListInfo (
-            String adId,
-            String media,
-            String category,
-            String product,
-            String advertiser,
-            Boolean state,
-            Boolean issue
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser,
+        Boolean state,
+        Boolean issue
     ) {}
 
     @Builder
     public record TaskListInfo(
-            Long totalElements,
-            CursorInfo cursorInfo,
-            List<AdvertisementListInfo> advertisementList
-    ){}
+        Long totalElements,
+        CursorInfo cursorInfo,
+        List<AdvertisementListInfo> advertisementList
+    ) {}
 }
