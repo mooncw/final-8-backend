@@ -2,11 +2,10 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
-import com.fastcampus.befinal.domain.dataprovider.UserManagementReader;
-import com.fastcampus.befinal.domain.dataprovider.UserManagementStore;
-import com.fastcampus.befinal.domain.dataprovider.UserReader;
-import com.fastcampus.befinal.domain.dataprovider.UserStore;
+import com.fastcampus.befinal.domain.dataprovider.*;
+import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.entity.UserManagement;
+import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +39,12 @@ public class AdminServiceImplTest {
 
     @Mock
     private UserStore userStore;
+
+    @Mock
+    private UserSummaryReader userSummaryReader;
+
+    @Mock
+    private UserSummaryStore userSummaryStore;
 
     @Test
     @DisplayName("회원가입 승인 성공 테스트")
@@ -170,5 +175,55 @@ public class AdminServiceImplTest {
         assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
         assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
         assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
+    }
+
+    @Test
+    @DisplayName("회원 정보 삭제 성공 테스트")
+    void deleteUserTest() {
+        //given
+        Long userId = 6L;
+
+        User user = User.builder()
+            .id(userId)
+            .userId("hong")
+            .name("홍길동")
+            .password("asdf1234")
+            .phoneNumber("01011112222")
+            .empNumber("11111111")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(5))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(2))
+            .role(USER_AUTHORITY)
+            .build();
+
+        UserSummary userSummary = UserSummary.builder()
+            .id(user.getId())
+            .name(user.getName())
+            .build();
+
+        doReturn(user)
+            .when(userReader)
+            .findById(anyLong());
+
+        doNothing()
+            .when(userStore)
+            .delete(any(User.class));
+
+        doReturn(userSummary)
+            .when(userSummaryReader)
+            .findById(anyLong());
+
+        doNothing()
+            .when(userSummaryStore)
+            .update(any(UserSummary.class));
+
+        //when
+        adminService.deleteUser(userId);
+
+        //verify
+        verify(userReader, times(1)).findById(anyLong());
+        verify(userStore, times(1)).delete(any(User.class));
+        verify(userSummaryReader, times(1)).findById(anyLong());
+        verify(userSummaryStore, times(1)).update(any(UserSummary.class));
     }
 }

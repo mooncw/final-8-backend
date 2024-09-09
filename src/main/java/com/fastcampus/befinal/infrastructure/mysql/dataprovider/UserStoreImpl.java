@@ -35,4 +35,9 @@ public class UserStoreImpl implements UserStore {
         User currentUser = entityManager.merge(userInfo.user());
         currentUser.updatePassword(passwordEncoder.encode(userInfo.password()));
     }
+
+    @Override
+    public void delete(User user) {
+        userRepository.delete(user);
+    }
 }

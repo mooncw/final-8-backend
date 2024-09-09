@@ -8,4 +8,6 @@ public interface UserReader {
     User findUser(String userId);
 
     ScrollPagination<Long, AdminInfo.UserInfo> findScroll(Long cursorId);
+
+    User findById(Long id);
 }

@@ -69,14 +69,14 @@ public class AdminController {
     }
 
     @GetMapping("/approve-user")
-    @Operation(summary = "회원가입 유저 목록 조회 - Param default 값은 null")
+    @Operation(summary = "회원가입 신청 유저 목록 조회 - Param default 값은 null")
     @ApiResponse(responseCode = "200", description = "회원가입 신청 유저 목록 조회되었습니다.",
         content = @Content(
             mediaType = "application/json",
             schema = @Schema(
                 example = "{ " +
                                 "\"code\": 1001, " +
-                                "\"message\": \"회원가입 신청 유저 목록 조회되었습니다.\"" +
+                                "\"message\": \"회원가입 신청 유저 목록 조회되었습니다.\", " +
                                 "\"data\": {" +
                                         "\"totalElements\": \"\"," +
                                         "\"currentCursorId\": \"\"," +
@@ -140,4 +140,26 @@ public class AdminController {
         AdminDto.FindUserListResponse response = adminFacade.findUserScroll(cursorId);
         return ResponseEntityFactory.toResponseEntity(FIND_USER_LIST_SUCCESS, response);
     }
+
+    @DeleteMapping("/manage-user/{userId}")
+    @Operation(summary = "회원 정보 삭제")
+    @ApiResponse(responseCode = "200", description = "회원 정보가 삭제되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 1003, " +
+                    "\"message\": \"회원 정보가 삭제되었습니다.\"" +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> deleteUser(
+        @PathVariable
+        Long userId
+    ) {
+        adminFacade.deleteUser(userId);
+        return ResponseEntityFactory.toResponseEntity(DELETE_USER_SUCCESS);
+    }
 }
+
