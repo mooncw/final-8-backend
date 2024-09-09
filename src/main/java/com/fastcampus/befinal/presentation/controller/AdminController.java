@@ -162,7 +162,7 @@ public class AdminController {
         return ResponseEntityFactory.toResponseEntity(DELETE_USER_SUCCESS);
     }
 
-    @DeleteMapping("/manage-emp")
+    @PostMapping("/manage-emp")
     @Operation(summary = "작업자 관리 정보 조회")
     @ApiResponse(responseCode = "200", description = "작업자 관리 정보 조회되었습니다.",
         content = @Content(

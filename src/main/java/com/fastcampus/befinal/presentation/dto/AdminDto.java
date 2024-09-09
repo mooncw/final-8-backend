@@ -3,17 +3,13 @@ package com.fastcampus.befinal.presentation.dto;
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.fastcampus.befinal.common.contant.AdminConstant.NOT_BLANK_PERIOD;
-import static com.fastcampus.befinal.common.contant.AdminConstant.NOT_BLANK_USER_TASK_SORTED;
+import static com.fastcampus.befinal.common.contant.AdminConstant.*;
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 
@@ -50,17 +46,19 @@ public class AdminDto {
 
     @Builder
     public record FindUserTaskListRequest(
-        @Schema(example = SWAGGER_LONG_CURSOR_ID)
-        Long cursorId,
+        @Schema(example = SWAGGER_INTEGER_CURSOR_ID)
+        @NotNull(message = NOT_NULL_CURSOR_ID, groups = RequestValidationGroups.NotNullGroup.class)
+        @Min(value = 1, message = SIZE_MISMATCH_INTEGER_CURSOR_ID, groups = RequestValidationGroups.SizeGroup.class)
+        Integer cursorId,
 
         @Schema(example = SWAGGER_USER_TASK_SORTED)
-        @NotBlank(message = NOT_BLANK_USER_TASK_SORTED)
-        @Pattern(regexp = "EmpNo|DoneDesc|DoneAsc|DoneRatioDesc|DoneRatioAsc")
+        @NotBlank(message = NOT_BLANK_USER_TASK_SORTED, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Pattern(regexp = "EmpNo|DoneDesc|DoneAsc|DoneRatioDesc|DoneRatioAsc", groups = RequestValidationGroups.PatternGroup.class)
         String sorted,
 
         @Schema(example = SWAGGER_PERIOD)
-        @NotBlank(message = NOT_BLANK_PERIOD)
-        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$")
+        @NotBlank(message = NOT_BLANK_PERIOD, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$", groups = RequestValidationGroups.PatternGroup.class)
         String period
     ) {}
 
@@ -103,12 +101,12 @@ public class AdminDto {
 
     @Builder
     public record UserTaskInfo(
-        Long cursorId,
+        Long id,
         String empNo,
         String name,
         Integer totalAd,
         Integer notDoneAd,
-        Integer DoneAd
+        Integer doneAd
     ) {}
 
     @Builder
