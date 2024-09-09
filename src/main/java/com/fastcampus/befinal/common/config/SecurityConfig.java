@@ -70,6 +70,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/user/**").authenticated()
             // issue-ad
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/result/**").authenticated()
+            .requestMatchers(HttpMethod.GET, "/api/v1/filter-options/**").permitAll()
             // health-check
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
             // monitoring
