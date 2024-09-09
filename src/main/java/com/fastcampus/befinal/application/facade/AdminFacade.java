@@ -27,4 +27,8 @@ public class AdminFacade {
     public AdminDto.FindUserListResponse findUserScroll(Long cursorId) {
         return adminDtoMapper.fromUserScroll(adminService.findUserScroll(cursorId));
     }
+
+    public void deleteUser(Long userId) {
+        adminService.deleteUser(userId);
+    }
 }

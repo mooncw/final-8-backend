@@ -3,6 +3,7 @@ package com.fastcampus.befinal.infrastructure.mysql.mapper;
 import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.entity.UserManagement;
+import com.fastcampus.befinal.domain.entity.UserSummary;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -32,6 +33,9 @@ public interface MysqlEntityMapper {
     @Mapping(target = "finalLoginDateTime", expression = "java(initializeFinalLoginDateTime())")
     @Mapping(target = "role", constant = USER_AUTHORITY)
     User from(UserManagement userManagement);
+
+    @Mapping(target = "id", ignore = true)
+    UserSummary toSummaryUser(UserManagement userManagement);
 
     default LocalDateTime initializeFinalLoginDateTime() {
         return INITIAL_FINAL_LOGIN_DATETIME;
