@@ -9,13 +9,12 @@ import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
@@ -107,7 +106,7 @@ public class UserRepositoryCustom {
             ))
             .from(user)
             .leftJoin(ad)
-            .on(user.id.eq(ad.assignee.id))
+            .on(user.id.eq(ad.assignee.id).and(getByPeriod(command.period())))
             .groupBy(user.id)
             .orderBy(orderCase(command, doneAd, doneRatio).toArray(new OrderSpecifier[0]))
             .limit(MANAGE_EMP_SCROLL_SIZE)
@@ -120,6 +119,27 @@ public class UserRepositoryCustom {
             .fetchOne();
 
         return ScrollPagination.of(totalElements, command.cursorId(), contents);
+    }
+
+    private BooleanExpression getByPeriod(String period) {
+        String[] parts = period.split("-");
+        int year = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int term = Integer.parseInt(parts[2]);
+
+        LocalDate startDate, endDate;
+
+        if (term == 1) {
+            startDate = LocalDate.of(year, month, 1);
+            endDate = LocalDate.of(year, month, 15);
+        } else {
+            startDate = LocalDate.of(year, month, 16);
+            endDate = LocalDate.of(year, month, LocalDate.of(year, month, 1).lengthOfMonth());
+        }
+
+        DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
+        return kstAssignDateTime.between(startDate, endDate);
     }
 
     private List<OrderSpecifier<?>> orderCase(AdminCommand.FindUserTaskListRequest command,
