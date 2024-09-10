@@ -23,6 +23,7 @@ import static com.fastcampus.befinal.common.response.success.info.FilterSuccessC
 import static com.fastcampus.befinal.common.response.success.info.FilterSuccessCode.FILTER_MEDIA_LIST;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,6 +76,7 @@ class FilterControllerTest {
         ResultActions perform = mockMvc.perform(get("/api/v1/filter-options/media")
             .param("keyword", "일보")
             .param("period", "2024-8-2")
+            .with(user(userDetailsInfo))
             .contentType(MediaType.APPLICATION_JSON));
 
         // then
@@ -115,8 +117,9 @@ class FilterControllerTest {
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/v1/filter-options/category")
-            .param("keyword", "가정")
+            .param("keyword", "용품")
             .param("period", "2024-8-2")
+            .with(user(userDetailsInfo))
             .contentType(MediaType.APPLICATION_JSON));
 
         // then
