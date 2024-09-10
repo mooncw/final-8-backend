@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 
 import com.fastcampus.befinal.common.annotation.DataProvider;
+import com.fastcampus.befinal.domain.command.FilterCommand;
 import com.fastcampus.befinal.domain.dataprovider.FilterReader;
 import com.fastcampus.befinal.domain.entity.AdCategory;
 import com.fastcampus.befinal.domain.entity.AdMedia;
@@ -21,29 +22,29 @@ public class FilterReaderImpl implements FilterReader {
     private final AdvertisementRepositoryCustom advertisementRepositoryCustom;
 
     @Override
-    public List<FilterInfo.FilterOptionInfo> findMediaList(String keyword, String period) {
-        List<AdMedia> mediaList = (keyword == null || keyword.isEmpty()) ?
+    public List<FilterInfo.FilterOptionInfo> findMediaList(FilterCommand.ConditionCommand command) {
+        List<AdMedia> mediaList = (command.keyword() == null || command.keyword().isEmpty()) ?
             adMediaRepository.findAllByOrderByNameAsc() :
-            adMediaRepository.findByNameContainingOrderByNameAsc(keyword);
+            adMediaRepository.findByNameContainingOrderByNameAsc(command.keyword());
 
         return mediaList.stream()
             .map(media -> FilterInfo.FilterOptionInfo.of(
                 media.getName(),
-                advertisementRepositoryCustom.countMediaByPeriod(media, period)
+                advertisementRepositoryCustom.countMediaByPeriod(media, command.period())
             ))
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<FilterInfo.FilterOptionInfo> findCategoryList(String keyword, String period) {
-        List<AdCategory> categoryList = (keyword == null || keyword.isEmpty()) ?
+    public List<FilterInfo.FilterOptionInfo> findCategoryList(FilterCommand.ConditionCommand command) {
+        List<AdCategory> categoryList = (command.keyword() == null || command.keyword().isEmpty()) ?
             adCategoryRepository.findAllByOrderByCategoryAsc() :
-            adCategoryRepository.findByCategoryContainingOrderByCategoryAsc(keyword);
+            adCategoryRepository.findByCategoryContainingOrderByCategoryAsc(command.keyword());
 
         return categoryList.stream()
             .map(category -> FilterInfo.FilterOptionInfo.of(
                 category.getCategory(),
-                advertisementRepositoryCustom.countCategoryByPeriod(category, period)
+                advertisementRepositoryCustom.countCategoryByPeriod(category, command.period())
             ))
             .collect(Collectors.toList());
     }
