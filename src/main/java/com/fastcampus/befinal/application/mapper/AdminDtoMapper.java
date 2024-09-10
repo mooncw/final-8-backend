@@ -118,4 +118,6 @@ public interface AdminDtoMapper {
     default Integer toDoneRatioValue(Double doneRatio) {
         return (int) Math.round(doneRatio * 100);
     }
+
+    AdminDto.FindUnassignedAdListResponse fromUnassignedAdScroll(ScrollPagination<String, AdminInfo.UnassignedAdInfo> info);
 }
