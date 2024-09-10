@@ -122,12 +122,12 @@ public class UserController {
     public ResponseEntity<AppApiResponse<TaskDto.TaskResponse>> checkMyTask(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
-        TaskDto.FilterConditionRequest request
+        TaskDto.FilterConditionRequest request,
 
-        //@AuthenticationPrincipal UserDetailsInfo user
+        @AuthenticationPrincipal UserDetailsInfo user
     ) {
-        //String userId = user.getUsername();
-        TaskDto.TaskResponse response = taskFacade.loadFilterMyTask("1", request);
+        String userId = user.getUsername();
+        TaskDto.TaskResponse response = taskFacade.loadFilterMyTask(userId, request);
         return ResponseEntityFactory.toResponseEntity(MyTaskSuccessCode.CHECK_MY_TASK_SUCCESS, response);
     }
 }

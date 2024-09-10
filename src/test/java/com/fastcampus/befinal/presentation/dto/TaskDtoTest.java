@@ -22,22 +22,23 @@ public class TaskDtoTest {
     Validator validator = factory.getValidator();
 
     @Test
-    @DisplayName("나의 작업 리스트 조건 검증 테스트 - NotBlank, NotNull")
+    @DisplayName("나의 작업 리스트 조건 검증 테스트 - NotBlank")
     void whenSignUpRequestIsBlank_thenValidationFails() {
         //given
         TaskDto.FilterConditionRequest request = TaskDto.FilterConditionRequest.builder()
             .cursorInfo(TaskDto.CursorInfo.builder()
+                .cursorState(true)
                 .cursorId(" ")
                 .build())
             .build();
 
         //when
         Set<ConstraintViolation<TaskDto.FilterConditionRequest>> violations = validator.validate(request,
-            RequestValidationGroups.NotBlankGroup.class, RequestValidationGroups.NotNullGroup.class);
+            RequestValidationGroups.NotBlankGroup.class);
         Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         //then
-        assertThat(message).isEqualTo(Set.of(NOT_NULL_CURSOR_STATE, NOT_BLANK_CURSOR_AD_ID));
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_CURSOR_AD_ID));
     }
 
     @Test

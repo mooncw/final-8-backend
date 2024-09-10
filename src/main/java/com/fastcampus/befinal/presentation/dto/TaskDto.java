@@ -44,7 +44,6 @@ public class TaskDto {
     @Schema(description = "Cursor 조건 request")
     public record CursorInfo(
         @Schema(example = SWAGGER_STATE)
-        @NotNull(message = NOT_NULL_CURSOR_STATE, groups = RequestValidationGroups.NotNullGroup.class)
         Boolean cursorState,
 
         @Schema(example = SWAGGER_AD_ID)
