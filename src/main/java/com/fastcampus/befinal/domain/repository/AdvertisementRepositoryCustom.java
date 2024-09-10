@@ -1,5 +1,8 @@
 package com.fastcampus.befinal.domain.repository;
 
+import ch.qos.logback.core.util.StringUtil;
+import com.fastcampus.befinal.domain.entity.AdCategory;
+import com.fastcampus.befinal.domain.entity.AdMedia;
 import com.fastcampus.befinal.domain.entity.QAdvertisement;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
@@ -9,6 +12,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -107,6 +111,56 @@ public class AdvertisementRepositoryCustom {
             .from(ad)
             .where(idEq(advertisementId))
             .fetchOne());
+    }
+
+    public Long countMediaByPeriod(AdMedia media, String period) {
+        BooleanExpression expression;
+        if(StringUtils.hasText(period)) {
+            expression = getByPeriod(period);
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        return queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression.and(ad.adMedia.name.eq(media.getName())))
+            .fetchOne();
+    }
+
+    public Long countCategoryByPeriod(AdCategory category, String period) {
+        BooleanExpression expression;
+        if(StringUtils.hasText(period)) {
+            expression = getByPeriod(period);
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        return queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression.and(ad.adCategory.category.eq(category.getCategory())))
+            .fetchOne();
+    }
+
+    // 지정한 차수에 포함되는 광고
+    private BooleanExpression getByPeriod(String period) {
+        String[] parts = period.split("-");
+        int year = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int term = Integer.parseInt(parts[2]);
+
+        LocalDate startDate, endDate;
+        if (term == 1) {
+            startDate = LocalDate.of(year, month, 1);
+            endDate = LocalDate.of(year, month, 15);
+        } else {
+            startDate = LocalDate.of(year, month, 16);
+            endDate = LocalDate.of(year, month, LocalDate.of(year, month, 1).lengthOfMonth());
+        }
+        DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
+        return kstAssignDateTime.between(startDate, endDate);
     }
 
     private BooleanExpression idEq(String id){ return ad.id.eq(id); }

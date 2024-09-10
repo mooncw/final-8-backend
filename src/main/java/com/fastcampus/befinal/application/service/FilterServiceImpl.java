@@ -15,12 +15,12 @@ public class FilterServiceImpl implements FilterService {
     private final FilterReader filterReader;
 
     @Override
-    public List<FilterInfo.FilterOptionInfo> searchMediaOptions(String keyword) {
-        return filterReader.findMediaList(keyword);
+    public List<FilterInfo.FilterOptionInfo> searchMediaOptions(String keyword, String period) {
+        return filterReader.findMediaList(keyword, period);
     }
 
     @Override
-    public List<FilterInfo.FilterOptionInfo> searchCategoryOptions(String keyword) {
-        return filterReader.findCategoryList(keyword);
+    public List<FilterInfo.FilterOptionInfo> searchCategoryOptions(String keyword, String period) {
+        return filterReader.findCategoryList(keyword, period);
     }
 }

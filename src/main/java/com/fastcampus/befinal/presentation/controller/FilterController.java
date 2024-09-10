@@ -50,9 +50,10 @@ public class FilterController {
         )
     )
     public ResponseEntity<AppApiResponse<List<FilterDto.FilterOptionResponse>>> searchMediaOptions(
-        @RequestParam(required = false) String keyword
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String period
     ) {
-        List<FilterDto.FilterOptionResponse> response = filterFacade.searchMediaOptions(keyword);
+        List<FilterDto.FilterOptionResponse> response = filterFacade.searchMediaOptions(keyword, period);
         return ResponseEntityFactory.toResponseEntity(FilterSuccessCode.FILTER_MEDIA_LIST, response);
     }
 
@@ -80,9 +81,10 @@ public class FilterController {
         )
     )
     public ResponseEntity<AppApiResponse<List<FilterDto.FilterOptionResponse>>> searchCategoryOptions(
-        @RequestParam(required = false) String keyword
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String period
     ) {
-        List<FilterDto.FilterOptionResponse> response = filterFacade.searchCategoryOptions(keyword);
+        List<FilterDto.FilterOptionResponse> response = filterFacade.searchCategoryOptions(keyword, period);
         return ResponseEntityFactory.toResponseEntity(FilterSuccessCode.FILTER_CATEGORY_LIST, response);
     }
 }

@@ -6,6 +6,6 @@ public class FilterDto {
     @Builder
     public record FilterOptionResponse(
         String name,
-        int adCount
+        Long adCount
     ) {}
 }

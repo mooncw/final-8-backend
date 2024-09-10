@@ -5,6 +5,6 @@ import com.fastcampus.befinal.domain.info.FilterInfo;
 import java.util.List;
 
 public interface FilterService {
-    List<FilterInfo.FilterOptionInfo> searchMediaOptions(String keyword);
-    List<FilterInfo.FilterOptionInfo> searchCategoryOptions(String keyword);
+    List<FilterInfo.FilterOptionInfo> searchMediaOptions(String keyword, String period);
+    List<FilterInfo.FilterOptionInfo> searchCategoryOptions(String keyword, String period);
 }
