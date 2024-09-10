@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.domain.command.FilterCommand;
 import com.fastcampus.befinal.domain.dataprovider.FilterReader;
 import com.fastcampus.befinal.domain.info.FilterInfo;
 import com.fastcampus.befinal.domain.service.FilterService;
@@ -15,12 +16,12 @@ public class FilterServiceImpl implements FilterService {
     private final FilterReader filterReader;
 
     @Override
-    public List<FilterInfo.FilterOptionInfo> searchMediaOptions(String keyword, String period) {
-        return filterReader.findMediaList(keyword, period);
+    public List<FilterInfo.FilterOptionInfo> searchMediaOptions(FilterCommand.ConditionCommand command) {
+        return filterReader.findMediaList(command);
     }
 
     @Override
-    public List<FilterInfo.FilterOptionInfo> searchCategoryOptions(String keyword, String period) {
-        return filterReader.findCategoryList(keyword, period);
+    public List<FilterInfo.FilterOptionInfo> searchCategoryOptions(FilterCommand.ConditionCommand command) {
+        return filterReader.findCategoryList(command);
     }
 }

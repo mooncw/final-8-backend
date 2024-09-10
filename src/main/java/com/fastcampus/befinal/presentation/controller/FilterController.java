@@ -10,12 +10,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class FilterController {
     private final FilterFacade filterFacade;
 
     @GetMapping("/media")
-    @Operation(summary = "필터 매체명 리스트 조회")
+    @Operation(summary = "필터 매체명 리스트 조회 - Param default 값은 null")
     @ApiResponse(responseCode = "200", description = "필터 매체명 리스트 조회되었습니다.",
         content = @Content(
             mediaType = "application/json",
@@ -50,15 +48,15 @@ public class FilterController {
         )
     )
     public ResponseEntity<AppApiResponse<List<FilterDto.FilterOptionResponse>>> searchMediaOptions(
-        @RequestParam(required = false) String keyword,
-        @RequestParam(required = false) String period
+        @Valid
+        @ModelAttribute FilterDto.ConditionRequest request
     ) {
-        List<FilterDto.FilterOptionResponse> response = filterFacade.searchMediaOptions(keyword, period);
+        List<FilterDto.FilterOptionResponse> response = filterFacade.searchMediaOptions(request);
         return ResponseEntityFactory.toResponseEntity(FilterSuccessCode.FILTER_MEDIA_LIST, response);
     }
 
     @GetMapping("/category")
-    @Operation(summary = "필터 업종명 리스트 조회")
+    @Operation(summary = "필터 업종명 리스트 조회 - Param default 값은 null")
     @ApiResponse(responseCode = "200", description = "필터 업종명 리스트 조회되었습니다.",
         content = @Content(
             mediaType = "application/json",
@@ -81,10 +79,10 @@ public class FilterController {
         )
     )
     public ResponseEntity<AppApiResponse<List<FilterDto.FilterOptionResponse>>> searchCategoryOptions(
-        @RequestParam(required = false) String keyword,
-        @RequestParam(required = false) String period
+        @Valid
+        @ModelAttribute FilterDto.ConditionRequest request
     ) {
-        List<FilterDto.FilterOptionResponse> response = filterFacade.searchCategoryOptions(keyword, period);
+        List<FilterDto.FilterOptionResponse> response = filterFacade.searchCategoryOptions(request);
         return ResponseEntityFactory.toResponseEntity(FilterSuccessCode.FILTER_CATEGORY_LIST, response);
     }
 }

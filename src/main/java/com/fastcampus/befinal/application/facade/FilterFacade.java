@@ -15,13 +15,13 @@ public class FilterFacade {
     private final FilterService filterService;
     private final FilterDtoMapper filterDtoMapper;
 
-    public List<FilterDto.FilterOptionResponse> searchMediaOptions(String keyword, String period) {
-        List<FilterInfo.FilterOptionInfo> filterInfo = filterService.searchMediaOptions(keyword, period);
+    public List<FilterDto.FilterOptionResponse> searchMediaOptions(FilterDto.ConditionRequest request) {
+        List<FilterInfo.FilterOptionInfo> filterInfo = filterService.searchMediaOptions(filterDtoMapper.toFilterCommand(request));
         return filterDtoMapper.from(filterInfo);
     }
 
-    public List<FilterDto.FilterOptionResponse> searchCategoryOptions(String keyword, String period) {
-        List<FilterInfo.FilterOptionInfo> filterInfo = filterService.searchCategoryOptions(keyword, period);
+    public List<FilterDto.FilterOptionResponse> searchCategoryOptions(FilterDto.ConditionRequest request) {
+        List<FilterInfo.FilterOptionInfo> filterInfo = filterService.searchCategoryOptions(filterDtoMapper.toFilterCommand(request));
         return filterDtoMapper.from(filterInfo);
     }
 }
