@@ -24,4 +24,10 @@ public class SwaggerConstant {
     public static final String SWAGGER_INTEGER_CURSOR_ID = "1";
     public static final String SWAGGER_USER_TASK_SORTED = "EmpNo";
     public static final String SWAGGER_PERIOD = "2024-09-1";
+    public static final String SWAGGER_KEYWORD = "키워드";
+    public static final String SWAGGER_ISSUE = "true";
+    public static final String SWAGGER_STATE = "true";
+    public static final String SWAGGER_MEDIA = "[\"동아일보\"]";
+    public static final String SWAGGER_CATEGORY = "[\"가정용품\"]";
+    public static final String SWAGGER_AD_ID = "A00001";
 }
