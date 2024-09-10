@@ -213,26 +213,6 @@ public class AdvertisementRepositoryCustom {
             .fetchOne();
     }
 
-    // 지정한 차수에 포함되는 광고
-    private BooleanExpression getByPeriod(String period) {
-        String[] parts = period.split("-");
-        int year = Integer.parseInt(parts[0]);
-        int month = Integer.parseInt(parts[1]);
-        int term = Integer.parseInt(parts[2]);
-
-        LocalDate startDate, endDate;
-        if (term == 1) {
-            startDate = LocalDate.of(year, month, 1);
-            endDate = LocalDate.of(year, month, 15);
-        } else {
-            startDate = LocalDate.of(year, month, 16);
-            endDate = LocalDate.of(year, month, LocalDate.of(year, month, 1).lengthOfMonth());
-        }
-        DateTimeExpression<LocalDate> kstAssignDateTime = Expressions.dateTimeTemplate(LocalDate.class,
-            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.assignDateTime);
-        return kstAssignDateTime.between(startDate, endDate);
-    }
-
     // ScrollPagination 다음 페이지 조건 생성
     private BooleanExpression createCursorCondition(TaskCommand.CursorInfo cursorInfo) {
         // 첫 페이지인 경우(조건 없음)
