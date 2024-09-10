@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @PostMapping("/my-task")
-    @Operation(summary = "사용자 나의 작업 조회")
+    @Operation(summary = "사용자 나의 작업 조회 - Param default 값은 null")
     @ApiResponse(responseCode = "200", description = "나의 작업 조회가 가능합니다.",
         content = @Content(
             mediaType = "application/json",
@@ -122,12 +122,12 @@ public class UserController {
     public ResponseEntity<AppApiResponse<TaskDto.TaskResponse>> checkMyTask(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
-        TaskDto.FilterConditionRequest request,
+        TaskDto.FilterConditionRequest request
 
-        @AuthenticationPrincipal UserDetailsInfo user
+        //@AuthenticationPrincipal UserDetailsInfo user
     ) {
-        String userId = user.getUsername();
-        TaskDto.TaskResponse response = taskFacade.loadFilterMyTask(userId, request);
+        //String userId = user.getUsername();
+        TaskDto.TaskResponse response = taskFacade.loadFilterMyTask("1", request);
         return ResponseEntityFactory.toResponseEntity(MyTaskSuccessCode.CHECK_MY_TASK_SUCCESS, response);
     }
 }

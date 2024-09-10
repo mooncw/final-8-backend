@@ -1,9 +1,10 @@
 package com.fastcampus.befinal.presentation.dto;
 
-import com.fastcampus.befinal.common.annotation.ValidPeriod;
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class TaskDto {
         String keyword,
 
         @Schema(example = SWAGGER_PERIOD)
-        @ValidPeriod(groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "^\\d{4}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD, groups = RequestValidationGroups.PatternGroup.class)
         String period,
 
         @Schema(example = SWAGGER_STATE)
@@ -33,19 +34,21 @@ public class TaskDto {
         Boolean issue,
 
         @Schema(example = SWAGGER_MEDIA)
-        List<@Pattern(regexp = "^[가-힣/]+$", message = PATTERN_MISMATCH_MEDIA, groups = RequestValidationGroups.PatternGroup.class) String> media,
+        List<String> media,
 
         @Schema(example = SWAGGER_CATEGORY)
-        List<@Pattern(regexp = "^[가-힣/]+$", message = PATTERN_MISMATCH_CATEGORY, groups = RequestValidationGroups.PatternGroup.class)String> category
+        List<String> category
     ) {}
 
     @Builder
     @Schema(description = "Cursor 조건 request")
     public record CursorInfo(
         @Schema(example = SWAGGER_STATE)
+        @NotNull(message = NOT_NULL_CURSOR_STATE, groups = RequestValidationGroups.NotNullGroup.class)
         Boolean cursorState,
 
         @Schema(example = SWAGGER_AD_ID)
+        @NotBlank(message = NOT_BLANK_CURSOR_AD_ID, groups = RequestValidationGroups.NotBlankGroup.class)
         @Pattern(regexp = "^[A-Z]\\d{5}$", message = PATTERN_MISMATCH_AD_ID, groups = RequestValidationGroups.PatternGroup.class)
         String cursorId
     ) {}
