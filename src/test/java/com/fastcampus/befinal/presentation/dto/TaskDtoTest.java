@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.fastcampus.befinal.common.contant.AuthConstant.*;
+import static com.fastcampus.befinal.common.contant.AuthConstant.NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN;
 import static com.fastcampus.befinal.common.contant.TaskConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +20,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TaskDtoTest {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
+
+    @Test
+    @DisplayName("나의 작업 리스트 조건 검증 테스트 - NotBlank, NotNull")
+    void whenSignUpRequestIsBlank_thenValidationFails() {
+        //given
+        TaskDto.FilterConditionRequest request = TaskDto.FilterConditionRequest.builder()
+            .cursorInfo(TaskDto.CursorInfo.builder()
+                .cursorId(" ")
+                .build())
+            .build();
+
+        //when
+        Set<ConstraintViolation<TaskDto.FilterConditionRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class, RequestValidationGroups.NotNullGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_NULL_CURSOR_STATE, NOT_BLANK_CURSOR_AD_ID));
+    }
 
     @Test
     @DisplayName("나의 작업 리스트 조건 검증 테스트 - Size")
@@ -41,8 +62,6 @@ public class TaskDtoTest {
         // given
         TaskDto.FilterConditionRequest request = TaskDto.FilterConditionRequest.builder()
             .period("2024-13-3")
-            .media(List.of("Donga", "동아"))
-            .category(List.of("Food", "음식"))
             .cursorInfo(TaskDto.CursorInfo.builder()
                 .cursorId("Aaaaaa").build())
             .build();
@@ -53,8 +72,7 @@ public class TaskDtoTest {
         Set<String> messages = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
 
         // then
-        assertThat(messages).isEqualTo(Set.of(PATTERN_MISMATCH_PERIOD, PATTERN_MISMATCH_MEDIA,
-            PATTERN_MISMATCH_CATEGORY, PATTERN_MISMATCH_AD_ID));
+        assertThat(messages).isEqualTo(Set.of(PATTERN_MISMATCH_PERIOD, PATTERN_MISMATCH_AD_ID));
 
     }
 }
