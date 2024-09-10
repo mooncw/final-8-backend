@@ -100,11 +100,19 @@ public class AdvertisementRepositoryCustom {
                 ad.advertiser,
                 ad.adCategory.category,
                 ad.postDateTime,
-                ad.assignee.name,
-                ad.modifier.name,
+                new CaseBuilder()
+                    .when(ad.assignee.isNotNull())
+                    .then(ad.assignee.name)
+                    .otherwise(""),
+                new CaseBuilder()
+                    .when(ad.modifier.isNotNull())
+                    .then(ad.modifier.name)
+                    .otherwise(""),
                 ad.adContent.content
                 ))
             .from(ad)
+            .leftJoin(ad.modifier)
+            .leftJoin(ad.assignee)
             .where(idEq(advertisementId))
             .fetchOne());
     }
