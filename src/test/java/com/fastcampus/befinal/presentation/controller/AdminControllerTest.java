@@ -215,4 +215,28 @@ public class AdminControllerTest {
             .andExpect(jsonPath("code").value(DELETE_USER_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(DELETE_USER_SUCCESS.getMessage()));
     }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("작업자 관리 정보 조회 성공시, 200 OK와 정상 응답을 반환")
+    void findUserTaskListTest() throws Exception {
+        //given
+        AdminDto.FindUserTaskListRequest request = AdminDto.FindUserTaskListRequest.builder()
+            .cursorId(1)
+            .sorted("EmpNo")
+            .period("2024-9-1")
+            .build();
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/admin/manage-emp")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(FIND_USER_TASK_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(FIND_USER_TASK_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(FIND_USER_TASK_LIST_SUCCESS.getMessage()));
+    }
 }

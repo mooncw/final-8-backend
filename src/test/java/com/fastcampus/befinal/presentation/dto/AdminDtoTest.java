@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.fastcampus.befinal.common.contant.AdminConstant.*;
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -154,5 +155,75 @@ public class AdminDtoTest {
 
         //then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_EMP_NUMBER));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 정보 조회 요청 검증 테스트 - NotNull")
+    void whenFindUserTaskListRequestIsNull_thenValidationFails() {
+        //given
+        AdminDto.FindUserTaskListRequest request = AdminDto.FindUserTaskListRequest.builder()
+            .cursorId(null)
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.FindUserTaskListRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotNullGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_NULL_CURSOR_ID));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 정보 조회 요청 검증 테스트 - NotBlank")
+    void whenFindUserTaskListRequestIsBlank_thenValidationFails() {
+        //given
+        AdminDto.FindUserTaskListRequest request = AdminDto.FindUserTaskListRequest.builder()
+            .sorted(" ")
+            .period(" ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.FindUserTaskListRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_USER_TASK_SORTED, NOT_BLANK_PERIOD));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 정보 조회 요청 검증 테스트 - Min")
+    void whenFindUserTaskListRequestMismatchSize_thenValidationFails() {
+        //given
+        AdminDto.FindUserTaskListRequest request = AdminDto.FindUserTaskListRequest.builder()
+            .cursorId(0)
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.FindUserTaskListRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_INTEGER_CURSOR_ID));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 정보 조회 요청 검증 테스트 - Pattern")
+    void whenFindUserTaskListRequestMismatchPattern_thenValidationFails() {
+        //given
+        AdminDto.FindUserTaskListRequest request = AdminDto.FindUserTaskListRequest.builder()
+            .sorted("EEEE")
+            .period("0999-01-1")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.FindUserTaskListRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_SORTED, PATTERN_MISMATCH_PERIOD));
     }
 }

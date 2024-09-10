@@ -66,4 +66,9 @@ public class AdminServiceImpl implements AdminService {
 
         userSummaryStore.update(userSummary);
     }
+
+    @Override
+    public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findUserTaskScroll(AdminCommand.FindUserTaskListRequest command) {
+        return userReader.findScroll(command);
+    }
 }

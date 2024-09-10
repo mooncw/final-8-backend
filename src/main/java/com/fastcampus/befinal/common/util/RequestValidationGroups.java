@@ -10,4 +10,6 @@ public class RequestValidationGroups {
     public interface NotEmptyGroup {}
 
     public interface CustomValidateGroup {}
+
+    public interface NotNullGroup {}
 }
