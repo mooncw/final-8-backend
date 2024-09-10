@@ -5,7 +5,7 @@ import lombok.Builder;
 public class FilterDto {
     @Builder
     public record FilterOptionResponse(
-            String name,
-            int adCount
+        String name,
+        int adCount
     ) {}
 }
