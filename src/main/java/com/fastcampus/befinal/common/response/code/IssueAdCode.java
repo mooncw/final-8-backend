@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 public enum IssueAdCode implements Code{
     //success
     GET_ADVERTISEMENT_DETAIL_SUCCESS(3400),
+    SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS(3401),
     //error
     NOT_FOUND_ADVERTISEMENT_ID(3450);
 

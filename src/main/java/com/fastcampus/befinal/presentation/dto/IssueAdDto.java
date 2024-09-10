@@ -9,6 +9,15 @@ import java.util.List;
 
 public class IssueAdDto {
     @Builder
+    public record IssueAdReviewRequest(
+        String operationType,
+        String reviewId,
+        String provisionArticle,
+        String sentence,
+        String opinion
+    ){}
+
+    @Builder
     public record IssueAdDetailResponse(
         String id,
         String product,

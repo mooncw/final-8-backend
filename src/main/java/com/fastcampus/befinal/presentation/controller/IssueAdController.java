@@ -12,12 +12,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.GET_ADVERTISEMENT_DETAIL_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/issue-ad")
@@ -62,5 +62,14 @@ public class IssueAdController {
     ){
         IssueAdDto.IssueAdDetailResponse response = issueAdFacade.findIssueAdDetail(advertisementId);
         return ResponseEntityFactory.toResponseEntity(GET_ADVERTISEMENT_DETAIL_SUCCESS, response);
+    }
+
+    @PostMapping("/save-task")
+    public ResponseEntity<AppApiResponse> saveIssueAdReview(
+        @RequestBody
+        List<IssueAdDto.IssueAdReviewRequest> request
+    ){
+
+        return ResponseEntityFactory.toResponseEntity(SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS);
     }
 }

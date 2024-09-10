@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum IssueAdSuccessCode implements SuccessCode{
-    GET_ADVERTISEMENT_DETAIL_SUCCESS(HttpStatus.OK, IssueAdCode.GET_ADVERTISEMENT_DETAIL_SUCCESS, "지적 광고 상세 정보가 조회되었습니다.");
+    GET_ADVERTISEMENT_DETAIL_SUCCESS(HttpStatus.OK, IssueAdCode.GET_ADVERTISEMENT_DETAIL_SUCCESS, "지적 광고 상세 정보가 조회되었습니다."),
+    SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS(HttpStatus.OK, IssueAdCode.SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS,"지적광고에 대한 검토작업이 저장되었습니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;
