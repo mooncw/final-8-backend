@@ -4,12 +4,13 @@ import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 import java.util.List;
+
+import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 import static com.fastcampus.befinal.common.contant.TaskConstant.*;
 
 public class TaskDto {
@@ -24,7 +25,7 @@ public class TaskDto {
         String keyword,
 
         @Schema(example = SWAGGER_PERIOD)
-        @Pattern(regexp = "^\\d{4}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD, groups = RequestValidationGroups.PatternGroup.class)
         String period,
 
         @Schema(example = SWAGGER_STATE)

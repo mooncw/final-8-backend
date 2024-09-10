@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.type.UserTaskSortType;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.dataprovider.*;
@@ -225,5 +226,41 @@ public class AdminServiceImplTest {
         verify(userStore, times(1)).delete(any(User.class));
         verify(userSummaryReader, times(1)).findById(anyLong());
         verify(userSummaryStore, times(1)).update(any(UserSummary.class));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 정보 조회 성공 테스트")
+    void findUserTaskScrollTest() {
+        //given
+        AdminCommand.FindUserTaskListRequest command = AdminCommand.FindUserTaskListRequest.builder()
+            .cursorId(1)
+            .sorted(UserTaskSortType.EMP_NUMBER)
+            .period("2024-9-1")
+            .build();
+
+        AdminInfo.UserTaskInfo info = AdminInfo.UserTaskInfo.builder()
+            .id(1L)
+            .empNumber("11111111")
+            .name("hong")
+            .totalAd(300)
+            .notDoneAd(75)
+            .doneAd(225)
+            .doneRatio(0.75)
+            .build();
+
+        ScrollPagination<Integer, AdminInfo.UserTaskInfo> doReturnScroll =
+            ScrollPagination.of(4L, command.cursorId(), List.of(info));
+
+        doReturn(doReturnScroll)
+            .when(userReader)
+            .findScroll(any(AdminCommand.FindUserTaskListRequest.class));
+
+        //when
+        ScrollPagination<Integer, AdminInfo.UserTaskInfo> scroll = adminService.findUserTaskScroll(command);
+
+        //then
+        assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
+        assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
+        assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
     }
 }

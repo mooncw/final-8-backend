@@ -14,4 +14,6 @@ public interface AdminService {
     ScrollPagination<Long, AdminInfo.UserInfo> findUserScroll(Long cursorId);
 
     void deleteUser(Long userId);
+
+    ScrollPagination<Integer, AdminInfo.UserTaskInfo> findUserTaskScroll(AdminCommand.FindUserTaskListRequest command);
 }
