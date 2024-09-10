@@ -239,4 +239,21 @@ public class AdminControllerTest {
             .andExpect(jsonPath("code").value(FIND_USER_TASK_LIST_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(FIND_USER_TASK_LIST_SUCCESS.getMessage()));
     }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("작업 배분 광고 목록 조회 성공시, 200 OK와 정상 응답을 반환")
+    void findUnassignedAdListTest() throws Exception {
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/admin/manage-task/advertisement")
+            .param("cursorId", "202409A00001")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8));
+
+        //then
+        perform.andExpect(status().is(FIND_UNASSIGNED_AD_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(FIND_UNASSIGNED_AD_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(FIND_UNASSIGNED_AD_LIST_SUCCESS.getMessage()));
+    }
 }
