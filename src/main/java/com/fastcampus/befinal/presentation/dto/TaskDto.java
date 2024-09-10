@@ -24,7 +24,7 @@ public class TaskDto {
         String keyword,
 
         @Schema(example = SWAGGER_PERIOD)
-        @Pattern(regexp = "^\\d{4}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD, groups = RequestValidationGroups.PatternGroup.class)
         String period,
 
         @Schema(example = SWAGGER_STATE)
