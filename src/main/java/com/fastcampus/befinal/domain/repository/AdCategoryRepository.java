@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AdCategoryRepository extends JpaRepository<AdCategory, Integer> {
-    List<AdCategory> findByCategoryContaining(String keyword);
+    List<AdCategory> findAllByOrderByCategoryAsc();
+    List<AdCategory> findByCategoryContainingOrderByCategoryAsc(String keyword);
 }

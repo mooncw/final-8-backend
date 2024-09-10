@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AdMediaRepository extends JpaRepository<AdMedia, Integer> {
-    List<AdMedia> findByNameContaining(String keyword);
+    List<AdMedia> findAllByOrderByNameAsc();
+    List<AdMedia> findByNameContainingOrderByNameAsc(String keyword);
 }
