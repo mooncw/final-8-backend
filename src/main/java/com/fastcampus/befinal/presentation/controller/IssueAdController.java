@@ -76,12 +76,14 @@ public class IssueAdController {
     }
 
     @GetMapping("/options/provision")
-    public ResponseEntity<AppApiResponse> findProvisionList(){
-        return ResponseEntityFactory.toResponseEntity(GET_PROVISION_LIST_SUCCESS);
+    public ResponseEntity<AppApiResponse<List<IssueAdDto.IssueAdProvisionResponse>>> findProvisionList(){
+        List<IssueAdDto.IssueAdProvisionResponse> responses = issueAdFacade.findProvisionList();
+        return ResponseEntityFactory.toResponseEntity(GET_PROVISION_LIST_SUCCESS, responses);
     }
 
     @GetMapping("/options/decision")
-    public ResponseEntity<AppApiResponse> findDecisionList(){
-        return ResponseEntityFactory.toResponseEntity(GET_DECISION_LIST_SUCCESS);
+    public ResponseEntity<AppApiResponse<List<IssueAdDto.IssueAdDecisionResponse>>> findDecisionList(){
+        List<IssueAdDto.IssueAdDecisionResponse> responses = issueAdFacade.findDecisionList();
+        return ResponseEntityFactory.toResponseEntity(GET_DECISION_LIST_SUCCESS, responses);
     }
 }
