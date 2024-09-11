@@ -71,4 +71,9 @@ public class AdminServiceImpl implements AdminService {
     public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findUserTaskScroll(AdminCommand.FindUserTaskListRequest command) {
         return userReader.findScroll(command);
     }
+
+    @Override
+    public AdminInfo.AssigneeListInfo findAssigneeList() {
+        return userReader.findAllAssignee();
+    }
 }
