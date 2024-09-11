@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.dataprovider.*;
+import com.fastcampus.befinal.domain.entity.AdDecision;
 import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
@@ -60,7 +61,8 @@ public class IssueAdServiceImpl implements IssueAdService {
     @Transactional
     public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command){
         Advertisement advertisement = advertisementReader.findAdvertisementById(command.advertisementId());
-        IssueAdInfo.IssueAdDecisionSaveInfo info = IssueAdInfo.IssueAdDecisionSaveInfo.of(advertisement, command.decisionId());
+        AdDecision adDecision = adDecisionReader.findAdDecisionById(command.decisionId());
+        IssueAdInfo.IssueAdDecisionSaveInfo info = IssueAdInfo.IssueAdDecisionSaveInfo.of(advertisement, adDecision);
         advertisementStore.saveIssueAdDecision(info);
     }
 

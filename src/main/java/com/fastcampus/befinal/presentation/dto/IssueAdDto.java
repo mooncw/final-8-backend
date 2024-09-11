@@ -13,7 +13,7 @@ import static com.fastcampus.befinal.common.contant.IssueAdConstant.*;
 
 public class IssueAdDto {
     @Builder
-    @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE,groups = RequestValidationGroups.CustomValidateGroup.class)
+    @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE, groups = RequestValidationGroups.CustomValidateGroup.class)
     public record IssueAdReviewRequest(
         @NotBlank(groups = RequestValidationGroups.NotBlankGroup.class)
         @Pattern(regexp = "Create|Update|Delete", message = INVALID_OPERATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)

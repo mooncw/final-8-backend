@@ -13,7 +13,9 @@ public enum IssueAdErrorCode implements ErrorCode {
     NOT_FOUND_ISSUE_REVIEW_ID(HttpStatus.BAD_REQUEST, IssueAdCode.NOT_FOUND_ISSUE_REVIEW_ID,
         "지적광고 검토 아이디를 찾을 수 없습니다"),
     NOT_FOUND_PROVISION_ID(HttpStatus.BAD_REQUEST, IssueAdCode.NOT_FOUND_PROVISION_ID,
-        "조항 아이디를 찾을 수 없습니다.");
+        "조항 아이디를 찾을 수 없습니다."),
+    NOT_FOUND_DECISION_ID(HttpStatus.BAD_REQUEST, IssueAdCode.NOT_FOUND_DECISION_ID,
+        "심의결정 아이디를 찾을 수 없습니다.");
 
 
     private final HttpStatus httpStatus;

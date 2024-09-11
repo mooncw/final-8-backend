@@ -13,7 +13,8 @@ public enum IssueAdCode implements Code{
     //error
     NOT_FOUND_ADVERTISEMENT_ID(3450),
     NOT_FOUND_ISSUE_REVIEW_ID(3451),
-    NOT_FOUND_PROVISION_ID(3452);
+    NOT_FOUND_PROVISION_ID(3452),
+    NOT_FOUND_DECISION_ID(3453);
 
     private final Integer code;
 

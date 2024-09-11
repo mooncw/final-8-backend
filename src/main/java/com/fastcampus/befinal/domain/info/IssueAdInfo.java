@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.domain.info;
 
+import com.fastcampus.befinal.domain.dataprovider.AdDecisionReader;
 import com.fastcampus.befinal.domain.entity.AdDecision;
 import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.Advertisement;
@@ -92,12 +93,12 @@ public class IssueAdInfo {
     @Builder
     public record IssueAdDecisionSaveInfo(
         Advertisement advertisement,
-        Long decisionId
+        AdDecision adDecision
     ){
-        public static IssueAdDecisionSaveInfo of(Advertisement advertisement, Long decisionId){
+        public static IssueAdDecisionSaveInfo of(Advertisement advertisement, AdDecision adDecision){
             return IssueAdDecisionSaveInfo.builder()
                 .advertisement(advertisement)
-                .decisionId(decisionId)
+                .adDecision(adDecision)
                 .build();
         }
     }

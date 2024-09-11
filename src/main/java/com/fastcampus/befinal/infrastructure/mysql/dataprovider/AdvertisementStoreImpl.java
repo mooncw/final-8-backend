@@ -13,8 +13,7 @@ public class AdvertisementStoreImpl implements AdvertisementStore {
     private final EntityManager entityManager;
 
     public void saveIssueAdDecision(IssueAdInfo.IssueAdDecisionSaveInfo info){
-        AdDecision decision = entityManager.getReference(AdDecision.class,info.decisionId());
-        info.advertisement().updateAdDecision(decision);
+        info.advertisement().updateAdDecision(info.adDecision());
         info.advertisement().updateState(true);
     }
 }
