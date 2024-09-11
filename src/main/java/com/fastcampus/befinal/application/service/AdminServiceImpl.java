@@ -68,11 +68,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findUserTaskScroll(AdminCommand.FindUserTaskListRequest command) {
         return userReader.findScroll(command);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AdminInfo.AssigneeListInfo findAssigneeList() {
         return userReader.findAllAssignee();
     }
