@@ -11,4 +11,6 @@ public interface AuthService {
     AuthInfo.CheckIdTokenInfo checkIdDuplication(AuthCommand.CheckIdDuplicationRequest command);
 
     AuthInfo.CheckCertificationNumberTokenInfo checkCertificationNumber(AuthCommand.CheckCertificationNumberRequest command);
+
+    AuthInfo.FindIdInfo findId(AuthCommand.FindIdRequest command);
 }
