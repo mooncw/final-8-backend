@@ -43,4 +43,8 @@ public class AdminFacade {
     public AdminDto.FindUnassignedAdListResponse findUnassignedAdScroll(String cursorId) {
         return adminDtoMapper.fromUnassignedAdScroll(adminService.findUnassignedAdScroll(cursorId));
     }
+
+    public void assignTask(AdminDto.AssignTaskRequest request) {
+        adminService.assignTask(adminDtoMapper.toAdminCommand(request));
+    }
 }

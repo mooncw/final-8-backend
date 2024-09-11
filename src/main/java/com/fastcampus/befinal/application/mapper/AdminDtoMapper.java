@@ -52,6 +52,8 @@ public interface AdminDtoMapper {
         }
     }
 
+    AdminCommand.AssignTaskRequest toAdminCommand(AdminDto.AssignTaskRequest request);
+
     AdminDto.FindSignUpUserListResponse fromSignUpUserScroll(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
 
     @Mapping(source = "id", target = "cursorId")
