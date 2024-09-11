@@ -6,6 +6,7 @@ import com.fastcampus.befinal.domain.info.FilterInfo;
 import com.fastcampus.befinal.domain.service.FilterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,11 +17,13 @@ public class FilterServiceImpl implements FilterService {
     private final FilterReader filterReader;
 
     @Override
+    @Transactional(readOnly = true)
     public List<FilterInfo.FilterOptionInfo> searchMediaOptions(FilterCommand.ConditionCommand command) {
         return filterReader.findMediaList(command);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FilterInfo.FilterOptionInfo> searchCategoryOptions(FilterCommand.ConditionCommand command) {
         return filterReader.findCategoryList(command);
     }
