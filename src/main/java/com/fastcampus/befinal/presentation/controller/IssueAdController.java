@@ -86,4 +86,14 @@ public class IssueAdController {
         List<IssueAdDto.IssueAdDecisionResponse> responses = issueAdFacade.findDecisionList();
         return ResponseEntityFactory.toResponseEntity(GET_DECISION_LIST_SUCCESS, responses);
     }
+
+    @PostMapping("/result/decision")
+    public ResponseEntity<AppApiResponse> saveIssueAdDecision(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        IssueAdDto.IssueAdResultDecisionRequest request
+    ){
+        issueAdFacade.saveIssueAdResultDecision(request);
+        return ResponseEntityFactory.toResponseEntity(SAVE_ISSUE_ADVERTISEMENT_DECISION_SUCCESS);
+    }
 }

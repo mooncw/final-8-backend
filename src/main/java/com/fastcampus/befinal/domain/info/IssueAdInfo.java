@@ -104,6 +104,19 @@ public class IssueAdInfo {
     }
 
     @Builder
+    public record IssueAdDecisionSaveInfo(
+        Advertisement advertisement,
+        Long decisionId
+    ){
+        public static IssueAdDecisionSaveInfo of(Advertisement advertisement, Long decisionId){
+            return IssueAdDecisionSaveInfo.builder()
+                .advertisement(advertisement)
+                .decisionId(decisionId)
+                .build();
+        }
+    }
+
+    @Builder
     public record IssueAdProvisionInfo(
         Integer id,
         Integer article,

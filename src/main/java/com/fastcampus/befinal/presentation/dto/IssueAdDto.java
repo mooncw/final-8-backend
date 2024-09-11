@@ -3,8 +3,7 @@ package com.fastcampus.befinal.presentation.dto;
 import com.fastcampus.befinal.common.annotation.ValidAdReviewType;
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -22,6 +21,15 @@ public class IssueAdDto {
         Integer provisionId,
         String sentence,
         String opinion
+    ){}
+
+    @Builder
+    public record IssueAdResultDecisionRequest(
+        @NotBlank(groups = RequestValidationGroups.NotBlankGroup.class)
+        String advertisementId,
+        @Min(value = 1, groups = RequestValidationGroups.SizeGroup.class)
+        @Max(value = 7, groups = RequestValidationGroups.SizeGroup.class)
+        Long decisionId
     ){}
 
     @Builder

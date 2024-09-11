@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.dataprovider.*;
+import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.service.IssueAdService;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IssueAdServiceImpl implements IssueAdService {
     private final AdvertisementReader advertisementReader;
+    private final AdvertisementStore advertisementStore;
     private final AdReviewReader adReviewReader;
     private final AdReviewStore adReviewStore;
     private final AdProvisionReader adProvisionReader;
@@ -49,6 +51,13 @@ public class IssueAdServiceImpl implements IssueAdService {
                     break;
             }
         }
+    }
+
+    @Transactional
+    public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command){
+        Advertisement advertisement = advertisementReader.findAdvertisementById(command.advertisementId());
+        IssueAdInfo.IssueAdDecisionSaveInfo info = IssueAdInfo.IssueAdDecisionSaveInfo.of(advertisement, command.decisionId());
+        advertisementStore.saveIssueAdDecision(info);
     }
 
     @Override

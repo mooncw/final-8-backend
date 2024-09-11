@@ -10,4 +10,5 @@ public interface IssueAdService {
     void saveIssueAdReviews(List<IssueAdDto.IssueAdReviewRequest> request);
     List<IssueAdInfo.IssueAdProvisionInfo> findProvisionList();
     List<IssueAdInfo.IssueAdDecisionInfo> findDecisionList();
+    void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command);
 }

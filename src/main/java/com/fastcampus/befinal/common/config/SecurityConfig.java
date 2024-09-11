@@ -72,6 +72,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/result/**").authenticated()
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/options/**").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad/save-task").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad/result/decision").authenticated()
             // health-check
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
             // monitoring

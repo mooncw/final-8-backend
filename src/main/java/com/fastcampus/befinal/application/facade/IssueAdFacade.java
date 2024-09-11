@@ -33,4 +33,8 @@ public class IssueAdFacade {
         List<IssueAdInfo.IssueAdDecisionInfo> infoList = issueAdService.findDecisionList();
         return issueAdDtoMapper.fromDecision(infoList);
     }
+
+    public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest request){
+        issueAdService.saveIssueAdResultDecision(request);
+    }
 }
