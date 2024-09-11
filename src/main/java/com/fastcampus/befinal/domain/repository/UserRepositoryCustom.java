@@ -175,4 +175,16 @@ public class UserRepositoryCustom {
             default -> throw new BusinessException(INVALID_USER_TASK_SORT_TYPE);
         }
     }
+
+    public List<AdminInfo.AssigneeInfo> findAllAssignee() {
+        return queryFactory
+            .select(Projections.constructor(AdminInfo.AssigneeInfo.class,
+                user.id,
+                user.empNumber,
+                user.name,
+                user.additionalTaskCount
+                ))
+            .from(user)
+            .fetch();
+    }
 }

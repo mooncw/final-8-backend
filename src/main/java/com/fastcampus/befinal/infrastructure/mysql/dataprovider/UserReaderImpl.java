@@ -9,6 +9,7 @@ import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.repository.UserRepository;
 import com.fastcampus.befinal.domain.repository.UserRepositoryCustom;
+import com.fastcampus.befinal.infrastructure.mysql.mapper.MysqlEntityMapper;
 import lombok.RequiredArgsConstructor;
 
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NOT_FOUND_USER;
@@ -18,6 +19,7 @@ import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NO
 public class UserReaderImpl implements UserReader {
     private final UserRepository userRepository;
     private final UserRepositoryCustom userRepositoryCustom;
+    private final MysqlEntityMapper mysqlEntityMapper;
 
     @Override
     public User findUser(String userId) {
@@ -39,5 +41,10 @@ public class UserReaderImpl implements UserReader {
     @Override
     public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findScroll(AdminCommand.FindUserTaskListRequest request) {
         return userRepositoryCustom.findScrollOrderByRequest(request);
+    }
+
+    @Override
+    public AdminInfo.AssigneeListInfo findAllAssignee() {
+        return mysqlEntityMapper.from(userRepositoryCustom.findAllAssignee());
     }
 }
