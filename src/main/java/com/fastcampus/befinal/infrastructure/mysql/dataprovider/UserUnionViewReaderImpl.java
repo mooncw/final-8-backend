@@ -7,6 +7,8 @@ import com.fastcampus.befinal.domain.dataprovider.UserUnionViewReader;
 import com.fastcampus.befinal.domain.repository.UserUnionViewRepository;
 import lombok.RequiredArgsConstructor;
 
+import static com.fastcampus.befinal.common.type.CertificationType.FIND_ID;
+
 @DataProvider
 @RequiredArgsConstructor
 public class UserUnionViewReaderImpl implements UserUnionViewReader {
@@ -25,6 +27,9 @@ public class UserUnionViewReaderImpl implements UserUnionViewReader {
 
     @Override
     public boolean existsUserPhoneNumber(SmsCommand.SendCertificationNumberRequest command) {
+        if(command.type().equals(FIND_ID)) {
+            return false;
+        }
         return userUnionViewRepository.existsByPhoneNumber(command.phoneNumber());
     }
 }
