@@ -129,6 +129,6 @@ public class AdminDto {
 
     @Builder
     public record FindAssigneeListResponse(
-        List<AssigneeInfo> empList
+        List<AssigneeInfo> assigneeList
     ) {}
 }

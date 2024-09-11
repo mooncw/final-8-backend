@@ -3,6 +3,7 @@ package com.fastcampus.befinal.domain.info;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class AdminInfo {
     @Builder
@@ -37,5 +38,18 @@ public class AdminInfo {
         Integer notDoneAd,
         Integer doneAd,
         Double doneRatio
+    ) {}
+
+    @Builder
+    public record AssigneeInfo(
+        Long id,
+        String empNo,
+        String name,
+        Integer additionalTaskCount
+    ) {}
+
+    @Builder
+    public record AssigneeListInfo(
+        List<AssigneeInfo> assigneeList
     ) {}
 }
