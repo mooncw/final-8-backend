@@ -236,7 +236,7 @@ public class AdminController {
         return ResponseEntityFactory.toResponseEntity(FIND_UNASSIGNED_AD_LIST_SUCCESS, response);
     }
 
-    @GetMapping("/manage-tast/emp")
+    @GetMapping("/manage-task/emp")
     @Operation(summary = "작업 배분 작업자 목록 조회")
     @ApiResponse(responseCode = "200", description = "작업 배분 작업자 목록이 조회되었습니다.",
         content = @Content(
