@@ -1,5 +1,7 @@
 package com.fastcampus.befinal.domain.repository;
 
+import com.fastcampus.befinal.domain.entity.AdCategory;
+import com.fastcampus.befinal.domain.entity.AdMedia;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.entity.QAdvertisement;
@@ -181,6 +183,36 @@ public class AdvertisementRepositoryCustom {
             .leftJoin(ad.assignee)
             .where(idEq(advertisementId))
             .fetchOne());
+    }
+
+    public Long countMediaByPeriod(AdMedia media, String period) {
+        BooleanExpression expression;
+        if(StringUtils.hasText(period)) {
+            expression = getByPeriod(period);
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        return queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression.and(ad.adMedia.name.eq(media.getName())))
+            .fetchOne();
+    }
+
+    public Long countCategoryByPeriod(AdCategory category, String period) {
+        BooleanExpression expression;
+        if(StringUtils.hasText(period)) {
+            expression = getByPeriod(period);
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        return queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression.and(ad.adCategory.category.eq(category.getCategory())))
+            .fetchOne();
     }
 
     // ScrollPagination 다음 페이지 조건 생성
