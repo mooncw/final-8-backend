@@ -3,6 +3,7 @@ package com.fastcampus.befinal.presentation.controller;
 import com.fastcampus.befinal.application.facade.IssueAdFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
+import com.fastcampus.befinal.common.util.DefaultGroupSequence;
 import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,12 +13,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.GET_ADVERTISEMENT_DETAIL_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.*;
 
 @RestController
 @RequestMapping("/api/v1/issue-ad")
@@ -65,11 +66,22 @@ public class IssueAdController {
     }
 
     @PostMapping("/save-task")
-    public ResponseEntity<AppApiResponse> saveIssueAdReview(
+    public ResponseEntity<AppApiResponse> saveIssueAdReviews(
         @RequestBody
-        List<IssueAdDto.IssueAdReviewRequest> request
+        @Validated(DefaultGroupSequence.class)
+        List<IssueAdDto.IssueAdReviewRequest> requests
     ){
-
+        issueAdFacade.saveIssueAdReviews(requests);
         return ResponseEntityFactory.toResponseEntity(SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS);
+    }
+
+    @GetMapping("/options/provision")
+    public ResponseEntity<AppApiResponse> findProvisionList(){
+        return ResponseEntityFactory.toResponseEntity(GET_PROVISION_LIST_SUCCESS);
+    }
+
+    @GetMapping("/options/decision")
+    public ResponseEntity<AppApiResponse> findDecisionList(){
+        return ResponseEntityFactory.toResponseEntity(GET_DECISION_LIST_SUCCESS);
     }
 }

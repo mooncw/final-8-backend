@@ -6,6 +6,7 @@ import org.mapstruct.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper(
     componentModel = "spring",
@@ -23,6 +24,10 @@ public interface IssueAdDtoMapper {
     @Mapping(source = "issueAdDetail.content", target = "content")
     @Mapping(source = "issueAdReviewList", target = "reviewList")
     IssueAdDto.IssueAdDetailResponse from(IssueAdInfo.IssueAdDetailAllInfo info);
+
+    List<IssueAdDto.IssueAdProvisionResponse> fromProvision(List<IssueAdInfo.IssueAdProvisionInfo> infoList);
+
+    List<IssueAdDto.IssueAdDecisionResponse> fromDecision(List<IssueAdInfo.IssueAdDecisionInfo> infoList);
 
     @Named("toLocalDate")
     public static LocalDate map(LocalDateTime dateTime) {

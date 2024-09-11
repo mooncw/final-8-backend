@@ -1,11 +1,13 @@
 package com.fastcampus.befinal.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
+@Builder
+@DynamicUpdate
+@AllArgsConstructor
 @Entity(name = "AdReview")
 @Table(name = "ad_review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,4 +29,9 @@ public class AdReview {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", columnDefinition = "varchar(50)", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Advertisement advertisement;
+
+    public void updateSentenceAndOpinion(String sentence, String opinion){
+        this.sentence = sentence;
+        this.opinion = opinion;
+    }
 }
