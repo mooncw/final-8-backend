@@ -7,6 +7,7 @@ import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.service.UserTaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class UserTaskServiceImpl implements UserTaskService {
     private final UserTaskReader userTaskReader;
 
     @Override
+    @Transactional(readOnly = true)
     public TaskInfo.TaskResponse loadFilterTask(String userId, TaskCommand.FilterConditionRequest taskCommand) {
         TaskInfo.AdCountInfo myAdCount = userTaskReader.findMyAdCount(userId);
 

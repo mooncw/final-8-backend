@@ -200,5 +200,40 @@ public class AdminController {
         AdminDto.FindUserTaskListResponse response = adminFacade.findUserTaskScroll(request);
         return ResponseEntityFactory.toResponseEntity(FIND_USER_TASK_LIST_SUCCESS, response);
     }
+
+    @GetMapping("/manage-task/advertisement")
+    @Operation(summary = "작업 배분 광고 목록 조회")
+    @ApiResponse(responseCode = "200", description = "작업 배분 광고 목록이 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                    {
+                        "code": 1006,
+                        "message": "작업 배분 광고 목록이 조회되었습니다.",
+                        "data": {
+                            "totalElements": 3,
+                            "currentCursorId": "202409A12345",
+                            "contents": [
+                                {
+                                    "adId": "A12345",
+                                    "product": "삼성 냉장고",
+                                    "advertiser": "삼성SDI"
+                                    "category": "주방용품"
+                                }
+                            ]
+                        }
+                    }
+                    """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AdminDto.FindUnassignedAdListResponse>> findUnassignedAdList(
+        @RequestParam(required = false)
+        String cursorId
+    ) {
+        AdminDto.FindUnassignedAdListResponse response = adminFacade.findUnassignedAdScroll(cursorId);
+        return ResponseEntityFactory.toResponseEntity(FIND_UNASSIGNED_AD_LIST_SUCCESS, response);
+    }
 }
 
