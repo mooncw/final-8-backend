@@ -11,12 +11,6 @@ import static com.fastcampus.befinal.common.contant.TaskConstant.*;
 
 public class FilterDto {
     @Builder
-    public record FilterOptionResponse(
-        String name,
-        Long adCount
-    ) {}
-
-    @Builder
     @Schema(description = "Filter 매체/업종명 리스트 조회 request")
     public record ConditionRequest(
         @Schema(example = SWAGGER_KEYWORD)
@@ -25,5 +19,11 @@ public class FilterDto {
         @Schema(example = SWAGGER_PERIOD)
         @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD, groups = RequestValidationGroups.PatternGroup.class)
         String period
+    ) {}
+
+    @Builder
+    public record FilterOptionResponse(
+        String name,
+        Long adCount
     ) {}
 }
