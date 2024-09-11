@@ -65,6 +65,17 @@ public class AdminDto {
     ) {}
 
     @Builder
+    public record SelectedAssigneeInfo(
+        Long id,
+        Long taskAssignmentAmount
+    ) {}
+
+    @Builder
+    public record AssignTaskRequest(
+        List<SelectedAssigneeInfo> selectedAssigneeList
+    ) {}
+
+    @Builder
     public record SignUpUserInfo(
         Long cursorId,
         String name,
