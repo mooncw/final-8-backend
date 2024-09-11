@@ -2,7 +2,9 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.domain.dataprovider.AdProvisionReader;
 import com.fastcampus.befinal.domain.dataprovider.AdReviewStore;
+import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.AdReview;
 import com.fastcampus.befinal.domain.entity.Advertisement;
@@ -23,19 +25,15 @@ public class AdReviewStoreImpl implements AdReviewStore {
 
     @Override
     public void saveAdReview(IssueAdInfo.IssueAdReviewSaveInfo info){
-        Advertisement advertisement = entityManager.getReference(Advertisement.class, info.advertisementId());
-        AdProvision adProvision = entityManager.getReference(AdProvision.class, info.provisionId());
-
-        AdReview review = adReviewEntityMapper.from(IssueAdInfo.IssueAdReviewSaveEntityInfo.of(info.sentence(), info.opinion(), advertisement, adProvision));
+        AdReview review = adReviewEntityMapper.from(info);
         adReviewRepository.save(review);
     }
     @Override
     public void updateAdReview(IssueAdInfo.IssueAdReviewUpdateInfo info){
         AdReview review = adReviewRepository.findById(info.reviewId())
             .orElseThrow(()-> new BusinessException(NOT_FOUND_ISSUE_REVIEW_ID));
-        AdProvision adProvision = entityManager.getReference(AdProvision.class, info.provisionId());
         review.updateSentenceAndOpinion(info.sentence(),info.opinion());
-        review.updateAdProvision(adProvision);
+        review.updateAdProvision(info.adProvision());
     }
     @Override
     public void deleteAdReview(IssueAdInfo.IssueAdReviewDeleteInfo info){

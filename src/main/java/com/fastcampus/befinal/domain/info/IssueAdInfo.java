@@ -45,30 +45,13 @@ public class IssueAdInfo {
 
     @Builder
     public record IssueAdReviewSaveInfo(
-        String advertisementId,
-        String sentence,
-        String opinion,
-        Integer provisionId
-    ){
-        public static IssueAdReviewSaveInfo from(IssueAdDto.IssueAdReviewRequest command){
-            return IssueAdReviewSaveInfo.builder()
-                .sentence(command.sentence())
-                .opinion(command.opinion())
-                .advertisementId(command.advertisementId())
-                .provisionId(command.provisionId())
-                .build();
-        }
-    }
-
-    @Builder
-    public record IssueAdReviewSaveEntityInfo(
         Advertisement advertisement,
         String sentence,
         String opinion,
         AdProvision adProvision
-    ){
-        public static IssueAdReviewSaveEntityInfo of(String sentence, String opinion, Advertisement advertisement, AdProvision adProvision){
-            return IssueAdReviewSaveEntityInfo.builder()
+    ) {
+        public static IssueAdReviewSaveInfo of(String sentence, String opinion, Advertisement advertisement, AdProvision adProvision) {
+            return IssueAdReviewSaveInfo.builder()
                 .sentence(sentence)
                 .opinion(opinion)
                 .adProvision(adProvision)
@@ -82,15 +65,15 @@ public class IssueAdInfo {
         Long reviewId,
         String sentence,
         String opinion,
-        Integer provisionId
+        AdProvision adProvision
 
     ){
-        public static IssueAdReviewUpdateInfo from(IssueAdDto.IssueAdReviewRequest command){
+        public static IssueAdReviewUpdateInfo of(IssueAdDto.IssueAdReviewRequest command, AdProvision adProvision){
             return IssueAdReviewUpdateInfo.builder()
                 .reviewId(command.reviewId())
                 .sentence(command.sentence())
                 .opinion(command.opinion())
-                .provisionId(command.provisionId())
+                .adProvision(adProvision)
                 .build();
         }
     }

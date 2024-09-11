@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.dataprovider.*;
+import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.service.IssueAdService;
@@ -35,13 +36,16 @@ public class IssueAdServiceImpl implements IssueAdService {
         for (IssueAdDto.IssueAdReviewRequest command : commands) {
             switch(command.operationType()){
                 case "Create":
+                    Advertisement advertisement = advertisementReader.findAdvertisementById(command.advertisementId());
+                    AdProvision createAdProvision = adProvisionReader.findAdProvisionById(command.provisionId());
                     IssueAdInfo.IssueAdReviewSaveInfo saveInfo =
-                        IssueAdInfo.IssueAdReviewSaveInfo.from(command);
+                        IssueAdInfo.IssueAdReviewSaveInfo.of(command.sentence(), command.opinion(), advertisement,createAdProvision);
                     adReviewStore.saveAdReview(saveInfo);
                     break;
                 case "Update":
+                    AdProvision updateAdProvision = adProvisionReader.findAdProvisionById(command.provisionId());
                     IssueAdInfo.IssueAdReviewUpdateInfo updateInfo =
-                        IssueAdInfo.IssueAdReviewUpdateInfo.from(command);
+                        IssueAdInfo.IssueAdReviewUpdateInfo.of(command, updateAdProvision);
                     adReviewStore.updateAdReview(updateInfo);
                     break;
                 case "Delete":

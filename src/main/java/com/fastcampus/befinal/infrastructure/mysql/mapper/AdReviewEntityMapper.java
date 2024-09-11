@@ -13,5 +13,5 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface AdReviewEntityMapper {
 
-    AdReview from(IssueAdInfo.IssueAdReviewSaveEntityInfo info);
+    AdReview from(IssueAdInfo.IssueAdReviewSaveInfo info);
 }

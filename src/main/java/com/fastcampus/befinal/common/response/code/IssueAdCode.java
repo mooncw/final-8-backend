@@ -12,7 +12,8 @@ public enum IssueAdCode implements Code{
     SAVE_ISSUE_ADVERTISEMENT_DECISION_SUCCESS(3404),
     //error
     NOT_FOUND_ADVERTISEMENT_ID(3450),
-    NOT_FOUND_ISSUE_REVIEW_ID(3451);
+    NOT_FOUND_ISSUE_REVIEW_ID(3451),
+    NOT_FOUND_PROVISION_ID(3452);
 
     private final Integer code;
 
