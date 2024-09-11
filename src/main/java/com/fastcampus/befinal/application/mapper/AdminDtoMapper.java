@@ -119,5 +119,15 @@ public interface AdminDtoMapper {
         return (int) Math.round(doneRatio * 100);
     }
 
+    AdminDto.FindUnassignedAdListResponse fromUnassignedAdScroll(ScrollPagination<String, AdminInfo.UnassignedAdInfo> info);
+
+    @Mapping(source = "adId", target = "adId", qualifiedByName = "toAdIdValue")
+    AdminDto.UnassignedAdInfo from(AdminInfo.UnassignedAdInfo info);
+
+    @Named("toAdIdValue")
+    default String toAdIdValue(String adId) {
+        return adId.substring(6);
+    }
+
     AdminDto.FindAssigneeListResponse from(AdminInfo.AssigneeListInfo info);
 }

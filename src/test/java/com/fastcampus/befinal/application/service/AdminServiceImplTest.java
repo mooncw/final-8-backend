@@ -47,6 +47,9 @@ public class AdminServiceImplTest {
     @Mock
     private UserSummaryStore userSummaryStore;
 
+    @Mock
+    private AdvertisementReader advertisementReader;
+
     @Test
     @DisplayName("회원가입 승인 성공 테스트")
     void approveUserTest() {
@@ -257,6 +260,35 @@ public class AdminServiceImplTest {
 
         //when
         ScrollPagination<Integer, AdminInfo.UserTaskInfo> scroll = adminService.findUserTaskScroll(command);
+
+        //then
+        assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
+        assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
+        assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
+    }
+
+    @Test
+    @DisplayName("작업 배분 광고 목록 조회 성공 테스트")
+    void findUnassignedAdScrollTest() {
+        //given
+        String cursorId = "202409A00001";
+
+        AdminInfo.UnassignedAdInfo info = AdminInfo.UnassignedAdInfo.builder()
+            .adId("202409A00002")
+            .product("호박")
+            .advertiser("홍씨네집")
+            .category("식품")
+            .build();
+
+        ScrollPagination<String, AdminInfo.UnassignedAdInfo> doReturnScroll =
+            ScrollPagination.of(4L, cursorId, List.of(info));
+
+        doReturn(doReturnScroll)
+            .when(advertisementReader)
+            .findUnassignedAdScroll(anyString());
+
+        //when
+        ScrollPagination<String, AdminInfo.UnassignedAdInfo> scroll = adminService.findUnassignedAdScroll(cursorId);
 
         //then
         assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());

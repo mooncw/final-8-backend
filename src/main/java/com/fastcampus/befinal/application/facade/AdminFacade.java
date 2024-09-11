@@ -39,7 +39,11 @@ public class AdminFacade {
             adminService.findUserTaskScroll(adminDtoMapper.toAdminCommand(request));
         return adminDtoMapper.fromUserTaskScroll(info);
     }
-    
+
+    public AdminDto.FindUnassignedAdListResponse findUnassignedAdScroll(String cursorId) {
+        return adminDtoMapper.fromUnassignedAdScroll(adminService.findUnassignedAdScroll(cursorId));
+    }
+
     public AdminDto.FindAssigneeListResponse findAssigneeList() {
         return adminDtoMapper.from(adminService.findAssigneeList());
     }

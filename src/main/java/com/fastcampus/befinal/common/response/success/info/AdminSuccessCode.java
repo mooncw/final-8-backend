@@ -14,6 +14,8 @@ public enum AdminSuccessCode implements SuccessCode {
     FIND_USER_LIST_SUCCESS(HttpStatus.OK, AdminCode.FIND_USER_LIST_SUCCESS, "회원 정보 목록이 조회되었습니다."),
     DELETE_USER_SUCCESS(HttpStatus.OK, AdminCode.DELETE_USER_SUCCESS, "회원 정보가 삭제되었습니다."),
     FIND_USER_TASK_LIST_SUCCESS(HttpStatus.OK, AdminCode.FIND_USER_TASK_LIST_SUCCESS, "작업자 관리 정보 조회되었습니다."),
+    FIND_UNASSIGNED_AD_LIST_SUCCESS(HttpStatus.OK, AdminCode.FIND_UNASSIGNED_AD_LIST_SUCCESS,
+        "작업 배분 광고 목록이 조회되었습니다."),
     FIND_ASSIGNEE_LIST_SUCCESS(HttpStatus.OK, AdminCode.FIND_ASSIGNEE_LIST_SUCCESS, "작업 배분 작업자 목록이 조회되었습니다.");
 
     private final HttpStatus httpStatus;

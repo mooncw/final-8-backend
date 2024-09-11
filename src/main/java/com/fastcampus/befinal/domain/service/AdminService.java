@@ -17,5 +17,7 @@ public interface AdminService {
 
     ScrollPagination<Integer, AdminInfo.UserTaskInfo> findUserTaskScroll(AdminCommand.FindUserTaskListRequest command);
 
+    ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId);
+
     AdminInfo.AssigneeListInfo findAssigneeList();
 }

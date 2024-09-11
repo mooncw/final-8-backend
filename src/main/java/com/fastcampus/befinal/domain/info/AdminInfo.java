@@ -41,6 +41,14 @@ public class AdminInfo {
     ) {}
 
     @Builder
+    public record UnassignedAdInfo(
+        String adId,
+        String product,
+        String advertiser,
+        String category
+    ) {}
+
+    @Builder
     public record AssigneeInfo(
         Long id,
         String empNo,
