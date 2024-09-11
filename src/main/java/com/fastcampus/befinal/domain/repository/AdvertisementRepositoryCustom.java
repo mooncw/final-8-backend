@@ -1,12 +1,15 @@
 package com.fastcampus.befinal.domain.repository;
 
+import com.fastcampus.befinal.domain.entity.AdCategory;
+import com.fastcampus.befinal.domain.entity.AdMedia;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.entity.QAdvertisement;
+import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
+import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.querydsl.core.BooleanBuilder;
-import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -25,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.fastcampus.befinal.common.contant.ScrollConstant.MANAGE_TASK_ADVERTISEMENT_SCROLL_SIZE;
 import static com.fastcampus.befinal.common.contant.ScrollConstant.MY_TASK_LIST_SCROLL_SIZE;
 
 @Repository
@@ -181,6 +185,36 @@ public class AdvertisementRepositoryCustom {
             .fetchOne());
     }
 
+    public Long countMediaByPeriod(AdMedia media, String period) {
+        BooleanExpression expression;
+        if(StringUtils.hasText(period)) {
+            expression = getByPeriod(period);
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        return queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression.and(ad.adMedia.name.eq(media.getName())))
+            .fetchOne();
+    }
+
+    public Long countCategoryByPeriod(AdCategory category, String period) {
+        BooleanExpression expression;
+        if(StringUtils.hasText(period)) {
+            expression = getByPeriod(period);
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        return queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression.and(ad.adCategory.category.eq(category.getCategory())))
+            .fetchOne();
+    }
+
     // ScrollPagination 다음 페이지 조건 생성
     private BooleanExpression createCursorCondition(TaskCommand.CursorInfo cursorInfo) {
         // 첫 페이지인 경우(조건 없음)
@@ -326,5 +360,47 @@ public class AdvertisementRepositoryCustom {
         // 한국 시간 기준으로 날짜 범위와 비교
         return kstAssignDateTime.between(startOfPeriod, endOfPeriod)
             .and(ad.assignDateTime.month().eq(todayDate.getMonthValue()));
+    }
+
+    public ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId) {
+        List<AdminInfo.UnassignedAdInfo> contents = queryFactory
+            .select(Projections.constructor(AdminInfo.UnassignedAdInfo.class,
+                ad.id,
+                ad.product,
+                ad.advertiser,
+                ad.adCategory.category
+            ))
+            .from(ad)
+            .where(
+                ad.assignee.isNull(),
+                gtCursorId(cursorId)
+            )
+            .limit(MANAGE_TASK_ADVERTISEMENT_SCROLL_SIZE)
+            .fetch();
+
+        String nextCursorId = getNextCursorId(cursorId, contents);
+
+        Long totalElements = queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(ad.assignee.isNull())
+            .fetchOne();
+
+        return ScrollPagination.of(totalElements, nextCursorId, contents);
+    }
+
+    private String getNextCursorId(String cursorId, List<AdminInfo.UnassignedAdInfo> contents) {
+        if (!contents.isEmpty()) {
+            AdminInfo.UnassignedAdInfo lastUserInfo = contents.getLast();
+            return lastUserInfo.adId();
+        }
+        return cursorId;
+    }
+
+    private BooleanExpression gtCursorId(String cursorId) {
+        if (cursorId == null) {
+            return null;
+        }
+        return ad.id.gt(cursorId);
     }
 }

@@ -73,6 +73,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/user/**").authenticated()
             // issue-ad
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/result/**").authenticated()
+            // filter-options
+            .requestMatchers(HttpMethod.GET, "/api/v1/filter-options/**").authenticated()
             // health-check
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
             // monitoring

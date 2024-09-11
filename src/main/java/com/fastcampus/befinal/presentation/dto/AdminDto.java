@@ -118,4 +118,19 @@ public class AdminDto {
         Long currentCursorId,
         List<UserTaskInfo> contents
     ) {}
+
+    @Builder
+    public record UnassignedAdInfo(
+        String adId,
+        String product,
+        String advertiser,
+        String category
+    ) {}
+
+    @Builder
+    public record FindUnassignedAdListResponse(
+        Long totalElements,
+        String currentCursorId,
+        List<UnassignedAdInfo> contents
+    ) {}
 }

@@ -38,4 +38,12 @@ public class AdminInfo {
         Integer doneAd,
         Double doneRatio
     ) {}
+
+    @Builder
+    public record UnassignedAdInfo(
+        String adId,
+        String product,
+        String advertiser,
+        String category
+    ) {}
 }
