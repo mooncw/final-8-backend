@@ -33,7 +33,9 @@ public class AdReviewStoreImpl implements AdReviewStore {
     public void updateAdReview(IssueAdInfo.IssueAdReviewUpdateInfo info){
         AdReview review = adReviewRepository.findById(info.reviewId())
             .orElseThrow(()-> new BusinessException(NOT_FOUND_ISSUE_REVIEW_ID));
+        AdProvision adProvision = entityManager.getReference(AdProvision.class, info.provisionId());
         review.updateSentenceAndOpinion(info.sentence(),info.opinion());
+        review.updateAdProvision(adProvision);
     }
     @Override
     public void deleteAdReview(IssueAdInfo.IssueAdReviewDeleteInfo info){

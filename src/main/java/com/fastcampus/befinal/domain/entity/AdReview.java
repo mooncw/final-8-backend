@@ -34,4 +34,8 @@ public class AdReview {
         this.sentence = sentence;
         this.opinion = opinion;
     }
+
+    public void updateAdProvision(AdProvision adProvision){
+        this.adProvision = adProvision;
+    }
 }

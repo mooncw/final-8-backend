@@ -81,13 +81,16 @@ public class IssueAdInfo {
     public record IssueAdReviewUpdateInfo(
         Long reviewId,
         String sentence,
-        String opinion
+        String opinion,
+        Integer provisionId
+
     ){
         public static IssueAdReviewUpdateInfo from(IssueAdDto.IssueAdReviewRequest command){
             return IssueAdReviewUpdateInfo.builder()
                 .reviewId(command.reviewId())
                 .sentence(command.sentence())
                 .opinion(command.opinion())
+                .provisionId(command.provisionId())
                 .build();
         }
     }

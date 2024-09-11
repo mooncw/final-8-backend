@@ -9,12 +9,14 @@ import lombok.Builder;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.fastcampus.befinal.common.contant.IssueAdConstant.*;
+
 public class IssueAdDto {
     @Builder
-    @ValidAdReviewType(groups = RequestValidationGroups.CustomValidateGroup.class)
+    @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE,groups = RequestValidationGroups.CustomValidateGroup.class)
     public record IssueAdReviewRequest(
         @NotBlank(groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "Create|Update|Delete", groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "Create|Update|Delete", message = INVALID_OPERATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
         String operationType,
         Long reviewId,
         String advertisementId,
@@ -25,10 +27,10 @@ public class IssueAdDto {
 
     @Builder
     public record IssueAdResultDecisionRequest(
-        @NotBlank(groups = RequestValidationGroups.NotBlankGroup.class)
+        @NotBlank(message = NOT_BLANK_ADVERTISE_ID, groups = RequestValidationGroups.NotBlankGroup.class)
         String advertisementId,
-        @Min(value = 1, groups = RequestValidationGroups.SizeGroup.class)
-        @Max(value = 7, groups = RequestValidationGroups.SizeGroup.class)
+        @Min(value = DECISION_ID_MIN, message = INVALID_DECISION_ID, groups = RequestValidationGroups.SizeGroup.class)
+        @Max(value = DECISION_ID_MAX, message = INVALID_DECISION_ID, groups = RequestValidationGroups.SizeGroup.class)
         Long decisionId
     ){}
 
