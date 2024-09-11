@@ -187,4 +187,45 @@ public class AuthServiceImplTest {
         assertThat(userInfo.email()).isEqualTo(user.getEmail());
         assertThat(userInfo.role()).isEqualTo(user.getRole());
     }
+
+    @Test
+    @DisplayName("아이디 찾기 성공 테스트")
+    void findIdTest() {
+        // given
+        AuthCommand.FindIdRequest request = AuthCommand.FindIdRequest.builder()
+            .name("홍길동")
+            .phoneNumber("01011112222")
+            .certNoCheckToken("ca1.cb1.cc1")
+            .build();
+
+        User user = User.builder()
+            .userId("aaaa")
+            .name("홍길동")
+            .password("aaaa1111")
+            .phoneNumber("01011112222")
+            .empNumber("11111111")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(USER_AUTHORITY)
+            .build();
+
+        doReturn(user)
+            .when(userReader)
+            .findByPhoneNumber(anyString());
+
+        doReturn(true)
+            .when(checkTokenReader)
+            .exists(any(AuthInfo.CheckTokenInfo.class));
+
+        // when
+        AuthInfo.FindIdInfo idInfo = authService.findId(request);
+
+        // then
+        assertThat(idInfo.userId()).isEqualTo(user.getUserId());
+
+        verify(userReader, times(1)).findByPhoneNumber(anyString());
+        verify(checkTokenReader, times(1)).exists(any(AuthInfo.CheckTokenInfo.class));
+        verify(checkTokenStore, times(1)).delete(any(AuthInfo.CheckTokenInfo.class));
+    }
 }

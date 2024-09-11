@@ -4,6 +4,7 @@ import com.fastcampus.befinal.application.facade.AuthFacade;
 import com.fastcampus.befinal.common.config.SecurityConfig;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
 import com.fastcampus.befinal.presentation.dto.AuthDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -244,5 +245,37 @@ class AuthControllerTest {
         perform.andExpect(status().is(REISSUE_JWT_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(REISSUE_JWT_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(REISSUE_JWT_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @DisplayName("아이디 찾기 성공시, 200 OK와 정상 응답을 반환")
+    void findUserId() throws Exception {
+        // given
+        AuthDto.FindIdRequest request = AuthDto.FindIdRequest.builder()
+            .name("홍길동")
+            .phoneNumber("01011112222")
+            .certNoCheckToken("ca1.cb1.cc1")
+            .build();
+
+        AuthDto.FindIdResponse response = AuthDto.FindIdResponse.builder()
+            .userId("hong")
+            .build();
+
+        doReturn(response)
+            .when(authFacade)
+            .findId(any(AuthDto.FindIdRequest.class));
+
+        // when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/find-id")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        // then
+        perform.andExpect(status().is(FIND_ID_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(FIND_ID_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(FIND_ID_SUCCESS.getMessage()));
     }
 }
