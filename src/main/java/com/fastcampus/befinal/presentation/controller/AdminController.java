@@ -200,5 +200,35 @@ public class AdminController {
         AdminDto.FindUserTaskListResponse response = adminFacade.findUserTaskScroll(request);
         return ResponseEntityFactory.toResponseEntity(FIND_USER_TASK_LIST_SUCCESS, response);
     }
+
+    @GetMapping("/manage-tast/emp")
+    @Operation(summary = "작업 배분 작업자 목록 조회")
+    @ApiResponse(responseCode = "200", description = "작업 배분 작업자 목록이 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                    {
+                        "code": 1007,
+                        "message": "작업 배분 작업자 목록이 조회되었습니다.",
+                        "data": {
+                            "empList": [
+                                "empInfo": {
+                                    "id": 1,
+                                    "empNo": "11111111",
+                                    "name": "홍길동",
+                                    "additionalTaskCount": 4
+                                }
+                            ]
+                        }
+                    }
+                    """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AdminDto.FindAssigneeListResponse>> findAssigneeList() {
+        AdminDto.FindAssigneeListResponse response = adminFacade.findAssigneeList();
+        return ResponseEntityFactory.toResponseEntity(FIND_ASSIGNEE_LIST_SUCCESS, response);
+    }
 }
 

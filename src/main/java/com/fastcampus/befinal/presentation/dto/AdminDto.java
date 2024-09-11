@@ -118,4 +118,17 @@ public class AdminDto {
         Long currentCursorId,
         List<UserTaskInfo> contents
     ) {}
+
+    @Builder
+    public record AssigneeInfo(
+        Long id,
+        String empNo,
+        String name,
+        Integer additionalTaskCount
+    ) {}
+
+    @Builder
+    public record FindAssigneeListResponse(
+        List<AssigneeInfo> empList
+    ) {}
 }
