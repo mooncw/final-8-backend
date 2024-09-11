@@ -4,14 +4,12 @@ import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.entity.UserManagement;
 import com.fastcampus.befinal.domain.entity.UserSummary;
-import com.fastcampus.befinal.domain.info.AdminInfo;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
 import static com.fastcampus.befinal.common.contant.UserConstant.INITIAL_FINAL_LOGIN_DATETIME;
@@ -43,7 +41,4 @@ public interface MysqlEntityMapper {
     default LocalDateTime initializeFinalLoginDateTime() {
         return INITIAL_FINAL_LOGIN_DATETIME;
     }
-
-    @Mapping(source = "info", target = "assigneeList")
-    AdminInfo.AssigneeListInfo from(List<AdminInfo.AssigneeInfo> info);
 }

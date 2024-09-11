@@ -59,5 +59,11 @@ public class AdminInfo {
     @Builder
     public record AssigneeListInfo(
         List<AssigneeInfo> assigneeList
-    ) {}
+    ) {
+        public static AssigneeListInfo from(List<AssigneeInfo> info) {
+            return AssigneeListInfo.builder()
+                .assigneeList(info)
+                .build();
+        }
+    }
 }

@@ -185,6 +185,7 @@ public class UserRepositoryCustom {
                 user.additionalTaskCount
                 ))
             .from(user)
+            .orderBy(user.empNumber.asc())
             .fetch();
     }
 }

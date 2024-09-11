@@ -19,7 +19,6 @@ import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NO
 public class UserReaderImpl implements UserReader {
     private final UserRepository userRepository;
     private final UserRepositoryCustom userRepositoryCustom;
-    private final MysqlEntityMapper mysqlEntityMapper;
 
     @Override
     public User findUser(String userId) {
@@ -45,6 +44,6 @@ public class UserReaderImpl implements UserReader {
 
     @Override
     public AdminInfo.AssigneeListInfo findAllAssignee() {
-        return mysqlEntityMapper.from(userRepositoryCustom.findAllAssignee());
+        return AdminInfo.AssigneeListInfo.from(userRepositoryCustom.findAllAssignee());
     }
 }
