@@ -3,7 +3,10 @@ package com.fastcampus.befinal.infrastructure.redis.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenStore;
 import com.fastcampus.befinal.domain.entity.RedisValue;
+import com.fastcampus.befinal.domain.entity.User;
+import com.fastcampus.befinal.domain.entity.UserId;
 import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.infrastructure.redis.mapper.RedisEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -15,10 +18,17 @@ import static com.fastcampus.befinal.common.contant.SmsConstant.CHECK_TOKEN_DURA
 @RequiredArgsConstructor
 public class CheckTokenStoreImpl implements CheckTokenStore {
     private final RedisTemplate<String, RedisValue> redisTemplate;
+    private final RedisEntityMapper redisEntityMapper;
 
     @Override
     public void store(AuthInfo.CheckTokenInfo info) {
         redisTemplate.opsForValue().set(info.token(), null, getDuration());
+    }
+
+    @Override
+    public void store(AuthInfo.CheckTokenInfo info, User user) {
+        UserId userId = redisEntityMapper.from(user);
+        redisTemplate.opsForValue().set(info.token(), userId, getDuration());
     }
 
     @Override
