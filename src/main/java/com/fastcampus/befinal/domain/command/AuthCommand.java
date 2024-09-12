@@ -40,4 +40,12 @@ public class AuthCommand {
         String phoneNumber,
         String certNoCheckToken
     ) {}
+
+    @Builder
+    public record FindPasswordRequest(
+        String id,
+        String name,
+        String phoneNumber,
+        String certNoCheckToken
+    ) {}
 }

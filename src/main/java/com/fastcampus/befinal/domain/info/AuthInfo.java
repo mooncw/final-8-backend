@@ -68,4 +68,15 @@ public class AuthInfo {
                 .build();
         }
     }
+
+    @Builder
+    public record PasswordResetTokenInfo(
+        String token
+    ) {
+        public static PasswordResetTokenInfo from(String token) {
+            return PasswordResetTokenInfo.builder()
+                .token(token)
+                .build();
+        }
+    }
 }
