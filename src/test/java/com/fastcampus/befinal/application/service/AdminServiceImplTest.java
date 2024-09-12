@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.type.UserTaskSortType;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.dataprovider.*;
@@ -45,6 +46,9 @@ public class AdminServiceImplTest {
 
     @Mock
     private UserSummaryStore userSummaryStore;
+
+    @Mock
+    private AdvertisementReader advertisementReader;
 
     @Test
     @DisplayName("회원가입 승인 성공 테스트")
@@ -225,5 +229,70 @@ public class AdminServiceImplTest {
         verify(userStore, times(1)).delete(any(User.class));
         verify(userSummaryReader, times(1)).findById(anyLong());
         verify(userSummaryStore, times(1)).update(any(UserSummary.class));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 정보 조회 성공 테스트")
+    void findUserTaskScrollTest() {
+        //given
+        AdminCommand.FindUserTaskListRequest command = AdminCommand.FindUserTaskListRequest.builder()
+            .cursorId(1)
+            .sorted(UserTaskSortType.EMP_NUMBER)
+            .period("2024-9-1")
+            .build();
+
+        AdminInfo.UserTaskInfo info = AdminInfo.UserTaskInfo.builder()
+            .id(1L)
+            .empNumber("11111111")
+            .name("hong")
+            .totalAd(300)
+            .notDoneAd(75)
+            .doneAd(225)
+            .doneRatio(0.75)
+            .build();
+
+        ScrollPagination<Integer, AdminInfo.UserTaskInfo> doReturnScroll =
+            ScrollPagination.of(4L, command.cursorId(), List.of(info));
+
+        doReturn(doReturnScroll)
+            .when(userReader)
+            .findScroll(any(AdminCommand.FindUserTaskListRequest.class));
+
+        //when
+        ScrollPagination<Integer, AdminInfo.UserTaskInfo> scroll = adminService.findUserTaskScroll(command);
+
+        //then
+        assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
+        assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
+        assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
+    }
+
+    @Test
+    @DisplayName("작업 배분 광고 목록 조회 성공 테스트")
+    void findUnassignedAdScrollTest() {
+        //given
+        String cursorId = "202409A00001";
+
+        AdminInfo.UnassignedAdInfo info = AdminInfo.UnassignedAdInfo.builder()
+            .adId("202409A00002")
+            .product("호박")
+            .advertiser("홍씨네집")
+            .category("식품")
+            .build();
+
+        ScrollPagination<String, AdminInfo.UnassignedAdInfo> doReturnScroll =
+            ScrollPagination.of(4L, cursorId, List.of(info));
+
+        doReturn(doReturnScroll)
+            .when(advertisementReader)
+            .findUnassignedAdScroll(anyString());
+
+        //when
+        ScrollPagination<String, AdminInfo.UnassignedAdInfo> scroll = adminService.findUnassignedAdScroll(cursorId);
+
+        //then
+        assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
+        assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
+        assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
     }
 }

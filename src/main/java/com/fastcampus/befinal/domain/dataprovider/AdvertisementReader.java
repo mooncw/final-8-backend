@@ -1,6 +1,8 @@
 package com.fastcampus.befinal.domain.dataprovider;
 
 import com.fastcampus.befinal.domain.entity.Advertisement;
+import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 
@@ -12,4 +14,5 @@ public interface AdvertisementReader {
     List<DashboardInfo.RecentDone> findRecentDone(String userId);
     IssueAdInfo.IssueAdDetailInfo findIssueAdDetail(String advertisementId);
     Advertisement findAdvertisementById(String advertisementId);
+    ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId);
 }

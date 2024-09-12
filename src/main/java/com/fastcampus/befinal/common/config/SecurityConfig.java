@@ -63,6 +63,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll()
             // dashboard
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
+            // my-task
+            .requestMatchers(HttpMethod.POST, "api/v1/user/my-task").authenticated()
             // admin
             .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN_AUTHORITY)
             // user
@@ -70,6 +72,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/user/**").authenticated()
             // issue-ad
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/result/**").authenticated()
+            // filter-options
+            .requestMatchers(HttpMethod.GET, "/api/v1/filter-options/**").authenticated()
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/options/**").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad/save-task").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad/result/decision").authenticated()

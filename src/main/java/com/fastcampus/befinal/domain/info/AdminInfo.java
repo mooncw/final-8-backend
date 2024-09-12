@@ -27,4 +27,23 @@ public class AdminInfo {
         LocalDateTime signUpDateTime,
         LocalDateTime finalLoginDateTime
     ) {}
+
+    @Builder
+    public record UserTaskInfo(
+        Long id,
+        String empNumber,
+        String name,
+        Integer totalAd,
+        Integer notDoneAd,
+        Integer doneAd,
+        Double doneRatio
+    ) {}
+
+    @Builder
+    public record UnassignedAdInfo(
+        String adId,
+        String product,
+        String advertiser,
+        String category
+    ) {}
 }

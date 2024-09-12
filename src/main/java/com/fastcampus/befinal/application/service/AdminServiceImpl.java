@@ -21,6 +21,7 @@ public class AdminServiceImpl implements AdminService {
     private final UserStore userStore;
     private final UserSummaryReader userSummaryReader;
     private final UserSummaryStore userSummaryStore;
+    private final AdvertisementReader advertisementReader;
 
     @Override
     @Transactional
@@ -65,5 +66,17 @@ public class AdminServiceImpl implements AdminService {
         UserSummary userSummary = userSummaryReader.findById(userId);
 
         userSummaryStore.update(userSummary);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findUserTaskScroll(AdminCommand.FindUserTaskListRequest command) {
+        return userReader.findScroll(command);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId) {
+        return advertisementReader.findUnassignedAdScroll(cursorId);
     }
 }

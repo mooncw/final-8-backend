@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.application.mapper;
 
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.type.UserTaskSortType;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.info.AdminInfo;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 import static com.fastcampus.befinal.common.contant.UserConstant.INITIAL_FINAL_LOGIN_DATETIME;
+import static com.fastcampus.befinal.common.response.error.info.AdminErrorCode.INVALID_USER_TASK_SORT_TYPE;
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.INVALID_AUTHORITY;
 
 @Mapper(
@@ -24,6 +26,31 @@ public interface AdminDtoMapper {
     AdminCommand.ApproveUserRequest toAdminCommand(AdminDto.ApproveUserRequest request);
 
     AdminCommand.RejectUserRequest toAdminCommand(AdminDto.RejectUserRequest request);
+
+    @Mapping(source = "sorted", target = "sorted", qualifiedByName = "toSortType")
+    AdminCommand.FindUserTaskListRequest toAdminCommand(AdminDto.FindUserTaskListRequest request);
+
+    @Named("toSortType")
+    default UserTaskSortType toSortType(String sorted) {
+        switch (sorted) {
+            case "EmpNo" -> {
+                return UserTaskSortType.EMP_NUMBER;
+            }
+            case "DoneDesc" -> {
+                return UserTaskSortType.DONE_DESC;
+            }
+            case "DoneAsc" -> {
+                return UserTaskSortType.DONE_ASC;
+            }
+            case "DoneRatioDesc" -> {
+                return UserTaskSortType.DONE_RATIO_DESC;
+            }
+            case "DoneRatioAsc" -> {
+                return UserTaskSortType.DONE_RATIO_ASC;
+            }
+            default -> throw new BusinessException(INVALID_USER_TASK_SORT_TYPE);
+        }
+    }
 
     AdminDto.FindSignUpUserListResponse fromSignUpUserScroll(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
 
@@ -79,5 +106,26 @@ public interface AdminDtoMapper {
         return info.stream()
             .map(this::from)
             .toList();
+    }
+
+    AdminDto.FindUserTaskListResponse fromUserTaskScroll(ScrollPagination<Integer, AdminInfo.UserTaskInfo> info);
+
+    @Mapping(source = "empNumber", target = "empNo")
+    @Mapping(source = "doneRatio", target = "doneRatio", qualifiedByName = "toDoneRatioValue")
+    AdminDto.UserTaskInfo from(AdminInfo.UserTaskInfo info);
+
+    @Named("toDoneRatioValue")
+    default Integer toDoneRatioValue(Double doneRatio) {
+        return (int) Math.round(doneRatio * 100);
+    }
+
+    AdminDto.FindUnassignedAdListResponse fromUnassignedAdScroll(ScrollPagination<String, AdminInfo.UnassignedAdInfo> info);
+
+    @Mapping(source = "adId", target = "adId", qualifiedByName = "toAdIdValue")
+    AdminDto.UnassignedAdInfo from(AdminInfo.UnassignedAdInfo info);
+
+    @Named("toAdIdValue")
+    default String toAdIdValue(String adId) {
+        return adId.substring(6);
     }
 }

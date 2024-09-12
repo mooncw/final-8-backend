@@ -32,33 +32,35 @@ public class UserBoardController {
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(
-                    implementation = DashboardDto.DashboardDataResponse.class,
-                    example = "{" +
-                            "\"code\": 3200, " +
-                            "\"message\": \"대시보드 확인 가능합니다.\", " +
-                            "\"data\": {" +
-                            "   \"adCount\": {" +
-                            "      \"totalAd\": 4," +
-                            "      \"myAd\": 3," +
-                            "      \"totalDoneAd\": 3," +
-                            "      \"myDoneAd\": 3," +
-                            "      \"totalNotDoneAd\": 1," +
-                            "      \"myNotDoneAd\": 0," +
-                            "      \"dailyDoneList\": [" +
-                            "      {" +
-                            "        \"date\": \"2024-08-25," +
-                            "        \"dailyMyDoneAd\": 2" +
-                            "      }" +
-                            "    ]," +
-                            "    \"recentDoneList\": [" +
-                            "      {" +
-                            "        \"adId\": a3" +
-                            "        \"adName\": toy" +
-                            "        \"adTaskDateTime\": 2024-08-27 09:00" +
-                            "      }" +
-                            "    ]" +
-                            "  }" +
-                            "}"
+                    example = """
+                        {
+                            "code": 3200,
+                            "message": "대시보드 확인 가능합니다.",
+                            "data": {
+                                "adCount": {
+                                    "totalAd": 4,
+                                    "myAd": 3,
+                                    "totalDoneAd": 3,
+                                    "myDoneAd": 3,
+                                    "totalNotDoneAd": 1,
+                                    "myNotDoneAd": 0
+                                },
+                                "dailyDoneList": [
+                                    {
+                                        "date": "2024-08-25",
+                                        "dailyMyDoneAd": 2
+                                    }
+                                ],
+                                "recentDoneList": [
+                                    {
+                                        "adId": "A11111",
+                                        "adName": "toy",
+                                        "adTaskDateTime": "2024-08-27 09:00"
+                                    }
+                                ]
+                            }
+                        }
+                        """
                     )
             )
     )

@@ -2,8 +2,10 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.entity.Advertisement;
+import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepository;
@@ -44,5 +46,10 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     public Advertisement findAdvertisementById(String advertisementId){
         return advertisementRepository.findById(advertisementId).
             orElseThrow(()-> new BusinessException(NOT_FOUND_ADVERTISEMENT_ID));
+    }
+
+    @Override
+    public ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId) {
+        return advertisementRepositoryCustom.findUnassignedAdScroll(cursorId);
     }
 }
