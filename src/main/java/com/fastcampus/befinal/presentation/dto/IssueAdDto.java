@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.IssueAdConstant.*;
+import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 
 public class IssueAdDto {
     @Builder
