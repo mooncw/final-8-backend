@@ -58,6 +58,7 @@ public class IssueAdServiceImpl implements IssueAdService {
         }
     }
 
+    @Override
     @Transactional
     public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command){
         Advertisement advertisement = advertisementReader.findAdvertisementById(command.advertisementId());

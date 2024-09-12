@@ -24,8 +24,7 @@ import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
 
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.GET_ADVERTISEMENT_DETAIL_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -120,5 +119,95 @@ class IssueAdControllerTest {
         perform.andExpect(status().is(SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = USER_AUTHORITY)
+    @DisplayName("조항 리스트 조회 요청 시, 200 OK 및 정상 응답을 반환")
+    void getProvisionListTest() throws Exception {
+        //given
+        IssueAdDto.IssueAdProvisionResponse response = IssueAdDto.IssueAdProvisionResponse.builder()
+            .id(1)
+            .article(1)
+            .content("1항 내용")
+            .build();
+        List<IssueAdDto.IssueAdProvisionResponse> responses = List.of(response);
+
+        doReturn(responses)
+            .when(issueAdFacade)
+            .findProvisionList();
+
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/issue-ad/options/provision")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8));
+
+        //then
+        perform.andExpect(status().is(GET_PROVISION_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(GET_PROVISION_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(GET_PROVISION_LIST_SUCCESS.getMessage()))
+            .andExpect(jsonPath("$.data[0].id").value(response.id()))
+            .andExpect(jsonPath("$.data[0].article").value(response.article()))
+            .andExpect(jsonPath("$.data[0].content").value(response.content()));
+    }
+
+    @Test
+    @WithMockUser(authorities = USER_AUTHORITY)
+    @DisplayName("심의결정 리스트 조회 요청 시, 200 OK 및 정상 응답을 반환")
+    void getDecisionListTest() throws Exception {
+        //given
+        IssueAdDto.IssueAdDecisionResponse response = IssueAdDto.IssueAdDecisionResponse.builder()
+            .id((long)1)
+            .decision("수정 필요")
+            .build();
+        List<IssueAdDto.IssueAdDecisionResponse> responses = List.of(response);
+
+        doReturn(responses)
+            .when(issueAdFacade)
+            .findDecisionList();
+
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/issue-ad/options/decision")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8));
+
+        //then
+        perform.andExpect(status().is(GET_DECISION_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(GET_DECISION_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(GET_DECISION_LIST_SUCCESS.getMessage()))
+            .andExpect(jsonPath("$.data[0].id").value(response.id()))
+            .andExpect(jsonPath("$.data[0].decision").value(response.decision()));
+    }
+
+    @Test
+    @WithMockUser(authorities = USER_AUTHORITY)
+    @DisplayName("지적광고 심의결정 완료 요청 시, 200 OK 및 정상 응답을 반환")
+    void saveIssueAdDecisionTest() throws Exception{
+        //given
+        IssueAdDto.IssueAdResultDecisionRequest request = IssueAdDto.IssueAdResultDecisionRequest.builder()
+            .advertisementId("202409A0001")
+            .decisionId((long) 1)
+            .build();
+
+        doNothing()
+            .when(issueAdFacade)
+            .saveIssueAdResultDecision(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/issue-ad/result/decision")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(SAVE_ISSUE_ADVERTISEMENT_DECISION_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(SAVE_ISSUE_ADVERTISEMENT_DECISION_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(SAVE_ISSUE_ADVERTISEMENT_DECISION_SUCCESS.getMessage()));
     }
 }

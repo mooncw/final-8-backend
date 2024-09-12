@@ -1,15 +1,15 @@
 package com.fastcampus.befinal.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @DynamicUpdate
+@AllArgsConstructor
 @Entity(name = "Advertisement")
 @Table(name = "advertisement")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

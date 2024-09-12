@@ -1,8 +1,11 @@
 package com.fastcampus.befinal.application.service;
 
-import com.fastcampus.befinal.domain.dataprovider.AdReviewReader;
-import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
+import com.fastcampus.befinal.domain.dataprovider.*;
+import com.fastcampus.befinal.domain.entity.AdDecision;
+import com.fastcampus.befinal.domain.entity.AdProvision;
+import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @DisplayName("IssueAdService 테스트")
@@ -24,7 +29,19 @@ public class IssueAdServiceImplTest {
     private AdvertisementReader advertisementReader;
 
     @Mock
+    private AdvertisementStore advertisementStore;
+
+    @Mock
     private AdReviewReader adReviewReader;
+
+    @Mock
+    private AdProvisionReader adProvisionReader;
+
+    @Mock
+    private AdReviewStore adReviewStore;
+
+    @Mock
+    private AdDecisionReader adDecisionReader;
 
     @Test
     @DisplayName("지적광고 상세조회 성공 테스트")
@@ -49,5 +66,169 @@ public class IssueAdServiceImplTest {
         verify(advertisementReader, times(1)).findIssueAdDetail(advertisementId);
         verify(adReviewReader, times(1)).findIssueAdReviewList(advertisementId);
 
+    }
+
+    @Test
+    @DisplayName("지적광고 검수 리뷰 저장 성공 테스트")
+    void saveIssueAdReviewsTest(){
+        //given
+        Long reviewId = (long) 1;
+        String advertisementId = "202409A0001";
+        Integer provisionId = 1;
+        String sentence = "내용1";
+        String opinion = "의견1";
+
+        IssueAdDto.IssueAdReviewRequest createRequest = IssueAdDto.IssueAdReviewRequest.builder()
+            .operationType("Create")
+            .advertisementId(advertisementId)
+            .provisionId(provisionId)
+            .sentence(sentence)
+            .opinion(opinion)
+            .build();
+
+        IssueAdDto.IssueAdReviewRequest updateRequest = IssueAdDto.IssueAdReviewRequest.builder()
+            .operationType("Update")
+            .reviewId(reviewId)
+            .provisionId(provisionId)
+            .sentence(sentence)
+            .opinion(opinion)
+            .build();
+
+        IssueAdDto.IssueAdReviewRequest deleteRequest = IssueAdDto.IssueAdReviewRequest.builder()
+            .operationType("Delete")
+            .reviewId(reviewId)
+            .build();
+
+        List<IssueAdDto.IssueAdReviewRequest> commands = List.of(createRequest, updateRequest, deleteRequest);
+
+        Advertisement advertisement = Advertisement.builder()
+            .id(advertisementId).build();
+
+        AdProvision adProvision = AdProvision.builder()
+            .id(provisionId).build();
+
+        doReturn(advertisement)
+            .when(advertisementReader)
+            .findAdvertisementById(anyString());
+
+        doReturn(adProvision)
+            .when(adProvisionReader)
+            .findAdProvisionById(any());
+
+        doNothing()
+            .when(adReviewStore)
+            .saveAdReview(any());
+
+        doNothing()
+            .when(adReviewStore)
+            .updateAdReview(any());
+
+        doNothing()
+            .when(adReviewStore)
+            .deleteAdReview(any());
+
+        //when
+        issueAdService.saveIssueAdReviews(commands);
+
+        //verify
+        verify(advertisementReader, times(1)).findAdvertisementById(advertisementId);
+        verify(adProvisionReader, times(2)).findAdProvisionById(provisionId);
+        verify(adReviewStore, times(1)).saveAdReview(any());
+        verify(adReviewStore, times(1)).updateAdReview(any());
+        verify(adReviewStore, times(1)).deleteAdReview(any());
+
+    }
+
+    @Test
+    @DisplayName("지적광고 심의결정 완료 저장 성공 테스트")
+    void saveIssueAdResultDecisionTest(){
+        //given
+        String advertisementId = "202409A0001";
+        Long decisionId = (long) 1;
+
+        IssueAdDto.IssueAdResultDecisionRequest command = IssueAdDto.IssueAdResultDecisionRequest.builder()
+            .advertisementId(advertisementId)
+            .decisionId(decisionId)
+            .build();
+
+        Advertisement advertisement = Advertisement.builder()
+            .id(advertisementId).build();
+
+        AdDecision adDecision = AdDecision.builder()
+            .id(decisionId).build();
+
+        doReturn(advertisement)
+            .when(advertisementReader)
+            .findAdvertisementById(advertisementId);
+
+        doReturn(adDecision)
+            .when(adDecisionReader)
+            .findAdDecisionById(decisionId);
+
+        doNothing()
+            .when(advertisementStore)
+            .saveIssueAdDecision(any());
+
+        //when
+        issueAdService.saveIssueAdResultDecision(command);
+
+        //verify
+        verify(adDecisionReader, times(1)).findAdDecisionById(decisionId);
+        verify(advertisementReader, times(1)).findAdvertisementById(advertisementId);
+        verify(advertisementStore, times(1)).saveIssueAdDecision(any());
+    }
+
+    @Test
+    @DisplayName("조항 리스트 조회 성공 테스트")
+    void findProvisionListTest(){
+        //given
+        IssueAdInfo.IssueAdProvisionInfo info = IssueAdInfo.IssueAdProvisionInfo.builder()
+            .id(1)
+            .article(1)
+            .content("1항")
+            .build();
+
+        List<IssueAdInfo.IssueAdProvisionInfo> infos = List.of(info);
+
+        doReturn(infos)
+            .when(adProvisionReader)
+            .findIssueAdProvisionList();
+
+        //when
+        List<IssueAdInfo.IssueAdProvisionInfo> result = issueAdService.findProvisionList();
+
+        //then
+        assertNotNull(result);
+        assertEquals(infos.getFirst().id(), result.getFirst().id());
+        assertEquals(infos.getFirst().article(), result.getFirst().article());
+        assertEquals(infos.getFirst().content(), result.getFirst().content());
+
+        verify(adProvisionReader, times(1)).findIssueAdProvisionList();
+    }
+
+    @Test
+    @DisplayName("심의결정 리스트 조회 성공 테스트")
+    void findDecisionListTest(){
+        //given
+        IssueAdInfo.IssueAdDecisionInfo info = IssueAdInfo.IssueAdDecisionInfo.builder()
+            .id((long)1)
+            .decision("의견 1")
+            .build();
+
+        List<IssueAdInfo.IssueAdDecisionInfo> infos = List.of(info);
+
+        doReturn(infos)
+            .when(adDecisionReader)
+            .findIssueAdDecisionList();
+
+        //when
+        List<IssueAdInfo.IssueAdDecisionInfo> result = issueAdService.findDecisionList();
+
+        //then
+        assertNotNull(result);
+        assertEquals(infos.getFirst().id(), result.getFirst().id());
+        assertEquals(infos.getFirst().decision(), result.getFirst().decision());
+
+        verify(adDecisionReader, times(1)).findIssueAdDecisionList();
     }
 }
