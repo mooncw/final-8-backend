@@ -48,4 +48,10 @@ public class AuthCommand {
         String phoneNumber,
         String certNoCheckToken
     ) {}
+
+    @Builder
+    public record EditPasswordRequest(
+        String password,
+        String passwordResetToken
+    ) {}
 }

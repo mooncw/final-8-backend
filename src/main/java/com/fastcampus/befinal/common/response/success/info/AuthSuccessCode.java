@@ -14,7 +14,8 @@ public enum AuthSuccessCode implements SuccessCode {
     CHECK_CERTIFICATION_NUMBER_SUCCESS(HttpStatus.OK, AuthCode.CHECK_CERTIFICATION_NUMBER_SUCCESS, "유효한 인증번호입니다."),
     SIGN_IN_SUCCESS(HttpStatus.OK, AuthCode.SIGN_IN_SUCCESS, "로그인되었습니다."),
     FIND_ID_SUCCESS(HttpStatus.OK, AuthCode.FIND_ID_SUCCESS, "아이디가 조회되었습니다."),
-    FIND_PASSWORD_SUCCESS(HttpStatus.OK, AuthCode.FIND_PASSWORD_SUCCESS, "비밀번호가 조회되었습니다.");
+    FIND_PASSWORD_SUCCESS(HttpStatus.OK, AuthCode.FIND_PASSWORD_SUCCESS, "비밀번호가 조회되었습니다."),
+    EDIT_PASSWORD_SUCCESS(HttpStatus.OK, AuthCode.EDIT_PASSWORD_SUCCESS, "비밀번호가 수정되었습니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;
