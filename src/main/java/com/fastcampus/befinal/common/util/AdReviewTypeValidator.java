@@ -22,12 +22,12 @@ public class AdReviewTypeValidator implements ConstraintValidator<ValidAdReviewT
         boolean sentenceIsNullOrEmpty = request.sentence() == null || request.sentence().isEmpty();
         boolean opinionIsNullOrEmpty = request.opinion() == null || request.opinion().isEmpty();
 
-        boolean validResult = false;
+        boolean validResult = true;
 
         if(Objects.equals(request.operationType(), "Create")){
             validResult = !(advertisementIdIsNullOrEmpty || provisionIdIsNull || sentenceIsNullOrEmpty || opinionIsNullOrEmpty);
         } else if (Objects.equals(request.operationType(),"Update")) {
-            validResult = !(reviewIdIsNull || sentenceIsNullOrEmpty || opinionIsNullOrEmpty);
+            validResult = !(reviewIdIsNull || sentenceIsNullOrEmpty || opinionIsNullOrEmpty || provisionIdIsNull);
         } else if (Objects.equals(request.operationType(), "Delete")) {
             validResult = !(reviewIdIsNull);
         }

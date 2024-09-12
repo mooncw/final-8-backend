@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -66,9 +68,21 @@ public class IssueAdController {
     }
 
     @PostMapping("/save-task")
+    @Operation(summary = "지적광고 심의결정 리뷰 저장")
+    @ApiResponse(responseCode = "200", description = "지적광고에 대한 검토작업이 저장되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{" +
+                    "\"code\": 3401, " +
+                    "\"message\": \"지적광고에 대한 검토작업이 저장되었습니다.\" " +
+                "}"
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse> saveIssueAdReviews(
         @RequestBody
-        @Validated(DefaultGroupSequence.class)
+        @Valid
         List<IssueAdDto.IssueAdReviewRequest> requests
     ){
         issueAdFacade.saveIssueAdReviews(requests);
@@ -76,18 +90,76 @@ public class IssueAdController {
     }
 
     @GetMapping("/options/provision")
+    @Operation(summary = "조항 리스트 불러오기")
+    @ApiResponse(responseCode = "200", description = "조항 리스트가 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{" +
+                    "\"code\": 3402, " +
+                    "\"message\": \"조항 리스트가 조회되었습니다.\", " +
+                    "\"data\": [ " +
+                        "{ " +
+                            "\"id\": 1, " +
+                            "\"article\": 1, " +
+                            "\"content\": \"1항 내용\" " +
+                        "}," +
+                        "{" +
+                        "\"id\": 2," +
+                        "\"article\": 2," +
+                        "\"content\": \"2항 내용\" " +
+                        "}" +
+                    "]" +
+                "}"
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse<List<IssueAdDto.IssueAdProvisionResponse>>> findProvisionList(){
         List<IssueAdDto.IssueAdProvisionResponse> responses = issueAdFacade.findProvisionList();
         return ResponseEntityFactory.toResponseEntity(GET_PROVISION_LIST_SUCCESS, responses);
     }
 
     @GetMapping("/options/decision")
+    @Operation(summary = "심의결정 리스트 불러오기")
+    @ApiResponse(responseCode = "200", description = "심의결정 리스트가 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{" +
+                    "\"code\": 3403, " +
+                    "\"message\": \"심의결정 리스트가 조회되었습니다.\", " +
+                    "\"data\": [ " +
+                        "{ " +
+                        "\"id\": 1, " +
+                        "\"decision\": \"해당사항 없음\" " +
+                        "}, " +
+                        "{" +
+                        "\"id\": 2," +
+                        "\"decision\": \"주의 및 경고\" " +
+                        "}" +
+                    "]" +
+                "}"
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse<List<IssueAdDto.IssueAdDecisionResponse>>> findDecisionList(){
         List<IssueAdDto.IssueAdDecisionResponse> responses = issueAdFacade.findDecisionList();
         return ResponseEntityFactory.toResponseEntity(GET_DECISION_LIST_SUCCESS, responses);
     }
 
     @PostMapping("/result/decision")
+    @Operation(summary = "지적광고 심의결정 완료")
+    @ApiResponse(responseCode = "200", description = "심의결정이 저장되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{" +
+                    "\"code\": 3404, " +
+                    "\"message\": \"심의결정이 저장되었습니다.\" " +
+                "}"
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse> saveIssueAdDecision(
         @RequestBody
         @Validated(DefaultGroupSequence.class)

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import static com.fastcampus.befinal.common.response.error.info.BaseErrorCode.SERVER_ERROR;
 
@@ -32,6 +33,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<AppApiResponse> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         RequestErrorCode errorCode = RequestErrorCode.REQUEST_ERROR;
         errorCode.setMessage(e);
+        return ResponseEntityFactory.toResponseEntity(errorCode);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<AppApiResponse> onHandlerMethodValidationException(HandlerMethodValidationException e) {
+        RequestErrorCode errorCode = RequestErrorCode.REQUEST_ERROR;
+        errorCode.setMessage("입력을 다시 확인해주세요");
         return ResponseEntityFactory.toResponseEntity(errorCode);
     }
 }

@@ -3,6 +3,7 @@ package com.fastcampus.befinal.presentation.dto;
 import com.fastcampus.befinal.common.annotation.ValidAdReviewType;
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 
@@ -13,24 +14,31 @@ import static com.fastcampus.befinal.common.contant.IssueAdConstant.*;
 
 public class IssueAdDto {
     @Builder
-    @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE, groups = RequestValidationGroups.CustomValidateGroup.class)
+    @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE)
     public record IssueAdReviewRequest(
-        @NotBlank(groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "Create|Update|Delete", message = INVALID_OPERATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        @Schema(description = SWAGGER_OPERATION_TYPE_DESCRIPTION, example = SWAGGER_OPERATION_TYPE, requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank(message = NOT_BLANK_OPERATION_TYPE)
+        @Pattern(regexp = "Create|Update|Delete", message = INVALID_OPERATION_TYPE)
         String operationType,
+        @Schema(description = SWAGGER_REVIEW_ID_DESCRIPTION, example = SWAGGER_REVIEW_ID, nullable = true)
         Long reviewId,
+        @Schema(description = SWAGGER_ADVERTISEMENT_ID_DESCRIPTION, example = SWAGGER_ADVERTISEMENT_ID, nullable = true)
         String advertisementId,
+        @Schema(description = SWAGGER_PROVISION_ID_DESCRIPTION, example = SWAGGER_PROVISION_ID, nullable = true)
         Integer provisionId,
+        @Schema(description = SWAGGER_SENTENCE_DESCRIPTION, example = SWAGGER_SENTENCE, nullable = true)
         String sentence,
+        @Schema(description = SWAGGER_OPINION_DESCRIPTION, example = SWAGGER_OPINION, nullable = true)
         String opinion
     ){}
 
     @Builder
     public record IssueAdResultDecisionRequest(
+        @Schema(example = SWAGGER_ADVERTISEMENT_ID)
         @NotBlank(message = NOT_BLANK_ADVERTISE_ID, groups = RequestValidationGroups.NotBlankGroup.class)
         String advertisementId,
-        @Min(value = DECISION_ID_MIN, message = INVALID_DECISION_ID, groups = RequestValidationGroups.SizeGroup.class)
-        @Max(value = DECISION_ID_MAX, message = INVALID_DECISION_ID, groups = RequestValidationGroups.SizeGroup.class)
+        @Schema(example = SWAGGER_DECISION_ID)
+        @NotNull(message = NOT_BLANK_DECISION_ID, groups = RequestValidationGroups.NotNullGroup.class)
         Long decisionId
     ){}
 

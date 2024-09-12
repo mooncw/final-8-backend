@@ -37,4 +37,8 @@ public enum RequestErrorCode implements ErrorCode {
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .collect(Collectors.joining("\n"));
     }
+
+    public void setMessage(String error){
+        this.message = error;
+    }
 }
