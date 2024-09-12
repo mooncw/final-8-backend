@@ -130,6 +130,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public AuthInfo.PasswordResetTokenInfo findPassword(AuthCommand.FindPasswordRequest command) {
         User user = validateUserId(command);
 
