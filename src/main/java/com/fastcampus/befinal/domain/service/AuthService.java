@@ -13,4 +13,6 @@ public interface AuthService {
     AuthInfo.CheckCertificationNumberTokenInfo checkCertificationNumber(AuthCommand.CheckCertificationNumberRequest command);
 
     AuthInfo.FindIdInfo findId(AuthCommand.FindIdRequest command);
+
+    AuthInfo.PasswordResetTokenInfo findPassword(AuthCommand.FindPasswordRequest command);
 }

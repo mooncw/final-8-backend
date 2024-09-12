@@ -1,6 +1,5 @@
 package com.fastcampus.befinal.application.service;
 
-import com.fastcampus.befinal.application.mapper.AuthDtoMapper;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.command.AuthCommand;
@@ -128,6 +127,34 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return user;
+    }
+
+    @Override
+    public AuthInfo.PasswordResetTokenInfo findPassword(AuthCommand.FindPasswordRequest command) {
+        User user = validateUserId(command);
+
+        validateUserNameAndPhoneNumber(user, command);
+
+        AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo = AuthInfo.CheckTokenInfo.from(command.certNoCheckToken());
+
+        validateCertificationNumberCheckToken(certificationNumberCheckTokenInfo);
+
+        AuthInfo.CheckTokenInfo tokenInfo = AuthInfo.CheckTokenInfo.from(Generator.generateUniqueValue());
+
+        checkTokenStore.store(tokenInfo, user);
+
+        return AuthInfo.PasswordResetTokenInfo.from(tokenInfo.token());
+    }
+
+    private User validateUserId(AuthCommand.FindPasswordRequest command) {
+        User user = userReader.findUser(command.id());
+        return user;
+    }
+
+    private void validateUserNameAndPhoneNumber(User user, AuthCommand.FindPasswordRequest command) {
+        if(!user.getName().equals(command.name()) || !user.getPhoneNumber().equals(command.phoneNumber())) {
+            throw new BusinessException(INCONSISTENT_USER_INFO);
+        }
     }
 
     @Override
