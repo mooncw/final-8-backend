@@ -62,9 +62,9 @@ public class AuthInfo {
     public record FindIdInfo(
         String userId
     ) {
-        public static FindIdInfo from(String userId) {
+        public static FindIdInfo from(User user) {
             return FindIdInfo.builder()
-                .userId(userId)
+                .userId(user.getUserId())
                 .build();
         }
     }

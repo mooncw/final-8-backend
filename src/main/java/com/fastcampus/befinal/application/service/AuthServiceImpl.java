@@ -109,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
 
         validateCertificationNumberCheckToken(certificationNumberCheckTokenInfo);
 
-        return AuthInfo.FindIdInfo.from(user.getUserId());
+        return AuthInfo.FindIdInfo.from(user);
     }
 
     private void validateCertificationNumberCheckToken(AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo) {
