@@ -378,4 +378,64 @@ public class AuthDtoTest {
         // then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_NAME, PATTERN_MISMATCH_PHONE_NUMBER));
     }
+
+    @Test
+    @DisplayName("비밀번호 찾기 요청 검증 테스트 - NotBlank")
+    void whenFindPasswordRequestIsBlank_thenValidationFails() {
+        // given
+        AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
+            .id(" ")
+            .name(" ")
+            .phoneNumber(" ")
+            .certNoCheckToken(" ")
+            .build();
+
+        // when
+        Set<ConstraintViolation<AuthDto.FindPasswordRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_USER_ID, NOT_BLANK_USER_NAME, NOT_BLANK_PHONE_NUMBER, NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN));
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기 요청 검증 테스트 - Size")
+    void whenFindPasswordRequestMismatchSize_thenValidationFails() {
+        // given
+        AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
+            .id("par")
+            .name("박")
+            .phoneNumber("0101234567")
+            .certNoCheckToken("ca1.cb1.cc1")
+            .build();
+
+        // when
+        Set<ConstraintViolation<AuthDto.FindPasswordRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_USER_ID, SIZE_MISMATCH_USER_NAME, SIZE_MISMATCH_PHONE_NUMBER));
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기 요청 검증 테스트 - Pattern")
+    void whenFindPasswordRequestMismatchPattern_thenValidationFails() {
+        // given
+        AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
+            .id("박현준")
+            .name("박t2")
+            .phoneNumber("a1234567890")
+            .certNoCheckToken("ca1.cb1.cc1")
+            .build();
+
+        // when
+        Set<ConstraintViolation<AuthDto.FindPasswordRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_ID, PATTERN_MISMATCH_USER_NAME, PATTERN_MISMATCH_PHONE_NUMBER));
+    }
 }

@@ -278,4 +278,37 @@ class AuthControllerTest {
             .andExpect(jsonPath("code").value(FIND_ID_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(FIND_ID_SUCCESS.getMessage()));
     }
+
+    @Test
+    @DisplayName("비밀번호 찾기 성공시, 200 OK와 정상 응답을 반환")
+    void findUserPassword() throws Exception {
+        // given
+        AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
+            .id("hong")
+            .name("홍길동")
+            .phoneNumber("01011112222")
+            .certNoCheckToken("ca1.cb1.cc1")
+            .build();
+
+        AuthDto.PasswordResetTokenResponse response = AuthDto.PasswordResetTokenResponse.builder()
+            .passwordResetToken("pa1.pb1.pc1")
+            .build();
+
+        doReturn(response)
+            .when(authFacade)
+            .findPassword(any(AuthDto.FindPasswordRequest.class));
+
+        // when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/find-password")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        // then
+        perform.andExpect(status().is(FIND_PASSWORD_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(FIND_PASSWORD_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(FIND_PASSWORD_SUCCESS.getMessage()));
+    }
 }

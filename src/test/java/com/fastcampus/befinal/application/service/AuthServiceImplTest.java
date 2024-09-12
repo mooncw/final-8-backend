@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.type.CertificationType;
+import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.SmsCertification;
@@ -48,6 +49,9 @@ public class AuthServiceImplTest {
 
     @Mock
     private UserReader userReader;
+
+    @Mock
+    private Generator generator;
 
     @Spy
     private PasswordEncoder passwordEncoder = Mockito.spy(BCryptPasswordEncoder.class);;
@@ -227,5 +231,50 @@ public class AuthServiceImplTest {
         verify(userReader, times(1)).findByPhoneNumber(anyString());
         verify(checkTokenReader, times(1)).exists(any(AuthInfo.CheckTokenInfo.class));
         verify(checkTokenStore, times(1)).delete(any(AuthInfo.CheckTokenInfo.class));
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기 성공 테스트")
+    void findPasswordTest() {
+        // given
+        AuthCommand.FindPasswordRequest request = AuthCommand.FindPasswordRequest.builder()
+            .id("hong")
+            .name("홍길동")
+            .phoneNumber("01011112222")
+            .certNoCheckToken("ca1.cb1.cc1")
+            .build();
+
+        User user = User.builder()
+            .userId("aaaa")
+            .name("홍길동")
+            .password("aaaa1111")
+            .phoneNumber("01011112222")
+            .empNumber("11111111")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(USER_AUTHORITY)
+            .build();
+
+        doReturn(user)
+            .when(userReader)
+            .findUser("hong");
+
+        doReturn(true)
+            .when(checkTokenReader)
+            .exists(any(AuthInfo.CheckTokenInfo.class));
+
+        doNothing()
+            .when(checkTokenStore)
+            .store(any(AuthInfo.CheckTokenInfo.class), any(User.class));
+
+        // when
+        authService.findPassword(request);
+
+        // then
+        verify(userReader, times(1)).findUser(anyString());
+        verify(checkTokenReader, times(1)).exists(any(AuthInfo.CheckTokenInfo.class));
+        verify(checkTokenStore, times(1)).delete(any(AuthInfo.CheckTokenInfo.class));
+        verify(checkTokenStore, times(1)).store(any(AuthInfo.CheckTokenInfo.class), any(User.class));
     }
 }
