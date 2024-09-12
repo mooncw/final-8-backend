@@ -15,4 +15,6 @@ public interface AuthService {
     AuthInfo.FindIdInfo findId(AuthCommand.FindIdRequest command);
 
     AuthInfo.PasswordResetTokenInfo findPassword(AuthCommand.FindPasswordRequest command);
+
+    void editPassword(AuthCommand.EditPasswordRequest command);
 }
