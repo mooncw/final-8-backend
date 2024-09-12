@@ -100,8 +100,34 @@ class IssueAdControllerTest {
     @DisplayName("지적광고 검수 리뷰 저장 요청 시, 200 OK 및 정상 응답을 반환")
     void saveIssueAdReviewsTest() throws Exception {
         //given
-        IssueAdDto.IssueAdReviewRequest request = IssueAdDto.IssueAdReviewRequest.builder().build();
-        List<IssueAdDto.IssueAdReviewRequest> requests = List.of(request);
+        Long reviewId = (long) 1;
+        String advertisementId = "202409A0001";
+        Integer provisionId = 1;
+        String sentence = "내용1";
+        String opinion = "의견1";
+
+        IssueAdDto.IssueAdReviewRequest createRequest = IssueAdDto.IssueAdReviewRequest.builder()
+            .operationType("Create")
+            .advertisementId(advertisementId)
+            .provisionId(provisionId)
+            .sentence(sentence)
+            .opinion(opinion)
+            .build();
+
+        IssueAdDto.IssueAdReviewRequest updateRequest = IssueAdDto.IssueAdReviewRequest.builder()
+            .operationType("Update")
+            .reviewId(reviewId)
+            .provisionId(provisionId)
+            .sentence(sentence)
+            .opinion(opinion)
+            .build();
+
+        IssueAdDto.IssueAdReviewRequest deleteRequest = IssueAdDto.IssueAdReviewRequest.builder()
+            .operationType("Delete")
+            .reviewId(reviewId)
+            .build();
+
+        List<IssueAdDto.IssueAdReviewRequest> requests = List.of(createRequest, updateRequest, deleteRequest);
 
         doNothing()
             .when(issueAdFacade)
