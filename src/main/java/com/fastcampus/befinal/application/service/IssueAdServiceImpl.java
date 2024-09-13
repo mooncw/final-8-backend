@@ -33,8 +33,8 @@ public class IssueAdServiceImpl implements IssueAdService {
 
     @Override
     @Transactional
-    public void saveIssueAdReviews(List<IssueAdDto.IssueAdReviewRequest> commands){
-        for (IssueAdDto.IssueAdReviewRequest command : commands) {
+    public void saveIssueAdReviews(IssueAdDto.IssueAdReviewRequest commands){
+        for (IssueAdDto.IssueAdReview command : commands.reviewList()) {
             switch(command.operationType()){
                 case "Create":
                     Advertisement advertisement = advertisementReader.findAdvertisementById(command.advertisementId());

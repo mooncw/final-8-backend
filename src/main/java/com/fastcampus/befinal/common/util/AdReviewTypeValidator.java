@@ -7,7 +7,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.Objects;
 
-public class AdReviewTypeValidator implements ConstraintValidator<ValidAdReviewType, IssueAdDto.IssueAdReviewRequest> {
+public class AdReviewTypeValidator implements ConstraintValidator<ValidAdReviewType, IssueAdDto.IssueAdReview> {
 
     @Override
     public void initialize(ValidAdReviewType constraintAnnotation){
@@ -15,7 +15,7 @@ public class AdReviewTypeValidator implements ConstraintValidator<ValidAdReviewT
     }
 
     @Override
-    public boolean isValid(IssueAdDto.IssueAdReviewRequest request, ConstraintValidatorContext context){
+    public boolean isValid(IssueAdDto.IssueAdReview request, ConstraintValidatorContext context){
         boolean reviewIdIsNull = request.reviewId() == null;
         boolean advertisementIdIsNullOrEmpty = request.advertisementId() == null || request.advertisementId().isEmpty();
         boolean provisionIdIsNull = request.provisionId() == null;

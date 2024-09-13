@@ -20,7 +20,7 @@ public class IssueAdFacade {
         return issueAdDtoMapper.from(info);
     }
 
-    public void saveIssueAdReviews(List<IssueAdDto.IssueAdReviewRequest> requests){
+    public void saveIssueAdReviews(IssueAdDto.IssueAdReviewRequest requests){
         issueAdService.saveIssueAdReviews(requests);
     }
 

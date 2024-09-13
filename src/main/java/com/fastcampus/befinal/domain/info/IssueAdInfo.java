@@ -69,7 +69,7 @@ public class IssueAdInfo {
         AdProvision adProvision
 
     ){
-        public static IssueAdReviewUpdateInfo of(IssueAdDto.IssueAdReviewRequest command, AdProvision adProvision){
+        public static IssueAdReviewUpdateInfo of(IssueAdDto.IssueAdReview command, AdProvision adProvision){
             return IssueAdReviewUpdateInfo.builder()
                 .reviewId(command.reviewId())
                 .sentence(command.sentence())

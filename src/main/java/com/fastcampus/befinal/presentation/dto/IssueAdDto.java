@@ -4,6 +4,7 @@ import com.fastcampus.befinal.common.annotation.ValidAdReviewType;
 import com.fastcampus.befinal.common.util.RequestValidationGroups;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 
@@ -16,7 +17,7 @@ import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 public class IssueAdDto {
     @Builder
     @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE)
-    public record IssueAdReviewRequest(
+    public record IssueAdReview(
         @Schema(description = SWAGGER_OPERATION_TYPE_DESCRIPTION, example = SWAGGER_OPERATION_TYPE, requiredMode = Schema.RequiredMode.REQUIRED)
         @NotBlank(message = NOT_BLANK_OPERATION_TYPE)
         @Pattern(regexp = "Create|Update|Delete", message = INVALID_OPERATION_TYPE)
@@ -31,7 +32,13 @@ public class IssueAdDto {
         String sentence,
         @Schema(description = SWAGGER_OPINION_DESCRIPTION, example = SWAGGER_OPINION, nullable = true)
         String opinion
-    ){}
+    ) {}
+
+    @Builder
+    public record IssueAdReviewRequest(
+        @NotEmpty(message = NOT_EMPTY_REVIEW_LIST, groups = RequestValidationGroups.NotEmptyGroup.class)
+        List<@Valid IssueAdReview> reviewList
+    ) {}
 
     @Builder
     public record IssueAdResultDecisionRequest(

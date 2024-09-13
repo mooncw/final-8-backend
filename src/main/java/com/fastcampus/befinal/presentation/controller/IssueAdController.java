@@ -81,7 +81,7 @@ public class IssueAdController {
     public ResponseEntity<AppApiResponse> saveIssueAdReviews(
         @RequestBody
         @Valid
-        List<IssueAdDto.IssueAdReviewRequest> requests
+        IssueAdDto.IssueAdReviewRequest requests
     ){
         issueAdFacade.saveIssueAdReviews(requests);
         return ResponseEntityFactory.toResponseEntity(SAVE_ISSUE_ADVERTISEMENT_REVIEW_SUCCESS);

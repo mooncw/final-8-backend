@@ -7,5 +7,6 @@ public class IssueAdConstant {
     public static final String NOT_BLANK_OPERATION_TYPE = "OperationType을 입력해주세요";
     public static final String NOT_BLANK_ADVERTISE_ID = "advertisementId를 입력해주세요.";
     public static final String NOT_BLANK_DECISION_ID = "decisionId를 입력해주세요";
+    public static final String NOT_EMPTY_REVIEW_LIST = "1개 이상의 리뷰 작업을 입력해주세요.";
 
 }
