@@ -69,13 +69,13 @@ public class IssueAdServiceImpl implements IssueAdService {
 
     @Override
     @Transactional
-    public List<IssueAdInfo.IssueAdProvisionInfo> findProvisionList(){
+    public IssueAdInfo.IssueAdProvisionListInfo findProvisionList(){
         return adProvisionReader.findIssueAdProvisionList();
     }
 
     @Override
     @Transactional
-    public List<IssueAdInfo.IssueAdDecisionInfo> findDecisionList(){
+    public IssueAdInfo.IssueAdDecisionListInfo findDecisionList(){
         return adDecisionReader.findIssueAdDecisionList();
     }
 }

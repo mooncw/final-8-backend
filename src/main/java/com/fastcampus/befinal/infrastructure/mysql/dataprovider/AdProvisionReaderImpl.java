@@ -17,9 +17,10 @@ import static com.fastcampus.befinal.common.response.error.info.IssueAdErrorCode
 public class AdProvisionReaderImpl implements AdProvisionReader {
     private final AdProvisionRepository adProvisionRepository;
 
-    public List<IssueAdInfo.IssueAdProvisionInfo> findIssueAdProvisionList(){
+    public IssueAdInfo.IssueAdProvisionListInfo findIssueAdProvisionList(){
         List<AdProvision> provisionList = adProvisionRepository.findAll();
-        return provisionList.stream().map(IssueAdInfo.IssueAdProvisionInfo::from).toList();
+        return IssueAdInfo.IssueAdProvisionListInfo
+            .from(provisionList.stream().map(IssueAdInfo.IssueAdProvisionInfo::from).toList());
     }
 
     public AdProvision findAdProvisionById(Integer id){

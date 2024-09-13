@@ -25,9 +25,9 @@ public interface IssueAdDtoMapper {
     @Mapping(source = "issueAdReviewList", target = "reviewList")
     IssueAdDto.IssueAdDetailResponse from(IssueAdInfo.IssueAdDetailAllInfo info);
 
-    List<IssueAdDto.IssueAdProvisionResponse> fromProvision(List<IssueAdInfo.IssueAdProvisionInfo> infoList);
+    IssueAdDto.IssueAdProvisionResponse fromProvision(IssueAdInfo.IssueAdProvisionListInfo infoList);
 
-    List<IssueAdDto.IssueAdDecisionResponse> fromDecision(List<IssueAdInfo.IssueAdDecisionInfo> infoList);
+    IssueAdDto.IssueAdDecisionResponse fromDecision(IssueAdInfo.IssueAdDecisionListInfo infoList);
 
     @Named("toLocalDate")
     public static LocalDate map(LocalDateTime dateTime) {

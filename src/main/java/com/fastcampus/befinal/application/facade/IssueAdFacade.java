@@ -24,13 +24,13 @@ public class IssueAdFacade {
         issueAdService.saveIssueAdReviews(requests);
     }
 
-    public List<IssueAdDto.IssueAdProvisionResponse> findProvisionList(){
-        List<IssueAdInfo.IssueAdProvisionInfo> infoList = issueAdService.findProvisionList();
+    public IssueAdDto.IssueAdProvisionResponse findProvisionList(){
+        IssueAdInfo.IssueAdProvisionListInfo infoList = issueAdService.findProvisionList();
         return issueAdDtoMapper.fromProvision(infoList);
     }
 
-    public List<IssueAdDto.IssueAdDecisionResponse> findDecisionList(){
-        List<IssueAdInfo.IssueAdDecisionInfo> infoList = issueAdService.findDecisionList();
+    public IssueAdDto.IssueAdDecisionResponse findDecisionList(){
+        IssueAdInfo.IssueAdDecisionListInfo infoList = issueAdService.findDecisionList();
         return issueAdDtoMapper.fromDecision(infoList);
     }
 

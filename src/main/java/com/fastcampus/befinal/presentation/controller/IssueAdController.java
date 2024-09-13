@@ -80,7 +80,7 @@ public class IssueAdController {
     )
     public ResponseEntity<AppApiResponse> saveIssueAdReviews(
         @RequestBody
-        @Valid
+        @Validated(DefaultGroupSequence.class)
         IssueAdDto.IssueAdReviewRequest requests
     ){
         issueAdFacade.saveIssueAdReviews(requests);
@@ -112,8 +112,8 @@ public class IssueAdController {
             )
         )
     )
-    public ResponseEntity<AppApiResponse<List<IssueAdDto.IssueAdProvisionResponse>>> findProvisionList(){
-        List<IssueAdDto.IssueAdProvisionResponse> responses = issueAdFacade.findProvisionList();
+    public ResponseEntity<AppApiResponse<IssueAdDto.IssueAdProvisionResponse>> findProvisionList(){
+        IssueAdDto.IssueAdProvisionResponse responses = issueAdFacade.findProvisionList();
         return ResponseEntityFactory.toResponseEntity(GET_PROVISION_LIST_SUCCESS, responses);
     }
 
@@ -140,8 +140,8 @@ public class IssueAdController {
             )
         )
     )
-    public ResponseEntity<AppApiResponse<List<IssueAdDto.IssueAdDecisionResponse>>> findDecisionList(){
-        List<IssueAdDto.IssueAdDecisionResponse> responses = issueAdFacade.findDecisionList();
+    public ResponseEntity<AppApiResponse<IssueAdDto.IssueAdDecisionResponse>> findDecisionList(){
+        IssueAdDto.IssueAdDecisionResponse responses = issueAdFacade.findDecisionList();
         return ResponseEntityFactory.toResponseEntity(GET_DECISION_LIST_SUCCESS, responses);
     }
 

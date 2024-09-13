@@ -16,7 +16,7 @@ import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 
 public class IssueAdDto {
     @Builder
-    @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE)
+    @ValidAdReviewType(message = INVALID_ADVERTISEMENT_REVIEW_TYPE, groups = RequestValidationGroups.CustomValidateGroup.class)
     public record IssueAdReview(
         @Schema(description = SWAGGER_OPERATION_TYPE_DESCRIPTION, example = SWAGGER_OPERATION_TYPE, requiredMode = Schema.RequiredMode.REQUIRED)
         @NotBlank(message = NOT_BLANK_OPERATION_TYPE)
@@ -65,14 +65,11 @@ public class IssueAdDto {
 
     @Builder
     public record IssueAdProvisionResponse(
-        Integer id,
-        Integer article,
-        String content
+        List<IssueAdInfo.IssueAdProvisionInfo> provisionList
     ){}
 
     @Builder
     public record IssueAdDecisionResponse(
-        Long id,
-        String decision
+        List<IssueAdInfo.IssueAdDecisionInfo> decisionList
     ){}
 }

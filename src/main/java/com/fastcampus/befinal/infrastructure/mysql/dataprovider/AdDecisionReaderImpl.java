@@ -17,9 +17,10 @@ import static com.fastcampus.befinal.common.response.error.info.IssueAdErrorCode
 public class AdDecisionReaderImpl implements AdDecisionReader {
     private final AdDecisionRepository adDecisionRepository;
 
-    public List<IssueAdInfo.IssueAdDecisionInfo> findIssueAdDecisionList(){
+    public IssueAdInfo.IssueAdDecisionListInfo findIssueAdDecisionList(){
         List<AdDecision> decisionList = adDecisionRepository.findAll();
-        return decisionList.stream().map(IssueAdInfo.IssueAdDecisionInfo::from).toList();
+        return IssueAdInfo.IssueAdDecisionListInfo
+            .from(decisionList.stream().map(IssueAdInfo.IssueAdDecisionInfo::from).toList());
     }
 
     public AdDecision findAdDecisionById(Long id){

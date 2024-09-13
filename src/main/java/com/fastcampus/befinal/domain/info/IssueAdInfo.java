@@ -119,6 +119,17 @@ public class IssueAdInfo {
     }
 
     @Builder
+    public record IssueAdProvisionListInfo(
+        List<IssueAdProvisionInfo> provisionList
+    ) {
+        public static IssueAdProvisionListInfo from(List<IssueAdProvisionInfo> infoList){
+            return IssueAdProvisionListInfo.builder()
+                .provisionList(infoList)
+                .build();
+        }
+    }
+
+    @Builder
     public record IssueAdDecisionInfo(
         Long id,
         String decision
@@ -127,6 +138,17 @@ public class IssueAdInfo {
             return IssueAdDecisionInfo.builder()
                 .id(adDecision.getId())
                 .decision(adDecision.getDecision())
+                .build();
+        }
+    }
+
+    @Builder
+    public record IssueAdDecisionListInfo(
+        List<IssueAdDecisionInfo> decisionList
+    ) {
+        public static IssueAdDecisionListInfo from(List<IssueAdDecisionInfo> infoList){
+            return IssueAdDecisionListInfo.builder()
+                .decisionList(infoList)
                 .build();
         }
     }
