@@ -101,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public AuthInfo.FindIdInfo findId(AuthCommand.FindIdRequest command) {
         User user = validateUserAndGetInfo(command);
 
