@@ -106,7 +106,7 @@ class IssueAdControllerTest {
         String sentence = "내용1";
         String opinion = "의견1";
 
-        IssueAdDto.IssueAdReviewRequest createRequest = IssueAdDto.IssueAdReviewRequest.builder()
+        IssueAdDto.IssueAdReview createRequest = IssueAdDto.IssueAdReview.builder()
             .operationType("Create")
             .advertisementId(advertisementId)
             .provisionId(provisionId)
@@ -114,7 +114,7 @@ class IssueAdControllerTest {
             .opinion(opinion)
             .build();
 
-        IssueAdDto.IssueAdReviewRequest updateRequest = IssueAdDto.IssueAdReviewRequest.builder()
+        IssueAdDto.IssueAdReview updateRequest = IssueAdDto.IssueAdReview.builder()
             .operationType("Update")
             .reviewId(reviewId)
             .provisionId(provisionId)
@@ -122,12 +122,14 @@ class IssueAdControllerTest {
             .opinion(opinion)
             .build();
 
-        IssueAdDto.IssueAdReviewRequest deleteRequest = IssueAdDto.IssueAdReviewRequest.builder()
+        IssueAdDto.IssueAdReview deleteRequest = IssueAdDto.IssueAdReview.builder()
             .operationType("Delete")
             .reviewId(reviewId)
             .build();
 
-        List<IssueAdDto.IssueAdReviewRequest> requests = List.of(createRequest, updateRequest, deleteRequest);
+        List<IssueAdDto.IssueAdReview> requestList = List.of(createRequest, updateRequest, deleteRequest);
+        IssueAdDto.IssueAdReviewRequest requests = IssueAdDto.IssueAdReviewRequest.builder()
+            .reviewList(requestList).build();
 
         doNothing()
             .when(issueAdFacade)

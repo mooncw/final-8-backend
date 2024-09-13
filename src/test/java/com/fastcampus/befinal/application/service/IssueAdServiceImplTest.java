@@ -78,7 +78,7 @@ public class IssueAdServiceImplTest {
         String sentence = "내용1";
         String opinion = "의견1";
 
-        IssueAdDto.IssueAdReviewRequest createRequest = IssueAdDto.IssueAdReviewRequest.builder()
+        IssueAdDto.IssueAdReview createRequest = IssueAdDto.IssueAdReview.builder()
             .operationType("Create")
             .advertisementId(advertisementId)
             .provisionId(provisionId)
@@ -86,7 +86,7 @@ public class IssueAdServiceImplTest {
             .opinion(opinion)
             .build();
 
-        IssueAdDto.IssueAdReviewRequest updateRequest = IssueAdDto.IssueAdReviewRequest.builder()
+        IssueAdDto.IssueAdReview updateRequest = IssueAdDto.IssueAdReview.builder()
             .operationType("Update")
             .reviewId(reviewId)
             .provisionId(provisionId)
@@ -94,12 +94,14 @@ public class IssueAdServiceImplTest {
             .opinion(opinion)
             .build();
 
-        IssueAdDto.IssueAdReviewRequest deleteRequest = IssueAdDto.IssueAdReviewRequest.builder()
+        IssueAdDto.IssueAdReview deleteRequest = IssueAdDto.IssueAdReview.builder()
             .operationType("Delete")
             .reviewId(reviewId)
             .build();
 
-        List<IssueAdDto.IssueAdReviewRequest> commands = List.of(createRequest, updateRequest, deleteRequest);
+        List<IssueAdDto.IssueAdReview> commandList = List.of(createRequest, updateRequest, deleteRequest);
+        IssueAdDto.IssueAdReviewRequest commands = IssueAdDto.IssueAdReviewRequest.builder()
+            .reviewList(commandList).build();
 
         Advertisement advertisement = Advertisement.builder()
             .id(advertisementId).build();
