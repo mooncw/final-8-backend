@@ -154,14 +154,19 @@ class IssueAdControllerTest {
     @DisplayName("조항 리스트 조회 요청 시, 200 OK 및 정상 응답을 반환")
     void getProvisionListTest() throws Exception {
         //given
-        IssueAdDto.IssueAdProvisionResponse response = IssueAdDto.IssueAdProvisionResponse.builder()
+        IssueAdInfo.IssueAdProvisionInfo info = IssueAdInfo.IssueAdProvisionInfo.builder()
             .id(1)
             .article(1)
-            .content("1항 내용")
+            .content("1항")
             .build();
-        List<IssueAdDto.IssueAdProvisionResponse> responses = List.of(response);
 
-        doReturn(responses)
+        IssueAdInfo.IssueAdProvisionListInfo infoList = IssueAdInfo.IssueAdProvisionListInfo.builder()
+            .provisionList(List.of(info)).build();
+
+        IssueAdDto.IssueAdProvisionResponse response = IssueAdDto.IssueAdProvisionResponse.builder()
+            .provisionList(List.of(info)).build();
+
+        doReturn(response)
             .when(issueAdFacade)
             .findProvisionList();
 
@@ -176,9 +181,9 @@ class IssueAdControllerTest {
         perform.andExpect(status().is(GET_PROVISION_LIST_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(GET_PROVISION_LIST_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(GET_PROVISION_LIST_SUCCESS.getMessage()))
-            .andExpect(jsonPath("$.data[0].id").value(response.id()))
-            .andExpect(jsonPath("$.data[0].article").value(response.article()))
-            .andExpect(jsonPath("$.data[0].content").value(response.content()));
+            .andExpect(jsonPath("$.data.provisionList[0].id").value(response.provisionList().getFirst().id()))
+            .andExpect(jsonPath("$.data.provisionList[0].article").value(response.provisionList().getFirst().article()))
+            .andExpect(jsonPath("$.data.provisionList[0].content").value(response.provisionList().getFirst().content()));
     }
 
     @Test
@@ -186,13 +191,15 @@ class IssueAdControllerTest {
     @DisplayName("심의결정 리스트 조회 요청 시, 200 OK 및 정상 응답을 반환")
     void getDecisionListTest() throws Exception {
         //given
-        IssueAdDto.IssueAdDecisionResponse response = IssueAdDto.IssueAdDecisionResponse.builder()
+        IssueAdInfo.IssueAdDecisionInfo info = IssueAdInfo.IssueAdDecisionInfo.builder()
             .id((long)1)
             .decision("수정 필요")
             .build();
-        List<IssueAdDto.IssueAdDecisionResponse> responses = List.of(response);
 
-        doReturn(responses)
+        IssueAdDto.IssueAdDecisionResponse response = IssueAdDto.IssueAdDecisionResponse.builder()
+            .decisionList(List.of(info)).build();
+
+        doReturn(response)
             .when(issueAdFacade)
             .findDecisionList();
 
@@ -207,8 +214,8 @@ class IssueAdControllerTest {
         perform.andExpect(status().is(GET_DECISION_LIST_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(GET_DECISION_LIST_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(GET_DECISION_LIST_SUCCESS.getMessage()))
-            .andExpect(jsonPath("$.data[0].id").value(response.id()))
-            .andExpect(jsonPath("$.data[0].decision").value(response.decision()));
+            .andExpect(jsonPath("$.data.decisionList[0].id").value(response.decisionList().getFirst().id()))
+            .andExpect(jsonPath("$.data.decisionList[0].decision").value(response.decisionList().getFirst().decision()));
     }
 
     @Test

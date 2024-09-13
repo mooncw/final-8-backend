@@ -190,20 +190,21 @@ public class IssueAdServiceImplTest {
             .content("1항")
             .build();
 
-        List<IssueAdInfo.IssueAdProvisionInfo> infos = List.of(info);
+        IssueAdInfo.IssueAdProvisionListInfo infos = IssueAdInfo.IssueAdProvisionListInfo.builder()
+            .provisionList(List.of(info)).build();
 
         doReturn(infos)
             .when(adProvisionReader)
             .findIssueAdProvisionList();
 
         //when
-        List<IssueAdInfo.IssueAdProvisionInfo> result = issueAdService.findProvisionList();
+        IssueAdInfo.IssueAdProvisionListInfo result = issueAdService.findProvisionList();
 
         //then
         assertNotNull(result);
-        assertEquals(infos.getFirst().id(), result.getFirst().id());
-        assertEquals(infos.getFirst().article(), result.getFirst().article());
-        assertEquals(infos.getFirst().content(), result.getFirst().content());
+        assertEquals(infos.provisionList().getFirst().id(), result.provisionList().getFirst().id());
+        assertEquals(infos.provisionList().getFirst().article(), result.provisionList().getFirst().article());
+        assertEquals(infos.provisionList().getFirst().content(), result.provisionList().getFirst().content());
 
         verify(adProvisionReader, times(1)).findIssueAdProvisionList();
     }
@@ -217,19 +218,20 @@ public class IssueAdServiceImplTest {
             .decision("의견 1")
             .build();
 
-        List<IssueAdInfo.IssueAdDecisionInfo> infos = List.of(info);
+        IssueAdInfo.IssueAdDecisionListInfo infos = IssueAdInfo.IssueAdDecisionListInfo.builder()
+            .decisionList(List.of(info)).build();
 
         doReturn(infos)
             .when(adDecisionReader)
             .findIssueAdDecisionList();
 
         //when
-        List<IssueAdInfo.IssueAdDecisionInfo> result = issueAdService.findDecisionList();
+        IssueAdInfo.IssueAdDecisionListInfo result = issueAdService.findDecisionList();
 
         //then
         assertNotNull(result);
-        assertEquals(infos.getFirst().id(), result.getFirst().id());
-        assertEquals(infos.getFirst().decision(), result.getFirst().decision());
+        assertEquals(infos.decisionList().getFirst().id(), result.decisionList().getFirst().id());
+        assertEquals(infos.decisionList().getFirst().decision(), result.decisionList().getFirst().decision());
 
         verify(adDecisionReader, times(1)).findIssueAdDecisionList();
     }
