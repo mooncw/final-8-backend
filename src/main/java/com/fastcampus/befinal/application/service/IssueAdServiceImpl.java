@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.AdDecision;
 import com.fastcampus.befinal.domain.entity.AdProvision;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.fastcampus.befinal.common.response.error.info.IssueAdErrorCode.INVALID_OPERATION_TYPE;
 
 @Service
 @RequiredArgsConstructor
@@ -36,24 +39,25 @@ public class IssueAdServiceImpl implements IssueAdService {
     public void saveIssueAdReviews(IssueAdDto.IssueAdReviewRequest commands){
         for (IssueAdDto.IssueAdReview command : commands.reviewList()) {
             switch(command.operationType()){
-                case "Create":
+                case "Create" -> {
                     Advertisement advertisement = advertisementReader.findAdvertisementById(command.advertisementId());
                     AdProvision createAdProvision = adProvisionReader.findAdProvisionById(command.provisionId());
                     IssueAdInfo.IssueAdReviewSaveInfo saveInfo =
-                        IssueAdInfo.IssueAdReviewSaveInfo.of(command.sentence(), command.opinion(), advertisement,createAdProvision);
+                        IssueAdInfo.IssueAdReviewSaveInfo.of(command, advertisement, createAdProvision);
                     adReviewStore.saveAdReview(saveInfo);
-                    break;
-                case "Update":
+                }
+                case "Update" -> {
                     AdProvision updateAdProvision = adProvisionReader.findAdProvisionById(command.provisionId());
                     IssueAdInfo.IssueAdReviewUpdateInfo updateInfo =
                         IssueAdInfo.IssueAdReviewUpdateInfo.of(command, updateAdProvision);
                     adReviewStore.updateAdReview(updateInfo);
-                    break;
-                case "Delete":
+                }
+                case "Delete" -> {
                     IssueAdInfo.IssueAdReviewDeleteInfo deleteInfo =
                         IssueAdInfo.IssueAdReviewDeleteInfo.from(command.reviewId());
                     adReviewStore.deleteAdReview(deleteInfo);
-                    break;
+                }
+                default -> throw new BusinessException(INVALID_OPERATION_TYPE);
             }
         }
     }

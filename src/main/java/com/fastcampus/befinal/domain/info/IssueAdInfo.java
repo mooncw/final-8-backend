@@ -51,10 +51,10 @@ public class IssueAdInfo {
         String opinion,
         AdProvision adProvision
     ) {
-        public static IssueAdReviewSaveInfo of(String sentence, String opinion, Advertisement advertisement, AdProvision adProvision) {
+        public static IssueAdReviewSaveInfo of(IssueAdDto.IssueAdReview command, Advertisement advertisement, AdProvision adProvision) {
             return IssueAdReviewSaveInfo.builder()
-                .sentence(sentence)
-                .opinion(opinion)
+                .sentence(command.sentence())
+                .opinion(command.opinion())
                 .adProvision(adProvision)
                 .advertisement(advertisement)
                 .build();
