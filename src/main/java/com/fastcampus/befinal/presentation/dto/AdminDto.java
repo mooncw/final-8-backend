@@ -66,13 +66,17 @@ public class AdminDto {
 
     @Builder
     public record SelectedAssigneeInfo(
+        @NotNull(groups = RequestValidationGroups.NotNullGroup.class)
         Long id,
+
+        @NotNull(groups = RequestValidationGroups.NotNullGroup.class)
         Long taskAssignmentAmount
     ) {}
 
     @Builder
     public record AssignTaskRequest(
-        List<SelectedAssigneeInfo> selectedAssigneeList
+        @NotEmpty(groups = RequestValidationGroups.NotEmptyGroup.class)
+        List<@Valid SelectedAssigneeInfo> selectedAssigneeList
     ) {}
 
     @Builder
