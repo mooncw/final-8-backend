@@ -4,13 +4,13 @@ import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
-import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepository;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepositoryCustom;
 import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 import static com.fastcampus.befinal.common.response.error.info.IssueAdErrorCode.NOT_FOUND_ADVERTISEMENT_ID;
@@ -55,10 +55,5 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     @Override
     public List<AdminInfo.UnassignedAdIdInfo> findAllUnassignedAdId(Long amount) {
         return advertisementRepositoryCustom.findAllIdByAssigneeIsNull(amount);
-    }
-
-    @Override
-    public List<Advertisement> findAllUnassignedAd(Long amount) {
-        return advertisementRepositoryCustom.findAllByAssigneeIsNull(amount);
     }
 }

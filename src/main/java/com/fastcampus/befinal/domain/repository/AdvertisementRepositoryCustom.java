@@ -2,7 +2,10 @@ package com.fastcampus.befinal.domain.repository;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.TaskCommand;
-import com.fastcampus.befinal.domain.entity.*;
+import com.fastcampus.befinal.domain.entity.AdCategory;
+import com.fastcampus.befinal.domain.entity.AdMedia;
+import com.fastcampus.befinal.domain.entity.QAdvertisement;
+import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
@@ -427,20 +430,5 @@ public class AdvertisementRepositoryCustom {
             .set(ad.assignDateTime, LocalDateTime.now())
             .where(ad.id.in(personalTaskAdIdList))
             .execute();
-    }
-
-    public List<Advertisement> findAllByAssigneeIsNull(Long amount) {
-        List<String> ids = queryFactory
-            .select(ad.id)
-            .from(ad)
-            .where(ad.assignee.isNull())
-            .limit(amount)
-            .fetch();
-
-        return queryFactory
-            .selectFrom(ad)
-            .where(ad.id.in(ids))
-            .orderBy(ad.id.desc())  // limit 결과에 대해 정렬
-            .fetch();
     }
 }

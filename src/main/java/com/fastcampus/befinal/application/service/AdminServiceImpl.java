@@ -4,7 +4,6 @@ import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.dataprovider.*;
-import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.entity.UserManagement;
 import com.fastcampus.befinal.domain.entity.UserSummary;
@@ -150,84 +149,5 @@ public class AdminServiceImpl implements AdminService {
         if (selectedAssigneeInfo.taskAssignmentAmount().compareTo(taskAssignmentAmountInfo.base()) > 0) {
             userStore.update(selectedAssigneeInfo);
         }
-    }
-
-    @Override
-    @Transactional
-    public void assignTaskOriginal(AdminCommand.AssignTaskRequest command) {
-        AdminInfo.TaskAssignmentAmountInfo taskAssignmentAmountInfo = validateAndGetTaskAssignmentAmountInfo(command);
-
-        List<Advertisement> unassignedAdvertisementList =
-            advertisementReader.findAllUnassignedAd(taskAssignmentAmountInfo.total());
-
-        command.selectedAssigneeList()
-            .forEach(selectedAssigneeInfo -> {
-                UserSummary userSummary = userSummaryReader.findById(selectedAssigneeInfo.id());
-
-                for (long i = 0L; i < selectedAssigneeInfo.taskAssignmentAmount(); i++) {
-                    Advertisement advertisement = unassignedAdvertisementList.removeLast();
-                    advertisement.updateAssignee(userSummary);
-                }
-
-                if (selectedAssigneeInfo.taskAssignmentAmount().compareTo(taskAssignmentAmountInfo.base()) > 0) {
-                    userStore.update(selectedAssigneeInfo);
-                }
-            });
-    }
-
-    // 쿼리 개선
-    @Override
-    @Transactional
-    public void assignTaskV1(AdminCommand.AssignTaskRequest command) {
-        AdminInfo.TaskAssignmentAmountInfo taskAssignmentAmountInfo = validateAndGetTaskAssignmentAmountInfo(command);
-
-        List<AdminInfo.UnassignedAdIdInfo> unassignedAdvertisementList =
-            advertisementReader.findAllUnassignedAdId(taskAssignmentAmountInfo.total());
-
-        command.selectedAssigneeList()
-            .forEach(selectedAssigneeInfo -> {
-                UserSummary userSummary = userSummaryReader.findById(selectedAssigneeInfo.id());
-
-                List<String> personalTaskAdIdList = new ArrayList<>();
-
-                for (long i = 0L; i < selectedAssigneeInfo.taskAssignmentAmount(); i++) {
-                    AdminInfo.UnassignedAdIdInfo unassignedAdIdInfo = unassignedAdvertisementList.removeLast();
-
-                    personalTaskAdIdList.add(unassignedAdIdInfo.id());
-                }
-
-                advertisementStore.updateAssignee(userSummary, personalTaskAdIdList);
-
-                if (selectedAssigneeInfo.taskAssignmentAmount().compareTo(taskAssignmentAmountInfo.base()) > 0) {
-                    userStore.update(selectedAssigneeInfo);
-                }
-            });
-    }
-
-    // 멀티 스레딩
-    @Override
-    @Transactional
-    public void assignTaskV2(AdminCommand.AssignTaskRequest command) {
-        AdminInfo.TaskAssignmentAmountInfo taskAssignmentAmountInfo = validateAndGetTaskAssignmentAmountInfo(command);
-
-        List<Advertisement> unassignedAdvertisementList =
-            advertisementReader.findAllUnassignedAd(taskAssignmentAmountInfo.total());
-
-        command.selectedAssigneeList()
-            .parallelStream()
-            .forEach(selectedAssigneeInfo -> {
-                UserSummary userSummary = userSummaryReader.findById(selectedAssigneeInfo.id());
-
-                for (long i = 0L; i < selectedAssigneeInfo.taskAssignmentAmount(); i++) {
-                    synchronized (unassignedAdvertisementList) {
-                        Advertisement advertisement = unassignedAdvertisementList.removeLast();
-                        advertisement.updateAssignee(userSummary);
-                    }
-                }
-
-                if (selectedAssigneeInfo.taskAssignmentAmount().compareTo(taskAssignmentAmountInfo.base()) > 0) {
-                    userStore.update(selectedAssigneeInfo);
-                }
-            });
     }
 }
