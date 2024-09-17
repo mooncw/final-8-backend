@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
@@ -49,6 +50,9 @@ public class AdminServiceImplTest {
 
     @Mock
     private AdvertisementReader advertisementReader;
+
+    @Mock
+    private AdvertisementStore advertisementStore;
 
     @Test
     @DisplayName("회원가입 승인 성공 테스트")
@@ -294,5 +298,87 @@ public class AdminServiceImplTest {
         assertThat(scroll.totalElements()).isEqualTo(doReturnScroll.totalElements());
         assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
         assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
+    }
+
+    @Test
+    @DisplayName("작업 배분 완료 성공 테스트")
+    void assignTaskTest() {
+        //given
+        AdminCommand.SelectedAssigneeInfo selectedAssigneeInfo1 = AdminCommand.SelectedAssigneeInfo.builder()
+            .id(2L)
+            .taskAssignmentAmount(2L)
+            .build();
+
+        AdminCommand.SelectedAssigneeInfo selectedAssigneeInfo2 = AdminCommand.SelectedAssigneeInfo.builder()
+            .id(3L)
+            .taskAssignmentAmount(1L)
+            .build();
+
+        AdminCommand.AssignTaskRequest command = AdminCommand.AssignTaskRequest.builder()
+            .selectedAssigneeList(List.of(selectedAssigneeInfo1, selectedAssigneeInfo2))
+            .build();
+
+        AdminInfo.UnassignedAdIdInfo unassignedAdIdInfo1 = AdminInfo.UnassignedAdIdInfo.builder()
+            .id("202401A00001")
+            .build();
+
+        AdminInfo.UnassignedAdIdInfo unassignedAdIdInfo2 = AdminInfo.UnassignedAdIdInfo.builder()
+            .id("202401A00002")
+            .build();
+
+        AdminInfo.UnassignedAdIdInfo unassignedAdIdInfo3 = AdminInfo.UnassignedAdIdInfo.builder()
+            .id("202401A00003")
+            .build();
+
+        List<AdminInfo.UnassignedAdIdInfo> unassignedAdvertisementList = new ArrayList<>();
+        unassignedAdvertisementList.add(unassignedAdIdInfo1);
+        unassignedAdvertisementList.add(unassignedAdIdInfo2);
+        unassignedAdvertisementList.add(unassignedAdIdInfo3);
+
+        UserSummary userSummary1 = UserSummary.builder()
+            .id(2L)
+            .name("홍길동")
+            .build();
+
+        UserSummary userSummary2 = UserSummary.builder()
+            .id(3L)
+            .name("김길동")
+            .build();
+
+        doReturn(3L)
+            .when(advertisementReader)
+            .countUnassigned();
+
+        doReturn(unassignedAdvertisementList)
+            .when(advertisementReader)
+            .findAllUnassignedAdId(anyLong());
+
+
+        doReturn(userSummary1)
+            .when(userSummaryReader)
+            .findById(eq(2L));
+
+        doReturn(userSummary2)
+            .when(userSummaryReader)
+            .findById(eq(3L));
+
+        doNothing()
+            .when(advertisementStore)
+            .updateAssignee(any(UserSummary.class), anyList());
+
+        doNothing()
+            .when(userStore)
+            .update(any(AdminCommand.SelectedAssigneeInfo.class));
+
+        //when
+        adminService.assignTask(command);
+
+        //then
+        verify(advertisementReader, times(1)).countUnassigned();
+        verify(advertisementReader, times(1)).findAllUnassignedAdId(anyLong());
+        verify(userSummaryReader, times(1)).findById(eq(2L));
+        verify(userSummaryReader, times(1)).findById(eq(3L));
+        verify(advertisementStore, times(2)).updateAssignee(any(UserSummary.class), anyList());
+        verify(userStore, times(1)).update(any(AdminCommand.SelectedAssigneeInfo.class));
     }
 }
