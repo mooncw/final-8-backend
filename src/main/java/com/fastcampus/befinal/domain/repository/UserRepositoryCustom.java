@@ -175,4 +175,11 @@ public class UserRepositoryCustom {
             default -> throw new BusinessException(INVALID_USER_TASK_SORT_TYPE);
         }
     }
+
+    public void updateAdditionalTaskCount(AdminCommand.SelectedAssigneeInfo info) {
+        queryFactory.update(user)
+            .set(user.additionalTaskCount, user.additionalTaskCount.add(1))
+            .where(user.id.eq(info.id()))
+            .execute();
+    }
 }

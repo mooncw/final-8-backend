@@ -46,4 +46,22 @@ public class AdminInfo {
         String advertiser,
         String category
     ) {}
+
+    @Builder
+    public record TaskAssignmentAmountInfo(
+        Long total,
+        Long base
+    ) {
+        public static TaskAssignmentAmountInfo of(Long total, Long base) {
+            return TaskAssignmentAmountInfo.builder()
+                .total(total)
+                .base(base)
+                .build();
+        }
+    }
+
+    @Builder
+    public record UnassignedAdIdInfo(
+        String id
+    ) {}
 }

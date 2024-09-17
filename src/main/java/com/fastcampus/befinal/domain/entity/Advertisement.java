@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
 @Getter
+@DynamicUpdate
 @Entity(name = "Advertisement")
 @Table(name = "advertisement")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -62,4 +64,9 @@ public class Advertisement {
 
     @OneToOne(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private AdContent adContent;
+
+    public void updateAssignee(UserSummary userSummary) {
+        this.assignee = userSummary;
+        this.assignDateTime = LocalDateTime.now();
+    }
 }
