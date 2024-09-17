@@ -7,6 +7,7 @@ import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.service.AdminService;
 import com.fastcampus.befinal.presentation.dto.AdminDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StopWatch;
 
 @Facade
 @RequiredArgsConstructor
@@ -45,6 +46,34 @@ public class AdminFacade {
     }
 
     public void assignTask(AdminDto.AssignTaskRequest request) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         adminService.assignTask(adminDtoMapper.toAdminCommand(request));
+        stopWatch.stop();
+        System.out.println("V3 Execution time: " + stopWatch.getTotalTimeMillis() + " ms");
+    }
+
+    public void assignTaskOriginal(AdminDto.AssignTaskRequest request) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        adminService.assignTaskOriginal(adminDtoMapper.toAdminCommand(request));
+        stopWatch.stop();
+        System.out.println("Original Execution time: " + stopWatch.getTotalTimeMillis() + " ms");
+    }
+
+    public void assignTaskV1(AdminDto.AssignTaskRequest request) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        adminService.assignTaskV1(adminDtoMapper.toAdminCommand(request));
+        stopWatch.stop();
+        System.out.println("V1 Execution time: " + stopWatch.getTotalTimeMillis() + " ms");
+    }
+
+    public void assignTaskV2(AdminDto.AssignTaskRequest request) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        adminService.assignTaskV2(adminDtoMapper.toAdminCommand(request));
+        stopWatch.stop();
+        System.out.println("V2 Execution time: " + stopWatch.getTotalTimeMillis() + " ms");
     }
 }
