@@ -259,5 +259,35 @@ public class AdminController {
         adminFacade.assignTask(request);
         return ResponseEntityFactory.toResponseEntity(ASSIGN_TASK_SUCCESS);
     }
+
+    @PostMapping("/manage-task-original")
+    public ResponseEntity<AppApiResponse> assignTaskOriginal(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AdminDto.AssignTaskRequest request
+    ) {
+        adminFacade.assignTaskOriginal(request);
+        return ResponseEntityFactory.toResponseEntity(ASSIGN_TASK_SUCCESS);
+    }
+
+    @PostMapping("/manage-task-v1")
+    public ResponseEntity<AppApiResponse> assignTaskV1(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AdminDto.AssignTaskRequest request
+    ) {
+        adminFacade.assignTaskV1(request);
+        return ResponseEntityFactory.toResponseEntity(ASSIGN_TASK_SUCCESS);
+    }
+
+    @PostMapping("/manage-task-v2")
+    public ResponseEntity<AppApiResponse> assignTaskV2(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AdminDto.AssignTaskRequest request
+    ) {
+        adminFacade.assignTaskV2(request);
+        return ResponseEntityFactory.toResponseEntity(ASSIGN_TASK_SUCCESS);
+    }
 }
 
