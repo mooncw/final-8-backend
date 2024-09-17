@@ -66,16 +66,18 @@ public class AdminDto {
 
     @Builder
     public record SelectedAssigneeInfo(
-        @NotNull(groups = RequestValidationGroups.NotNullGroup.class)
+        @Schema(example = SWAGGER_USER_PK_ID)
+        @NotNull(message = NOT_NULL_USER_PK_ID, groups = RequestValidationGroups.NotNullGroup.class)
         Long id,
 
-        @NotNull(groups = RequestValidationGroups.NotNullGroup.class)
+        @Schema(example = SWAGGER_TASK_ASSIGNMENT_AMOUNT)
+        @NotNull(message = NOT_NULL_TASK_ASSIGNMENT_AMOUNT, groups = RequestValidationGroups.NotNullGroup.class)
         Long taskAssignmentAmount
     ) {}
 
     @Builder
     public record AssignTaskRequest(
-        @NotEmpty(groups = RequestValidationGroups.NotEmptyGroup.class)
+        @NotEmpty(message = NOT_EMPTY_SELECTED_ASSIGNEE_LIST,groups = RequestValidationGroups.NotEmptyGroup.class)
         List<@Valid SelectedAssigneeInfo> selectedAssigneeList
     ) {}
 

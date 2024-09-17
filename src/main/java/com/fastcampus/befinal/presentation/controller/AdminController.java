@@ -245,7 +245,7 @@ public class AdminController {
                 example = """
                     {
                         "code": 1008,
-                        "message": "작업 배분이 완료되었습니다.",
+                        "message": "작업 배분이 완료되었습니다."
                     }
                     """
             )
