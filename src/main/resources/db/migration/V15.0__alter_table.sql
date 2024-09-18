@@ -1,0 +1,1 @@
+ALTER TABLE advertisement DROP INDEX UK5mkt2c7gb20imt68y3vbh82m6;
