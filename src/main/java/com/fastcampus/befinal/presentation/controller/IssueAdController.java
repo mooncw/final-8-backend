@@ -27,6 +27,36 @@ import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccess
 public class IssueAdController {
     private final IssueAdFacade issueAdFacade;
     @PostMapping
+    @Operation(summary = "지적 광고 리스트 조회 - Param default 값은 null")
+    @ApiResponse(responseCode = "200", description = "지적 광고 리스트가 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{ " +
+                    "\"code\": 3405, " +
+                    "\"message\": \"지적 광고 리스트가 조회되었습니다.\", " +
+                    "\"data\": { " +
+                        "\"totalElements\": 1, " +
+                        "\"cursorInfo\": { " +
+                            "\"cursorState\": true, " +
+                            "\"cursorId\": \"A00001\" " +
+                        "}, " +
+                        "\"advertisementList\": [ " +
+                            "{ " +
+                                "\"adId\": \"A00001\", " +
+                                "\"media\": \"동아일보\", " +
+                                "\"category\": \"가정용품\", " +
+                                "\"product\": \"노트북\", " +
+                                "\"advertiser\": \"테크컴퍼니\", " +
+                                "\"state\": true, " +
+                                "\"issue\": false " +
+                            "} " +
+                        "] " +
+                    "} " +
+                "} "
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse<TaskDto.TaskListInfo>> findIssueAdList(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
