@@ -61,7 +61,7 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/neuroflow
             
-            SERVER_STATUS=$(curl "http://${{ secrets.SERVER_IP }}/api/health-check")
+            SERVER_STATUS=$(curl "https://${{ secrets.SERVER_DOMAIN }}/api/health-check")
             echo $IS_GREEN
 
             max_count=10
