@@ -3,10 +3,12 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -31,6 +33,11 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     @Override
     public List<DashboardInfo.RecentDone> findRecentDone(String userId) {
         return advertisementRepositoryCustom.getRecentDoneList(userId);
+    }
+
+    @Override
+    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command){
+        return advertisementRepositoryCustom.findIssueAdListScrollByCursorInfo(command);
     }
 
     @Override

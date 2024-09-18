@@ -28,8 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.fastcampus.befinal.common.contant.ScrollConstant.MANAGE_TASK_ADVERTISEMENT_SCROLL_SIZE;
-import static com.fastcampus.befinal.common.contant.ScrollConstant.MY_TASK_LIST_SCROLL_SIZE;
+import static com.fastcampus.befinal.common.contant.ScrollConstant.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -155,6 +154,41 @@ public class AdvertisementRepositoryCustom {
             .select(ad.count())
             .from(ad)
             .where(filterExpression.and(userIdEq(userId)))
+            .fetchOne();
+
+        return ScrollPagination.of(totalElements, nextCursorInfo, contents);
+    }
+
+    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdListScrollByCursorInfo(TaskCommand.FilterConditionRequest taskCommand) {
+
+        BooleanExpression filterExpression = createFilterCondition(taskCommand);
+        BooleanExpression cursorExpression = createCursorCondition(taskCommand.cursorInfo());
+
+        List<TaskInfo.AdvertisementListInfo> contents = queryFactory
+            .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
+                ad.id.substring(6),
+                ad.adMedia.name,
+                ad.adCategory.category,
+                ad.product,
+                ad.advertiser,
+                ad.state,
+                ad.issue
+            ))
+            .from(ad)
+            .where(filterExpression.and(cursorExpression))
+            .orderBy(
+                ad.state.asc(),
+                ad.id.asc()
+            )
+            .limit(ISSUE_AD_LIST_SCROLL_SIZE)
+            .fetch();
+
+        TaskInfo.CursorInfo nextCursorInfo = getNextCursorInfo(contents);
+
+        Long totalElements = queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(filterExpression)
             .fetchOne();
 
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
