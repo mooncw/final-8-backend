@@ -9,7 +9,6 @@ import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 import com.fastcampus.befinal.domain.repository.UserRepository;
 import com.fastcampus.befinal.domain.repository.UserRepositoryCustom;
-import com.fastcampus.befinal.infrastructure.mysql.mapper.MysqlEntityMapper;
 import lombok.RequiredArgsConstructor;
 
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NOT_FOUND_USER;
@@ -40,6 +39,12 @@ public class UserReaderImpl implements UserReader {
     @Override
     public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findScroll(AdminCommand.FindUserTaskListRequest request) {
         return userRepositoryCustom.findScrollOrderByRequest(request);
+    }
+
+    @Override
+    public User findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber)
+            .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
     }
 
     @Override

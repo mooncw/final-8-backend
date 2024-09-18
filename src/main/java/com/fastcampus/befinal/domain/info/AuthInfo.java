@@ -57,4 +57,15 @@ public class AuthInfo {
                 .build();
         }
     }
+
+    @Builder
+    public record FindIdInfo(
+        String userId
+    ) {
+        public static FindIdInfo from(User user) {
+            return FindIdInfo.builder()
+                .userId(user.getUserId())
+                .build();
+        }
+    }
 }

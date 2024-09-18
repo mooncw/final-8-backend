@@ -14,5 +14,7 @@ public interface UserReader {
 
     ScrollPagination<Integer, AdminInfo.UserTaskInfo> findScroll(AdminCommand.FindUserTaskListRequest request);
 
+    User findByPhoneNumber(String phoneNumber);
+
     AdminInfo.AssigneeListInfo findAllAssignee();
 }

@@ -46,4 +46,9 @@ public class AuthFacade {
         JwtInfo.TokenInfo jwtInfo =  jwtCreationService.reissueJwt(authDtoMapper.toJwtCommand(request));
         return authDtoMapper.from(jwtInfo);
     }
+
+    public AuthDto.FindIdResponse findId(AuthDto.FindIdRequest request) {
+        AuthInfo.FindIdInfo idInfo = authService.findId(authDtoMapper.toAuthCommand(request));
+        return authDtoMapper.from(idInfo);
+    }
 }
