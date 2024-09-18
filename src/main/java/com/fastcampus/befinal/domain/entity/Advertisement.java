@@ -71,4 +71,5 @@ public class Advertisement {
     public void updateState(Boolean state){
         this.state = state;
     }
+    public void updateTaskDatetime(){ this.taskDateTime = LocalDateTime.now(); }
 }

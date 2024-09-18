@@ -15,5 +15,6 @@ public class AdvertisementStoreImpl implements AdvertisementStore {
     public void saveIssueAdDecision(IssueAdInfo.IssueAdDecisionSaveInfo info){
         info.advertisement().updateAdDecision(info.adDecision());
         info.advertisement().updateState(true);
+        info.advertisement().updateTaskDatetime();
     }
 }
