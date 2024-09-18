@@ -284,7 +284,7 @@ class AuthControllerTest {
     void findUserPassword() throws Exception {
         // given
         AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
-            .id("hong")
+            .userId("hong")
             .name("홍길동")
             .phoneNumber("01011112222")
             .certNoCheckToken("ca1.cb1.cc1")
