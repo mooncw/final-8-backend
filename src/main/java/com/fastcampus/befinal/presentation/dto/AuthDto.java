@@ -193,7 +193,7 @@ public class AuthDto {
         String password,
 
         @Schema(example = SWAGGER_CERTIFICATION_NUMBER_CHECK_TOKEN)
-        @NotBlank(message = NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN, groups = RequestValidationGroups.NotBlankGroup.class)
+        @NotBlank(message = NOT_BLANK_PASSWORD_RESET_TOKEN, groups = RequestValidationGroups.NotBlankGroup.class)
         String passwordResetToken
     ) {}
 

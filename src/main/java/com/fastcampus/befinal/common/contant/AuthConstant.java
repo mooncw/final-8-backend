@@ -35,4 +35,5 @@ public class AuthConstant {
     public static final String NOT_BLANK_USER_ID_CHECK_TOKEN = "아이디 확인 토큰을 입력해 주세요.";
     public static final String NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN = "인증번호 확인 토큰을 입력해 주세요.";
     public static final String NOT_EMPTY_USER_LIST = "1명 이상의 유저를 입력해 주세요.";
+    public static final String NOT_BLANK_PASSWORD_RESET_TOKEN = "비밀번호 초기화 토큰을 입력해주세요.";
 }
