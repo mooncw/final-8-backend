@@ -5,6 +5,7 @@ import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.AdDecision;
 import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.Advertisement;
+import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.service.IssueAdService;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
@@ -25,6 +26,7 @@ public class IssueAdServiceImpl implements IssueAdService {
     private final AdReviewStore adReviewStore;
     private final AdProvisionReader adProvisionReader;
     private final AdDecisionReader adDecisionReader;
+    private final UserSummaryReader userSummaryReader;
 
     @Override
     @Transactional(readOnly = true)
@@ -64,10 +66,11 @@ public class IssueAdServiceImpl implements IssueAdService {
 
     @Override
     @Transactional
-    public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command){
+    public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command, Long userId) {
         Advertisement advertisement = advertisementReader.findAdvertisementById(command.advertisementId());
         AdDecision adDecision = adDecisionReader.findAdDecisionById(command.decisionId());
-        IssueAdInfo.IssueAdDecisionSaveInfo info = IssueAdInfo.IssueAdDecisionSaveInfo.of(advertisement, adDecision);
+        UserSummary user = userSummaryReader.findById(userId);
+        IssueAdInfo.IssueAdDecisionSaveInfo info = IssueAdInfo.IssueAdDecisionSaveInfo.of(advertisement, adDecision, user);
         advertisementStore.saveIssueAdDecision(info);
     }
 

@@ -4,6 +4,7 @@ import com.fastcampus.befinal.domain.dataprovider.AdDecisionReader;
 import com.fastcampus.befinal.domain.entity.AdDecision;
 import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.Advertisement;
+import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import lombok.Builder;
 
@@ -93,12 +94,14 @@ public class IssueAdInfo {
     @Builder
     public record IssueAdDecisionSaveInfo(
         Advertisement advertisement,
-        AdDecision adDecision
+        AdDecision adDecision,
+        UserSummary user
     ){
-        public static IssueAdDecisionSaveInfo of(Advertisement advertisement, AdDecision adDecision){
+        public static IssueAdDecisionSaveInfo of(Advertisement advertisement, AdDecision adDecision, UserSummary user){
             return IssueAdDecisionSaveInfo.builder()
                 .advertisement(advertisement)
                 .adDecision(adDecision)
+                .user(user)
                 .build();
         }
     }

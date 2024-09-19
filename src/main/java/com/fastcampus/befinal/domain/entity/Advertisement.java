@@ -58,7 +58,7 @@ public class Advertisement {
     @JoinColumn(name = "media_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private AdMedia adMedia;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_decision_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private AdDecision adDecision;
 
@@ -72,4 +72,5 @@ public class Advertisement {
         this.state = state;
     }
     public void updateTaskDatetime(){ this.taskDateTime = LocalDateTime.now(); }
+    public void updateModifier(UserSummary user){ this.modifier = user; }
 }

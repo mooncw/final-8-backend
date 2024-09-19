@@ -4,6 +4,7 @@ import com.fastcampus.befinal.application.facade.IssueAdFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.util.DefaultGroupSequence;
+import com.fastcampus.befinal.domain.info.UserDetailsInfo;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -161,9 +163,12 @@ public class IssueAdController {
     public ResponseEntity<AppApiResponse> saveIssueAdDecision(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
-        IssueAdDto.IssueAdResultDecisionRequest request
+        IssueAdDto.IssueAdResultDecisionRequest request,
+
+        @AuthenticationPrincipal UserDetailsInfo user
     ){
-        issueAdFacade.saveIssueAdResultDecision(request);
+        Long userId = user.getUser().getId();
+        issueAdFacade.saveIssueAdResultDecision(request, userId);
         return ResponseEntityFactory.toResponseEntity(SAVE_ISSUE_ADVERTISEMENT_DECISION_SUCCESS);
     }
 }

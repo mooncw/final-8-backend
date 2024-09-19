@@ -10,5 +10,5 @@ public interface IssueAdService {
     void saveIssueAdReviews(IssueAdDto.IssueAdReviewRequest request);
     IssueAdInfo.IssueAdProvisionListInfo findProvisionList();
     IssueAdInfo.IssueAdDecisionListInfo findDecisionList();
-    void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command);
+    void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest command, Long userId);
 }

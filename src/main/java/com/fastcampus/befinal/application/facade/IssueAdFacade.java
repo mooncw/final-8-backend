@@ -34,7 +34,7 @@ public class IssueAdFacade {
         return issueAdDtoMapper.fromDecision(infoList);
     }
 
-    public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest request){
-        issueAdService.saveIssueAdResultDecision(request);
+    public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest request, Long userId){
+        issueAdService.saveIssueAdResultDecision(request, userId);
     }
 }

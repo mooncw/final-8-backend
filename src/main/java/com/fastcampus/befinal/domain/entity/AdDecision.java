@@ -16,7 +16,4 @@ public class AdDecision {
 
     @Column(nullable = false, unique = true, name = "decision", columnDefinition = "varchar(20)")
     private String decision;
-
-    @OneToOne(mappedBy = "adDecision")
-    private Advertisement advertisement;
 }
