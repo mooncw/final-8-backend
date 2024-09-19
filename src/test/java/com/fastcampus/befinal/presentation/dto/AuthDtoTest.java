@@ -438,4 +438,58 @@ public class AuthDtoTest {
         // then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_ID, PATTERN_MISMATCH_USER_NAME, PATTERN_MISMATCH_PHONE_NUMBER));
     }
+
+    @Test
+    @DisplayName("비밀번호 수정 요청 검증 테스트 - NotBlank")
+    void whenEditPasswordRequestMismatchIsBlank_thenValidationFails() {
+        // given
+        AuthDto.EditPasswordRequest request = AuthDto.EditPasswordRequest.builder()
+            .password(" ")
+            .passwordResetToken(" ")
+            .build();
+
+        // when
+        Set<ConstraintViolation<AuthDto.EditPasswordRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_USER_PASSWORD, NOT_BLANK_PASSWORD_RESET_TOKEN));
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 요청 검증 테스트 - Size")
+    void whenEditPasswordRequestMismatchSize_thenValidationFails() {
+        // given
+        AuthDto.EditPasswordRequest request = AuthDto.EditPasswordRequest.builder()
+            .password("aaaa111")
+            .passwordResetToken("pa1.pb1.pc1")
+            .build();
+
+        // when
+        Set<ConstraintViolation<AuthDto.EditPasswordRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(message).isEqualTo(Set.of(SIZE_MISMATCH_USER_PASSWORD));
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 요청 검증 테스트 - ComplexPattern")
+    void whenEditPasswordRequestMismatchPattern_thenValidationFails() {
+        // given
+        AuthDto.EditPasswordRequest request = AuthDto.EditPasswordRequest.builder()
+            .password("aa")
+            .passwordResetToken("pa1.pb1.pc1")
+            .build();
+
+        // when
+        Set<ConstraintViolation<AuthDto.EditPasswordRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_USER_PASSWORD));
+    }
 }
