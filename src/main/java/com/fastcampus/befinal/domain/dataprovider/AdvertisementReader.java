@@ -15,4 +15,6 @@ public interface AdvertisementReader {
     IssueAdInfo.IssueAdDetailInfo findIssueAdDetail(String advertisementId);
     Advertisement findAdvertisementById(String advertisementId);
     ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId);
+    Long countUnassigned();
+    List<AdminInfo.UnassignedAdIdInfo> findAllUnassignedAdId(Long amount);
 }

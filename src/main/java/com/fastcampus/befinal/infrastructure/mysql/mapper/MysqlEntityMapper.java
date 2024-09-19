@@ -32,6 +32,7 @@ public interface MysqlEntityMapper {
     @Mapping(target = "signUpDateTime", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "finalLoginDateTime", expression = "java(initializeFinalLoginDateTime())")
     @Mapping(target = "role", constant = USER_AUTHORITY)
+    @Mapping(target = "additionalTaskCount", constant = "0")
     User from(UserManagement userManagement);
 
     @Mapping(target = "id", ignore = true)
