@@ -3,7 +3,6 @@ package com.fastcampus.befinal.infrastructure.redis.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.domain.dataprovider.CheckTokenStore;
 import com.fastcampus.befinal.domain.entity.RedisValue;
-import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.entity.UserId;
 import com.fastcampus.befinal.domain.info.AuthInfo;
 import com.fastcampus.befinal.infrastructure.redis.mapper.RedisEntityMapper;
@@ -26,9 +25,9 @@ public class CheckTokenStoreImpl implements CheckTokenStore {
     }
 
     @Override
-    public void store(AuthInfo.CheckTokenInfo info, User user) {
-        UserId userId = redisEntityMapper.from(user);
-        redisTemplate.opsForValue().set(info.token(), userId, getDuration());
+    public void store(AuthInfo.CheckTokenInfo info, String userId) {
+        UserId certifiedUserId = redisEntityMapper.from(userId);
+        redisTemplate.opsForValue().set(info.token(), certifiedUserId, getDuration());
     }
 
     @Override

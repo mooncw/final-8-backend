@@ -132,9 +132,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional(readOnly = true)
     public AuthInfo.PasswordResetTokenInfo findPassword(AuthCommand.FindPasswordRequest command) {
-        User user = validateUserId(command);
-
-        validateUserNameAndPhoneNumber(user, command);
+        String userId = validateUserInfo(command);
 
         AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo = AuthInfo.CheckTokenInfo.from(command.certNoCheckToken());
 
@@ -142,20 +140,19 @@ public class AuthServiceImpl implements AuthService {
 
         AuthInfo.CheckTokenInfo tokenInfo = AuthInfo.CheckTokenInfo.from(Generator.generateUniqueValue());
 
-        checkTokenStore.store(tokenInfo, user);
+        checkTokenStore.store(tokenInfo, userId);
 
         return AuthInfo.PasswordResetTokenInfo.from(tokenInfo.token());
     }
 
-    private User validateUserId(AuthCommand.FindPasswordRequest command) {
-        User user = userReader.findUser(command.id());
-        return user;
-    }
+    private String validateUserInfo(AuthCommand.FindPasswordRequest command) {
+        User user = userReader.findUser(command.userId());
 
-    private void validateUserNameAndPhoneNumber(User user, AuthCommand.FindPasswordRequest command) {
         if(!user.getName().equals(command.name()) || !user.getPhoneNumber().equals(command.phoneNumber())) {
             throw new BusinessException(INCONSISTENT_USER_INFO);
         }
+
+        return command.userId();
     }
 
     @Override
