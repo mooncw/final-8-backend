@@ -295,4 +295,30 @@ public class AdminServiceImplTest {
         assertThat(scroll.currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
         assertThat(scroll.contents()).isEqualTo(doReturnScroll.contents());
     }
+
+    @Test
+    @DisplayName("작업 배분 작업자 목록 조회 성공 테스트")
+    void findAssigneeListTest() {
+        //given
+        AdminInfo.AssigneeInfo assigneeInfo = AdminInfo.AssigneeInfo.builder()
+            .id(1L)
+            .empNo("11111111")
+            .name("홍길동")
+            .additionalTaskCount(2)
+            .build();
+
+        AdminInfo.AssigneeListInfo info = AdminInfo.AssigneeListInfo.builder()
+            .assigneeList(List.of(assigneeInfo))
+            .build();
+
+        doReturn(info)
+            .when(userReader)
+            .findAllAssignee();
+
+        //when
+        AdminInfo.AssigneeListInfo resultInfo = adminService.findAssigneeList();
+
+        //then
+        assertThat(resultInfo.assigneeList()).isEqualTo(info.assigneeList());
+    }
 }

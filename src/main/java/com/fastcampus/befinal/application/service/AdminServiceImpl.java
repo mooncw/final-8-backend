@@ -79,4 +79,10 @@ public class AdminServiceImpl implements AdminService {
     public ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId) {
         return advertisementReader.findUnassignedAdScroll(cursorId);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AdminInfo.AssigneeListInfo findAssigneeList() {
+        return userReader.findAllAssignee();
+    }
 }
