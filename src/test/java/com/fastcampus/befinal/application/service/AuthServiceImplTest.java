@@ -238,7 +238,7 @@ public class AuthServiceImplTest {
     void findPasswordTest() {
         // given
         AuthCommand.FindPasswordRequest request = AuthCommand.FindPasswordRequest.builder()
-            .userId("hong")
+            .userId("aaaa")
             .name("홍길동")
             .phoneNumber("01011112222")
             .certNoCheckToken("ca1.cb1.cc1")
@@ -258,7 +258,7 @@ public class AuthServiceImplTest {
 
         doReturn(user)
             .when(userReader)
-            .findUser("hong");
+            .findByUserIdAndNameAndPhoneNumber(any(AuthCommand.FindPasswordRequest.class));
 
         doReturn(true)
             .when(checkTokenReader)
@@ -272,7 +272,7 @@ public class AuthServiceImplTest {
         authService.findPassword(request);
 
         // then
-        verify(userReader, times(1)).findUser(anyString());
+        verify(userReader, times(1)).findByUserIdAndNameAndPhoneNumber(any(AuthCommand.FindPasswordRequest.class));
         verify(checkTokenReader, times(1)).exists(any(AuthInfo.CheckTokenInfo.class));
         verify(checkTokenStore, times(1)).delete(any(AuthInfo.CheckTokenInfo.class));
         verify(checkTokenStore, times(1)).store(any(AuthInfo.CheckTokenInfo.class), any(String.class));
