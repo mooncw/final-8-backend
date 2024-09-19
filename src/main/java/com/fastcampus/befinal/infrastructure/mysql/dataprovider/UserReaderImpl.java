@@ -46,4 +46,9 @@ public class UserReaderImpl implements UserReader {
         return userRepository.findByPhoneNumber(phoneNumber)
             .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
     }
+
+    @Override
+    public AdminInfo.AssigneeListInfo findAllAssignee() {
+        return AdminInfo.AssigneeListInfo.from(userRepositoryCustom.findAllAssignee());
+    }
 }

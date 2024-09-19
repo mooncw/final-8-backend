@@ -256,4 +256,47 @@ public class AdminControllerTest {
             .andExpect(jsonPath("code").value(FIND_UNASSIGNED_AD_LIST_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(FIND_UNASSIGNED_AD_LIST_SUCCESS.getMessage()));
     }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("작업 배분 작업자 목록 조회 성공시, 200 OK와 정상 응답을 반환")
+    void findAssigneeListTest() throws Exception {
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/admin/manage-task/emp")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8));
+
+        //then
+        perform.andExpect(status().is(FIND_ASSIGNEE_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(FIND_ASSIGNEE_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(FIND_ASSIGNEE_LIST_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("작업 배분 완료 성공시, 200 OK와 정상 응답을 반환")
+    void assignTaskTest() throws Exception {
+        //given
+        AdminDto.SelectedAssigneeInfo info = AdminDto.SelectedAssigneeInfo.builder()
+            .id(2L)
+            .taskAssignmentAmount(50L)
+            .build();
+
+        AdminDto.AssignTaskRequest request = AdminDto.AssignTaskRequest.builder()
+            .selectedAssigneeList(List.of(info))
+            .build();
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/admin/manage-task")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(ASSIGN_TASK_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(ASSIGN_TASK_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(ASSIGN_TASK_SUCCESS.getMessage()));
+    }
 }
