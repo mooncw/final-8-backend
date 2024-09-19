@@ -76,7 +76,7 @@ public class AuthController {
     }
 
     @PostMapping("/cert-no")
-    @Operation(summary = "인증 번호 전송 - type: \"SignUp\" or \"UpdateUser\"")
+    @Operation(summary = "인증 번호 전송 - type: \"SignUp\" or \"UpdateUser\" or \"FindId\" or \"FindPassword\"")
     @ApiResponse(responseCode = "200", description = "인증번호 요청 완료되었습니다.",
         content = @Content(
             mediaType = "application/json",
@@ -207,5 +207,30 @@ public class AuthController {
     ) {
         AuthDto.FindIdResponse response = authFacade.findId(request);
         return ResponseEntityFactory.toResponseEntity(FIND_ID_SUCCESS, response);
+    }
+
+    @PostMapping("/find-password")
+    @Operation(summary = "회원 비밀번호 찾기 - 인증")
+    @ApiResponse(responseCode = "200", description = "비밀번호 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{" +
+                                "\"code\": 3107, " +
+                                "\"message\": \"회원님의 비밀번호가 조회되었습니다.\", " +
+                                "\"data\": {" +
+                                    "\"passwordResetToken\": \"" + SWAGGER_CERTIFICATION_NUMBER_CHECK_TOKEN + "\"" +
+                                "}" +
+                            "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AuthDto.PasswordResetTokenResponse>> findUserPassword(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AuthDto.FindPasswordRequest request
+    ) {
+        AuthDto.PasswordResetTokenResponse response = authFacade.findPassword(request);
+        return ResponseEntityFactory.toResponseEntity(FIND_PASSWORD_SUCCESS, response);
     }
 }

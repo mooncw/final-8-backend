@@ -4,6 +4,7 @@ import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
+import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.UserReader;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AdminInfo;
@@ -50,5 +51,11 @@ public class UserReaderImpl implements UserReader {
     @Override
     public AdminInfo.AssigneeListInfo findAllAssignee() {
         return AdminInfo.AssigneeListInfo.from(userRepositoryCustom.findAllAssignee());
+    }
+
+    @Override
+    public User findByUserIdAndNameAndPhoneNumber(AuthCommand.FindPasswordRequest command) {
+        return userRepository.findByUserIdAndNameAndPhoneNumber(command.userId(), command.name(), command.phoneNumber())
+            .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
     }
 }
