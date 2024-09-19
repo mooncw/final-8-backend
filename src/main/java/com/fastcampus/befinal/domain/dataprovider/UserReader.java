@@ -2,6 +2,7 @@ package com.fastcampus.befinal.domain.dataprovider;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
+import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AdminInfo;
 
@@ -17,4 +18,6 @@ public interface UserReader {
     User findByPhoneNumber(String phoneNumber);
 
     AdminInfo.AssigneeListInfo findAllAssignee();
+
+    User findByUserIdAndNameAndPhoneNumber(AuthCommand.FindPasswordRequest command);
 }

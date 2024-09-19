@@ -1,6 +1,5 @@
 package com.fastcampus.befinal.application.service;
 
-import com.fastcampus.befinal.application.mapper.AuthDtoMapper;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.command.AuthCommand;
@@ -128,6 +127,26 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return user;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AuthInfo.PasswordResetTokenInfo findPassword(AuthCommand.FindPasswordRequest command) {
+        validateUserInfo(command);
+
+        AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo = AuthInfo.CheckTokenInfo.from(command.certNoCheckToken());
+
+        validateCertificationNumberCheckToken(certificationNumberCheckTokenInfo);
+
+        AuthInfo.CheckTokenInfo tokenInfo = AuthInfo.CheckTokenInfo.from(Generator.generateUniqueValue());
+
+        checkTokenStore.store(tokenInfo, command.userId());
+
+        return AuthInfo.PasswordResetTokenInfo.from(tokenInfo.token());
+    }
+
+    private void validateUserInfo(AuthCommand.FindPasswordRequest command) {
+        userReader.findByUserIdAndNameAndPhoneNumber(command);
     }
 
     @Override

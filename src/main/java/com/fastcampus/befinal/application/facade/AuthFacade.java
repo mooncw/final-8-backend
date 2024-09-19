@@ -51,4 +51,9 @@ public class AuthFacade {
         AuthInfo.FindIdInfo idInfo = authService.findId(authDtoMapper.toAuthCommand(request));
         return authDtoMapper.from(idInfo);
     }
+
+    public AuthDto.PasswordResetTokenResponse findPassword(AuthDto.FindPasswordRequest request) {
+        AuthInfo.PasswordResetTokenInfo info = authService.findPassword(authDtoMapper.toAuthCommand(request));
+        return authDtoMapper.from(info);
+    }
 }
