@@ -6,7 +6,6 @@ import com.fastcampus.befinal.common.annotation.Facade;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.service.IssueAdService;
-import com.fastcampus.befinal.domain.service.UserTaskService;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import com.fastcampus.befinal.presentation.dto.TaskDto;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +15,10 @@ import lombok.RequiredArgsConstructor;
 public class IssueAdFacade {
     private final IssueAdService issueAdService;
     private final IssueAdDtoMapper issueAdDtoMapper;
-    private final UserTaskService userTaskService;
     private final UserTaskDtoMapper userTaskDtoMapper;
 
     public TaskDto.TaskListInfo findIssueAdList(TaskDto.FilterConditionRequest request){
-        TaskInfo.TaskListInfo info = userTaskService.findIssueAdList(userTaskDtoMapper.toTaskCommand(request));
+        TaskInfo.TaskListInfo info = issueAdService.findIssueAdList(userTaskDtoMapper.toTaskCommand(request));
         return userTaskDtoMapper.from(info);
     }
 

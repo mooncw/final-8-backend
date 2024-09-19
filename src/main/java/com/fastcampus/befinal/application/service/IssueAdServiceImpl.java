@@ -1,8 +1,11 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdReviewReader;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.service.IssueAdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,13 @@ import java.util.List;
 public class IssueAdServiceImpl implements IssueAdService {
     private final AdvertisementReader advertisementReader;
     private final AdReviewReader adReviewReader;
+
+    @Override
+    @Transactional(readOnly = true)
+    public TaskInfo.TaskListInfo findIssueAdList(TaskCommand.FilterConditionRequest command){
+        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> filterAdPagination = advertisementReader.findIssueAdList(command);
+        return TaskInfo.TaskListInfo.of(filterAdPagination);
+    }
 
     @Override
     @Transactional(readOnly = true)

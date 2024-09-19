@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserTaskServiceImpl implements UserTaskService {
     private final UserTaskReader userTaskReader;
-    private final AdvertisementReader advertisementReader;
 
     @Override
     @Transactional(readOnly = true)
@@ -26,11 +25,5 @@ public class UserTaskServiceImpl implements UserTaskService {
         TaskInfo.TaskListInfo myTaskList = TaskInfo.TaskListInfo.of(filterTaskPagination);
 
         return TaskInfo.TaskResponse.of(myAdCount, myTaskList);
-    }
-
-    @Override
-    public TaskInfo.TaskListInfo findIssueAdList(TaskCommand.FilterConditionRequest command){
-        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> filterAdPagination = advertisementReader.findIssueAdList(command);
-        return TaskInfo.TaskListInfo.of(filterAdPagination);
     }
 }
