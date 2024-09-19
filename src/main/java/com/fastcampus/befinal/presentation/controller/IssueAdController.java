@@ -4,8 +4,6 @@ import com.fastcampus.befinal.application.facade.IssueAdFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.util.DefaultGroupSequence;
-import com.fastcampus.befinal.presentation.dto.DashboardDto;
-import com.fastcampus.befinal.common.util.DefaultGroupSequence;
 import com.fastcampus.befinal.domain.info.UserDetailsInfo;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import com.fastcampus.befinal.presentation.dto.TaskDto;
@@ -14,18 +12,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.GET_ADVERTISEMENT_DETAIL_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.GET_ISSUE_ADVERTISEMENT_LIST_SUCCESS;
-import java.util.List;
 
 import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.*;
 

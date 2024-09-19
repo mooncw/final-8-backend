@@ -27,12 +27,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
-
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.GET_ADVERTISEMENT_DETAIL_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.GET_ISSUE_ADVERTISEMENT_LIST_SUCCESS;
-import static org.mockito.ArgumentMatchers.any;
 import static com.fastcampus.befinal.common.response.success.info.IssueAdSuccessCode.*;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

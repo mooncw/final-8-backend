@@ -2,7 +2,6 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.TaskCommand;
-import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.dataprovider.UserTaskReader;
 import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.service.UserTaskService;

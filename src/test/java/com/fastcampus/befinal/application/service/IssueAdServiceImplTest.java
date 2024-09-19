@@ -2,8 +2,6 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.TaskCommand;
-import com.fastcampus.befinal.domain.dataprovider.AdReviewReader;
-import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.AdDecision;
 import com.fastcampus.befinal.domain.entity.AdProvision;
@@ -12,7 +10,6 @@ import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
-import org.intellij.lang.annotations.MagicConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

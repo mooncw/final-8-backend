@@ -10,8 +10,6 @@ import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import com.fastcampus.befinal.presentation.dto.TaskDto;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
 @Facade
 @RequiredArgsConstructor
 public class IssueAdFacade {
