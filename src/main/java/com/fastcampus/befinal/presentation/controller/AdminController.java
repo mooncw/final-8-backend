@@ -216,10 +216,10 @@ public class AdminController {
                             "currentCursorId": "202409A12345",
                             "contents": [
                                 {
-                                    "adId": "A12345",
-                                    "product": "삼성 냉장고",
-                                    "advertiser": "삼성SDI"
-                                    "category": "주방용품"
+                                    "adId": "N00001",
+                                    "product": "상품_202409N00001",
+                                    "advertiser": "광고주_810",
+                                    "category": "과자"
                                 }
                             ]
                         }
@@ -247,12 +247,12 @@ public class AdminController {
                         "code": 1007,
                         "message": "작업 배분 작업자 목록이 조회되었습니다.",
                         "data": {
-                            "empList": [
-                                "empInfo": {
+                            "assigneeList": [
+                                {
                                     "id": 1,
-                                    "empNo": "11111111",
+                                    "empNo": "12312312",
                                     "name": "홍길동",
-                                    "additionalTaskCount": 4
+                                    "additionalTaskCount": 0
                                 }
                             ]
                         }
