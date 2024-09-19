@@ -47,4 +47,8 @@ public class AdminFacade {
     public AdminDto.FindAssigneeListResponse findAssigneeList() {
         return adminDtoMapper.from(adminService.findAssigneeList());
     }
+
+    public void assignTask(AdminDto.AssignTaskRequest request) {
+        adminService.assignTask(adminDtoMapper.toAdminCommand(request));
+    }
 }

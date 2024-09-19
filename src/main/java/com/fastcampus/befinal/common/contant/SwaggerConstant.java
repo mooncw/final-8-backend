@@ -30,4 +30,6 @@ public class SwaggerConstant {
     public static final String SWAGGER_MEDIA = "[\"동아일보\"]";
     public static final String SWAGGER_CATEGORY = "[\"가정용품\"]";
     public static final String SWAGGER_AD_ID = "A00001";
+    public static final String SWAGGER_USER_PK_ID = "2";
+    public static final String SWAGGER_TASK_ASSIGNMENT_AMOUNT = "50";
 }

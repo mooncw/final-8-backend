@@ -45,7 +45,7 @@ public class User {
     @Column(nullable = false, name = "role", columnDefinition = "varchar(20)")
     private String role;
 
-    @Column(nullable = false, name = "additional_task_count", columnDefinition = "smallint default 0")
+    @Column(nullable = false, name = "additional_task_count", columnDefinition = "smallint")
     private Integer additionalTaskCount;
 
     public void updateFinalLoginDateTime() {

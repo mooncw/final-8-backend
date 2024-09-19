@@ -265,5 +265,29 @@ public class AdminController {
         AdminDto.FindAssigneeListResponse response = adminFacade.findAssigneeList();
         return ResponseEntityFactory.toResponseEntity(FIND_ASSIGNEE_LIST_SUCCESS, response);
     }
+
+    @PostMapping("/manage-task")
+    @Operation(summary = "작업 배분 완료")
+    @ApiResponse(responseCode = "200", description = "작업 배분이 완료되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                    {
+                        "code": 1008,
+                        "message": "작업 배분이 완료되었습니다."
+                    }
+                    """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> assignTask(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AdminDto.AssignTaskRequest request
+    ) {
+        adminFacade.assignTask(request);
+        return ResponseEntityFactory.toResponseEntity(ASSIGN_TASK_SUCCESS);
+    }
 }
 

@@ -226,4 +226,37 @@ public class AdminDtoTest {
         //then
         assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_SORTED, PATTERN_MISMATCH_PERIOD));
     }
+
+    @Test
+    @DisplayName("작업 배분 요청 검증 테스트 - NotEmpty")
+    void whenAssignTaskRequestIsEmpty_thenValidationFails() {
+        //given
+        AdminDto.AssignTaskRequest request = AdminDto.AssignTaskRequest.builder()
+            .selectedAssigneeList(List.of())
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.AssignTaskRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotEmptyGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_EMPTY_SELECTED_ASSIGNEE_LIST));
+    }
+
+    @Test
+    @DisplayName("작업 배분 요청 검증 테스트 - NotNull")
+    void whenSelectedAssigneeInfoIsNull_thenValidationFails() {
+        //given
+        AdminDto.SelectedAssigneeInfo info = AdminDto.SelectedAssigneeInfo.builder()
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.SelectedAssigneeInfo>> violations = validator.validate(info,
+            RequestValidationGroups.NotNullGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_NULL_USER_PK_ID, NOT_NULL_TASK_ASSIGNMENT_AMOUNT));
+    }
 }

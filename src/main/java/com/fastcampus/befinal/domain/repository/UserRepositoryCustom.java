@@ -188,4 +188,11 @@ public class UserRepositoryCustom {
             .orderBy(user.empNumber.asc())
             .fetch();
     }
+
+    public void updateAdditionalTaskCount(AdminCommand.SelectedAssigneeInfo info) {
+        queryFactory.update(user)
+            .set(user.additionalTaskCount, user.additionalTaskCount.add(1))
+            .where(user.id.eq(info.id()))
+            .execute();
+    }
 }

@@ -20,4 +20,6 @@ public interface AdminService {
     ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId);
 
     AdminInfo.AssigneeListInfo findAssigneeList();
+
+    void assignTask(AdminCommand.AssignTaskRequest command);
 }
