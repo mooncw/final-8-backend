@@ -4,8 +4,10 @@ import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.AdDecision;
 import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.Advertisement;
+import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
+import org.intellij.lang.annotations.MagicConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +44,9 @@ public class IssueAdServiceImplTest {
 
     @Mock
     private AdDecisionReader adDecisionReader;
+
+    @Mock
+    private UserSummaryReader userSummaryReader;
 
     @Test
     @DisplayName("지적광고 상세조회 성공 테스트")
@@ -147,6 +152,7 @@ public class IssueAdServiceImplTest {
         //given
         String advertisementId = "202409A0001";
         Long decisionId = (long) 1;
+        Long userId = (long) 1;
 
         IssueAdDto.IssueAdResultDecisionRequest command = IssueAdDto.IssueAdResultDecisionRequest.builder()
             .advertisementId(advertisementId)
@@ -159,6 +165,9 @@ public class IssueAdServiceImplTest {
         AdDecision adDecision = AdDecision.builder()
             .id(decisionId).build();
 
+        UserSummary user = UserSummary.builder()
+            .id(userId).build();
+
         doReturn(advertisement)
             .when(advertisementReader)
             .findAdvertisementById(advertisementId);
@@ -167,17 +176,22 @@ public class IssueAdServiceImplTest {
             .when(adDecisionReader)
             .findAdDecisionById(decisionId);
 
+        doReturn(user)
+            .when(userSummaryReader)
+            .findById(userId);
+
         doNothing()
             .when(advertisementStore)
             .saveIssueAdDecision(any());
 
         //when
-        issueAdService.saveIssueAdResultDecision(command);
+        issueAdService.saveIssueAdResultDecision(command, userId);
 
         //verify
         verify(adDecisionReader, times(1)).findAdDecisionById(decisionId);
         verify(advertisementReader, times(1)).findAdvertisementById(advertisementId);
         verify(advertisementStore, times(1)).saveIssueAdDecision(any());
+        verify(userSummaryReader, times(1)).findById(any());
     }
 
     @Test

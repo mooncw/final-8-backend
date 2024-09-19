@@ -2,7 +2,9 @@ package com.fastcampus.befinal.presentation.controller;
 
 import com.fastcampus.befinal.application.facade.IssueAdFacade;
 import com.fastcampus.befinal.common.config.SecurityConfig;
+import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import com.fastcampus.befinal.domain.info.UserDetailsInfo;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
@@ -29,6 +32,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -223,6 +227,20 @@ class IssueAdControllerTest {
     @DisplayName("지적광고 심의결정 완료 요청 시, 200 OK 및 정상 응답을 반환")
     void saveIssueAdDecisionTest() throws Exception{
         //given
+        User user = User.builder()
+            .id(1L)
+            .userId("testID")
+            .name("테스트유저")
+            .password("password")
+            .phoneNumber("01012345678")
+            .empNumber("12345678")
+            .email("test@test.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(USER_AUTHORITY)
+            .build();
+        UserDetailsInfo userDetailsInfo = UserDetailsInfo.from(user);
+
         IssueAdDto.IssueAdResultDecisionRequest request = IssueAdDto.IssueAdResultDecisionRequest.builder()
             .advertisementId("202409A0001")
             .decisionId((long) 1)
@@ -230,11 +248,11 @@ class IssueAdControllerTest {
 
         doNothing()
             .when(issueAdFacade)
-            .saveIssueAdResultDecision(request);
+            .saveIssueAdResultDecision(request, user.getId());
 
         //when
         ResultActions perform = mockMvc.perform(post("/api/v1/issue-ad/result/decision")
-            .with(csrf())
+            .with(user(userDetailsInfo))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding(StandardCharsets.UTF_8)
