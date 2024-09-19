@@ -53,7 +53,7 @@ public class SecurityConfig {
         http.csrf(configurer -> configurer.disable());
 
         http.authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
-            //auth
+            // auth
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/check-id").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/cert-no").permitAll()
@@ -76,6 +76,9 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad").authenticated()
             // filter-options
             .requestMatchers(HttpMethod.GET, "/api/v1/filter-options/**").authenticated()
+            .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/options/**").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad/save-task").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad/result/decision").authenticated()
             // health-check
             .requestMatchers(HttpMethod.GET, "/api/health-check").permitAll()
             // monitoring

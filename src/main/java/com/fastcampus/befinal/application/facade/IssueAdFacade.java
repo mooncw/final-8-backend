@@ -10,6 +10,8 @@ import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import com.fastcampus.befinal.presentation.dto.TaskDto;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Facade
 @RequiredArgsConstructor
 public class IssueAdFacade {
@@ -25,5 +27,23 @@ public class IssueAdFacade {
     public IssueAdDto.IssueAdDetailResponse findIssueAdDetail(String advertisementId){
         IssueAdInfo.IssueAdDetailAllInfo info = issueAdService.findIssueAdDetail(advertisementId);
         return issueAdDtoMapper.from(info);
+    }
+
+    public void saveIssueAdReviews(IssueAdDto.IssueAdReviewRequest requests){
+        issueAdService.saveIssueAdReviews(requests);
+    }
+
+    public IssueAdDto.IssueAdProvisionResponse findProvisionList(){
+        IssueAdInfo.IssueAdProvisionListInfo infoList = issueAdService.findProvisionList();
+        return issueAdDtoMapper.fromProvision(infoList);
+    }
+
+    public IssueAdDto.IssueAdDecisionResponse findDecisionList(){
+        IssueAdInfo.IssueAdDecisionListInfo infoList = issueAdService.findDecisionList();
+        return issueAdDtoMapper.fromDecision(infoList);
+    }
+
+    public void saveIssueAdResultDecision(IssueAdDto.IssueAdResultDecisionRequest request, Long userId){
+        issueAdService.saveIssueAdResultDecision(request, userId);
     }
 }
