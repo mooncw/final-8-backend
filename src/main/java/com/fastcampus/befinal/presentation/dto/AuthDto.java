@@ -183,6 +183,21 @@ public class AuthDto {
     ) {}
 
     @Builder
+    @Schema(description = "비밀번호 수정 request")
+    public record EditPasswordRequest(
+        @Schema(example = SWAGGER_USER_PASSWORD)
+        @NotBlank(message = NOT_BLANK_USER_PASSWORD, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 8, max = 16, message = SIZE_MISMATCH_USER_PASSWORD, groups = RequestValidationGroups.SizeGroup.class)
+        @ComplexPattern(patterns = { ".*[a-zA-Z].*", ".*\\d.*", ".*[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~].*" },
+            minMatches = 2, message = PATTERN_MISMATCH_USER_PASSWORD, groups = RequestValidationGroups.PatternGroup.class)
+        String password,
+
+        @Schema(example = SWAGGER_CERTIFICATION_NUMBER_CHECK_TOKEN)
+        @NotBlank(message = NOT_BLANK_PASSWORD_RESET_TOKEN, groups = RequestValidationGroups.NotBlankGroup.class)
+        String passwordResetToken
+    ) {}
+
+    @Builder
     public record ReissueJwtResponse(
         String accessToken,
         String refreshToken

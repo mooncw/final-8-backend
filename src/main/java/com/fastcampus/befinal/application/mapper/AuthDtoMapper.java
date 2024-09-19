@@ -44,6 +44,8 @@ public interface AuthDtoMapper {
 
     AuthCommand.FindPasswordRequest toAuthCommand(AuthDto.FindPasswordRequest request);
 
+    AuthCommand.EditPasswordRequest toAuthCommand(AuthDto.EditPasswordRequest request);
+
     @Mapping(source = "token", target = "idCheckToken")
     AuthDto.CheckIdDuplicationResponse from(AuthInfo.CheckIdTokenInfo info);
 

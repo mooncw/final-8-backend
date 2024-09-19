@@ -7,6 +7,7 @@ import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.SmsCertification;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final CheckTokenStore checkTokenStore;
     private final CheckTokenReader checkTokenReader;
     private final UserReader userReader;
+    private final UserStore userStore;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -147,6 +149,19 @@ public class AuthServiceImpl implements AuthService {
 
     private void validateUserInfo(AuthCommand.FindPasswordRequest command) {
         userReader.findByUserIdAndNameAndPhoneNumber(command);
+    }
+
+    @Override
+    @Transactional
+    public void editPassword(AuthCommand.EditPasswordRequest command) {
+        AuthInfo.CheckTokenInfo info = AuthInfo.CheckTokenInfo.from(command.passwordResetToken());
+        String userId = checkTokenReader.findUserIdByResetToken(info);
+
+        User user = userReader.findUser(userId);
+        UserInfo.PasswordUpdateInfo passwordUpdateInfo = UserInfo.PasswordUpdateInfo.of(user, command.password());
+        userStore.update(passwordUpdateInfo);
+
+        checkTokenStore.delete(info);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.SmsCertification;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AuthInfo;
+import com.fastcampus.befinal.domain.info.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,6 +50,9 @@ public class AuthServiceImplTest {
 
     @Mock
     private UserReader userReader;
+    
+    @Mock
+    private UserStore userStore;
 
     @Mock
     private Generator generator;
@@ -276,5 +280,54 @@ public class AuthServiceImplTest {
         verify(checkTokenReader, times(1)).exists(any(AuthInfo.CheckTokenInfo.class));
         verify(checkTokenStore, times(1)).delete(any(AuthInfo.CheckTokenInfo.class));
         verify(checkTokenStore, times(1)).store(any(AuthInfo.CheckTokenInfo.class), any(String.class));
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 성공 테스트")
+    void editPasswordTest() {
+        // given
+        String userId = "testtest";
+
+        AuthCommand.EditPasswordRequest request = AuthCommand.EditPasswordRequest.builder()
+            .password("1111aaaa")
+            .passwordResetToken("pa1.pb1.pc1")
+            .build();
+
+        User user = User.builder()
+            .userId(userId)
+            .name("홍길동")
+            .password("aaaa1111")
+            .phoneNumber("01011112222")
+            .empNumber("11111111")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(USER_AUTHORITY)
+            .build();
+
+        doReturn(userId)
+            .when(checkTokenReader)
+            .findUserIdByResetToken(any(AuthInfo.CheckTokenInfo.class));
+
+        doReturn(user)
+            .when(userReader)
+            .findUser(any(String.class));
+
+        doNothing()
+            .when(userStore)
+            .update(any(UserInfo.PasswordUpdateInfo.class));
+
+        doNothing()
+            .when(checkTokenStore)
+            .delete(any(AuthInfo.CheckTokenInfo.class));
+
+        // when
+        authService.editPassword(request);
+
+        // then
+        verify(checkTokenReader, times(1)).findUserIdByResetToken(any(AuthInfo.CheckTokenInfo.class));
+        verify(userReader, times(1)).findUser(any(String.class));
+        verify(userStore, times(1)).update(any(UserInfo.PasswordUpdateInfo.class));
+        verify(checkTokenStore, times(1)).delete(any(AuthInfo.CheckTokenInfo.class));
     }
 }

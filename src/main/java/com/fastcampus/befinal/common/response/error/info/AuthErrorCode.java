@@ -20,7 +20,8 @@ public enum AuthErrorCode implements ErrorCode {
     NOT_FOUND_USER(HttpStatus.UNAUTHORIZED, AuthCode.NOT_FOUND_USER, "존재하지 않는 유저입니다."),
     INCONSISTENT_USER_PASSWORD(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_USER_PASSWORD, "일치하지 않는 비밀번호입니다."),
     INVALID_AUTHORITY(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_AUTHORITY, "유효하지 않는 권한입니다."),
-    INCONSISTENT_USER_INFO(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_USER_INFO, "일치하지 않는 정보입니다.");
+    INCONSISTENT_USER_INFO(HttpStatus.UNAUTHORIZED, AuthCode.INCONSISTENT_USER_INFO, "일치하지 않는 정보입니다."),
+    INVALID_PASSWORD_RESET_TOKEN(HttpStatus.UNAUTHORIZED, AuthCode.INVALID_PASSWORD_RESET_TOKEN, "유효하지 않은 비밀번호 초기화 토큰입니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

@@ -311,4 +311,31 @@ class AuthControllerTest {
             .andExpect(jsonPath("code").value(FIND_PASSWORD_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(FIND_PASSWORD_SUCCESS.getMessage()));
     }
+
+    @Test
+    @DisplayName("비밀번호 수정 성공시, 200 OK와 정상 응답을 반환")
+    void editUserPassword() throws Exception {
+        // given
+        AuthDto.EditPasswordRequest request = AuthDto.EditPasswordRequest.builder()
+            .password("aaaa1111")
+            .passwordResetToken("pa1.pb1.pc1")
+            .build();
+
+        doNothing()
+            .when(authFacade)
+            .editPassword(any(AuthDto.EditPasswordRequest.class));
+
+        // when
+        ResultActions perform = mockMvc.perform(post("/api/v1/auth/edit-password")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        // then
+        perform.andExpect(status().is(EDIT_PASSWORD_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(EDIT_PASSWORD_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(EDIT_PASSWORD_SUCCESS.getMessage()));
+    }
 }

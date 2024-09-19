@@ -56,4 +56,8 @@ public class AuthFacade {
         AuthInfo.PasswordResetTokenInfo info = authService.findPassword(authDtoMapper.toAuthCommand(request));
         return authDtoMapper.from(info);
     }
+
+    public void editPassword(AuthDto.EditPasswordRequest request) {
+        authService.editPassword(authDtoMapper.toAuthCommand(request));
+    }
 }

@@ -233,4 +233,26 @@ public class AuthController {
         AuthDto.PasswordResetTokenResponse response = authFacade.findPassword(request);
         return ResponseEntityFactory.toResponseEntity(FIND_PASSWORD_SUCCESS, response);
     }
+
+    @PostMapping("/edit-password")
+    @Operation(summary = "회원 비밀번호 수정")
+    @ApiResponse(responseCode = "200", description = "비밀번호 수정되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{" +
+                    "\"code\": 3108, " +
+                    "\"message\": \"회원님의 비밀번호가 수정되었습니다.\", " +
+                    "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> editUserPassword(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AuthDto.EditPasswordRequest request
+    ) {
+        authFacade.editPassword(request);
+        return ResponseEntityFactory.toResponseEntity(EDIT_PASSWORD_SUCCESS);
+    }
 }
