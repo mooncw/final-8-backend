@@ -65,6 +65,23 @@ public class AdminDto {
     ) {}
 
     @Builder
+    public record SelectedAssigneeInfo(
+        @Schema(example = SWAGGER_USER_PK_ID)
+        @NotNull(message = NOT_NULL_USER_PK_ID, groups = RequestValidationGroups.NotNullGroup.class)
+        Long id,
+
+        @Schema(example = SWAGGER_TASK_ASSIGNMENT_AMOUNT)
+        @NotNull(message = NOT_NULL_TASK_ASSIGNMENT_AMOUNT, groups = RequestValidationGroups.NotNullGroup.class)
+        Long taskAssignmentAmount
+    ) {}
+
+    @Builder
+    public record AssignTaskRequest(
+        @NotEmpty(message = NOT_EMPTY_SELECTED_ASSIGNEE_LIST,groups = RequestValidationGroups.NotEmptyGroup.class)
+        List<@Valid SelectedAssigneeInfo> selectedAssigneeList
+    ) {}
+
+    @Builder
     public record SignUpUserInfo(
         Long cursorId,
         String name,
@@ -132,5 +149,18 @@ public class AdminDto {
         Long totalElements,
         String currentCursorId,
         List<UnassignedAdInfo> contents
+    ) {}
+
+    @Builder
+    public record AssigneeInfo(
+        Long id,
+        String empNo,
+        String name,
+        Integer additionalTaskCount
+    ) {}
+
+    @Builder
+    public record FindAssigneeListResponse(
+        List<AssigneeInfo> assigneeList
     ) {}
 }

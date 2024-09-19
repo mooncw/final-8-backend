@@ -12,7 +12,8 @@ public class CorsConfig implements WebMvcConfigurer {
             .allowedOriginPatterns("http://localhost:5173",
                 "https://develop--ai-kars.netlify.app",
                 "https://neuroflow-fastcampus.store",
-                "https://www.neuroflow-fastcampus.store")
+                "https://www.neuroflow-fastcampus.store",
+                "https://ai-kars.netlify.app")
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowedHeaders("*")
             .allowCredentials(true);

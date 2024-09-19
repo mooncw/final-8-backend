@@ -52,6 +52,8 @@ public interface AdminDtoMapper {
         }
     }
 
+    AdminCommand.AssignTaskRequest toAdminCommand(AdminDto.AssignTaskRequest request);
+
     AdminDto.FindSignUpUserListResponse fromSignUpUserScroll(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
 
     @Mapping(source = "id", target = "cursorId")
@@ -128,4 +130,6 @@ public interface AdminDtoMapper {
     default String toAdIdValue(String adId) {
         return adId.substring(6);
     }
+
+    AdminDto.FindAssigneeListResponse from(AdminInfo.AssigneeListInfo info);
 }
