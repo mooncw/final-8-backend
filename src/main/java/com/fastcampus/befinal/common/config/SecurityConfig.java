@@ -74,6 +74,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/user/**").authenticated()
             // issue-ad
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/result/**").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/v1/issue-ad").authenticated()
             // filter-options
             .requestMatchers(HttpMethod.GET, "/api/v1/filter-options/**").authenticated()
             .requestMatchers(HttpMethod.GET,"/api/v1/issue-ad/options/**").authenticated()
