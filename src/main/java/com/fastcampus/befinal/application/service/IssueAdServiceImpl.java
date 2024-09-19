@@ -1,5 +1,9 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.TaskCommand;
+import com.fastcampus.befinal.domain.dataprovider.AdReviewReader;
+import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.domain.dataprovider.*;
 import com.fastcampus.befinal.domain.entity.AdDecision;
@@ -7,6 +11,7 @@ import com.fastcampus.befinal.domain.entity.AdProvision;
 import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.domain.entity.UserSummary;
 import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.service.IssueAdService;
 import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +32,13 @@ public class IssueAdServiceImpl implements IssueAdService {
     private final AdProvisionReader adProvisionReader;
     private final AdDecisionReader adDecisionReader;
     private final UserSummaryReader userSummaryReader;
+
+    @Override
+    @Transactional(readOnly = true)
+    public TaskInfo.TaskListInfo findIssueAdList(TaskCommand.FilterConditionRequest command){
+        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> filterAdPagination = advertisementReader.findIssueAdList(command);
+        return TaskInfo.TaskListInfo.of(filterAdPagination);
+    }
 
     @Override
     @Transactional(readOnly = true)
