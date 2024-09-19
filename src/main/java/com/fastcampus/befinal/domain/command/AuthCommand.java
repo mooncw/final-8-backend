@@ -43,7 +43,7 @@ public class AuthCommand {
 
     @Builder
     public record FindPasswordRequest(
-        String id,
+        String userId,
         String name,
         String phoneNumber,
         String certNoCheckToken

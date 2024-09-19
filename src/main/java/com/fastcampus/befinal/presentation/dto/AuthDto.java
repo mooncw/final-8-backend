@@ -163,7 +163,7 @@ public class AuthDto {
         @NotBlank(message = NOT_BLANK_USER_ID, groups = RequestValidationGroups.NotBlankGroup.class)
         @Size(min = 4, max = 12, message = SIZE_MISMATCH_USER_ID, groups = RequestValidationGroups.SizeGroup.class)
         @Pattern(regexp = "^[a-zA-Z0-9]+$", message = PATTERN_MISMATCH_USER_ID, groups = RequestValidationGroups.PatternGroup.class)
-        String id,
+        String userId,
 
         @Schema(example = SWAGGER_USER_NAME)
         @NotBlank(message = NOT_BLANK_USER_NAME, groups = RequestValidationGroups.NotBlankGroup.class)

@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public AuthInfo.FindIdInfo findId(AuthCommand.FindIdRequest command) {
         User user = validateUserAndGetInfo(command);
 
@@ -132,10 +132,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AuthInfo.PasswordResetTokenInfo findPassword(AuthCommand.FindPasswordRequest command) {
-        User user = validateUserId(command);
-
-        validateUserNameAndPhoneNumber(user, command);
+        validateUserInfo(command);
 
         AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo = AuthInfo.CheckTokenInfo.from(command.certNoCheckToken());
 
@@ -143,20 +142,13 @@ public class AuthServiceImpl implements AuthService {
 
         AuthInfo.CheckTokenInfo tokenInfo = AuthInfo.CheckTokenInfo.from(Generator.generateUniqueValue());
 
-        checkTokenStore.store(tokenInfo, user);
+        checkTokenStore.store(tokenInfo, command.userId());
 
         return AuthInfo.PasswordResetTokenInfo.from(tokenInfo.token());
     }
 
-    private User validateUserId(AuthCommand.FindPasswordRequest command) {
-        User user = userReader.findUser(command.id());
-        return user;
-    }
-
-    private void validateUserNameAndPhoneNumber(User user, AuthCommand.FindPasswordRequest command) {
-        if(!user.getName().equals(command.name()) || !user.getPhoneNumber().equals(command.phoneNumber())) {
-            throw new BusinessException(INCONSISTENT_USER_INFO);
-        }
+    private void validateUserInfo(AuthCommand.FindPasswordRequest command) {
+        userReader.findByUserIdAndNameAndPhoneNumber(command);
     }
 
     @Override

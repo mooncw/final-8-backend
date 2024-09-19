@@ -1,13 +1,15 @@
 package com.fastcampus.befinal.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
+@DynamicUpdate
+@AllArgsConstructor
 @Entity(name = "Advertisement")
 @Table(name = "advertisement")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -56,10 +58,19 @@ public class Advertisement {
     @JoinColumn(name = "media_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private AdMedia adMedia;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_decision_id", columnDefinition = "bigint", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private AdDecision adDecision;
 
     @OneToOne(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private AdContent adContent;
+
+    public void updateAdDecision(AdDecision adDecision){
+        this.adDecision = adDecision;
+    }
+    public void updateState(Boolean state){
+        this.state = state;
+    }
+    public void updateTaskDatetime(){ this.taskDateTime = LocalDateTime.now(); }
+    public void updateModifier(UserSummary user){ this.modifier = user; }
 }

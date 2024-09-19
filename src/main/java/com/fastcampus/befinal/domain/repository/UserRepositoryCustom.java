@@ -175,4 +175,24 @@ public class UserRepositoryCustom {
             default -> throw new BusinessException(INVALID_USER_TASK_SORT_TYPE);
         }
     }
+
+    public List<AdminInfo.AssigneeInfo> findAllAssignee() {
+        return queryFactory
+            .select(Projections.constructor(AdminInfo.AssigneeInfo.class,
+                user.id,
+                user.empNumber,
+                user.name,
+                user.additionalTaskCount
+                ))
+            .from(user)
+            .orderBy(user.empNumber.asc())
+            .fetch();
+    }
+
+    public void updateAdditionalTaskCount(AdminCommand.SelectedAssigneeInfo info) {
+        queryFactory.update(user)
+            .set(user.additionalTaskCount, user.additionalTaskCount.add(1))
+            .where(user.id.eq(info.id()))
+            .execute();
+    }
 }

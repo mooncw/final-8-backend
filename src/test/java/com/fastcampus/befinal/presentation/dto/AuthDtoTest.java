@@ -384,7 +384,7 @@ public class AuthDtoTest {
     void whenFindPasswordRequestIsBlank_thenValidationFails() {
         // given
         AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
-            .id(" ")
+            .userId(" ")
             .name(" ")
             .phoneNumber(" ")
             .certNoCheckToken(" ")
@@ -404,7 +404,7 @@ public class AuthDtoTest {
     void whenFindPasswordRequestMismatchSize_thenValidationFails() {
         // given
         AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
-            .id("par")
+            .userId("par")
             .name("박")
             .phoneNumber("0101234567")
             .certNoCheckToken("ca1.cb1.cc1")
@@ -424,7 +424,7 @@ public class AuthDtoTest {
     void whenFindPasswordRequestMismatchPattern_thenValidationFails() {
         // given
         AuthDto.FindPasswordRequest request = AuthDto.FindPasswordRequest.builder()
-            .id("박현준")
+            .userId("박현준")
             .name("박t2")
             .phoneNumber("a1234567890")
             .certNoCheckToken("ca1.cb1.cc1")

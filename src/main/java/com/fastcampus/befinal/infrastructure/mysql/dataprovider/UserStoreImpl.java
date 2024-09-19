@@ -1,15 +1,19 @@
 package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 
 import com.fastcampus.befinal.common.annotation.DataProvider;
+import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.dataprovider.UserStore;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.entity.UserManagement;
 import com.fastcampus.befinal.domain.info.UserInfo;
 import com.fastcampus.befinal.domain.repository.UserRepository;
+import com.fastcampus.befinal.domain.repository.UserRepositoryCustom;
 import com.fastcampus.befinal.infrastructure.mysql.mapper.MysqlEntityMapper;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @DataProvider
 @RequiredArgsConstructor
@@ -18,6 +22,7 @@ public class UserStoreImpl implements UserStore {
     private final MysqlEntityMapper mysqlEntityMapper;
     private final EntityManager entityManager;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepositoryCustom userRepositoryCustom;
 
     @Override
     public void store(UserManagement userManagement) {
@@ -34,6 +39,12 @@ public class UserStoreImpl implements UserStore {
     public void update(UserInfo.PasswordUpdateInfo userInfo) {
         User currentUser = entityManager.merge(userInfo.user());
         currentUser.updatePassword(passwordEncoder.encode(userInfo.password()));
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void update(AdminCommand.SelectedAssigneeInfo info) {
+        userRepositoryCustom.updateAdditionalTaskCount(info);
     }
 
     @Override

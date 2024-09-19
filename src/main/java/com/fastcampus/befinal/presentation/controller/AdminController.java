@@ -216,10 +216,10 @@ public class AdminController {
                             "currentCursorId": "202409A12345",
                             "contents": [
                                 {
-                                    "adId": "A12345",
-                                    "product": "삼성 냉장고",
-                                    "advertiser": "삼성SDI"
-                                    "category": "주방용품"
+                                    "adId": "N00001",
+                                    "product": "상품_202409N00001",
+                                    "advertiser": "광고주_810",
+                                    "category": "과자"
                                 }
                             ]
                         }
@@ -234,6 +234,60 @@ public class AdminController {
     ) {
         AdminDto.FindUnassignedAdListResponse response = adminFacade.findUnassignedAdScroll(cursorId);
         return ResponseEntityFactory.toResponseEntity(FIND_UNASSIGNED_AD_LIST_SUCCESS, response);
+    }
+
+    @GetMapping("/manage-task/emp")
+    @Operation(summary = "작업 배분 작업자 목록 조회")
+    @ApiResponse(responseCode = "200", description = "작업 배분 작업자 목록이 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                    {
+                        "code": 1007,
+                        "message": "작업 배분 작업자 목록이 조회되었습니다.",
+                        "data": {
+                            "assigneeList": [
+                                {
+                                    "id": 1,
+                                    "empNo": "12312312",
+                                    "name": "홍길동",
+                                    "additionalTaskCount": 0
+                                }
+                            ]
+                        }
+                    }
+                    """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AdminDto.FindAssigneeListResponse>> findAssigneeList() {
+        AdminDto.FindAssigneeListResponse response = adminFacade.findAssigneeList();
+        return ResponseEntityFactory.toResponseEntity(FIND_ASSIGNEE_LIST_SUCCESS, response);
+    }
+
+    @PostMapping("/manage-task")
+    @Operation(summary = "작업 배분 완료")
+    @ApiResponse(responseCode = "200", description = "작업 배분이 완료되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                    {
+                        "code": 1008,
+                        "message": "작업 배분이 완료되었습니다."
+                    }
+                    """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse> assignTask(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AdminDto.AssignTaskRequest request
+    ) {
+        adminFacade.assignTask(request);
+        return ResponseEntityFactory.toResponseEntity(ASSIGN_TASK_SUCCESS);
     }
 }
 

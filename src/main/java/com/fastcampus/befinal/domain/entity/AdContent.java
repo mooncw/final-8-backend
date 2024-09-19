@@ -17,7 +17,7 @@ public class AdContent {
     @Column(nullable = false, name = "content", columnDefinition = "text")
     private String content;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id", columnDefinition = "varchar(50)", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Advertisement advertisement;

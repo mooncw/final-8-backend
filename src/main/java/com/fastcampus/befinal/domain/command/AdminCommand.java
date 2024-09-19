@@ -32,4 +32,15 @@ public class AdminCommand {
         UserTaskSortType sorted,
         String period
     ) {}
+
+    @Builder
+    public record SelectedAssigneeInfo(
+        Long id,
+        Long taskAssignmentAmount
+    ) {}
+
+    @Builder
+    public record AssignTaskRequest(
+        List<SelectedAssigneeInfo> selectedAssigneeList
+    ) {}
 }
