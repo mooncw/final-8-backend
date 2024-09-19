@@ -60,6 +60,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/check-cert-no").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/v1/auth/reissue").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/find-id").permitAll()
             // dashboard
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
             // my-task

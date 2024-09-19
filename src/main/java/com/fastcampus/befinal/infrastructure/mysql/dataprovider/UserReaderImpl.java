@@ -40,4 +40,15 @@ public class UserReaderImpl implements UserReader {
     public ScrollPagination<Integer, AdminInfo.UserTaskInfo> findScroll(AdminCommand.FindUserTaskListRequest request) {
         return userRepositoryCustom.findScrollOrderByRequest(request);
     }
+
+    @Override
+    public User findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber)
+            .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+    }
+
+    @Override
+    public AdminInfo.AssigneeListInfo findAllAssignee() {
+        return AdminInfo.AssigneeListInfo.from(userRepositoryCustom.findAllAssignee());
+    }
 }

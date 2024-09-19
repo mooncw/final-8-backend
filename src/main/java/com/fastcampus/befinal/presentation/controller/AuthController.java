@@ -183,4 +183,29 @@ public class AuthController {
         AuthDto.ReissueJwtResponse response = authFacade.reissueJwt(request);
         return ResponseEntityFactory.toResponseEntity(REISSUE_JWT_SUCCESS, response);
     }
+
+    @PostMapping("/find-id")
+    @Operation(summary = "회원 아이디 찾기")
+    @ApiResponse(responseCode = "200", description = "아이디 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = "{" +
+                                "\"code\": 3106, " +
+                                "\"message\": \"회원님의 아이디가 조회되었습니다.\", " +
+                                "\"data\": {" +
+                                    "\"id\": \"" + SWAGGER_USER_ID + "\"" +
+                                "}" +
+                            "}"
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AuthDto.FindIdResponse>> findUserId(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AuthDto.FindIdRequest request
+    ) {
+        AuthDto.FindIdResponse response = authFacade.findId(request);
+        return ResponseEntityFactory.toResponseEntity(FIND_ID_SUCCESS, response);
+    }
 }

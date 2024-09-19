@@ -40,6 +40,8 @@ public interface AuthDtoMapper {
 
     JwtCommand.ReissueJwtRequest toJwtCommand(AuthDto.ReissueJwtRequest request);
 
+    AuthCommand.FindIdRequest toAuthCommand(AuthDto.FindIdRequest request);
+
     @Mapping(source = "token", target = "idCheckToken")
     AuthDto.CheckIdDuplicationResponse from(AuthInfo.CheckIdTokenInfo info);
 
@@ -51,6 +53,8 @@ public interface AuthDtoMapper {
 
     AuthDto.ReissueJwtResponse from(JwtInfo.TokenInfo info);
 
+    AuthDto.FindIdResponse from(AuthInfo.FindIdInfo info);
+
     default CertificationType mapStringToCertificationType(String type) {
         switch (type) {
             case "SignUp" -> {
@@ -58,6 +62,9 @@ public interface AuthDtoMapper {
             }
             case "UpdateUser" -> {
                 return CertificationType.UPDATE_USER;
+            }
+            case "FindId" -> {
+                return CertificationType.FIND_ID;
             }
             default -> throw new BusinessException(INVALID_CERTIFICATION_TYPE);
         }

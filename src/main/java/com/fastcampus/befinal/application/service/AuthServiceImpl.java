@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.application.mapper.AuthDtoMapper;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.Generator;
 import com.fastcampus.befinal.domain.command.AuthCommand;
@@ -97,6 +98,36 @@ public class AuthServiceImpl implements AuthService {
         if (!Objects.equals(command.certificationNumber(), smsCertification.getCertificationNumber())) {
             throw new BusinessException(INCONSISTENT_CERTIFICATION_NUMBER);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AuthInfo.FindIdInfo findId(AuthCommand.FindIdRequest command) {
+        User user = validateUserAndGetInfo(command);
+
+        AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo = AuthInfo.CheckTokenInfo.from(command.certNoCheckToken());
+
+        validateCertificationNumberCheckToken(certificationNumberCheckTokenInfo);
+
+        return AuthInfo.FindIdInfo.from(user);
+    }
+
+    private void validateCertificationNumberCheckToken(AuthInfo.CheckTokenInfo certificationNumberCheckTokenInfo) {
+        if (!checkTokenReader.exists(certificationNumberCheckTokenInfo)) {
+            throw new BusinessException(INVALID_CERTIFICATION_NUMBER_CHECK_TOKEN);
+        }
+
+        checkTokenStore.delete(certificationNumberCheckTokenInfo);
+    }
+
+    private User validateUserAndGetInfo(AuthCommand.FindIdRequest command) {
+        User user = userReader.findByPhoneNumber(command.phoneNumber());
+
+        if(!command.name().equals(user.getName())) {
+            throw new BusinessException(INCONSISTENT_USER_INFO);
+        }
+
+        return user;
     }
 
     @Override

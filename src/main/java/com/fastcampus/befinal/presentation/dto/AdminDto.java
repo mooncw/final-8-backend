@@ -150,4 +150,17 @@ public class AdminDto {
         String currentCursorId,
         List<UnassignedAdInfo> contents
     ) {}
+
+    @Builder
+    public record AssigneeInfo(
+        Long id,
+        String empNo,
+        String name,
+        Integer additionalTaskCount
+    ) {}
+
+    @Builder
+    public record FindAssigneeListResponse(
+        List<AssigneeInfo> assigneeList
+    ) {}
 }

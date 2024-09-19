@@ -130,4 +130,6 @@ public interface AdminDtoMapper {
     default String toAdIdValue(String adId) {
         return adId.substring(6);
     }
+
+    AdminDto.FindAssigneeListResponse from(AdminInfo.AssigneeListInfo info);
 }

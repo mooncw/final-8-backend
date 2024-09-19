@@ -90,6 +90,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional(readOnly = true)
+    public AdminInfo.AssigneeListInfo findAssigneeList() {
+        return userReader.findAllAssignee();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public void assignTask(AdminCommand.AssignTaskRequest command) {
         AdminInfo.TaskAssignmentAmountInfo taskAssignmentAmountInfo = validateAndGetTaskAssignmentAmountInfo(command);
 

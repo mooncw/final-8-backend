@@ -76,7 +76,7 @@ public class AuthDto {
     public record SendCertificationNumberRequest(
         @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE)
         @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "SignUp|UpdateUser", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "SignUp|UpdateUser|FindId", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
         String type,
 
         @Schema(example = SWAGGER_PHONE_NUMBER)
@@ -91,7 +91,7 @@ public class AuthDto {
     public record CheckCertificationNumberRequest(
         @Schema(example = SWAGGER_CERTIFICATION_NUMBER_TYPE)
         @NotBlank(message = NOT_BLANK_CERTIFICATION_TYPE, groups = RequestValidationGroups.NotBlankGroup.class)
-        @Pattern(regexp = "SignUp|UpdateUser", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
+        @Pattern(regexp = "SignUp|UpdateUser|FindId", message = PATTERN_MISMATCH_CERTIFICATION_TYPE, groups = RequestValidationGroups.PatternGroup.class)
         String type,
 
         @Schema(example = SWAGGER_PHONE_NUMBER)
@@ -137,6 +137,26 @@ public class AuthDto {
     ) {}
 
     @Builder
+    @Schema(description = "아이디 찾기 request")
+    public record FindIdRequest(
+        @Schema(example = SWAGGER_USER_NAME)
+        @NotBlank(message = NOT_BLANK_USER_NAME, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 2, max = 4, message = SIZE_MISMATCH_USER_NAME, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^[가-힣]+$", message = PATTERN_MISMATCH_USER_NAME, groups = RequestValidationGroups.PatternGroup.class)
+        String name,
+
+        @Schema(example = SWAGGER_PHONE_NUMBER)
+        @NotBlank(message = NOT_BLANK_PHONE_NUMBER, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Size(min = 11, max = 11, message = SIZE_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.SizeGroup.class)
+        @Pattern(regexp = "^\\d+$", message = PATTERN_MISMATCH_PHONE_NUMBER, groups = RequestValidationGroups.PatternGroup.class)
+        String phoneNumber,
+
+        @Schema(example = SWAGGER_CERTIFICATION_NUMBER_CHECK_TOKEN)
+        @NotBlank(message = NOT_BLANK_CERTIFICATION_NUMBER_CHECK_TOKEN, groups = RequestValidationGroups.NotBlankGroup.class)
+        String certNoCheckToken
+    ) {}
+
+    @Builder
     public record ReissueJwtResponse(
         String accessToken,
         String refreshToken
@@ -172,5 +192,10 @@ public class AuthDto {
     public record SignInResponse(
         UserInfo userInfo,
         TokenInfo tokenInfo
+    ) {}
+
+    @Builder
+    public record FindIdResponse(
+        String userId
     ) {}
 }

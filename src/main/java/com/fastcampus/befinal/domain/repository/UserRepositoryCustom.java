@@ -176,6 +176,19 @@ public class UserRepositoryCustom {
         }
     }
 
+    public List<AdminInfo.AssigneeInfo> findAllAssignee() {
+        return queryFactory
+            .select(Projections.constructor(AdminInfo.AssigneeInfo.class,
+                user.id,
+                user.empNumber,
+                user.name,
+                user.additionalTaskCount
+                ))
+            .from(user)
+            .orderBy(user.empNumber.asc())
+            .fetch();
+    }
+
     public void updateAdditionalTaskCount(AdminCommand.SelectedAssigneeInfo info) {
         queryFactory.update(user)
             .set(user.additionalTaskCount, user.additionalTaskCount.add(1))

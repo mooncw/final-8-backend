@@ -33,4 +33,11 @@ public class AuthCommand {
         String id,
         String password
     ) {}
+
+    @Builder
+    public record FindIdRequest(
+        String name,
+        String phoneNumber,
+        String certNoCheckToken
+    ) {}
 }
