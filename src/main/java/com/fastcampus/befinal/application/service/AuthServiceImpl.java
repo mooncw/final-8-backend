@@ -155,12 +155,13 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void editPassword(AuthCommand.EditPasswordRequest command) {
         AuthInfo.CheckTokenInfo info = AuthInfo.CheckTokenInfo.from(command.passwordResetToken());
-        String userId = checkTokenReader.find(info);
-        checkTokenStore.delete(info);
+        String userId = checkTokenReader.findUserIdByResetToken(info);
 
         User user = userReader.findUser(userId);
         UserInfo.PasswordUpdateInfo passwordUpdateInfo = UserInfo.PasswordUpdateInfo.of(user, command.password());
         userStore.update(passwordUpdateInfo);
+
+        checkTokenStore.delete(info);
     }
 
     @Override

@@ -25,12 +25,12 @@ public class CheckTokenReaderImpl implements CheckTokenReader {
     }
 
     @Override
-    public String find(AuthInfo.CheckTokenInfo info) {
-        RedisValue value = Optional.ofNullable(redisTemplate.opsForValue().get(info.token()))
+    public String findUserIdByResetToken(AuthInfo.CheckTokenInfo info) {
+        RedisValue storedUserId  = Optional.ofNullable(redisTemplate.opsForValue().get(info.token()))
             .orElseThrow(() -> new BusinessException(INVALID_PASSWORD_RESET_TOKEN));
 
-        if(value instanceof UserId) {
-            return ((UserId)value).getUserId();
+        if(storedUserId  instanceof UserId) {
+            return ((UserId)storedUserId ).getUserId();
         }
         throw new BusinessException(NOT_FOUND_USER);
     }
