@@ -18,8 +18,14 @@ public interface SameAdDtoMapper {
     @Mapping(source = "postDateTime", target = "postDate", qualifiedByName = "toPostDateValue")
     SameAdDto.InspectionAdInfo from(SameAdInfo.InspectionAdInfo info);
 
+    @Mapping(source = "similarity", target = "similarityPercent", qualifiedByName = "toSimilarityPercentValue")
     @Mapping(source = "postDateTime", target = "postDate", qualifiedByName = "toPostDateValue")
     SameAdDto.AdSimilarityInfo from(SameAdInfo.AdSimilarityInfo info);
+
+    @Named("toSimilarityPercentValue")
+    default Integer toSimilarityPercentValue(Double similarity) {
+        return (int) Math.round(similarity * 100);
+    }
 
     @Named("toPostDateValue")
     default String toPostDateValue(LocalDateTime postDateTime) {

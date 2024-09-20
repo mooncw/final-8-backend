@@ -23,7 +23,7 @@ public class SameAdInfo {
         String advertiser,
         String category,
         LocalDateTime postDateTime,
-        Integer similarityPercent,
+        Double similarity,
         Integer sameSentenceCount
     ) {}
 
