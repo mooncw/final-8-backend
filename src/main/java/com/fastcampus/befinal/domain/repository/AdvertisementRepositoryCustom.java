@@ -26,6 +26,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -131,7 +132,7 @@ public class AdvertisementRepositoryCustom {
         BooleanExpression filterExpression = createFilterCondition(taskCommand);
         BooleanExpression cursorExpression = createCursorCondition(taskCommand.cursorInfo());
 
-        List<TaskInfo.AdvertisementListInfo> contents = queryFactory
+        List<TaskInfo.AdvertisementListInfo> falseContents = queryFactory
             .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
                 ad.id.substring(6),
                 ad.adMedia.name,
@@ -142,13 +143,33 @@ public class AdvertisementRepositoryCustom {
                 ad.issue
             ))
             .from(ad)
-            .where(filterExpression.and(cursorExpression).and(userIdEq(userId)))
-            .orderBy(
-                ad.state.asc(),
-                ad.id.asc()
-            )
+            .where(filterExpression.and(ad.state.eq(false)).and(cursorExpression).and(userIdEq(userId)))
+            .orderBy(ad.id.asc())
             .limit(MY_TASK_LIST_SCROLL_SIZE)
             .fetch();
+
+        List<TaskInfo.AdvertisementListInfo> contents = new ArrayList<>(falseContents);
+
+        if (falseContents.size() < MY_TASK_LIST_SCROLL_SIZE) {
+            int remainingSize = MY_TASK_LIST_SCROLL_SIZE - falseContents.size();
+            List<TaskInfo.AdvertisementListInfo> trueContents = queryFactory
+                .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
+                    ad.id.substring(6),
+                    ad.adMedia.name,
+                    ad.adCategory.category,
+                    ad.product,
+                    ad.advertiser,
+                    ad.state,
+                    ad.issue
+                ))
+                .from(ad)
+                .where(filterExpression.and(ad.state.eq(true)).and(cursorExpression).and(userIdEq(userId)))
+                .orderBy(ad.id.asc())
+                .limit(remainingSize)
+                .fetch();
+
+            contents.addAll(trueContents);
+        }
 
         TaskInfo.CursorInfo nextCursorInfo = getNextCursorInfo(contents);
 
@@ -260,8 +281,7 @@ public class AdvertisementRepositoryCustom {
 
         // 현재 커서가 false(검수 전)인 경우
         if (!cursorInfo.cursorState()) {
-            return ad.state.eq(false).and(ad.id.substring(6).gt(cursorInfo.cursorId()))
-                .or(ad.state.eq(true));
+            return ad.state.eq(false).and(ad.id.substring(6).gt(cursorInfo.cursorId()));
         }
         // 현재 커서가 true(검수 완료)인 경우
         else {
