@@ -176,10 +176,14 @@ public class AdvertisementRepositoryCustom {
                 ad.advertiser,
                 ad.state,
                 ad.issue,
-                ad.assignee.name
+                new CaseBuilder()
+                    .when(ad.assignee.isNotNull())
+                    .then(ad.assignee.name)
+                    .otherwise("")
             ))
             .from(ad)
-            .where(filterExpression.and(cursorExpression).and(isAssigneeNotNull()))
+            .leftJoin(ad.assignee)
+            .where(filterExpression.and(cursorExpression))
             .orderBy(
                 ad.state.asc(),
                 ad.id.asc()
@@ -192,7 +196,7 @@ public class AdvertisementRepositoryCustom {
         Long totalElements = queryFactory
             .select(ad.count())
             .from(ad)
-            .where(filterExpression.and(isAssigneeNotNull()))
+            .where(filterExpression)
             .fetchOne();
 
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
@@ -393,8 +397,6 @@ public class AdvertisementRepositoryCustom {
     private BooleanExpression isNotCompleted() {
         return ad.state.isFalse();
     }
-
-    private BooleanExpression isAssigneeNotNull() { return ad.assignee.isNotNull(); }
 
     private BooleanExpression isInCurrentPeriod() {
         LocalDate todayDate = LocalDate.now();
