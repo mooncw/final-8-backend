@@ -2,6 +2,7 @@ package com.fastcampus.befinal.domain.info;
 
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class SameAdInfo {
@@ -11,7 +12,7 @@ public class SameAdInfo {
         String product,
         String advertiser,
         String category,
-        String postDate,
+        LocalDateTime postDateTime,
         String content
     ) {}
 
@@ -21,7 +22,7 @@ public class SameAdInfo {
         String product,
         String advertiser,
         String category,
-        String postDate,
+        LocalDateTime postDateTime,
         Integer similarityPercent,
         Integer sameSentenceCount
     ) {}
