@@ -30,5 +30,12 @@ public class SameAdInfo {
     public record FindSimilarityListInfo(
         InspectionAdInfo inspectionAdInfo,
         List<AdSimilarityInfo> adSimilarityInfoList
-    ) {}
+    ) {
+        public static FindSimilarityListInfo of(InspectionAdInfo inspectionAdInfo, List<AdSimilarityInfo> adSimilarityInfoList) {
+            return FindSimilarityListInfo.builder()
+                .inspectionAdInfo(inspectionAdInfo)
+                .adSimilarityInfoList(adSimilarityInfoList)
+                .build();
+        }
+    }
 }
