@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.domain.info;
 
+import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -63,5 +64,62 @@ public class DashboardInfo {
             String adId,
             String adName,
             LocalDateTime adTaskDateTime
+    ) {}
+
+    @Builder
+    public record DashboardAdminDataInfo(
+        DashboardDto.AdminTimeline adminTimeline,
+        DashboardDto.AdminAdCount adCount,
+        List<DashboardDto.DailyWork> dailyWorkList,
+        List<DashboardDto.PersonalTask> personalTaskList
+    ) {}
+
+    @Builder
+    public record AdminAdCountInfo(
+        Integer remainingAd,
+        Integer totalAd,
+        Integer doneAd,
+        Integer notDoneAd
+    ) {}
+
+    @Builder
+    public record AdminTimeline(
+        Integer notApprovedUser,
+        Integer remainingAd
+    ) {
+        public static AdminTimeline of(Integer notApprovedUser, Integer remainingAd){
+            return AdminTimeline.builder()
+                .notApprovedUser(notApprovedUser)
+                .remainingAd(remainingAd)
+                .build();
+        }
+    }
+
+    @Builder
+    public record AdminAdCount(
+        Integer totalAd,
+        Integer doneAd,
+        Integer notDoneAd
+    ) {
+        public static AdminAdCount from(AdminAdCountInfo info){
+            return AdminAdCount.builder()
+                .totalAd(info.totalAd())
+                .doneAd(info.doneAd())
+                .notDoneAd(info.notDoneAd())
+                .build();
+        }
+    }
+
+    @Builder
+    public record DailyWork(
+        LocalDate date,
+        Integer avg
+    ) {}
+
+    @Builder
+    public record PersonalTask(
+        String userName,
+        Integer doneAd,
+        Integer totalAd
     ) {}
 }

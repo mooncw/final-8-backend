@@ -11,12 +11,17 @@ import com.fastcampus.befinal.domain.info.TaskInfo;
 import java.util.List;
 
 public interface AdvertisementReader {
+    // 사용자 대시보드
     DashboardInfo.AdCount findAdCount(String userId);
     List<DashboardInfo.DailyDone> findDailyDone(String userId);
     List<DashboardInfo.RecentDone> findRecentDone(String userId);
+    // 관리자 대시보드
+    DashboardInfo.AdminAdCountInfo findAdminAdCountInfo();
+    // 지적광고
     ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command);
     IssueAdInfo.IssueAdDetailInfo findIssueAdDetail(String advertisementId);
     Advertisement findAdvertisementById(String advertisementId);
+    // 관리자
     ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId);
     Long countUnassigned();
     List<AdminInfo.UnassignedAdIdInfo> findAllUnassignedAdId(Long amount);

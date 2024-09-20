@@ -46,6 +46,12 @@ public class UserManagementRepositoryCustom {
         return ScrollPagination.of(totalElements, nextCursorId, contents);
     }
 
+    public Integer findNotApprovedUser(){
+        return queryFactory
+            .select(userManagement.userId.count().intValue())
+            .fetchOne();
+    }
+
     private BooleanExpression gtCursorId(Long userId) {
         if (Objects.isNull(userId)) {
             return null;

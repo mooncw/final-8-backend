@@ -24,6 +24,7 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     private final AdvertisementRepository advertisementRepository;
     private final AdvertisementRepositoryCustom advertisementRepositoryCustom;
 
+    // 사용자 대시보드
     @Override
     public DashboardInfo.AdCount findAdCount(String userId) {
         return advertisementRepositoryCustom.getAdCount(userId);
@@ -39,6 +40,12 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
         return advertisementRepositoryCustom.getRecentDoneList(userId);
     }
 
+    // 관리자 대시보드
+    public DashboardInfo.AdminAdCountInfo findAdminAdCountInfo(){
+        return advertisementRepositoryCustom.getAdminAdContInfo();
+    }
+
+    // 지적광고
     @Override
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command){
         return advertisementRepositoryCustom.findIssueAdListScrollByCursorInfo(command);
@@ -56,6 +63,7 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
             orElseThrow(()-> new BusinessException(NOT_FOUND_ADVERTISEMENT_ID));
     }
 
+    // 관리자
     @Override
     public ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId) {
         return advertisementRepositoryCustom.findUnassignedAdScroll(cursorId);

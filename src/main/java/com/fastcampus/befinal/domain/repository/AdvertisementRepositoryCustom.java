@@ -38,6 +38,7 @@ public class AdvertisementRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private static final QAdvertisement ad = QAdvertisement.advertisement;
 
+    // 유저 대시보드 기능
     public DashboardInfo.AdCount getAdCount(String id) {
         return queryFactory
             .select(Projections.constructor(DashboardInfo.AdCount.class,
@@ -125,7 +126,28 @@ public class AdvertisementRepositoryCustom {
             .fetchOne();
     }
 
+    // 어드민 대시보드 기능
+    public DashboardInfo.AdminAdCountInfo getAdminAdContInfo(){
+        return queryFactory
+            .select(Projections.constructor(DashboardInfo.AdminAdCountInfo.class,
+                new CaseBuilder()
+                    .when(isAssigneeNull()).then(1)
+                    .otherwise(0).sum(),
+                ad.count().intValue(),
+                new CaseBuilder()
+                    .when(isCompleted()).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isNotCompleted()).then(1)
+                    .otherwise(0).sum()
+                ))
+            .from(ad)
+            .where(isInCurrentPeriod())
+            .fetchOne();
+    }
 
+
+    // 나의 작업 기능
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.FilterConditionRequest taskCommand) {
 
         BooleanExpression filterExpression = createFilterCondition(taskCommand);
@@ -161,6 +183,7 @@ public class AdvertisementRepositoryCustom {
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
     }
 
+    // 지적 광고 기능
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdListScrollByCursorInfo(TaskCommand.FilterConditionRequest taskCommand) {
 
         BooleanExpression filterExpression = createFilterCondition(taskCommand);
@@ -221,6 +244,7 @@ public class AdvertisementRepositoryCustom {
             .fetchOne());
     }
 
+    // 조건 생성
     public Long countMediaByPeriod(AdMedia media, String period) {
         BooleanExpression expression;
         if(StringUtils.hasText(period)) {
@@ -381,6 +405,11 @@ public class AdvertisementRepositoryCustom {
 
     private BooleanExpression isNotCompleted() {
         return ad.state.isFalse();
+    }
+
+    // 담당자가 아직 정해지지 않았을 경우
+    private BooleanExpression isAssigneeNull() {
+        return ad.assignee.isNull();
     }
 
     private BooleanExpression isInCurrentPeriod() {

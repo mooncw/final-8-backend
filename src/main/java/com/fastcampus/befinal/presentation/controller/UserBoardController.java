@@ -71,4 +71,10 @@ public class UserBoardController {
         DashboardDto.DashboardDataResponse response = boardFacade.loadUserDashboardData(userId);
         return ResponseEntityFactory.toResponseEntity(DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS, response);
     }
+
+    @GetMapping("/admin")
+    public ResponseEntity<AppApiResponse<DashboardDto.DashboardAdminDataResponse>> getAdminBoardData() {
+        DashboardDto.DashboardAdminDataResponse response = boardFacade.loadAdminDashboardData();
+        return ResponseEntityFactory.toResponseEntity(DashboardSuccessCode.CHECK_ADMIN_DASHBOARD_SUCCESS, response);
+    }
 }
