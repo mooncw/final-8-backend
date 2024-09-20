@@ -144,16 +144,14 @@ public class AdvertisementRepositoryCustom {
             ))
             .from(ad)
             .where(filterExpression.and(ad.state.eq(false)).and(cursorExpression).and(userIdEq(userId)))
-            .orderBy(
-                ad.id.asc()
-            )
+            .orderBy(ad.id.asc())
             .limit(MY_TASK_LIST_SCROLL_SIZE)
             .fetch();
 
         List<TaskInfo.AdvertisementListInfo> contents = new ArrayList<>(falseContents);
 
-        if (falseContents.size() < ISSUE_AD_LIST_SCROLL_SIZE) {
-            int remainingSize = ISSUE_AD_LIST_SCROLL_SIZE - falseContents.size();
+        if (falseContents.size() < MY_TASK_LIST_SCROLL_SIZE) {
+            int remainingSize = MY_TASK_LIST_SCROLL_SIZE - falseContents.size();
             List<TaskInfo.AdvertisementListInfo> trueContents = queryFactory
                 .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
                     ad.id.substring(6),
@@ -165,7 +163,7 @@ public class AdvertisementRepositoryCustom {
                     ad.issue
                 ))
                 .from(ad)
-                .where(filterExpression.and(ad.state.eq(true)).and(cursorExpression))
+                .where(filterExpression.and(ad.state.eq(true)).and(cursorExpression).and(userIdEq(userId)))
                 .orderBy(ad.id.asc())
                 .limit(remainingSize)
                 .fetch();
