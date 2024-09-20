@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.domain.dataprovider.AdSimilarityReader;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.info.SameAdInfo;
 import com.fastcampus.befinal.domain.service.SameAdService;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SameAdServiceImpl implements SameAdService {
     private final AdvertisementReader advertisementReader;
+    private final AdSimilarityReader adSimilarityReader;
 
     @Override
     public SameAdInfo.FindSimilarityListInfo findSimilarityList(String inspectionAdvertisementId) {
@@ -19,7 +21,7 @@ public class SameAdServiceImpl implements SameAdService {
             advertisementReader.findInspectionAdInfo(inspectionAdvertisementId);
 
         List<SameAdInfo.AdSimilarityInfo> adSimilarityInfoList =
-            advertisementReader.findAdSimilarityInfoList(inspectionAdvertisementId);
+            adSimilarityReader.findAdSimilarityInfoList(inspectionAdvertisementId);
 
         return SameAdInfo.FindSimilarityListInfo.of(inspectionAdInfo, adSimilarityInfoList);
     }
