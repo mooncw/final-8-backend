@@ -62,7 +62,7 @@ class IssueAdControllerTest {
     @DisplayName("지적광고 조회 요청 시, 200 OK 및 정상 응답을 반환")
     void findIssueAdListTest() throws Exception{
         //given
-        TaskDto.AdvertisementListInfo adResponse = TaskDto.AdvertisementListInfo.builder()
+        TaskDto.IssueAdvertisementListInfo adResponse = TaskDto.IssueAdvertisementListInfo.builder()
             .adId("A00001")
             .media("동아일보")
             .category("음식")
@@ -70,9 +70,10 @@ class IssueAdControllerTest {
             .advertiser("광고주")
             .state(true)
             .issue(true)
+            .assigneeName("홍길동")
             .build();
 
-        TaskDto.TaskListInfo response = TaskDto.TaskListInfo.builder()
+        TaskDto.IssueAdListInfo response = TaskDto.IssueAdListInfo.builder()
             .totalElements(1L)
             .cursorInfo(new TaskDto.CursorInfo(true, "A00001"))
             .advertisementList(List.of(adResponse))
@@ -111,6 +112,7 @@ class IssueAdControllerTest {
         //given
         String advertisementId = "A0001";
         IssueAdInfo.IssueAdReviewInfo review = IssueAdInfo.IssueAdReviewInfo.builder()
+            .reviewId(1L)
             .provisionArticle(1)
             .provisionContent("")
             .sentence("")
