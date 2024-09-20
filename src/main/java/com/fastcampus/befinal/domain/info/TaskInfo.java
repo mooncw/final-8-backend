@@ -58,4 +58,31 @@ public class TaskInfo {
                     .build();
         }
     }
+
+    @Builder
+    public record IssueAdvertisementListInfo (
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser,
+        Boolean state,
+        Boolean issue,
+        String assigneeName
+    ) {}
+
+    @Builder
+    public record IssueAdListInfo(
+        Long totalElements,
+        CursorInfo cursorInfo,
+        List<IssueAdvertisementListInfo> advertisementList
+    ){
+        public static IssueAdListInfo of(ScrollPagination<CursorInfo, IssueAdvertisementListInfo> scrollPagination) {
+            return IssueAdListInfo.builder()
+                .totalElements(scrollPagination.totalElements())
+                .cursorInfo(scrollPagination.currentCursorId())
+                .advertisementList(scrollPagination.contents())
+                .build();
+        }
+    }
 }

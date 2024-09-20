@@ -20,6 +20,7 @@ public class AdReviewRepositoryCustom{
     public List<IssueAdInfo.IssueAdReviewInfo> getReviewList(String advertisementId){
         return queryFactory
             .select(Projections.constructor(IssueAdInfo.IssueAdReviewInfo.class,
+                adReview.id,
                 adReview.adProvision.article,
                 adReview.adProvision.content,
                 adReview.sentence,
