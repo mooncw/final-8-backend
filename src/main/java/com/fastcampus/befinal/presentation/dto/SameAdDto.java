@@ -16,7 +16,7 @@ public class SameAdDto {
     ) {}
 
     @Builder
-    public record SameAdvertisementInfo(
+    public record AdSimilarityInfo(
         String id,
         String product,
         String advertiser,
@@ -29,6 +29,6 @@ public class SameAdDto {
     @Builder
     public record FindSimilarityListResponse(
         InspectionAdInfo inspectionAdInfo,
-        List<SameAdvertisementInfo> sameAdList
+        List<AdSimilarityInfo> adSimilarityInfoList
     ) {}
 }

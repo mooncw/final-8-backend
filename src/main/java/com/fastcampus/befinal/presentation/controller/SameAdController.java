@@ -44,7 +44,7 @@ public class SameAdController {
                                 "postDate": "2024-09-11",
                                 "content": "어쩌구. 저쩌구."
                             }
-                            "sameAdList": [
+                            "adSimilarityInfoList": [
                                 {
                                     "id": "202409A00058
                                     "product": "명작수",
