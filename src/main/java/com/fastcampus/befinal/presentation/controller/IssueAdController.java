@@ -58,12 +58,12 @@ public class IssueAdController {
             )
         )
     )
-    public ResponseEntity<AppApiResponse<TaskDto.TaskListInfo>> findIssueAdList(
+    public ResponseEntity<AppApiResponse<TaskDto.IssueAdListInfo>> findIssueAdList(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
         TaskDto.FilterConditionRequest request
     ){
-        TaskDto.TaskListInfo response = issueAdFacade.findIssueAdList(request);
+        TaskDto.IssueAdListInfo response = issueAdFacade.findIssueAdList(request);
         return ResponseEntityFactory.toResponseEntity(GET_ISSUE_ADVERTISEMENT_LIST_SUCCESS, response);
     }
 

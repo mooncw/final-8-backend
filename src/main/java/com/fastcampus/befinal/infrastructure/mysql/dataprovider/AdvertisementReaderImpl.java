@@ -63,7 +63,7 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
 
     // 지적광고
     @Override
-    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command){
+    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.IssueAdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command){
         return advertisementRepositoryCustom.findIssueAdListScrollByCursorInfo(command);
     }
 

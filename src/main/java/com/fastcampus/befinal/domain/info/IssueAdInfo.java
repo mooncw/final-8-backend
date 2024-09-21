@@ -26,6 +26,7 @@ public class IssueAdInfo {
 
     @Builder
     public record IssueAdReviewInfo(
+        Long reviewId,
         Integer provisionArticle,
         String provisionContent,
         String sentence,
