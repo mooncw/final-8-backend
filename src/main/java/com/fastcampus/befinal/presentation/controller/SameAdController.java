@@ -81,7 +81,7 @@ public class SameAdController {
                         "code": 3702,
                         "message": "동일 광고 유사율 상세화면이 조회되었습니다.",
                         "data": {
-                            "content": "어쩌구. 저쩌구."
+                            "content": "어쩌구. 저쩌구.",
                             "sameSentence": "어쩌구."
                         }
                     }
