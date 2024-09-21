@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 public enum SameAdCode implements Code {
     //success
     FIND_SIMILARITY_LIST_SUCCESS(3701),
-    FIND_SIMILARITY_DETAIL_SUCCESS(3702);
+    FIND_SIMILARITY_DETAIL_SUCCESS(3702),
+
+    //error
+    NOT_FOUND_SAME_ADVERTISEMENT_FOR_INSPECTION_ADVERTISEMENT(3750);
 
     private final Integer code;
 
