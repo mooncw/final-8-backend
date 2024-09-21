@@ -6,10 +6,7 @@ import com.fastcampus.befinal.domain.entity.AdCategory;
 import com.fastcampus.befinal.domain.entity.AdMedia;
 import com.fastcampus.befinal.domain.entity.QAdvertisement;
 import com.fastcampus.befinal.domain.entity.UserSummary;
-import com.fastcampus.befinal.domain.info.AdminInfo;
-import com.fastcampus.befinal.domain.info.DashboardInfo;
-import com.fastcampus.befinal.domain.info.IssueAdInfo;
-import com.fastcampus.befinal.domain.info.TaskInfo;
+import com.fastcampus.befinal.domain.info.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -26,7 +23,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -465,5 +461,21 @@ public class AdvertisementRepositoryCustom {
             .set(ad.assignDateTime, LocalDateTime.now())
             .where(ad.id.in(personalTaskAdIdList))
             .execute();
+    }
+
+    public Optional<SameAdInfo.InspectionAdInfo> findInspectionAdInfo(String advertisementId) {
+        return Optional.ofNullable(
+            queryFactory.select(Projections.constructor(SameAdInfo.InspectionAdInfo.class,
+                ad.id,
+                ad.product,
+                ad.advertiser,
+                ad.adCategory.category,
+                ad.postDateTime,
+                ad.adContent.content
+            ))
+            .from(ad)
+            .where(ad.id.eq(advertisementId))
+            .fetchOne()
+        );
     }
 }
