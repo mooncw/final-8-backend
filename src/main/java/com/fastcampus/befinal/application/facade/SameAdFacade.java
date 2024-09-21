@@ -15,4 +15,11 @@ public class SameAdFacade {
     public SameAdDto.FindSimilarityListResponse findSimilarityList(String inspectionAdvertisementId) {
         return sameAdDtoMapper.from(sameAdService.findSimilarityList(inspectionAdvertisementId));
     }
+
+    public SameAdDto.FindSimilarityDetailResponse findSimilarityDetail(
+        String inspectionAdvertisementId,
+        String comparisonAdvertisementId
+    ) {
+        return sameAdDtoMapper.from(sameAdService.findSimilarityDetail(inspectionAdvertisementId, comparisonAdvertisementId));
+    }
 }

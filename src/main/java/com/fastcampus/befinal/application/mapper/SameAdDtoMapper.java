@@ -37,4 +37,6 @@ public interface SameAdDtoMapper {
 
         return postDateTime.format(formatter);
     }
+
+    SameAdDto.FindSimilarityDetailResponse from(SameAdInfo.FindSimilarityDetailInfo info);
 }
