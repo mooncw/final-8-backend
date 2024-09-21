@@ -37,16 +37,16 @@ public class SameAdController {
                         "message": "동일 광고 유사율 리스트가 조회되었습니다.",
                         "data": {
                             "inspectionAdInfo": {
-                                "id": "202409N00001
+                                "id": "202409N00001",
                                 "product": "명작수",
                                 "advertiser": "아모레퍼시픽 코리아",
                                 "category": "식품음료",
                                 "postDate": "2024-09-11",
                                 "content": "어쩌구. 저쩌구."
-                            }
+                            },
                             "adSimilarityInfoList": [
                                 {
-                                    "id": "202409A00058
+                                    "id": "202409A00058",
                                     "product": "명작수",
                                     "advertiser": "아모레퍼시픽 코리아",
                                     "category": "식품음료",
