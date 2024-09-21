@@ -17,8 +17,8 @@ public class IssueAdFacade {
     private final IssueAdDtoMapper issueAdDtoMapper;
     private final UserTaskDtoMapper userTaskDtoMapper;
 
-    public TaskDto.TaskListInfo findIssueAdList(TaskDto.FilterConditionRequest request){
-        TaskInfo.TaskListInfo info = issueAdService.findIssueAdList(userTaskDtoMapper.toTaskCommand(request));
+    public TaskDto.IssueAdListInfo findIssueAdList(TaskDto.FilterConditionRequest request){
+        TaskInfo.IssueAdListInfo info = issueAdService.findIssueAdList(userTaskDtoMapper.toTaskCommand(request));
         return userTaskDtoMapper.from(info);
     }
 

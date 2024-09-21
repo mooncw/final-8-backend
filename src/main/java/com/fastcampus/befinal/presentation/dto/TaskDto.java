@@ -83,4 +83,23 @@ public class TaskDto {
         CursorInfo cursorInfo,
         List<AdvertisementListInfo> advertisementList
     ) {}
+
+    @Builder
+    public record IssueAdvertisementListInfo (
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser,
+        Boolean state,
+        Boolean issue,
+        String assigneeName
+    ) {}
+
+    @Builder
+    public record IssueAdListInfo(
+        Long totalElements,
+        CursorInfo cursorInfo,
+        List<IssueAdvertisementListInfo> advertisementList
+    ) {}
 }
