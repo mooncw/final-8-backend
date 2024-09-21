@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.domain.info;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.presentation.dto.TaskDto;
 import lombok.Builder;
 
 import java.util.List;
@@ -45,6 +46,16 @@ public class TaskInfo {
     ) {}
 
     @Builder
+    public record SameAdvertisementListInfo(
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser,
+        Boolean same
+    ) {}
+
+    @Builder
     public record TaskListInfo(
             Long totalElements,
             CursorInfo cursorInfo,
@@ -56,6 +67,21 @@ public class TaskInfo {
                     .cursorInfo(scrollPagination.currentCursorId())
                     .advertisementList(scrollPagination.contents())
                     .build();
+        }
+    }
+
+    @Builder
+    public record SameTaskListInfo(
+        Long totalElements,
+        String cursorId,
+        List<SameAdvertisementListInfo> sameAdvertisementList
+    ) {
+        public static SameTaskListInfo of(ScrollPagination<String, SameAdvertisementListInfo> scrollPagination) {
+            return SameTaskListInfo.builder()
+                .totalElements(scrollPagination.totalElements())
+                .cursorId(scrollPagination.currentCursorId())
+                .sameAdvertisementList(scrollPagination.contents())
+                .build();
         }
     }
 }
