@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.fastcampus.befinal.common.response.success.info.SameAdSuccessCode.FIND_SIMILARITY_DETAIL_SUCCESS;
 import static com.fastcampus.befinal.common.response.success.info.SameAdSuccessCode.FIND_SIMILARITY_LIST_SUCCESS;
 
 @RestController
@@ -67,5 +68,36 @@ public class SameAdController {
     ) {
         SameAdDto.FindSimilarityListResponse response = sameAdFacade.findSimilarityList(inspectionAdvertisementId);
         return ResponseEntityFactory.toResponseEntity(FIND_SIMILARITY_LIST_SUCCESS, response);
+    }
+
+    @GetMapping("/result/{inspectionAdvertisementId}/detail/{comparisonAdvertisementId}")
+    @Operation(summary = "동일 광고 유사율 상세화면 조회")
+    @ApiResponse(responseCode = "200", description = "동일 광고 유사율 상세화면이 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                    {
+                        "code": 3702,
+                        "message": "동일 광고 유사율 상세화면이 조회되었습니다.",
+                        "data": {
+                            "content": "어쩌구. 저쩌구."
+                            "sameSentence": "어쩌구."
+                        }
+                    }
+                    """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<SameAdDto.FindSimilarityDetailResponse>> findSimilarityDetail(
+        @PathVariable
+        String inspectionAdvertisementId,
+
+        @PathVariable
+        String comparisonAdvertisementId
+    ) {
+        SameAdDto.FindSimilarityDetailResponse response =
+            sameAdFacade.findSimilarityDetail(inspectionAdvertisementId, comparisonAdvertisementId);
+        return ResponseEntityFactory.toResponseEntity(FIND_SIMILARITY_DETAIL_SUCCESS, response);
     }
 }
