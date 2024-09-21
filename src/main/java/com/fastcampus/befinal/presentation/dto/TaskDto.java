@@ -103,6 +103,13 @@ public class TaskDto {
     ) {}
 
     @Builder
+    public record TaskListInfo(
+        Long totalElements,
+        CursorInfo cursorInfo,
+        List<AdvertisementListInfo> advertisementList
+    ) {}
+
+    @Builder
     public record SameAdvertisementListInfo(
         String adId,
         String media,
@@ -113,16 +120,28 @@ public class TaskDto {
     ) {}
 
     @Builder
-    public record TaskListInfo(
-        Long totalElements,
-        CursorInfo cursorInfo,
-        List<AdvertisementListInfo> advertisementList
-    ) {}
-
-    @Builder
     public record SameTaskListInfo(
         Long totalElements,
         String cursorId,
         List<SameAdvertisementListInfo> sameAdvertisementList
+    ) {}
+
+    @Builder
+    public record IssueAdvertisementListInfo (
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser,
+        Boolean state,
+        Boolean issue,
+        String assigneeName
+    ) {}
+
+    @Builder
+    public record IssueAdListInfo(
+        Long totalElements,
+        CursorInfo cursorInfo,
+        List<IssueAdvertisementListInfo> advertisementList
     ) {}
 }

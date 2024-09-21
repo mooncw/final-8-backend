@@ -1,7 +1,6 @@
 package com.fastcampus.befinal.domain.info;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
-import com.fastcampus.befinal.presentation.dto.TaskDto;
 import lombok.Builder;
 
 import java.util.List;
@@ -46,16 +45,6 @@ public class TaskInfo {
     ) {}
 
     @Builder
-    public record SameAdvertisementListInfo(
-        String adId,
-        String media,
-        String category,
-        String product,
-        String advertiser,
-        Boolean same
-    ) {}
-
-    @Builder
     public record TaskListInfo(
             Long totalElements,
             CursorInfo cursorInfo,
@@ -71,6 +60,16 @@ public class TaskInfo {
     }
 
     @Builder
+    public record SameAdvertisementListInfo(
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser,
+        Boolean same
+    ) {}
+
+    @Builder
     public record SameTaskListInfo(
         Long totalElements,
         String cursorId,
@@ -81,6 +80,33 @@ public class TaskInfo {
                 .totalElements(scrollPagination.totalElements())
                 .cursorId(scrollPagination.currentCursorId())
                 .sameAdvertisementList(scrollPagination.contents())
+                .build();
+        }
+    }
+
+    @Builder
+    public record IssueAdvertisementListInfo (
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser,
+        Boolean state,
+        Boolean issue,
+        String assigneeName
+    ) {}
+
+    @Builder
+    public record IssueAdListInfo(
+        Long totalElements,
+        CursorInfo cursorInfo,
+        List<IssueAdvertisementListInfo> advertisementList
+    ){
+        public static IssueAdListInfo of(ScrollPagination<CursorInfo, IssueAdvertisementListInfo> scrollPagination) {
+            return IssueAdListInfo.builder()
+                .totalElements(scrollPagination.totalElements())
+                .cursorInfo(scrollPagination.currentCursorId())
+                .advertisementList(scrollPagination.contents())
                 .build();
         }
     }

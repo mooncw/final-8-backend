@@ -14,7 +14,7 @@ public interface AdvertisementReader {
     DashboardInfo.AdCount findAdCount(String userId);
     List<DashboardInfo.DailyDone> findDailyDone(String userId);
     List<DashboardInfo.RecentDone> findRecentDone(String userId);
-    ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command);
+    ScrollPagination<TaskInfo.CursorInfo, TaskInfo.IssueAdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command);
     IssueAdInfo.IssueAdDetailInfo findIssueAdDetail(String advertisementId);
     Advertisement findAdvertisementById(String advertisementId);
     ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId);

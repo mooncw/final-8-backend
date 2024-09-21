@@ -19,6 +19,8 @@ public interface UserTaskDtoMapper {
     TaskDto.TaskListInfo from(TaskInfo.TaskListInfo findMyTaskListResponse);
     TaskDto.SameAdvertisementListInfo from(TaskInfo.SameAdvertisementListInfo sameAdvertisementList);
     TaskDto.SameTaskListInfo from(TaskInfo.SameTaskListInfo sameTaskListResponse);
+    TaskDto.IssueAdvertisementListInfo from(TaskInfo.IssueAdvertisementListInfo advertisementList);
+    TaskDto.IssueAdListInfo from(TaskInfo.IssueAdListInfo findMyTaskListResponse);
 
     TaskCommand.FilterConditionRequest toTaskCommand(TaskDto.FilterConditionRequest request);
     TaskCommand.SameAdFilterConditionRequest toTaskCommand(TaskDto.SameAdFilterConditionRequest request);
