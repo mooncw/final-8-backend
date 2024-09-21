@@ -71,13 +71,16 @@ public class DashboardInfo {
         AdminTimeline adminTimeline,
         AdminAdCount adCount,
         List<TodayWork> todayWorkList,
+        List<DailyAvgDone> dailyAvgDoneList,
         List<PersonalTask> personalTaskList
     ) {
-        public static DashboardAdminDataInfo of(AdminTimeline adminTimeline, AdminAdCount adCount, List<TodayWork> todayWorkList, List<PersonalTask> personalTaskList){
+        public static DashboardAdminDataInfo of(AdminTimeline adminTimeline, AdminAdCount adCount, List<TodayWork> todayWorkList,
+                                                List<DailyAvgDone> dailyAvgDoneList ,List<PersonalTask> personalTaskList){
             return DashboardAdminDataInfo.builder()
                 .adminTimeline(adminTimeline)
                 .adCount(adCount)
                 .todayWorkList(todayWorkList)
+                .dailyAvgDoneList(dailyAvgDoneList)
                 .personalTaskList(personalTaskList)
                 .build();
         }
@@ -122,12 +125,25 @@ public class DashboardInfo {
     @Builder
     public record TodayWork(
         LocalDate date,
-        Double avg
+        Integer doneAd
     ) {
-        public static TodayWork of(LocalDate date, Double avg){
+        public static TodayWork of(LocalDate date, Integer doneAd){
             return TodayWork.builder()
                 .date(date)
-                .avg(avg)
+                .doneAd(doneAd)
+                .build();
+        }
+    }
+
+    @Builder
+    public record DailyAvgDone(
+        LocalDate date,
+        Double avgDoneAd
+    ) {
+        public static DailyAvgDone of(LocalDate date, Double avgDoneAd){
+            return DailyAvgDone.builder()
+                .date(date)
+                .avgDoneAd(avgDoneAd)
                 .build();
         }
     }
@@ -137,5 +153,20 @@ public class DashboardInfo {
         String userName,
         Integer doneAd,
         Integer totalAd
+    ) {
+        public static PersonalTask of(String userName, Integer doneAd, Integer totalAd){
+            return PersonalTask.builder()
+                .userName(userName)
+                .doneAd(doneAd)
+                .totalAd(totalAd)
+                .build();
+        }
+    }
+
+    @Builder
+    public record PersonalModifierTask(
+        String assigneeName,
+        String modifierName,
+        Integer doneAd
     ) {}
 }

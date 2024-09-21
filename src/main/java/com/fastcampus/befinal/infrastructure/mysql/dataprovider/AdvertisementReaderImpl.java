@@ -52,6 +52,11 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     }
 
     @Override
+    public List<DashboardInfo.DailyAvgDone> findDailyAvgDoneList(){
+        return advertisementRepositoryCustom.getDailyAvgDoneList();
+    }
+
+    @Override
     public List<DashboardInfo.PersonalTask> findPersonalTaskList(){
         return advertisementRepositoryCustom.getPersonalTaskList();
     }

@@ -18,6 +18,7 @@ public interface AdvertisementReader {
     // 관리자 대시보드
     DashboardInfo.AdminAdCountInfo findAdminAdCountInfo();
     List<DashboardInfo.TodayWork> findTodayWorkList();
+    List<DashboardInfo.DailyAvgDone> findDailyAvgDoneList();
     List<DashboardInfo.PersonalTask> findPersonalTaskList();
     // 지적광고
     ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdList(TaskCommand.FilterConditionRequest command);

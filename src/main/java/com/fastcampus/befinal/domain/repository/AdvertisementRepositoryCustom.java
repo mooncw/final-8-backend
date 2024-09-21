@@ -26,8 +26,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.fastcampus.befinal.common.contant.ScrollConstant.*;
@@ -154,14 +153,9 @@ public class AdvertisementRepositoryCustom {
 
         // 쿼리에서 평균값을 계산
         List<Tuple> results = queryFactory
-            .select(
-                kstTaskDateTime,                           // 날짜
-                ad.count().intValue(),                     // 광고 작업 수 (advertise count)
-                ad.assignee.id.countDistinct().intValue()         // 해당 날짜에 작업한 유저 수
-            )
+            .select(kstTaskDateTime,ad.count().intValue())
             .from(ad)
-            .where(
-                isCompleted()
+            .where(isCompleted()
                 .and(isInCurrentPeriod())
                 .and(kstTaskDateTime.goe(startOfPeriod))  // 4일 전부터
                 .and(kstTaskDateTime.loe(todayDate)))    // 오늘까지
@@ -169,22 +163,113 @@ public class AdvertisementRepositoryCustom {
             .orderBy(kstTaskDateTime.asc())              // 날짜 오름차순 정렬
             .fetch();
 
-        // 결과를 DTO로 변환하면서 평균값 계산
         return results.stream()
-            .map(tuple -> {
-                int adCount = tuple.get(1, Integer.class); // 광고 작업 수
-                int userCount = tuple.get(2, Integer.class); // 작업한 유저 수
-                double average = userCount > 0 ? (double) adCount / userCount : 0.0; // 유저 수로 나누어 평균 계산
-
-                return DashboardInfo.TodayWork.of(
-                    tuple.get(0, Date.class).toLocalDate(),        // 날짜
-                    average                              // 유저당 광고 작업 평균
-                );
-            })
+            .map(tuple -> DashboardInfo.TodayWork.of(
+                tuple.get(0, Date.class).toLocalDate(),
+                tuple.get(1, Integer.class)
+            ))
             .collect(Collectors.toList());
     }
 
+    public List<DashboardInfo.DailyAvgDone> getDailyAvgDoneList() {
+        // `taskDateTime`을 LocalDateTime으로 받아서 한국 시간으로 변환
+        DateTimeExpression<LocalDate> kstTaskDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.taskDateTime);
+
+        LocalDate todayDate = LocalDate.now();
+        LocalDate startOfPeriod = todayDate.getDayOfMonth() <= 15 ? todayDate.withDayOfMonth(1) : todayDate.withDayOfMonth(16);
+
+        List<Tuple> results = queryFactory
+            .select(kstTaskDateTime,                           // 날짜
+                ad.count().intValue(),                     // 광고 작업 수 (advertise count)
+                ad.assignee.id.countDistinct().intValue())         // 해당 날짜에 작업한 유저 수)
+            .from(ad)
+            .where(isCompleted()
+                .and(isInCurrentPeriod())
+                .and(kstTaskDateTime.goe(startOfPeriod))
+                .and(kstTaskDateTime.loe(todayDate)))
+            .groupBy(kstTaskDateTime)
+            .orderBy(kstTaskDateTime.asc())
+            .fetch();
+
+        // 결과를 DTO로 변환하면서 평균값 계산
+        return results.stream()
+            .map(tuple -> {
+                // null 체크 추가: 값이 null이면 기본값 0 사용
+                Integer adCount = tuple.get(1, Integer.class);
+                Integer userCount = tuple.get(2, Integer.class);
+
+                // null 체크 후 언박싱
+                int adCountValue = (adCount != null) ? adCount : 0;
+                int userCountValue = (userCount != null) ? userCount : 0;
+
+                // 유저 수로 나누어 평균 계산
+                double average = userCountValue > 0 ? (double) adCountValue / userCountValue : 0.0;
+
+                return DashboardInfo.DailyAvgDone.of(
+                    tuple.get(0, Date.class).toLocalDate(),        // 날짜
+                    average                              // 유저당 광고 작업 평균
+                );
+            }).collect(Collectors.toList());
+    }
+
     public List<DashboardInfo.PersonalTask> getPersonalTaskList() {
+        // 쿼리 결과 가져오기
+        List<DashboardInfo.PersonalTask> assigneeTasks = getAssigneeTaskList();
+        List<DashboardInfo.PersonalModifierTask> modifierTasks = getModifierTaskList();
+
+        // 이름을 키로 하여 작업량과 완료된 작업 수를 병합
+        Map<String, DashboardInfo.PersonalTask> taskMap = new HashMap<>();
+
+        // assignee 작업 추가
+        for (DashboardInfo.PersonalTask task : assigneeTasks) {
+            taskMap.put(task.userName(), task);
+        }
+
+        // modifier 작업 병합
+        for (DashboardInfo.PersonalModifierTask modifierTask : modifierTasks) {
+            String modifierName = modifierTask.modifierName();
+            String assigneeName = modifierTask.assigneeName();
+
+            // modifier가 이미 map에 있으면 작업량을 환산
+            if (taskMap.containsKey(modifierName)) {
+                DashboardInfo.PersonalTask existingTask = taskMap.get(modifierName);
+                taskMap.put(modifierName,
+                    DashboardInfo.PersonalTask.of(
+                        modifierName,
+                        existingTask.doneAd() + modifierTask.doneAd(),
+                        existingTask.totalAd() + modifierTask.doneAd()
+                    )
+                );
+            } else {
+                // modifier가 없으면 새로운 작업 추가
+                taskMap.put(modifierName,
+                    DashboardInfo.PersonalTask.of(
+                        modifierName,
+                        modifierTask.doneAd(),
+                        modifierTask.doneAd()
+                    )
+                );
+            }
+
+            // 동시에 assignee의 작업량에서 해당 작업을 빼기
+            if (taskMap.containsKey(assigneeName)) {
+                DashboardInfo.PersonalTask assigneeTask = taskMap.get(assigneeName);
+                taskMap.put(assigneeName,
+                    DashboardInfo.PersonalTask.of(
+                        assigneeName,
+                        assigneeTask.doneAd() - modifierTask.doneAd(),
+                        assigneeTask.totalAd() - modifierTask.doneAd()
+                    )
+                );
+            }
+        }
+
+        // 병합된 결과를 리스트로 반환
+        return new ArrayList<>(taskMap.values());
+    }
+
+    private List<DashboardInfo.PersonalTask> getAssigneeTaskList() {
         return queryFactory
             .select(Projections.constructor(DashboardInfo.PersonalTask.class,
                 ad.assignee.name,
@@ -196,6 +281,20 @@ public class AdvertisementRepositoryCustom {
             .from(ad)
             .where(isInCurrentPeriod())
             .groupBy(ad.assignee)
+            .fetch();
+    }
+
+    private List<DashboardInfo.PersonalModifierTask> getModifierTaskList() {
+        return queryFactory
+            .select(Projections.constructor(DashboardInfo.PersonalModifierTask.class,
+                ad.assignee.name,
+                ad.modifier.name,
+                new CaseBuilder()
+                    .when(isCompleted().and(ad.assignee.ne(ad.modifier))).then(1)
+                    .otherwise(0).sum()))
+            .from(ad)
+            .where(isInCurrentPeriod())
+            .groupBy(ad.modifier, ad.assignee)
             .fetch();
     }
 
