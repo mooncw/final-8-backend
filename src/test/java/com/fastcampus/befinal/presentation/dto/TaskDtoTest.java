@@ -76,4 +76,39 @@ public class TaskDtoTest {
         assertThat(messages).isEqualTo(Set.of(PATTERN_MISMATCH_PERIOD, PATTERN_MISMATCH_AD_ID));
 
     }
+
+    @Test
+    @DisplayName("동일광고 리스트 조건 검증 테스트 - Size")
+    void whenSameAdFilterConditionRequestMismatchSize_thenValidationFails() {
+        // given
+        TaskDto.SameAdFilterConditionRequest request = TaskDto.SameAdFilterConditionRequest.builder()
+            .keyword("a")
+            .build();
+
+        // when
+        Set<ConstraintViolation<TaskDto.SameAdFilterConditionRequest>> violations = validator.validate(request,
+            RequestValidationGroups.SizeGroup.class);
+        Set<String> messages = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(messages).isEqualTo(Set.of(MIN_LENGTH_KEYWORD));
+    }
+
+    @Test
+    @DisplayName("동일광고 리스트 조건 검증 테스트 - Pattern")
+    void whenSameAdFilterConditionRequestMismatchPattern_thenValidationFails() {
+        // given
+        TaskDto.SameAdFilterConditionRequest request = TaskDto.SameAdFilterConditionRequest.builder()
+            .cursorId("Aaaaaa")
+            .period("2024-09-A")
+            .build();
+
+        // when
+        Set<ConstraintViolation<TaskDto.SameAdFilterConditionRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
+        Set<String> messages = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        // then
+        assertThat(messages).isEqualTo(Set.of(PATTERN_MISMATCH_AD_ID, PATTERN_MISMATCH_PERIOD));
+    }
 }
