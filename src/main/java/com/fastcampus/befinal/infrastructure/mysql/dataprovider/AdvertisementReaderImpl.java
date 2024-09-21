@@ -70,4 +70,9 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     public List<AdminInfo.UnassignedAdIdInfo> findAllUnassignedAdId(Long amount) {
         return advertisementRepositoryCustom.findAllIdByAssigneeIsNull(amount);
     }
+
+    @Override
+    public ScrollPagination<String, TaskInfo.SameAdvertisementListInfo> findSameAdList(TaskCommand.SameAdFilterConditionRequest command) {
+        return advertisementRepositoryCustom.findSameAdListScrollByCursorId(command);
+    }
 }

@@ -20,4 +20,5 @@ public interface AdvertisementReader {
     ScrollPagination<String, AdminInfo.UnassignedAdInfo> findUnassignedAdScroll(String cursorId);
     Long countUnassigned();
     List<AdminInfo.UnassignedAdIdInfo> findAllUnassignedAdId(Long amount);
+    ScrollPagination<String, TaskInfo.SameAdvertisementListInfo> findSameAdList(TaskCommand.SameAdFilterConditionRequest command);
 }

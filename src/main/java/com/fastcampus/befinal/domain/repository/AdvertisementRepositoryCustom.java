@@ -26,7 +26,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -222,6 +221,36 @@ public class AdvertisementRepositoryCustom {
             .fetchOne());
     }
 
+    public ScrollPagination<String, TaskInfo.SameAdvertisementListInfo> findSameAdListScrollByCursorId(TaskCommand.SameAdFilterConditionRequest taskCommand) {
+
+        BooleanExpression filterExpression = createSameAdFilterCondition(taskCommand);
+
+        List<TaskInfo.SameAdvertisementListInfo> contents = queryFactory
+            .select(Projections.constructor(TaskInfo.SameAdvertisementListInfo.class,
+                ad.id.substring(6),
+                ad.adMedia.name,
+                ad.adCategory.category,
+                ad.product,
+                ad.advertiser,
+                ad.same
+            ))
+            .from(ad)
+            .where(filterExpression.and(gtSameAdCursorId(taskCommand.cursorId())))
+            .orderBy(ad.id.asc())
+            .limit(ISSUE_AD_LIST_SCROLL_SIZE)
+            .fetch();
+
+        String nextCursorId = getNextSameAdCursorId(taskCommand.cursorId(), contents);
+
+        Long totalElements = queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(filterExpression)
+            .fetchOne();
+
+        return ScrollPagination.of(totalElements, nextCursorId, contents);
+    }
+
     public Long countMediaByPeriod(AdMedia media, String period) {
         BooleanExpression expression;
         if(StringUtils.hasText(period)) {
@@ -312,6 +341,55 @@ public class AdvertisementRepositoryCustom {
 
         return expression;
     }
+
+    // 동일광고 cursorId 설정
+    private String getNextSameAdCursorId(String cursorId, List<TaskInfo.SameAdvertisementListInfo> contents) {
+        if (!contents.isEmpty()) {
+            TaskInfo.SameAdvertisementListInfo lastSameAdInfo = contents.getLast();
+            return lastSameAdInfo.adId();
+        }
+        return cursorId;
+    }
+
+    // 동일광고 페이지네이션 조건 설정
+    private BooleanExpression gtSameAdCursorId(String cursorId) {
+        if (cursorId == null) {
+            return null;
+        }
+        return ad.id.substring(6).gt(cursorId);
+    }
+
+    // 동일광고 리스트 필터 조건 메서드
+    private BooleanExpression createSameAdFilterCondition(TaskCommand.SameAdFilterConditionRequest command) {
+        BooleanExpression expression;
+
+        if (StringUtils.hasText(command.period())) {
+            expression = getByPeriod(command.period());
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        if (StringUtils.hasText(command.keyword())) {
+            expression = expression.and(searchKeyword(command.keyword()));
+        }
+
+        if (command.same() != null) {
+            expression = expression.and(filterSame(command.same()));
+        }
+
+        if (command.media() != null) {
+            expression = expression.and(filterMedia(command.media()));
+        }
+
+        if (command.category() != null) {
+            expression = expression.and(filterCategory(command.category()));
+        }
+
+        return expression;
+    }
+
+    // 동일/비동일 상태
+    private BooleanExpression filterSame(Boolean same) { return ad.same.eq(same); }
 
     // 검수전/검수완료 상태
     private BooleanExpression filterState(Boolean state) {
