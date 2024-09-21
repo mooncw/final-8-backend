@@ -126,7 +126,7 @@ public class AdvertisementRepositoryCustom {
     }
 
     // 어드민 대시보드 기능
-    public DashboardInfo.AdminAdCountInfo getAdminAdContInfo(){
+    public DashboardInfo.AdminAdCountInfo getAdminAdCountInfo(){
         return queryFactory
             .select(Projections.constructor(DashboardInfo.AdminAdCountInfo.class,
                 new CaseBuilder()

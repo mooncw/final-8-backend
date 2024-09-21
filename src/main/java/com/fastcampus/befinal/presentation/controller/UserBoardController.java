@@ -97,7 +97,7 @@ public class UserBoardController {
                                         "date": "2024-08-25",
                                         "doneAd": 6
                                     }
-                                ],                            \s
+                                ],
                                 "dailyAvgDoneList": [
                                     {
                                         "date": "2024-08-25",

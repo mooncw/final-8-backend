@@ -43,7 +43,7 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     // 관리자 대시보드
     @Override
     public DashboardInfo.AdminAdCountInfo findAdminAdCountInfo(){
-        return advertisementRepositoryCustom.getAdminAdContInfo();
+        return advertisementRepositoryCustom.getAdminAdCountInfo();
     }
 
     @Override
