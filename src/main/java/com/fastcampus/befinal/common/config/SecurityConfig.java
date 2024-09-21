@@ -65,7 +65,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/v1/auth/edit-password").permitAll()
             // dashboard
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
-            .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/admin").authenticated()
+            .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/admin").hasAuthority(ADMIN_AUTHORITY)
             // my-task
             .requestMatchers(HttpMethod.POST, "api/v1/user/my-task").authenticated()
             // admin
