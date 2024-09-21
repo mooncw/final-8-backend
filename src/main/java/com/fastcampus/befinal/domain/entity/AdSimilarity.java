@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.domain.entity;
 
+import com.querydsl.core.annotations.QueryInit;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdSimilarity {
     @EmbeddedId
+    @QueryInit({"inspectionAd", "comparisonAd.adCategory"})
     private AdSimilarityPK adSimilarityPK;
 
     @Column(nullable = false, name = "similarity", precision = 5, scale = 4)
