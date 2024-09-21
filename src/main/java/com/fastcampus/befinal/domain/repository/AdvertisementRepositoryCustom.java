@@ -146,6 +146,59 @@ public class AdvertisementRepositoryCustom {
             .fetchOne();
     }
 
+    public List<DashboardInfo.TodayWork> getTodayWorkList() {
+        DateTimeExpression<LocalDate> kstTaskDateTime = Expressions.dateTimeTemplate(LocalDate.class,
+            "DATE(CONVERT_TZ({0}, '+00:00', '+09:00'))", ad.taskDateTime);
+        LocalDate todayDate = LocalDate.now();
+        LocalDate startOfPeriod = todayDate.minusDays(4);
+
+        // 쿼리에서 평균값을 계산
+        List<Tuple> results = queryFactory
+            .select(
+                kstTaskDateTime,                           // 날짜
+                ad.count().intValue(),                     // 광고 작업 수 (advertise count)
+                ad.assignee.id.countDistinct().intValue()         // 해당 날짜에 작업한 유저 수
+            )
+            .from(ad)
+            .where(
+                isCompleted()
+                .and(isInCurrentPeriod())
+                .and(kstTaskDateTime.goe(startOfPeriod))  // 4일 전부터
+                .and(kstTaskDateTime.loe(todayDate)))    // 오늘까지
+            .groupBy(kstTaskDateTime)                    // 날짜별로 그룹화
+            .orderBy(kstTaskDateTime.asc())              // 날짜 오름차순 정렬
+            .fetch();
+
+        // 결과를 DTO로 변환하면서 평균값 계산
+        return results.stream()
+            .map(tuple -> {
+                int adCount = tuple.get(1, Integer.class); // 광고 작업 수
+                int userCount = tuple.get(2, Integer.class); // 작업한 유저 수
+                double average = userCount > 0 ? (double) adCount / userCount : 0.0; // 유저 수로 나누어 평균 계산
+
+                return DashboardInfo.TodayWork.of(
+                    tuple.get(0, Date.class).toLocalDate(),        // 날짜
+                    average                              // 유저당 광고 작업 평균
+                );
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<DashboardInfo.PersonalTask> getPersonalTaskList() {
+        return queryFactory
+            .select(Projections.constructor(DashboardInfo.PersonalTask.class,
+                ad.assignee.name,
+                new CaseBuilder()
+                    .when(isCompleted()).then(1)
+                    .otherwise(0).sum(),
+                ad.count().intValue()
+            ))
+            .from(ad)
+            .where(isInCurrentPeriod())
+            .groupBy(ad.assignee)
+            .fetch();
+    }
+
 
     // 나의 작업 기능
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.FilterConditionRequest taskCommand) {

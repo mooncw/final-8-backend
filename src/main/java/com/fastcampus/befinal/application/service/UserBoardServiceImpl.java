@@ -39,6 +39,9 @@ public class UserBoardServiceImpl implements UserBoardService {
         DashboardInfo.AdminTimeline adminTimeline = DashboardInfo.AdminTimeline.of(notApproveUser, adCountInfo.remainingAd());
         DashboardInfo.AdminAdCount adminAdCount = DashboardInfo.AdminAdCount.from(adCountInfo);
 
+        List<DashboardInfo.TodayWork> todayWorkList = advertisementReader.findTodayWorkList();
+        List<DashboardInfo.PersonalTask> personalTaskList = advertisementReader.findPersonalTaskList();
 
+        return DashboardInfo.DashboardAdminDataInfo.of(adminTimeline, adminAdCount, todayWorkList, personalTaskList);
     }
 }

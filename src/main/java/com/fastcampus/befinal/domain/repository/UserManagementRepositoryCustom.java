@@ -49,6 +49,7 @@ public class UserManagementRepositoryCustom {
     public Integer findNotApprovedUser(){
         return queryFactory
             .select(userManagement.userId.count().intValue())
+            .from(userManagement)
             .fetchOne();
     }
 

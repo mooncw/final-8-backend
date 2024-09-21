@@ -19,7 +19,7 @@ public interface DashboardDtoMapper {
     DashboardDto.DashboardAdminDataResponse from(DashboardInfo.DashboardAdminDataInfo info);
     DashboardDto.AdminTimeline from(DashboardInfo.AdminTimeline adminTimeline);
     DashboardDto.AdminAdCount from(DashboardInfo.AdminAdCount adCount);
-    DashboardDto.DailyWork from(DashboardInfo.DailyWork dailyWork);
+    DashboardDto.TodayWork from(DashboardInfo.TodayWork todaywork);
     DashboardDto.PersonalTask from(DashboardInfo.PersonalTask personalTask);
 
     @Mapping(source = "adTaskDateTime", target = "adTaskDateTime", qualifiedByName = "toAdTaskDateTimeValue")

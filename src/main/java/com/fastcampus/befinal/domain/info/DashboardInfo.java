@@ -68,11 +68,20 @@ public class DashboardInfo {
 
     @Builder
     public record DashboardAdminDataInfo(
-        DashboardDto.AdminTimeline adminTimeline,
-        DashboardDto.AdminAdCount adCount,
-        List<DashboardDto.DailyWork> dailyWorkList,
-        List<DashboardDto.PersonalTask> personalTaskList
-    ) {}
+        AdminTimeline adminTimeline,
+        AdminAdCount adCount,
+        List<TodayWork> todayWorkList,
+        List<PersonalTask> personalTaskList
+    ) {
+        public static DashboardAdminDataInfo of(AdminTimeline adminTimeline, AdminAdCount adCount, List<TodayWork> todayWorkList, List<PersonalTask> personalTaskList){
+            return DashboardAdminDataInfo.builder()
+                .adminTimeline(adminTimeline)
+                .adCount(adCount)
+                .todayWorkList(todayWorkList)
+                .personalTaskList(personalTaskList)
+                .build();
+        }
+    }
 
     @Builder
     public record AdminAdCountInfo(
@@ -111,10 +120,17 @@ public class DashboardInfo {
     }
 
     @Builder
-    public record DailyWork(
+    public record TodayWork(
         LocalDate date,
-        Integer avg
-    ) {}
+        Double avg
+    ) {
+        public static TodayWork of(LocalDate date, Double avg){
+            return TodayWork.builder()
+                .date(date)
+                .avg(avg)
+                .build();
+        }
+    }
 
     @Builder
     public record PersonalTask(

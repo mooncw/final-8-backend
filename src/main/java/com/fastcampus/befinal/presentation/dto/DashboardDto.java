@@ -41,7 +41,7 @@ public class DashboardDto {
     public record DashboardAdminDataResponse(
         AdminTimeline adminTimeline,
         AdminAdCount adCount,
-        List<DailyWork> dailyWorkList,
+        List<TodayWork> todayWorkList,
         List<PersonalTask> personalTaskList
     ) {}
 
@@ -59,9 +59,9 @@ public class DashboardDto {
     ) {}
 
     @Builder
-    public record DailyWork(
+    public record TodayWork(
         LocalDate date,
-        Integer avg
+        Double avg
     ) {}
 
     @Builder
