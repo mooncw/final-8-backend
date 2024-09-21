@@ -2,6 +2,7 @@ package com.fastcampus.befinal.domain.info;
 
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class SameAdInfo {
         String advertiser,
         String category,
         LocalDateTime postDateTime,
-        Double similarity,
+        BigDecimal similarity,
         Integer sameSentenceCount
     ) {}
 

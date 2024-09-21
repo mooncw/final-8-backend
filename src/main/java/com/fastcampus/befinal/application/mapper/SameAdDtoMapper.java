@@ -4,6 +4,8 @@ import com.fastcampus.befinal.domain.info.SameAdInfo;
 import com.fastcampus.befinal.presentation.dto.SameAdDto;
 import org.mapstruct.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,8 +25,10 @@ public interface SameAdDtoMapper {
     SameAdDto.AdSimilarityInfo from(SameAdInfo.AdSimilarityInfo info);
 
     @Named("toSimilarityPercentValue")
-    default Integer toSimilarityPercentValue(Double similarity) {
-        return (int) Math.round(similarity * 100);
+    default Integer toSimilarityPercentValue(BigDecimal similarity) {
+        BigDecimal similarityPercent = similarity.multiply(new BigDecimal(100));
+
+        return similarityPercent.setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
     @Named("toPostDateValue")
