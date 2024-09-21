@@ -162,22 +162,27 @@ public class AdvertisementRepositoryCustom {
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
     }
 
-    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> findIssueAdListScrollByCursorInfo(TaskCommand.FilterConditionRequest taskCommand) {
+    public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.IssueAdvertisementListInfo> findIssueAdListScrollByCursorInfo(TaskCommand.FilterConditionRequest taskCommand) {
 
         BooleanExpression filterExpression = createFilterCondition(taskCommand);
         BooleanExpression cursorExpression = createCursorCondition(taskCommand.cursorInfo());
 
-        List<TaskInfo.AdvertisementListInfo> contents = queryFactory
-            .select(Projections.constructor(TaskInfo.AdvertisementListInfo.class,
+        List<TaskInfo.IssueAdvertisementListInfo> contents = queryFactory
+            .select(Projections.constructor(TaskInfo.IssueAdvertisementListInfo.class,
                 ad.id.substring(6),
                 ad.adMedia.name,
                 ad.adCategory.category,
                 ad.product,
                 ad.advertiser,
                 ad.state,
-                ad.issue
+                ad.issue,
+                new CaseBuilder()
+                    .when(ad.assignee.isNotNull())
+                    .then(ad.assignee.name)
+                    .otherwise("")
             ))
             .from(ad)
+            .leftJoin(ad.assignee)
             .where(filterExpression.and(cursorExpression))
             .orderBy(
                 ad.state.asc(),
@@ -186,7 +191,7 @@ public class AdvertisementRepositoryCustom {
             .limit(ISSUE_AD_LIST_SCROLL_SIZE)
             .fetch();
 
-        TaskInfo.CursorInfo nextCursorInfo = getNextCursorInfo(contents);
+        TaskInfo.CursorInfo nextCursorInfo = getNextCursorIssueAdInfo(contents);
 
         Long totalElements = queryFactory
             .select(ad.count())
@@ -274,6 +279,15 @@ public class AdvertisementRepositoryCustom {
     private TaskInfo.CursorInfo getNextCursorInfo(List<TaskInfo.AdvertisementListInfo> contents) {
         if (!contents.isEmpty()) {
             TaskInfo.AdvertisementListInfo lastData = contents.get(contents.size() - 1);
+            return new TaskInfo.CursorInfo(lastData.state(), lastData.adId());
+        }
+
+        return null;
+    }
+
+    private TaskInfo.CursorInfo getNextCursorIssueAdInfo(List<TaskInfo.IssueAdvertisementListInfo> contents) {
+        if (!contents.isEmpty()) {
+            TaskInfo.IssueAdvertisementListInfo lastData = contents.get(contents.size() - 1);
             return new TaskInfo.CursorInfo(lastData.state(), lastData.adId());
         }
 

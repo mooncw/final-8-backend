@@ -7,7 +7,7 @@ import com.fastcampus.befinal.presentation.dto.IssueAdDto;
 
 public interface IssueAdService {
 
-    TaskInfo.TaskListInfo findIssueAdList(TaskCommand.FilterConditionRequest command);
+    TaskInfo.IssueAdListInfo findIssueAdList(TaskCommand.FilterConditionRequest command);
     IssueAdInfo.IssueAdDetailAllInfo findIssueAdDetail(String advertisementId);
     void saveIssueAdReviews(IssueAdDto.IssueAdReviewRequest request);
     IssueAdInfo.IssueAdProvisionListInfo findProvisionList();

@@ -35,9 +35,9 @@ public class IssueAdServiceImpl implements IssueAdService {
 
     @Override
     @Transactional(readOnly = true)
-    public TaskInfo.TaskListInfo findIssueAdList(TaskCommand.FilterConditionRequest command){
-        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> filterAdPagination = advertisementReader.findIssueAdList(command);
-        return TaskInfo.TaskListInfo.of(filterAdPagination);
+    public TaskInfo.IssueAdListInfo findIssueAdList(TaskCommand.FilterConditionRequest command){
+        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.IssueAdvertisementListInfo> filterAdPagination = advertisementReader.findIssueAdList(command);
+        return TaskInfo.IssueAdListInfo.of(filterAdPagination);
     }
 
     @Override

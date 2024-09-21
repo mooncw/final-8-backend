@@ -65,7 +65,7 @@ public class IssueAdServiceImplTest {
             .category(List.of("IT"))
             .build();
 
-        TaskInfo.AdvertisementListInfo adInfo = TaskInfo.AdvertisementListInfo.builder()
+        TaskInfo.IssueAdvertisementListInfo adInfo = TaskInfo.IssueAdvertisementListInfo.builder()
             .adId("A0001")
             .media("온라인")
             .category("IT")
@@ -73,11 +73,12 @@ public class IssueAdServiceImplTest {
             .advertiser("테크컴퍼니")
             .state(false)
             .issue(false)
+            .assigneeName("홍길동")
             .build();
 
-        List<TaskInfo.AdvertisementListInfo> adList = List.of(adInfo);
+        List<TaskInfo.IssueAdvertisementListInfo> adList = List.of(adInfo);
 
-        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> filterTaskPagination =
+        ScrollPagination<TaskInfo.CursorInfo, TaskInfo.IssueAdvertisementListInfo> filterTaskPagination =
             ScrollPagination.of(
                 10L,
                 TaskInfo.CursorInfo.builder()
@@ -92,7 +93,7 @@ public class IssueAdServiceImplTest {
             .findIssueAdList(command);
 
         //when
-        TaskInfo.TaskListInfo request = issueAdService.findIssueAdList(command);
+        TaskInfo.IssueAdListInfo request = issueAdService.findIssueAdList(command);
 
         //then
         assertNotNull(request);
@@ -102,7 +103,7 @@ public class IssueAdServiceImplTest {
         assertEquals(filterTaskPagination.currentCursorId().cursorId(), request.cursorInfo().cursorId());
 
         assertEquals(1, request.advertisementList().size());
-        TaskInfo.AdvertisementListInfo firstAd = request.advertisementList().getFirst();
+        TaskInfo.IssueAdvertisementListInfo firstAd = request.advertisementList().getFirst();
         assertEquals("A0001", firstAd.adId());
         assertEquals("온라인", firstAd.media());
         assertEquals("IT", firstAd.category());
@@ -110,6 +111,7 @@ public class IssueAdServiceImplTest {
         assertEquals("테크컴퍼니", firstAd.advertiser());
         assertEquals(false, firstAd.state());
         assertEquals(false, firstAd.issue());
+        assertEquals("홍길동", firstAd.assigneeName());
 
         verify(advertisementReader, times(1)).findIssueAdList(command);
     }
