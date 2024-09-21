@@ -73,6 +73,50 @@ public class UserBoardController {
     }
 
     @GetMapping("/admin")
+    @Operation(summary = "관리자 대시보드")
+    @ApiResponse(responseCode = "200", description = "관리자 대시보드 확인 가능합니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                        {
+                            "code": 3201,
+                            "message": "관리자 대시보드 확인 가능합니다.",
+                            "data": {
+                                "adminTimeLine": {
+                                    "notApprovedUser": 0,
+                                    "remainingAd": 2
+                                },
+                                "adCount": {
+                                    "totalAd": 10,
+                                    "doneAd": 6,
+                                    "notDoneAd": 4
+                                },
+                                "todayWorkList": [
+                                    {
+                                        "date": "2024-08-25",
+                                        "doneAd": 6
+                                    }
+                                ],                            \s
+                                "dailyAvgDoneList": [
+                                    {
+                                        "date": "2024-08-25",
+                                        "avgDoneAd": 6
+                                    }
+                                ],
+                                "personalTaskList": [
+                                    {
+                                        "userName": "홍길동",
+                                        "doneAd": 6,
+                                        "totalAd": 10
+                                    }
+                                ]
+                            }
+                        }
+                        """
+            )
+        )
+    )
     public ResponseEntity<AppApiResponse<DashboardDto.DashboardAdminDataResponse>> getAdminBoardData() {
         DashboardDto.DashboardAdminDataResponse response = boardFacade.loadAdminDashboardData();
         return ResponseEntityFactory.toResponseEntity(DashboardSuccessCode.CHECK_ADMIN_DASHBOARD_SUCCESS, response);
