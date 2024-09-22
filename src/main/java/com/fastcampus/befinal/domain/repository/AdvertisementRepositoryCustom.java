@@ -120,8 +120,21 @@ public class AdvertisementRepositoryCustom {
                     .otherwise(0).sum()
                 ))
             .from(ad)
-            .where(isInCurrentPeriod())
+            .where(isCurrentAdvertisementIdWithinPeriod())
             .fetchOne();
+    }
+
+    private BooleanExpression isCurrentAdvertisementIdWithinPeriod() {
+        LocalDate now = LocalDate.now();
+
+        String year = String.valueOf(now.getYear());
+        String month = String.format("%02d", now.getMonthValue());
+        String baseTerm = now.getDayOfMonth() > 15 ? "2" : "1";
+
+        String startAdvertisementId = baseTerm.equals("1") ? year + month + "A00001" : year + month + "N00001";
+        String endAdvertisementId = baseTerm.equals("1") ? year + month + "M99999" : year + month + "Z99999";
+
+        return ad.id.goe(startAdvertisementId).and(ad.id.loe(endAdvertisementId));
     }
 
     public List<DashboardInfo.TodayWork> getTodayWorkList() {
