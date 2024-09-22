@@ -15,7 +15,7 @@ import static com.fastcampus.befinal.common.contant.TaskConstant.*;
 
 public class TaskDto {
     @Builder
-    @Schema(description = "필터 조건 request")
+    @Schema(description = "나의 작업 광고, 지적광고 필터 조건 request")
     public record FilterConditionRequest(
         @Valid
         CursorInfo cursorInfo,
