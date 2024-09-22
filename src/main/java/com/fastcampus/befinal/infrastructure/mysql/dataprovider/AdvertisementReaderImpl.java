@@ -6,11 +6,8 @@ import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.entity.Advertisement;
-import com.fastcampus.befinal.domain.info.AdminInfo;
-import com.fastcampus.befinal.domain.info.DashboardInfo;
-import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import com.fastcampus.befinal.domain.info.*;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepository;
-import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 
@@ -93,5 +90,11 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     @Override
     public List<AdminInfo.UnassignedAdIdInfo> findAllUnassignedAdId(Long amount) {
         return advertisementRepositoryCustom.findAllIdByAssigneeIsNull(amount);
+    }
+
+    @Override
+    public SameAdInfo.InspectionAdInfo findInspectionAdInfo(String advertisementId) {
+        return advertisementRepositoryCustom.findInspectionAdInfo(advertisementId)
+            .orElseThrow(() -> new BusinessException(NOT_FOUND_ADVERTISEMENT_ID));
     }
 }
