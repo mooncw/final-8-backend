@@ -1,15 +1,13 @@
 package com.fastcampus.befinal.domain.repository;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.entity.AdCategory;
 import com.fastcampus.befinal.domain.entity.AdMedia;
 import com.fastcampus.befinal.domain.entity.QAdvertisement;
 import com.fastcampus.befinal.domain.entity.UserSummary;
-import com.fastcampus.befinal.domain.info.AdminInfo;
-import com.fastcampus.befinal.domain.info.DashboardInfo;
-import com.fastcampus.befinal.domain.info.IssueAdInfo;
-import com.fastcampus.befinal.domain.info.TaskInfo;
+import com.fastcampus.befinal.domain.info.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -226,13 +224,13 @@ public class AdvertisementRepositoryCustom {
             .fetchOne());
     }
 
-    public ScrollPagination<String, TaskInfo.SameAdvertisementListInfo> findSameAdListScrollByCursorId(TaskCommand.SameAdFilterConditionRequest taskCommand) {
+    public ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> findSameAdListScrollByCursorId(SameAdCommand.SameAdFilterConditionRequest taskCommand) {
 
         BooleanExpression filterExpression = createSameAdFilterCondition(taskCommand);
 
-        List<TaskInfo.SameAdvertisementListInfo> contents = queryFactory
-            .select(Projections.constructor(TaskInfo.SameAdvertisementListInfo.class,
-                ad.id.substring(6),
+        List<SameAdInfo.SameAdvertisementListInfo> contents = queryFactory
+            .select(Projections.constructor(SameAdInfo.SameAdvertisementListInfo.class,
+                ad.id,
                 ad.adMedia.name,
                 ad.adCategory.category,
                 ad.product,
@@ -240,7 +238,7 @@ public class AdvertisementRepositoryCustom {
                 ad.same
             ))
             .from(ad)
-            .where(filterExpression.and(gtSameAdCursorId(taskCommand.cursorId())))
+            .where(filterExpression.and(gtCursorId(taskCommand.cursorId())))
             .orderBy(ad.id.asc())
             .limit(ISSUE_AD_LIST_SCROLL_SIZE)
             .fetch();
@@ -357,24 +355,16 @@ public class AdvertisementRepositoryCustom {
     }
 
     // 동일광고 cursorId 설정
-    private String getNextSameAdCursorId(String cursorId, List<TaskInfo.SameAdvertisementListInfo> contents) {
+    private String getNextSameAdCursorId(String cursorId, List<SameAdInfo.SameAdvertisementListInfo> contents) {
         if (!contents.isEmpty()) {
-            TaskInfo.SameAdvertisementListInfo lastSameAdInfo = contents.getLast();
+            SameAdInfo.SameAdvertisementListInfo lastSameAdInfo = contents.getLast();
             return lastSameAdInfo.adId();
         }
         return cursorId;
     }
 
-    // 동일광고 페이지네이션 조건 설정
-    private BooleanExpression gtSameAdCursorId(String cursorId) {
-        if (cursorId == null) {
-            return null;
-        }
-        return ad.id.substring(6).gt(cursorId);
-    }
-
     // 동일광고 리스트 필터 조건 메서드
-    private BooleanExpression createSameAdFilterCondition(TaskCommand.SameAdFilterConditionRequest command) {
+    private BooleanExpression createSameAdFilterCondition(SameAdCommand.SameAdFilterConditionRequest command) {
         BooleanExpression expression;
 
         if (StringUtils.hasText(command.period())) {
