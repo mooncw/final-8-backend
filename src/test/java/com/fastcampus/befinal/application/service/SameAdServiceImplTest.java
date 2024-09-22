@@ -1,8 +1,10 @@
 package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
+import com.fastcampus.befinal.domain.info.SameAdInfo;
 import com.fastcampus.befinal.domain.info.TaskInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,14 +32,14 @@ public class SameAdServiceImplTest {
     @DisplayName("동일광고 조회 성공 테스트")
     void findSameAdListTest() {
         // given
-        TaskCommand.SameAdFilterConditionRequest command = TaskCommand.SameAdFilterConditionRequest.builder()
-            .cursorId("A00001")
+        SameAdCommand.SameAdFilterConditionRequest command = SameAdCommand.SameAdFilterConditionRequest.builder()
+            .cursorId("202409A00001")
             .same(true)
             .media(List.of("온라인"))
             .category(List.of("IT"))
             .build();
 
-        TaskInfo.SameAdvertisementListInfo adInfo = TaskInfo.SameAdvertisementListInfo.builder()
+        SameAdInfo.SameAdvertisementListInfo adInfo = SameAdInfo.SameAdvertisementListInfo.builder()
             .adId("A0001")
             .media("온라인")
             .category("IT")
@@ -46,12 +48,12 @@ public class SameAdServiceImplTest {
             .same(true)
             .build();
 
-        List<TaskInfo.SameAdvertisementListInfo> adList = List.of(adInfo);
+        List<SameAdInfo.SameAdvertisementListInfo> adList = List.of(adInfo);
 
-        ScrollPagination<String, TaskInfo.SameAdvertisementListInfo> filterTaskPagination =
+        ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> filterTaskPagination =
             ScrollPagination.of(
                 10L,
-                "A0001",
+                "202409A0001",
                 adList
             );
 
@@ -60,7 +62,7 @@ public class SameAdServiceImplTest {
             .findSameAdList(command);
 
         // when
-        TaskInfo.SameTaskListInfo request = sameAdService.findSameAdList(command);
+        SameAdInfo.SameTaskListInfo request = sameAdService.findSameAdList(command);
 
         // then
         assertNotNull(request);
@@ -69,7 +71,7 @@ public class SameAdServiceImplTest {
         assertEquals(filterTaskPagination.currentCursorId(), request.cursorId());
 
         assertEquals(1, request.sameAdvertisementList().size());
-        TaskInfo.SameAdvertisementListInfo firstAd = request.sameAdvertisementList().getFirst();
+        SameAdInfo.SameAdvertisementListInfo firstAd = request.sameAdvertisementList().getFirst();
         assertEquals("A0001", firstAd.adId());
         assertEquals("온라인", firstAd.media());
         assertEquals("IT", firstAd.category());

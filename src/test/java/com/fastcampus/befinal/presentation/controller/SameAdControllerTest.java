@@ -3,6 +3,7 @@ package com.fastcampus.befinal.presentation.controller;
 import com.fastcampus.befinal.application.facade.SameAdFacade;
 import com.fastcampus.befinal.common.config.SecurityConfig;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
+import com.fastcampus.befinal.presentation.dto.SameAdDto;
 import com.fastcampus.befinal.presentation.dto.TaskDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -54,7 +55,7 @@ class SameAdControllerTest {
     @DisplayName("동일광고 조회 요청 시, 200 OK 및 정상 응답을 반환")
     void findSameAdListTest() throws Exception {
         // given
-        TaskDto.SameAdvertisementListInfo adResponse = TaskDto.SameAdvertisementListInfo.builder()
+        SameAdDto.SameAdvertisementListInfo adResponse = SameAdDto.SameAdvertisementListInfo.builder()
             .adId("A00001")
             .media("동아일보")
             .category("음식")
@@ -63,7 +64,7 @@ class SameAdControllerTest {
             .same(true)
             .build();
 
-        TaskDto.SameTaskListInfo response = TaskDto.SameTaskListInfo.builder()
+        SameAdDto.SameTaskListInfo response = SameAdDto.SameTaskListInfo.builder()
             .totalElements(1L)
             .cursorId("A00001")
             .sameAdvertisementList(List.of(adResponse))
@@ -71,10 +72,10 @@ class SameAdControllerTest {
 
         doReturn(response)
             .when(sameAdFacade)
-            .findSameAdList(any(TaskDto.SameAdFilterConditionRequest.class));
+            .findSameAdList(any(SameAdDto.SameAdFilterConditionRequest.class));
 
         // when
-        TaskDto.SameAdFilterConditionRequest firstRequest = TaskDto.SameAdFilterConditionRequest.builder()
+        SameAdDto.SameAdFilterConditionRequest firstRequest = SameAdDto.SameAdFilterConditionRequest.builder()
             .media(List.of("동아일보"))
             .same(true)
             .build();
