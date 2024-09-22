@@ -12,6 +12,8 @@ import java.util.List;
 import static com.fastcampus.befinal.common.contant.AdminConstant.*;
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
+import static com.fastcampus.befinal.common.contant.TaskConstant.PATTERN_MISMATCH_AD_ID;
+import static com.fastcampus.befinal.common.contant.TaskConstant.PATTERN_MISMATCH_PERIOD;
 
 public class AdminDto {
     @Builder
@@ -79,6 +81,25 @@ public class AdminDto {
     public record AssignTaskRequest(
         @NotEmpty(message = NOT_EMPTY_SELECTED_ASSIGNEE_LIST,groups = RequestValidationGroups.NotEmptyGroup.class)
         List<@Valid SelectedAssigneeInfo> selectedAssigneeList
+    ) {}
+
+    @Builder
+    public record FindUserTaskDetailListRequest(
+        @Schema(example = SWAGGER_ADVERTISEMENT_ID)
+        @Pattern(regexp = "^[1-9][0-9]{3}(0[1-9]|1[0-2])[A-Z][0-9]{5}$", message = PATTERN_MISMATCH_AD_ID, groups = RequestValidationGroups.PatternGroup.class)
+        String cursorId,
+
+        @Schema(example = SWAGGER_USER_PK_ID)
+        @NotNull(message = NOT_NULL_USER_PK_ID, groups = RequestValidationGroups.NotNullGroup.class)
+        Long id,
+
+        @Schema(example = SWAGGER_PERIOD)
+        @NotBlank(message = NOT_BLANK_PERIOD, groups = RequestValidationGroups.NotBlankGroup.class)
+        @Pattern(regexp = "^[1-9][0-9]{3}-(0?[1-9]|1[0-2])-[12]$", message = PATTERN_MISMATCH_PERIOD, groups = RequestValidationGroups.PatternGroup.class)
+        String period,
+
+        @Schema(example = SWAGGER_STATE)
+        Boolean state
     ) {}
 
     @Builder
@@ -162,5 +183,33 @@ public class AdminDto {
     @Builder
     public record FindAssigneeListResponse(
         List<AssigneeInfo> assigneeList
+    ) {}
+
+    @Builder
+    public record AdminFindUserDetailResponse(
+        UserDetailInfo userDetailInfo,
+        TaskListResponse taskListResponse
+    ) {}
+
+    @Builder
+    public record UserDetailInfo(
+        String name,
+        String role
+    ) {}
+
+    @Builder
+    public record TaskListResponse(
+        Long totalElements,
+        String cursorId,
+        List<UserTaskDetailInfo> userTaskList
+    ) {}
+
+    @Builder
+    public record UserTaskDetailInfo(
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser
     ) {}
 }

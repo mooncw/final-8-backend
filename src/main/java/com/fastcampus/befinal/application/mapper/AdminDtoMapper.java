@@ -54,6 +54,8 @@ public interface AdminDtoMapper {
 
     AdminCommand.AssignTaskRequest toAdminCommand(AdminDto.AssignTaskRequest request);
 
+    AdminCommand.FindUserTaskDetailListRequest toAdminCommand(AdminDto.FindUserTaskDetailListRequest request);
+
     AdminDto.FindSignUpUserListResponse fromSignUpUserScroll(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
 
     @Mapping(source = "id", target = "cursorId")
@@ -132,4 +134,11 @@ public interface AdminDtoMapper {
     }
 
     AdminDto.FindAssigneeListResponse from(AdminInfo.AssigneeListInfo info);
+
+    AdminDto.AdminFindUserDetailResponse from(AdminInfo.AdminFindUserDetailInfo info);
+    AdminDto.UserDetailInfo from(AdminInfo.UserDetailInfo info);
+    AdminDto.TaskListResponse from(AdminInfo.TaskListInfo info);
+
+    @Mapping(source = "adId", target = "adId", qualifiedByName = "toAdIdValue")
+    AdminDto.UserTaskDetailInfo from(AdminInfo.UserTaskDetailInfo info);
 }
