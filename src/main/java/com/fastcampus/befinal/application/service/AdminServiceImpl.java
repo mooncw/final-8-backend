@@ -156,4 +156,12 @@ public class AdminServiceImpl implements AdminService {
             userStore.update(selectedAssigneeInfo);
         }
     }
+
+    @Override
+    public AdminInfo.AdminFindUserDetailInfo findUserTaskDetailScroll(AdminCommand.FindUserTaskDetailListRequest command) {
+        AdminInfo.UserDetailInfo userDetailInfo = userReader.findUserDetailInfo(command.id());
+        ScrollPagination<String, AdminInfo.UserTaskDetailInfo> userTaskDetailScrollByCursorId = advertisementReader.findUserTaskDetailScrollByCursorId(command);
+        AdminInfo.TaskListInfo taskListInfo = AdminInfo.TaskListInfo.of(userTaskDetailScrollByCursorId);
+        return AdminInfo.AdminFindUserDetailInfo.of(userDetailInfo, taskListInfo);
+    }
 }

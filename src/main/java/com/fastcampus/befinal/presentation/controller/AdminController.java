@@ -289,5 +289,48 @@ public class AdminController {
         adminFacade.assignTask(request);
         return ResponseEntityFactory.toResponseEntity(ASSIGN_TASK_SUCCESS);
     }
+
+    @PostMapping("/manage-emp/detail")
+    @Operation(summary = "작업자 관리 작업 상세 정보")
+    @ApiResponse(responseCode = "200", description = "작업자 관리 상세 정보 조회되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                    {
+                        "code": 1009,
+                        "message": "작업자 관리 상세 정보 조회되었습니다.",
+                        "data": {
+                            "userDetailInfo" : {
+                                "name" : "홍길동",
+                                "role" : "작업자"
+                            },
+                            "taskListResponse" : {
+                                "totalElements": 3,
+                                "cursorId": "202409N00147",
+                                "userTaskList" : [
+                                    {
+                                        "adId": "N00147",
+                                        "media": "문화일보",
+                                        "category": "금융",
+                                        "product": "상품_202409N00147",
+                                        "advertiser": "광고주_619"
+                                    }
+                                ]
+                            }
+                        }
+                     }
+                    """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<AdminDto.AdminFindUserDetailResponse>> findUserTaskDetailList(
+        @RequestBody
+        @Validated(DefaultGroupSequence.class)
+        AdminDto.FindUserTaskDetailListRequest request
+    ) {
+        AdminDto.AdminFindUserDetailResponse response = adminFacade.findUserTaskDetailScroll(request);
+        return ResponseEntityFactory.toResponseEntity(FIND_USER_TASK_DETAIL_LIST_SUCCESS, response);
+    }
 }
 

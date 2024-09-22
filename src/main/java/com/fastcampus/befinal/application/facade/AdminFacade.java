@@ -51,4 +51,9 @@ public class AdminFacade {
     public void assignTask(AdminDto.AssignTaskRequest request) {
         adminService.assignTask(adminDtoMapper.toAdminCommand(request));
     }
+
+    public AdminDto.AdminFindUserDetailResponse findUserTaskDetailScroll(AdminDto.FindUserTaskDetailListRequest request) {
+        AdminInfo.AdminFindUserDetailInfo userTaskDetailScroll = adminService.findUserTaskDetailScroll(adminDtoMapper.toAdminCommand(request));
+        return adminDtoMapper.from(userTaskDetailScroll);
+    }
 }
