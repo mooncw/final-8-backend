@@ -40,13 +40,14 @@ public class AdvertisementRepositoryCustom {
             .select(Projections.constructor(DashboardInfo.AdCount.class,
                 ad.count().intValue(),
                 new CaseBuilder()
-                    .when(userIdEq(id)).then(1)
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
                     .when(isCompleted()).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
-                    .when(isCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
                     .when(isNotCompleted()).then(1)
@@ -71,7 +72,7 @@ public class AdvertisementRepositoryCustom {
         List<Tuple> results = queryFactory
             .select(kstTaskDateTime, ad.count().intValue())
             .from(ad)
-            .where(userIdEq(id)
+            .where(modifierIdEq(id)
                 .and(isCompleted())
                 .and(isInCurrentPeriod())
                 .and(kstTaskDateTime.goe(startOfPeriod))
@@ -96,7 +97,7 @@ public class AdvertisementRepositoryCustom {
                 ad.taskDateTime.as("adTaskDateTime")
             ))
             .from(ad)
-            .where(userIdEq(id)
+            .where(modifierIdEq(id)
                 .and(isCompleted())
                 .and(isInCurrentPeriod()))
             .orderBy(ad.taskDateTime.desc())
@@ -385,6 +386,8 @@ public class AdvertisementRepositoryCustom {
     private BooleanExpression userIdEq(String id) {
         return ad.assignee.id.eq(Long.valueOf(id));
     }
+
+    private BooleanExpression modifierIdEq(String id) { return ad.modifier.id.eq(Long.valueOf(id)); }
 
     private BooleanExpression isCompleted() {
         return ad.state.isTrue();
