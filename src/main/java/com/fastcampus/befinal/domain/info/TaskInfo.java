@@ -60,31 +60,6 @@ public class TaskInfo {
     }
 
     @Builder
-    public record SameAdvertisementListInfo(
-        String adId,
-        String media,
-        String category,
-        String product,
-        String advertiser,
-        Boolean same
-    ) {}
-
-    @Builder
-    public record SameTaskListInfo(
-        Long totalElements,
-        String cursorId,
-        List<SameAdvertisementListInfo> sameAdvertisementList
-    ) {
-        public static SameTaskListInfo of(ScrollPagination<String, SameAdvertisementListInfo> scrollPagination) {
-            return SameTaskListInfo.builder()
-                .totalElements(scrollPagination.totalElements())
-                .cursorId(scrollPagination.currentCursorId())
-                .sameAdvertisementList(scrollPagination.contents())
-                .build();
-        }
-    }
-
-    @Builder
     public record IssueAdvertisementListInfo (
         String adId,
         String media,

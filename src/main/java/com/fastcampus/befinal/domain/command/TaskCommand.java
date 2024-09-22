@@ -20,14 +20,4 @@ public class TaskCommand {
         Boolean cursorState,
         String cursorId
     ) {}
-
-    @Builder
-    public record SameAdFilterConditionRequest(
-        String cursorId,
-        String keyword,
-        String period,
-        Boolean same,
-        List<String> media,
-        List<String> category
-    ) {}
 }
