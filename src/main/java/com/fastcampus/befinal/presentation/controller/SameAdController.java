@@ -4,7 +4,7 @@ import com.fastcampus.befinal.application.facade.SameAdFacade;
 import com.fastcampus.befinal.common.response.AppApiResponse;
 import com.fastcampus.befinal.common.response.ResponseEntityFactory;
 import com.fastcampus.befinal.common.util.DefaultGroupSequence;
-import com.fastcampus.befinal.presentation.dto.TaskDto;
+import com.fastcampus.befinal.presentation.dto.SameAdDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ public class SameAdController {
     private final SameAdFacade sameAdFacade;
 
     @PostMapping
-    @Operation(summary = "동일 광고 리스트 조회 - Param default 값은 null")
+    @Operation(summary = "동일 광고 리스트 조회")
     @ApiResponse(responseCode = "200", description = "동일 광고 리스트가 조회되었습니다.",
         content = @Content(
             mediaType = "application/json",
@@ -39,13 +39,13 @@ public class SameAdController {
                     "message": "동일 광고 리스트가 조회되었습니다.",
                     "data": {
                         "totalElements": 1,
-                        "cursorId": "A00001",
+                        "cursorId": "202409A00001",
                         "sameAdvertisementList" : [
                             {
                                 "adId": "A00001",
                                 "media": "동아일보",
                                 "category": "가정용품",
-                                "product": "상품_2024009A00001",
+                                "product": "상품_202409A00001",
                                 "advertiser": "광고주_810",
                                 "same" : true
                             }
@@ -56,12 +56,12 @@ public class SameAdController {
             )
         )
     )
-    public ResponseEntity<AppApiResponse<TaskDto.SameTaskListInfo>> findSameAdList(
+    public ResponseEntity<AppApiResponse<SameAdDto.SameTaskListInfo>> findSameAdList(
         @RequestBody
         @Validated(DefaultGroupSequence.class)
-        TaskDto.SameAdFilterConditionRequest request
+        SameAdDto.SameAdFilterConditionRequest request
     ){
-        TaskDto.SameTaskListInfo response = sameAdFacade.findSameAdList(request);
+        SameAdDto.SameTaskListInfo response = sameAdFacade.findSameAdList(request);
         return ResponseEntityFactory.toResponseEntity(GET_SAME_ADVERTISEMENT_LIST_SUCCESS, response);
     }
 }

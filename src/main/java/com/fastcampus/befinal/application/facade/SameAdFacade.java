@@ -1,20 +1,20 @@
 package com.fastcampus.befinal.application.facade;
 
-import com.fastcampus.befinal.application.mapper.UserTaskDtoMapper;
+import com.fastcampus.befinal.application.mapper.SameAdDtoMapper;
 import com.fastcampus.befinal.common.annotation.Facade;
-import com.fastcampus.befinal.domain.info.TaskInfo;
+import com.fastcampus.befinal.domain.info.SameAdInfo;
 import com.fastcampus.befinal.domain.service.SameAdService;
-import com.fastcampus.befinal.presentation.dto.TaskDto;
+import com.fastcampus.befinal.presentation.dto.SameAdDto;
 import lombok.RequiredArgsConstructor;
 
 @Facade
 @RequiredArgsConstructor
 public class SameAdFacade {
     private final SameAdService sameAdService;
-    private final UserTaskDtoMapper userTaskDtoMapper;
+    private final SameAdDtoMapper sameAdDtoMapper;
 
-    public TaskDto.SameTaskListInfo findSameAdList(TaskDto.SameAdFilterConditionRequest request) {
-        TaskInfo.SameTaskListInfo info = sameAdService.findSameAdList(userTaskDtoMapper.toTaskCommand(request));
-        return userTaskDtoMapper.from(info);
+    public SameAdDto.SameTaskListInfo findSameAdList(SameAdDto.SameAdFilterConditionRequest request) {
+        SameAdInfo.SameTaskListInfo info = sameAdService.findSameAdList(sameAdDtoMapper.toTaskCommand(request));
+        return sameAdDtoMapper.from(info);
     }
 }

@@ -3,14 +3,12 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.entity.Advertisement;
-import com.fastcampus.befinal.domain.info.AdminInfo;
-import com.fastcampus.befinal.domain.info.DashboardInfo;
-import com.fastcampus.befinal.domain.info.IssueAdInfo;
+import com.fastcampus.befinal.domain.info.*;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepository;
-import com.fastcampus.befinal.domain.info.TaskInfo;
 import com.fastcampus.befinal.domain.repository.AdvertisementRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 
@@ -72,7 +70,7 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     }
 
     @Override
-    public ScrollPagination<String, TaskInfo.SameAdvertisementListInfo> findSameAdList(TaskCommand.SameAdFilterConditionRequest command) {
+    public ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> findSameAdList(SameAdCommand.SameAdFilterConditionRequest command) {
         return advertisementRepositoryCustom.findSameAdListScrollByCursorId(command);
     }
 }
