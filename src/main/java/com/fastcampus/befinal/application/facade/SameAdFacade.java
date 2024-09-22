@@ -17,4 +17,8 @@ public class SameAdFacade {
         SameAdInfo.SameTaskListInfo info = sameAdService.findSameAdList(sameAdDtoMapper.toTaskCommand(request));
         return sameAdDtoMapper.from(info);
     }
+
+    public SameAdDto.FindSimilarityListResponse findSimilarityList(String inspectionAdvertisementId) {
+        return sameAdDtoMapper.from(sameAdService.findSimilarityList(inspectionAdvertisementId));
+    }
 }

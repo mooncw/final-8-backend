@@ -548,4 +548,20 @@ public class AdvertisementRepositoryCustom {
             .where(ad.id.in(personalTaskAdIdList))
             .execute();
     }
+
+    public Optional<SameAdInfo.InspectionAdInfo> findInspectionAdInfo(String advertisementId) {
+        return Optional.ofNullable(
+            queryFactory.select(Projections.constructor(SameAdInfo.InspectionAdInfo.class,
+                ad.id,
+                ad.product,
+                ad.advertiser,
+                ad.adCategory.category,
+                ad.postDateTime,
+                ad.adContent.content
+            ))
+            .from(ad)
+            .where(ad.id.eq(advertisementId))
+            .fetchOne()
+        );
+    }
 }

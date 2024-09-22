@@ -70,6 +70,12 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     }
 
     @Override
+    public SameAdInfo.InspectionAdInfo findInspectionAdInfo(String advertisementId) {
+        return advertisementRepositoryCustom.findInspectionAdInfo(advertisementId)
+            .orElseThrow(() -> new BusinessException(NOT_FOUND_ADVERTISEMENT_ID));
+    }
+
+    @Override
     public ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> findSameAdList(SameAdCommand.SameAdFilterConditionRequest command) {
         return advertisementRepositoryCustom.findSameAdListScrollByCursorId(command);
     }

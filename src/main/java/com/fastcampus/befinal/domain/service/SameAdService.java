@@ -7,4 +7,5 @@ public interface SameAdService {
 
     SameAdInfo.SameTaskListInfo findSameAdList(SameAdCommand.SameAdFilterConditionRequest command);
 
+    SameAdInfo.FindSimilarityListInfo findSimilarityList(String inspectionAdvertisementId);
 }
