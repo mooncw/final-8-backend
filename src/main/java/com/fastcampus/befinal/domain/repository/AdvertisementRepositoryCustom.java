@@ -2,10 +2,7 @@ package com.fastcampus.befinal.domain.repository;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.TaskCommand;
-import com.fastcampus.befinal.domain.entity.AdCategory;
-import com.fastcampus.befinal.domain.entity.AdMedia;
-import com.fastcampus.befinal.domain.entity.QAdvertisement;
-import com.fastcampus.befinal.domain.entity.UserSummary;
+import com.fastcampus.befinal.domain.entity.*;
 import com.fastcampus.befinal.domain.info.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
@@ -33,6 +30,7 @@ import static com.fastcampus.befinal.common.contant.ScrollConstant.*;
 public class AdvertisementRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private static final QAdvertisement ad = QAdvertisement.advertisement;
+    private static final QUserSummary user = QUserSummary.userSummary;
 
     // 유저 대시보드 기능
     public DashboardInfo.AdCount getAdCount(String id) {
@@ -211,90 +209,28 @@ public class AdvertisementRepositoryCustom {
     }
 
     public List<DashboardInfo.PersonalTask> getPersonalTaskList() {
-        // 쿼리 결과 가져오기
-        List<DashboardInfo.PersonalTask> assigneeTasks = getAssigneeTaskList();
-        List<DashboardInfo.PersonalModifierTask> modifierTasks = getModifierTaskList();
-
-        // 이름을 키로 하여 작업량과 완료된 작업 수를 병합
-        Map<String, DashboardInfo.PersonalTask> taskMap = new HashMap<>();
-
-        // assignee 작업 추가
-        for (DashboardInfo.PersonalTask task : assigneeTasks) {
-            taskMap.put(task.userName(), task);
-        }
-
-        // modifier 작업 병합
-        for (DashboardInfo.PersonalModifierTask modifierTask : modifierTasks) {
-            String modifierName = modifierTask.modifierName();
-            String assigneeName = modifierTask.assigneeName();
-
-            // modifier가 이미 map에 있으면 작업량을 환산
-            if (taskMap.containsKey(modifierName)) {
-                DashboardInfo.PersonalTask existingTask = taskMap.get(modifierName);
-                taskMap.put(modifierName,
-                    DashboardInfo.PersonalTask.of(
-                        modifierName,
-                        existingTask.doneAd() + modifierTask.doneAd(),
-                        existingTask.totalAd() + modifierTask.doneAd()
-                    )
-                );
-            } else {
-                // modifier가 없으면 새로운 작업 추가
-                taskMap.put(modifierName,
-                    DashboardInfo.PersonalTask.of(
-                        modifierName,
-                        modifierTask.doneAd(),
-                        modifierTask.doneAd()
-                    )
-                );
-            }
-
-            // 동시에 assignee의 작업량에서 해당 작업을 빼기
-            if (taskMap.containsKey(assigneeName)) {
-                DashboardInfo.PersonalTask assigneeTask = taskMap.get(assigneeName);
-                taskMap.put(assigneeName,
-                    DashboardInfo.PersonalTask.of(
-                        assigneeName,
-                        assigneeTask.doneAd() - modifierTask.doneAd(),
-                        assigneeTask.totalAd() - modifierTask.doneAd()
-                    )
-                );
-            }
-        }
-
-        // 병합된 결과를 리스트로 반환
-        return new ArrayList<>(taskMap.values());
-    }
-
-    private List<DashboardInfo.PersonalTask> getAssigneeTaskList() {
         return queryFactory
             .select(Projections.constructor(DashboardInfo.PersonalTask.class,
-                ad.assignee.name,
+                user.name,
                 new CaseBuilder()
-                    .when(isCompleted()).then(1)
-                    .otherwise(0).sum(),
-                ad.count().intValue()
-            ))
+                    .when(ad.state.isFalse().and(ad.assignee.id.eq(user.id))).then(1)
+                    .otherwise(0).sum()
+                    .add(
+                        new CaseBuilder()
+                            .when(ad.state.isTrue().and(ad.modifier.id.eq(user.id))).then(1)
+                            .otherwise(0).sum()
+                    ),
+                new CaseBuilder()
+                    .when(ad.state.isTrue().and(ad.modifier.id.eq(user.id))).then(1)
+                    .otherwise(0).sum()
+                ))
             .from(ad)
-            .where(isInCurrentPeriod())
-            .groupBy(ad.assignee)
+            .join(user)
+            .on(ad.assignee.id.eq(user.id)
+                .or(ad.modifier.id.eq(user.id)))
+            .groupBy(user.name)
             .fetch();
     }
-
-    private List<DashboardInfo.PersonalModifierTask> getModifierTaskList() {
-        return queryFactory
-            .select(Projections.constructor(DashboardInfo.PersonalModifierTask.class,
-                ad.assignee.name,
-                ad.modifier.name,
-                new CaseBuilder()
-                    .when(isCompleted().and(ad.assignee.ne(ad.modifier))).then(1)
-                    .otherwise(0).sum()))
-            .from(ad)
-            .where(isInCurrentPeriod())
-            .groupBy(ad.modifier, ad.assignee)
-            .fetch();
-    }
-
 
     // 나의 작업 기능
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.FilterConditionRequest taskCommand) {
