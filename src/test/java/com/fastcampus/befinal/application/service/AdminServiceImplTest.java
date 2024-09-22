@@ -407,4 +407,49 @@ public class AdminServiceImplTest {
         verify(advertisementStore, times(2)).updateAssignee(any(UserSummary.class), anyList());
         verify(userStore, times(1)).update(any(AdminCommand.SelectedAssigneeInfo.class));
     }
+
+    @Test
+    @DisplayName("작업자 관리 상세 정보 조회 성공 테스트")
+    void findUserTaskDetailScrollTest() {
+        //given
+        AdminCommand.FindUserTaskDetailListRequest command = AdminCommand.FindUserTaskDetailListRequest.builder()
+            .cursorId("202409N00001")
+            .id(2L)
+            .period("2024-9-1")
+            .state(true)
+            .build();
+
+        AdminInfo.UserDetailInfo userDetailInfo = AdminInfo.UserDetailInfo.builder()
+            .name("홍길동")
+            .role("작업자")
+            .build();
+
+        AdminInfo.UserTaskDetailInfo userTaskDetailInfo = AdminInfo.UserTaskDetailInfo.builder()
+            .adId("N00147")
+            .media("문화일보")
+            .category("금융")
+            .product("상품_202409N00147")
+            .advertiser("광고주_619")
+            .build();
+
+        ScrollPagination<String, AdminInfo.UserTaskDetailInfo> doReturnScroll =
+            ScrollPagination.of(3L, "202409N00147", List.of(userTaskDetailInfo));
+
+        doReturn(userDetailInfo)
+            .when(userReader)
+            .findUserDetailInfo(command.id());
+
+        doReturn(doReturnScroll)
+            .when(advertisementReader)
+            .findUserTaskDetailScrollByCursorId(any(AdminCommand.FindUserTaskDetailListRequest.class));
+
+        // when
+        AdminInfo.AdminFindUserDetailInfo result = adminService.findUserTaskDetailScroll(command);
+
+        // then
+        assertThat(result.userDetailInfo()).isEqualTo(userDetailInfo);
+        assertThat(result.taskListResponse().totalElements()).isEqualTo(doReturnScroll.totalElements());
+        assertThat(result.taskListResponse().cursorId()).isEqualTo(doReturnScroll.currentCursorId());
+        assertThat(result.taskListResponse().userTaskList()).isEqualTo(doReturnScroll.contents());
+    }
 }
