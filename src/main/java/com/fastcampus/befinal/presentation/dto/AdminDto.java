@@ -13,7 +13,6 @@ import static com.fastcampus.befinal.common.contant.AdminConstant.*;
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
 import static com.fastcampus.befinal.common.contant.SwaggerConstant.*;
 import static com.fastcampus.befinal.common.contant.TaskConstant.PATTERN_MISMATCH_AD_ID;
-import static com.fastcampus.befinal.common.contant.TaskConstant.PATTERN_MISMATCH_PERIOD;
 
 public class AdminDto {
     @Builder
