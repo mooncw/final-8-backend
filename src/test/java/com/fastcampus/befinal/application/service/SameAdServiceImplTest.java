@@ -89,7 +89,7 @@ public class SameAdServiceImplTest {
     }
 
     @Test
-    @DisplayName("동일 광고 유사율 리스트 성공 테스트")
+    @DisplayName("동일 광고 유사율 리스트 조회 성공 테스트")
     void findSimilarityListTest() {
         //given
         String inspectionAdvertisementId = "202409A00001";
@@ -129,5 +129,29 @@ public class SameAdServiceImplTest {
         //then
         assertThat(result.inspectionAdInfo()).isEqualTo(info.inspectionAdInfo());
         assertThat(result.adSimilarityInfoList()).isEqualTo(info.adSimilarityInfoList());
+    }
+
+    @Test
+    @DisplayName("동일 광고 유사율 상세보기 조회 성공 테스트")
+    void findSimilarityDetailTest() {
+        //given
+        String inspectionAdvertisementId = "202409A00001";
+        String comparisonAdvertisementId = "202312A00001";
+
+        SameAdInfo.FindSimilarityDetailInfo info = SameAdInfo.FindSimilarityDetailInfo.builder()
+            .content("어쩌구. 저쩌구.")
+            .sameSentence("어쩌구.")
+            .build();
+
+        doReturn(info)
+            .when(adSimilarityReader)
+            .findSimilarityDetailInfo(anyString(), anyString());
+
+        //when
+        SameAdInfo.FindSimilarityDetailInfo result = sameAdService.findSimilarityDetail(inspectionAdvertisementId, comparisonAdvertisementId);
+
+        //then
+        assertThat(result.content()).isEqualTo(info.content());
+        assertThat(result.sameSentence()).isEqualTo(info.sameSentence());
     }
 }

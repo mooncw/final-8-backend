@@ -81,4 +81,10 @@ public class SameAdDto {
         InspectionAdInfo inspectionAdInfo,
         List<AdSimilarityInfo> adSimilarityInfoList
     ) {}
+
+    @Builder
+    public record FindSimilarityDetailResponse(
+        String content,
+        String sameSentence
+    ) {}
 }
