@@ -91,9 +91,9 @@ public class AdvertisementRepositoryCustom {
     public List<DashboardInfo.RecentDone> getRecentDoneList(String id) {
         return queryFactory
             .select(Projections.constructor(DashboardInfo.RecentDone.class,
-                ad.id.stringValue().as("adId"),
-                ad.product.as("adName"),
-                ad.taskDateTime.as("adTaskDateTime")
+                ad.id.substring(6),
+                ad.product,
+                ad.taskDateTime
             ))
             .from(ad)
             .where(modifierIdEq(id)
@@ -102,25 +102,6 @@ public class AdvertisementRepositoryCustom {
             .orderBy(ad.taskDateTime.desc())
             .limit(5)
             .fetch();
-    }
-
-    public TaskInfo.AdCountInfo getMyTaskCount(String id) {
-        return queryFactory
-            .select(Projections.constructor(TaskInfo.AdCountInfo.class,
-                new CaseBuilder()
-                    .when(isNotCompleted().and(userIdEq(id))).then(1)
-                    .when(isCompleted().and(modifierIdEq(id))).then(1)
-                    .otherwise(0).sum(),
-                new CaseBuilder()
-                    .when(isCompleted().and(modifierIdEq(id))).then(1)
-                    .otherwise(0).sum(),
-                new CaseBuilder()
-                    .when(isNotCompleted().and(userIdEq(id))).then(1)
-                    .otherwise(0).sum()
-            ))
-            .from(ad)
-            .where(isInCurrentPeriod())
-            .fetchOne();
     }
 
     // 어드민 대시보드 기능
@@ -236,6 +217,25 @@ public class AdvertisementRepositoryCustom {
     }
 
     // 나의 작업 기능
+    public TaskInfo.AdCountInfo getMyTaskCount(String id) {
+        return queryFactory
+            .select(Projections.constructor(TaskInfo.AdCountInfo.class,
+                new CaseBuilder()
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .otherwise(0).sum()
+            ))
+            .from(ad)
+            .where(isInCurrentPeriod())
+            .fetchOne();
+    }
+
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.FilterConditionRequest taskCommand) {
 
         BooleanExpression filterExpression = createFilterCondition(taskCommand);

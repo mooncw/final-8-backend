@@ -56,8 +56,8 @@ public class UserBoardController {
                                 ],
                                 "recentDoneList": [
                                     {
-                                        "adId": "202409N00660",
-                                        "adName": "상품_202409N00660",
+                                        "adId": "N00001",
+                                        "adName": "상품_202409N00001",
                                         "adTaskDateTime": "2024-09-16 20:43"
                                     }
                                 ]
