@@ -58,4 +58,10 @@ public class UserReaderImpl implements UserReader {
         return userRepository.findByUserIdAndNameAndPhoneNumber(command.userId(), command.name(), command.phoneNumber())
             .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
     }
+
+    @Override
+    public AdminInfo.UserDetailInfo findUserDetailInfo(Long id) {
+         return userRepositoryCustom.findUserDetailInfo(id)
+             .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+    }
 }
