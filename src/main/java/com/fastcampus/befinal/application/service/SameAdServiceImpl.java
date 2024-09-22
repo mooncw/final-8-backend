@@ -1,5 +1,7 @@
 package com.fastcampus.befinal.application.service;
 
+import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdSimilarityReader;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.info.SameAdInfo;
@@ -15,6 +17,13 @@ import java.util.List;
 public class SameAdServiceImpl implements SameAdService {
     private final AdvertisementReader advertisementReader;
     private final AdSimilarityReader adSimilarityReader;
+
+    @Override
+    @Transactional(readOnly = true)
+    public SameAdInfo.SameTaskListInfo findSameAdList(SameAdCommand.SameAdFilterConditionRequest command) {
+        ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> filterSameAdPagination = advertisementReader.findSameAdList(command);
+        return SameAdInfo.SameTaskListInfo.of(filterSameAdPagination);
+    }
 
     @Override
     @Transactional(readOnly = true)

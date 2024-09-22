@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SameAdCode implements Code {
     //success
+    GET_SAME_ADVERTISEMENT_LIST_SUCCESS(3700),
     FIND_SIMILARITY_LIST_SUCCESS(3701),
     FIND_SIMILARITY_DETAIL_SUCCESS(3702),
 

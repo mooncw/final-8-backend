@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.application.mapper;
 
+import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.info.SameAdInfo;
 import com.fastcampus.befinal.presentation.dto.SameAdDto;
 import org.mapstruct.*;
@@ -15,6 +16,11 @@ import java.time.format.DateTimeFormatter;
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface SameAdDtoMapper {
+    SameAdCommand.SameAdFilterConditionRequest toTaskCommand(SameAdDto.SameAdFilterConditionRequest request);
+
+    SameAdDto.SameAdvertisementListInfo from(SameAdInfo.SameAdvertisementListInfo sameAdvertisementList);
+    SameAdDto.SameTaskListInfo from(SameAdInfo.SameTaskListInfo sameTaskListResponse);
+
     SameAdDto.FindSimilarityListResponse from(SameAdInfo.FindSimilarityListInfo info);
 
     @Mapping(source = "postDateTime", target = "postDate", qualifiedByName = "toPostDateValue")
