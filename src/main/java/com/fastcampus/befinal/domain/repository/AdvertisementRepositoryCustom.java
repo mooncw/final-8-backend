@@ -110,10 +110,11 @@ public class AdvertisementRepositoryCustom {
         return queryFactory
             .select(Projections.constructor(TaskInfo.AdCountInfo.class,
                 new CaseBuilder()
-                    .when(userIdEq(id)).then(1)
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
-                    .when(isCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
                     .when(isNotCompleted().and(userIdEq(id))).then(1)
@@ -141,7 +142,13 @@ public class AdvertisementRepositoryCustom {
                 ad.issue
             ))
             .from(ad)
-            .where(filterExpression.and(cursorExpression).and(userIdEq(userId)))
+            .where(filterExpression.and(cursorExpression)
+                .and(
+                    new BooleanBuilder()
+                        .or(isNotCompleted().and(userIdEq(userId)))
+                        .or(isCompleted().and(modifierIdEq(userId)))
+                )
+            )
             .orderBy(
                 ad.state.asc(),
                 ad.id.asc()
@@ -154,7 +161,11 @@ public class AdvertisementRepositoryCustom {
         Long totalElements = queryFactory
             .select(ad.count())
             .from(ad)
-            .where(filterExpression.and(userIdEq(userId)))
+            .where(filterExpression.and(
+                new BooleanBuilder()
+                    .or(isNotCompleted().and(userIdEq(userId)))
+                    .or(isCompleted().and(modifierIdEq(userId)))
+            ))
             .fetchOne();
 
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
