@@ -225,6 +225,7 @@ public class AdvertisementRepositoryCustom {
             .join(userSummary)
             .on(ad.assignee.id.eq(userSummary.id)
                 .or(ad.modifier.id.eq(userSummary.id)))
+            .where(userSummary.name.ne("-"))
             .groupBy(userSummary.id)
             .fetch();
     }
