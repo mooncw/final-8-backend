@@ -45,7 +45,7 @@ public class SameAdController {
                         "cursorId": "202409A00001",
                         "sameAdvertisementList" : [
                             {
-                                "adId": "A00001",
+                                "adId": "202409A00001",
                                 "media": "동아일보",
                                 "category": "가정용품",
                                 "product": "상품_202409A00001",
