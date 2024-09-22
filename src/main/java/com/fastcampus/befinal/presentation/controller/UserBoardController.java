@@ -50,15 +50,15 @@ public class UserBoardController {
                                 },
                                 "dailyDoneList": [
                                     {
-                                        "date": "2024-08-25",
+                                        "date": "2024-09-16",
                                         "dailyMyDoneAd": 2
                                     }
                                 ],
                                 "recentDoneList": [
                                     {
-                                        "adId": "A11111",
-                                        "adName": "toy",
-                                        "adTaskDateTime": "2024-08-27 09:00"
+                                        "adId": "N00001",
+                                        "adName": "상품_202409N00001",
+                                        "adTaskDateTime": "2024-09-16 20:43"
                                     }
                                 ]
                             }
