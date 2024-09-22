@@ -3,6 +3,7 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.entity.Advertisement;
@@ -96,5 +97,10 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     public SameAdInfo.InspectionAdInfo findInspectionAdInfo(String advertisementId) {
         return advertisementRepositoryCustom.findInspectionAdInfo(advertisementId)
             .orElseThrow(() -> new BusinessException(NOT_FOUND_ADVERTISEMENT_ID));
+    }
+
+    @Override
+    public ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> findSameAdList(SameAdCommand.SameAdFilterConditionRequest command) {
+        return advertisementRepositoryCustom.findSameAdListScrollByCursorId(command);
     }
 }
