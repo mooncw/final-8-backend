@@ -182,7 +182,7 @@ public class AdvertisementRepositoryCustom {
         List<Tuple> results = queryFactory
             .select(kstTaskDateTime,                           // 날짜
                 ad.count().intValue(),                     // 광고 작업 수 (advertise count)
-                ad.assignee.id.countDistinct().intValue())         // 해당 날짜에 작업한 유저 수)
+                ad.modifier.id.countDistinct().intValue())         // 해당 날짜에 작업한 유저 수)
             .from(ad)
             .where(isCompleted()
                 .and(isInCurrentPeriod())
