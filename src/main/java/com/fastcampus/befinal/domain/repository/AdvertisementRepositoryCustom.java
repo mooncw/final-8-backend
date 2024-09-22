@@ -30,7 +30,7 @@ import static com.fastcampus.befinal.common.contant.ScrollConstant.*;
 public class AdvertisementRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private static final QAdvertisement ad = QAdvertisement.advertisement;
-    private static final QUserSummary user = QUserSummary.userSummary;
+    private static final QUserSummary userSummary = QUserSummary.userSummary;
 
     // 유저 대시보드 기능
     public DashboardInfo.AdCount getAdCount(String id) {
@@ -211,24 +211,24 @@ public class AdvertisementRepositoryCustom {
     public List<DashboardInfo.PersonalTask> getPersonalTaskList() {
         return queryFactory
             .select(Projections.constructor(DashboardInfo.PersonalTask.class,
-                user.name,
+                userSummary.name,
                 new CaseBuilder()
-                    .when(ad.state.isFalse().and(ad.assignee.id.eq(user.id))).then(1)
+                    .when(ad.state.isFalse().and(ad.assignee.id.eq(userSummary.id))).then(1)
                     .otherwise(0).sum()
                     .add(
                         new CaseBuilder()
-                            .when(ad.state.isTrue().and(ad.modifier.id.eq(user.id))).then(1)
+                            .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
                             .otherwise(0).sum()
                     ),
                 new CaseBuilder()
-                    .when(ad.state.isTrue().and(ad.modifier.id.eq(user.id))).then(1)
+                    .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
                     .otherwise(0).sum()
                 ))
             .from(ad)
-            .join(user)
-            .on(ad.assignee.id.eq(user.id)
-                .or(ad.modifier.id.eq(user.id)))
-            .groupBy(user.name)
+            .join(userSummary)
+            .on(ad.assignee.id.eq(userSummary.id)
+                .or(ad.modifier.id.eq(userSummary.id)))
+            .groupBy(userSummary.id)
             .fetch();
     }
 
