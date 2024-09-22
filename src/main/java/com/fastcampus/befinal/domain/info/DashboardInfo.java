@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.domain.info;
 
+import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -63,5 +64,109 @@ public class DashboardInfo {
             String adId,
             String adName,
             LocalDateTime adTaskDateTime
+    ) {}
+
+    @Builder
+    public record DashboardAdminDataInfo(
+        AdminTimeline adminTimeline,
+        AdminAdCount adCount,
+        List<TodayWork> todayWorkList,
+        List<DailyAvgDone> dailyAvgDoneList,
+        List<PersonalTask> personalTaskList
+    ) {
+        public static DashboardAdminDataInfo of(AdminTimeline adminTimeline, AdminAdCount adCount, List<TodayWork> todayWorkList,
+                                                List<DailyAvgDone> dailyAvgDoneList ,List<PersonalTask> personalTaskList){
+            return DashboardAdminDataInfo.builder()
+                .adminTimeline(adminTimeline)
+                .adCount(adCount)
+                .todayWorkList(todayWorkList)
+                .dailyAvgDoneList(dailyAvgDoneList)
+                .personalTaskList(personalTaskList)
+                .build();
+        }
+    }
+
+    @Builder
+    public record AdminAdCountInfo(
+        Integer remainingAd,
+        Integer totalAd,
+        Integer doneAd,
+        Integer notDoneAd
+    ) {}
+
+    @Builder
+    public record AdminTimeline(
+        Integer notApprovedUser,
+        Integer remainingAd
+    ) {
+        public static AdminTimeline of(Integer notApprovedUser, Integer remainingAd){
+            return AdminTimeline.builder()
+                .notApprovedUser(notApprovedUser)
+                .remainingAd(remainingAd)
+                .build();
+        }
+    }
+
+    @Builder
+    public record AdminAdCount(
+        Integer totalAd,
+        Integer doneAd,
+        Integer notDoneAd
+    ) {
+        public static AdminAdCount from(AdminAdCountInfo info){
+            return AdminAdCount.builder()
+                .totalAd(info.totalAd())
+                .doneAd(info.doneAd())
+                .notDoneAd(info.notDoneAd())
+                .build();
+        }
+    }
+
+    @Builder
+    public record TodayWork(
+        LocalDate date,
+        Integer doneAd
+    ) {
+        public static TodayWork of(LocalDate date, Integer doneAd){
+            return TodayWork.builder()
+                .date(date)
+                .doneAd(doneAd)
+                .build();
+        }
+    }
+
+    @Builder
+    public record DailyAvgDone(
+        LocalDate date,
+        Double avgDoneAd
+    ) {
+        public static DailyAvgDone of(LocalDate date, Double avgDoneAd){
+            return DailyAvgDone.builder()
+                .date(date)
+                .avgDoneAd(avgDoneAd)
+                .build();
+        }
+    }
+
+    @Builder
+    public record PersonalTask(
+        String userName,
+        Integer doneAd,
+        Integer totalAd
+    ) {
+        public static PersonalTask of(String userName, Integer doneAd, Integer totalAd){
+            return PersonalTask.builder()
+                .userName(userName)
+                .doneAd(doneAd)
+                .totalAd(totalAd)
+                .build();
+        }
+    }
+
+    @Builder
+    public record PersonalModifierTask(
+        String assigneeName,
+        String modifierName,
+        Integer doneAd
     ) {}
 }
