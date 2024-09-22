@@ -210,21 +210,22 @@ public class AdvertisementRepositoryCustom {
             .select(Projections.constructor(DashboardInfo.PersonalTask.class,
                 userSummary.name,
                 new CaseBuilder()
+                    .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
                     .when(ad.state.isFalse().and(ad.assignee.id.eq(userSummary.id))).then(1)
                     .otherwise(0).sum()
                     .add(
                         new CaseBuilder()
                             .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
                             .otherwise(0).sum()
-                    ),
-                new CaseBuilder()
-                    .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
-                    .otherwise(0).sum()
+                    )
                 ))
             .from(ad)
             .join(userSummary)
             .on(ad.assignee.id.eq(userSummary.id)
                 .or(ad.modifier.id.eq(userSummary.id)))
+            .where(userSummary.name.ne("-"))
             .groupBy(userSummary.id)
             .fetch();
     }
