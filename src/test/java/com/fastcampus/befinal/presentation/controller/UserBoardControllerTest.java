@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
+import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_ADMIN_DASHBOARD_SUCCESS;
 import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -84,5 +85,45 @@ class UserBoardControllerTest {
         perform.andExpect(status().is(CHECK_DASHBOARD_SUCCESS.getHttpStatus().value()))
                 .andExpect(jsonPath("code").value(CHECK_DASHBOARD_SUCCESS.getCode()))
                 .andExpect(jsonPath("message").value(CHECK_DASHBOARD_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @DisplayName("관리자 대시보드 요청 성공시, 200 OK와 정상 응답을 반환")
+    void getAdminBoardDataTest() throws Exception {
+        // given
+        DashboardDto.DashboardAdminDataResponse response = new DashboardDto.DashboardAdminDataResponse(
+            new DashboardDto.AdminTimeline(1, 1),
+            new DashboardDto.AdminAdCount(1,1,0),
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
+        );
+
+        User user = User.builder()
+            .id(1L)
+            .userId("hong")
+            .name("홍길동")
+            .password("aaaa")
+            .phoneNumber("01011112222")
+            .empNumber("11111111")
+            .email("hong@hong.com")
+            .signUpDateTime(LocalDateTime.now().minusDays(10))
+            .finalLoginDateTime(LocalDateTime.now().minusDays(5))
+            .role(ADMIN_AUTHORITY)
+            .build();
+
+        UserDetailsInfo userDetailsInfo = UserDetailsInfo.from(user);
+
+        doReturn(response)
+            .when(boardFacade)
+            .loadAdminDashboardData();
+
+        // when
+        ResultActions perform = mockMvc.perform(get("/api/v1/dashboard/admin")
+            .with(user(userDetailsInfo))
+            .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        perform.andExpect(status().is(CHECK_ADMIN_DASHBOARD_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(CHECK_ADMIN_DASHBOARD_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(CHECK_ADMIN_DASHBOARD_SUCCESS.getMessage()));
     }
 }

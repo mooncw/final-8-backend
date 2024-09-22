@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdSimilarity {
     @EmbeddedId
-    @QueryInit({"inspectionAd", "comparisonAd.adCategory"})
+    @QueryInit({"inspectionAd", "comparisonAd.adCategory", "comparisonAd.adContent"})
     private AdSimilarityPK adSimilarityPK;
 
     @Column(nullable = false, name = "similarity", precision = 5, scale = 4)

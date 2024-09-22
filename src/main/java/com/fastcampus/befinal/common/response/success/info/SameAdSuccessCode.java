@@ -10,7 +10,9 @@ public enum SameAdSuccessCode implements SuccessCode {
     GET_SAME_ADVERTISEMENT_LIST_SUCCESS(HttpStatus.OK, SameAdCode.GET_SAME_ADVERTISEMENT_LIST_SUCCESS,
         "동일 광고 리스트가 조회되었습니다."),
     FIND_SIMILARITY_LIST_SUCCESS(HttpStatus.OK, SameAdCode.FIND_SIMILARITY_LIST_SUCCESS,
-        "동일 광고 유사율 리스트가 조회되었습니다.");
+        "동일 광고 유사율 리스트가 조회되었습니다."),
+    FIND_SIMILARITY_DETAIL_SUCCESS(HttpStatus.OK, SameAdCode.FIND_SIMILARITY_DETAIL_SUCCESS,
+        "동일 광고 유사율 상세화면이 조회되었습니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

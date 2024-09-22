@@ -1,14 +1,14 @@
-package com.fastcampus.befinal.common.response.success.info;
+package com.fastcampus.befinal.common.response.error.info;
 
 import com.fastcampus.befinal.common.response.code.Code;
-import com.fastcampus.befinal.common.response.code.DashboardCode;
+import com.fastcampus.befinal.common.response.code.SameAdCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public enum DashboardSuccessCode implements SuccessCode {
-    CHECK_DASHBOARD_SUCCESS(HttpStatus.OK, DashboardCode.CHECK_DASHBOARD_SUCCESS, "대시보드 확인 가능합니다."),
-    CHECK_ADMIN_DASHBOARD_SUCCESS(HttpStatus.OK, DashboardCode.CHECK_ADMIN_DASHBOARD_SUCCESS, "관리자 대시보드 확인 가능합니다.");
+public enum SameErrorCode implements ErrorCode {
+    NOT_FOUND_SAME_ADVERTISEMENT_FOR_INSPECTION_ADVERTISEMENT(HttpStatus.BAD_REQUEST,
+        SameAdCode.NOT_FOUND_SAME_ADVERTISEMENT_FOR_INSPECTION_ADVERTISEMENT, "검수 광고에 대한 해당 동일 광고가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

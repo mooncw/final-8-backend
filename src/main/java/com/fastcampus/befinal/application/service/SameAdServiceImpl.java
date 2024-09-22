@@ -36,4 +36,10 @@ public class SameAdServiceImpl implements SameAdService {
 
         return SameAdInfo.FindSimilarityListInfo.of(inspectionAdInfo, adSimilarityInfoList);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SameAdInfo.FindSimilarityDetailInfo findSimilarityDetail(String inspectionAdvertisementId, String comparisonAdvertisementId) {
+        return adSimilarityReader.findSimilarityDetailInfo(inspectionAdvertisementId, comparisonAdvertisementId);
+    }
 }

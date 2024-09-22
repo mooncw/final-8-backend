@@ -17,4 +17,9 @@ public class BoardFacade {
         DashboardInfo.DashboardDataInfo dataInfo = userBoardService.loadUserDashboardData(userId);
         return dashBoardDtoMapper.from(dataInfo);
     }
+
+    public DashboardDto.DashboardAdminDataResponse loadAdminDashboardData(){
+        DashboardInfo.DashboardAdminDataInfo info = userBoardService.loadAdminDashboardData();
+        return dashBoardDtoMapper.from(info);
+    }
 }

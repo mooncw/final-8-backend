@@ -66,4 +66,10 @@ public class SameAdInfo {
                 .build();
         }
     }
+
+    @Builder
+    public record FindSimilarityDetailInfo(
+        String content,
+        String sameSentence
+    ) {}
 }

@@ -8,4 +8,6 @@ public interface UserManagementReader {
     UserManagement findByEmpNo(String empNo);
 
     ScrollPagination<Long, AdminInfo.SignUpUserInfo> findScroll(Long id);
+
+    Integer findNotApproveUserCount();
 }
