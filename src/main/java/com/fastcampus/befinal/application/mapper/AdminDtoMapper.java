@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.application.mapper;
 
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.response.error.info.AdminErrorCode;
 import com.fastcampus.befinal.common.type.UserTaskSortType;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
@@ -139,7 +140,6 @@ public interface AdminDtoMapper {
 
     @Mapping(target = "role", qualifiedByName = "mapRole")
     AdminDto.UserDetailInfo from(AdminInfo.UserDetailInfo info);
-    AdminDto.TaskListResponse from(AdminInfo.TaskListInfo info);
 
     @Mapping(source = "adId", target = "adId", qualifiedByName = "toAdIdValue")
     AdminDto.UserTaskDetailInfo from(AdminInfo.UserTaskDetailInfo info);
@@ -151,7 +151,7 @@ public interface AdminDtoMapper {
         } else if ("ROLE_ADMIN".equals(role)) {
             return "관리자";
         } else {
-            return "알 수 없음";
+            throw new BusinessException(AdminErrorCode.NOT_FOUND_USER_ROLE);
         }
     }
 }
