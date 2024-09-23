@@ -8,9 +8,12 @@ import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.dataprovider.UserReader;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AdminInfo;
+import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.repository.UserRepository;
 import com.fastcampus.befinal.domain.repository.UserRepositoryCustom;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 import static com.fastcampus.befinal.common.response.error.info.AuthErrorCode.NOT_FOUND_USER;
 
@@ -63,5 +66,10 @@ public class UserReaderImpl implements UserReader {
     public AdminInfo.UserDetailInfo findUserDetailInfo(Long id) {
          return userRepositoryCustom.findUserDetailInfo(id)
              .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+    }
+
+    @Override
+    public List<DashboardInfo.UserName> findUserNameList() {
+        return userRepositoryCustom.findUserNameList();
     }
 }

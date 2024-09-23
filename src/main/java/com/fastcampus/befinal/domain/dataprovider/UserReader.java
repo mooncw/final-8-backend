@@ -5,6 +5,9 @@ import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.command.AuthCommand;
 import com.fastcampus.befinal.domain.entity.User;
 import com.fastcampus.befinal.domain.info.AdminInfo;
+import com.fastcampus.befinal.domain.info.DashboardInfo;
+
+import java.util.List;
 
 public interface UserReader {
     User findUser(String userId);
@@ -22,4 +25,6 @@ public interface UserReader {
     User findByUserIdAndNameAndPhoneNumber(AuthCommand.FindPasswordRequest command);
 
     AdminInfo.UserDetailInfo findUserDetailInfo(Long id);
+
+    List<DashboardInfo.UserName> findUserNameList();
 }

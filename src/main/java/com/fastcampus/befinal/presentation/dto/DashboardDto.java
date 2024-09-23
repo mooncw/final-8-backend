@@ -89,6 +89,7 @@ public class DashboardDto {
 
     @Builder
     public record UserName(
+        Long id,
         String userName
     ) {}
 }

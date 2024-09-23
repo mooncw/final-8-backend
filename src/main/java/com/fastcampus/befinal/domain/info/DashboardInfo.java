@@ -186,6 +186,7 @@ public class DashboardInfo {
 
     @Builder
     public record UserName(
+        Long id,
         String userName
     ) {}
 }

@@ -2,7 +2,7 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.dataprovider.UserManagementReader;
-import com.fastcampus.befinal.domain.dataprovider.UserSummaryReader;
+import com.fastcampus.befinal.domain.dataprovider.UserReader;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.service.UserBoardService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 public class UserBoardServiceImpl implements UserBoardService {
     private final AdvertisementReader advertisementReader;
     private final UserManagementReader userManagementReader;
-    private final UserSummaryReader userSummaryReader;
+    private final UserReader userReader;
 
     @Override
     @Transactional(readOnly = true)
@@ -51,7 +51,7 @@ public class UserBoardServiceImpl implements UserBoardService {
     @Override
     @Transactional(readOnly = true)
     public DashboardInfo.UserNameListInfo findUserNameList() {
-        List<DashboardInfo.UserName> userNameList = userSummaryReader.findUserNameList();
+        List<DashboardInfo.UserName> userNameList = userReader.findUserNameList();
         return DashboardInfo.UserNameListInfo.from(userNameList);
     }
 

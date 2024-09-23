@@ -6,6 +6,7 @@ import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.entity.QAdvertisement;
 import com.fastcampus.befinal.domain.entity.QUser;
 import com.fastcampus.befinal.domain.info.AdminInfo;
+import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -206,5 +207,14 @@ public class UserRepositoryCustom {
             .set(user.additionalTaskCount, user.additionalTaskCount.add(1))
             .where(user.id.eq(info.id()))
             .execute();
+    }
+
+    public List<DashboardInfo.UserName> findUserNameList() {
+        return queryFactory
+            .select(Projections.constructor(DashboardInfo.UserName.class,
+                user.id,
+                user.name))
+            .from(user)
+            .fetch();
     }
 }
