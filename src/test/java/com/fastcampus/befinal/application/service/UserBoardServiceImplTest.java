@@ -2,6 +2,7 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.dataprovider.UserManagementReader;
+import com.fastcampus.befinal.domain.dataprovider.UserReader;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ class UserBoardServiceImplTest {
 
     @Mock
     private UserManagementReader userManagementReader;
+
+    @Mock
+    private UserReader userReader;
 
     @Test
     @DisplayName("대시보드 성공 테스트")
@@ -121,5 +126,47 @@ class UserBoardServiceImplTest {
         verify(advertisementReader, times(1)).findTodayWorkList();
         verify(advertisementReader, times(1)).findDailyAvgDoneList();
         verify(advertisementReader, times(1)).findPersonalTaskList();
+    }
+
+    @Test
+    @DisplayName("유저 리스트 조회 성공 테스트")
+    void findUserNameListTest() {
+        //given
+        DashboardInfo.UserName info = DashboardInfo.UserName.builder().id(1L).userName("홍길동").build();
+        DashboardInfo.UserNameListInfo infos = DashboardInfo.UserNameListInfo.builder().userNameList(List.of(info)).build();
+
+        doReturn(List.of(info))
+            .when(userReader)
+            .findUserNameList();
+
+        //when
+        DashboardInfo.UserNameListInfo result = userBoardService.findUserNameList();
+
+        //then
+        assertNotNull(result);
+        assertEquals(infos, result);
+
+        verify(userReader,times(1)).findUserNameList();
+    }
+
+    @Test
+    @DisplayName("유저 일일 작업량 조회 성공 테스트")
+    void findDailyDoneListByUserIdTest() {
+        //given
+        DashboardInfo.DailyDone info = DashboardInfo.DailyDone.builder().date(LocalDate.now()).dailyMyDoneAd(1).build();
+        DashboardInfo.DailyDoneList infos = DashboardInfo.DailyDoneList.builder().dailyDoneList(List.of(info)).build();
+
+        doReturn(List.of(info))
+            .when(advertisementReader)
+            .findDailyDone("1");
+
+        //when
+        DashboardInfo.DailyDoneList result = userBoardService.findDailyDoneListByUserId("1");
+
+        //then
+        assertNotNull(result);
+        assertEquals(infos, result);
+
+        verify(advertisementReader,times(1)).findDailyDone("1");
     }
 }
