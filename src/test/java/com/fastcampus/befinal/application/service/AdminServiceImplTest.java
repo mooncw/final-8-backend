@@ -448,8 +448,8 @@ public class AdminServiceImplTest {
 
         // then
         assertThat(result.userDetailInfo()).isEqualTo(userDetailInfo);
-        assertThat(result.taskListResponse().totalElements()).isEqualTo(doReturnScroll.totalElements());
-        assertThat(result.taskListResponse().cursorId()).isEqualTo(doReturnScroll.currentCursorId());
-        assertThat(result.taskListResponse().userTaskList()).isEqualTo(doReturnScroll.contents());
+        assertThat(result.userTaskDetailInfo().totalElements()).isEqualTo(doReturnScroll.totalElements());
+        assertThat(result.userTaskDetailInfo().currentCursorId()).isEqualTo(doReturnScroll.currentCursorId());
+        assertThat(result.userTaskDetailInfo().contents()).isEqualTo(doReturnScroll.contents());
     }
 }

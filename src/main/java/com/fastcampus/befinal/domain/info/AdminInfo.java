@@ -90,12 +90,12 @@ public class AdminInfo {
     @Builder
     public record AdminFindUserDetailInfo(
         UserDetailInfo userDetailInfo,
-        TaskListInfo taskListResponse
+        ScrollPagination<String, UserTaskDetailInfo> userTaskDetailInfo
     ) {
-        public static AdminFindUserDetailInfo of(AdminInfo.UserDetailInfo userDetailInfo, AdminInfo.TaskListInfo taskListResponse) {
+        public static AdminFindUserDetailInfo of(AdminInfo.UserDetailInfo userDetailInfo, ScrollPagination<String, UserTaskDetailInfo> scrollPagination) {
             return AdminFindUserDetailInfo.builder()
                 .userDetailInfo(userDetailInfo)
-                .taskListResponse(taskListResponse)
+                .userTaskDetailInfo(scrollPagination)
                 .build();
         }
     }
@@ -105,21 +105,6 @@ public class AdminInfo {
         String name,
         String role
     ) {}
-
-    @Builder
-    public record TaskListInfo(
-        Long totalElements,
-        String cursorId,
-        List<UserTaskDetailInfo> userTaskList
-    ) {
-        public static TaskListInfo of(ScrollPagination<String, UserTaskDetailInfo> scrollPagination) {
-            return TaskListInfo.builder()
-                .totalElements(scrollPagination.totalElements())
-                .cursorId(scrollPagination.currentCursorId())
-                .userTaskList(scrollPagination.contents())
-                .build();
-        }
-    }
 
     @Builder
     public record UserTaskDetailInfo(

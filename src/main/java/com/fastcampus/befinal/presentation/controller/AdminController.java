@@ -305,10 +305,10 @@ public class AdminController {
                                 "name" : "홍길동",
                                 "role" : "작업자"
                             },
-                            "taskListResponse" : {
+                            "userTaskDetailInfo" : {
                                 "totalElements": 3,
-                                "cursorId": "202409N00147",
-                                "userTaskList" : [
+                                "currentCursorId": "202409N00147",
+                                "contents" : [
                                     {
                                         "adId": "N00147",
                                         "media": "문화일보",

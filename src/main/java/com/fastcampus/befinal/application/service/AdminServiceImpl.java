@@ -162,7 +162,6 @@ public class AdminServiceImpl implements AdminService {
     public AdminInfo.AdminFindUserDetailInfo findUserTaskDetailScroll(AdminCommand.FindUserTaskDetailListRequest command) {
         AdminInfo.UserDetailInfo userDetailInfo = userReader.findUserDetailInfo(command.id());
         ScrollPagination<String, AdminInfo.UserTaskDetailInfo> userTaskDetailScrollByCursorId = advertisementReader.findUserTaskDetailScrollByCursorId(command);
-        AdminInfo.TaskListInfo taskListInfo = AdminInfo.TaskListInfo.of(userTaskDetailScrollByCursorId);
-        return AdminInfo.AdminFindUserDetailInfo.of(userDetailInfo, taskListInfo);
+        return AdminInfo.AdminFindUserDetailInfo.of(userDetailInfo, userTaskDetailScrollByCursorId);
     }
 }
