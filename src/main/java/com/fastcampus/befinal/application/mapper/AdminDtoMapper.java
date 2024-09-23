@@ -139,11 +139,7 @@ public interface AdminDtoMapper {
 
     @Mapping(target = "role", qualifiedByName = "mapRole")
     AdminDto.UserDetailInfo from(AdminInfo.UserDetailInfo info);
-
-    @Mapping(target = "totalElements", source = "totalElements")
-    @Mapping(target = "cursorId", source = "currentCursorId")
-    @Mapping(target = "userTaskList", source = "contents")
-    AdminDto.TaskListResponse from(ScrollPagination<String, AdminInfo.UserTaskDetailInfo> scroll);
+    AdminDto.TaskListResponse from(AdminInfo.TaskListInfo info);
 
     @Mapping(source = "adId", target = "adId", qualifiedByName = "toAdIdValue")
     AdminDto.UserTaskDetailInfo from(AdminInfo.UserTaskDetailInfo info);
