@@ -27,4 +27,9 @@ public class BoardFacade {
         DashboardInfo.UserNameListInfo info = userBoardService.findUserNameList();
         return dashBoardDtoMapper.from(info);
     }
+
+    public DashboardDto.DailyDoneList loadDailyDoneListByUserId(String userId) {
+        DashboardInfo.DailyDoneList info = userBoardService.findDailyDoneListByUserId(userId);
+        return dashBoardDtoMapper.from(info);
+    }
 }

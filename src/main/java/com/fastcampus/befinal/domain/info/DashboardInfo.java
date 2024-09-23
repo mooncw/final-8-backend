@@ -46,6 +46,17 @@ public class DashboardInfo {
     }
 
     @Builder
+    public record DailyDoneList(
+        List<DailyDone> dailyDoneList
+    ) {
+        public static DailyDoneList from(List<DailyDone> dailyDoneList) {
+            return DailyDoneList.builder()
+                .dailyDoneList(dailyDoneList)
+                .build();
+        }
+    }
+
+    @Builder
     public record DailyDone(
             LocalDate date,
             Integer dailyMyDoneAd

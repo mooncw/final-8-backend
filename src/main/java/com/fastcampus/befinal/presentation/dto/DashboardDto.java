@@ -23,6 +23,10 @@ public class DashboardDto {
         Integer totalNotDoneAd,
         Integer myNotDoneAd
     ) {}
+    @Builder
+    public record DailyDoneList(
+        List<DailyDone> dailyDoneList
+    ) {}
 
     @Builder
     public record DailyDone(

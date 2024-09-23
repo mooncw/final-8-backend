@@ -54,4 +54,11 @@ public class UserBoardServiceImpl implements UserBoardService {
         List<DashboardInfo.UserName> userNameList = userSummaryReader.findUserNameList();
         return DashboardInfo.UserNameListInfo.from(userNameList);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DashboardInfo.DailyDoneList findDailyDoneListByUserId(String userId) {
+        List<DashboardInfo.DailyDone> dailyDoneList = advertisementReader.findDailyDone(userId);
+        return DashboardInfo.DailyDoneList.from(dailyDoneList);
+    }
 }

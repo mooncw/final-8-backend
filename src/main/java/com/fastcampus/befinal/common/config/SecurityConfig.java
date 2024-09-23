@@ -68,6 +68,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/admin").hasAuthority(ADMIN_AUTHORITY)
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/username-list").authenticated()
+            .requestMatchers(HttpMethod.GET, "api/v1/dashboard/daily-list/**").authenticated()
             // my-task
             .requestMatchers(HttpMethod.POST, "api/v1/user/my-task").authenticated()
             // admin
