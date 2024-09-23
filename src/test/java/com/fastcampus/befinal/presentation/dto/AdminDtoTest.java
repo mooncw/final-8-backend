@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static com.fastcampus.befinal.common.contant.AdminConstant.*;
 import static com.fastcampus.befinal.common.contant.AuthConstant.*;
+import static com.fastcampus.befinal.common.contant.TaskConstant.PATTERN_MISMATCH_AD_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Admin 도메인 요청 Dto 테스트")
@@ -258,5 +259,57 @@ public class AdminDtoTest {
 
         //then
         assertThat(message).isEqualTo(Set.of(NOT_NULL_USER_PK_ID, NOT_NULL_TASK_ASSIGNMENT_AMOUNT));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 상세 정보 조회 요청 검증 테스트 - NotNull")
+    void whenFindUserTaskDetailListRequestIsNull_thenValidationFails() {
+        //given
+        AdminDto.FindUserTaskDetailListRequest request = AdminDto.FindUserTaskDetailListRequest.builder()
+            .id(null)
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.FindUserTaskDetailListRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotNullGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_NULL_USER_PK_ID));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 상세 정보 조회 요청 검증 테스트 - NotBlank")
+    void whenFindUserTaskDetailListRequestIsBlank_thenValidationFails() {
+        //given
+        AdminDto.FindUserTaskDetailListRequest request = AdminDto.FindUserTaskDetailListRequest.builder()
+            .period(" ")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.FindUserTaskDetailListRequest>> violations = validator.validate(request,
+            RequestValidationGroups.NotBlankGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(NOT_BLANK_PERIOD));
+    }
+
+    @Test
+    @DisplayName("작업자 관리 상세 정보 조회 요청 검증 테스트 - Pattern")
+    void whenFindUserTaskDetailListRequestMismatchPattern_thenValidationFails() {
+        //given
+        AdminDto.FindUserTaskDetailListRequest request = AdminDto.FindUserTaskDetailListRequest.builder()
+            .cursorId("202514Aa000")
+            .period("0999-01-1")
+            .build();
+
+        //when
+        Set<ConstraintViolation<AdminDto.FindUserTaskDetailListRequest>> violations = validator.validate(request,
+            RequestValidationGroups.PatternGroup.class);
+        Set<String> message = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
+
+        //then
+        assertThat(message).isEqualTo(Set.of(PATTERN_MISMATCH_AD_ID, PATTERN_MISMATCH_PERIOD));
     }
 }

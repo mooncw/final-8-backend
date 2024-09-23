@@ -15,7 +15,8 @@ public enum AdminErrorCode implements ErrorCode {
     INSUFFICIENT_UNASSIGNED_ADVERTISEMENT(HttpStatus.BAD_REQUEST, AdminCode.INSUFFICIENT_UNASSIGNED_ADVERTISEMENT,
         "배분 될 광고 수가 부족합니다."),
     INVALID_TASK_ASSIGNMENT_AMOUNT(HttpStatus.BAD_REQUEST, AdminCode.INVALID_TASK_ASSIGNMENT_AMOUNT,
-        "적절한 할당 작업량이 아닙니다.");
+        "적절한 할당 작업량이 아닙니다."),
+    NOT_FOUND_USER_ROLE(HttpStatus.BAD_REQUEST, AdminCode.NOT_FOUND_USER_ROLE, "유효하지 않은 권한입니다.");
 
     private final HttpStatus httpStatus;
     private final Code code;

@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.application.mapper;
 
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
+import com.fastcampus.befinal.common.response.error.info.AdminErrorCode;
 import com.fastcampus.befinal.common.type.UserTaskSortType;
 import com.fastcampus.befinal.common.util.ScrollPagination;
 import com.fastcampus.befinal.domain.command.AdminCommand;
@@ -53,6 +54,8 @@ public interface AdminDtoMapper {
     }
 
     AdminCommand.AssignTaskRequest toAdminCommand(AdminDto.AssignTaskRequest request);
+
+    AdminCommand.FindUserTaskDetailListRequest toAdminCommand(AdminDto.FindUserTaskDetailListRequest request);
 
     AdminDto.FindSignUpUserListResponse fromSignUpUserScroll(ScrollPagination<Long, AdminInfo.SignUpUserInfo> info);
 
@@ -132,4 +135,23 @@ public interface AdminDtoMapper {
     }
 
     AdminDto.FindAssigneeListResponse from(AdminInfo.AssigneeListInfo info);
+
+    AdminDto.AdminFindUserDetailResponse from(AdminInfo.AdminFindUserDetailInfo info);
+
+    @Mapping(target = "role", qualifiedByName = "mapRole")
+    AdminDto.UserDetailInfo from(AdminInfo.UserDetailInfo info);
+
+    @Mapping(source = "adId", target = "adId", qualifiedByName = "toAdIdValue")
+    AdminDto.UserTaskDetailInfo from(AdminInfo.UserTaskDetailInfo info);
+
+    @Named("mapRole")
+    default String mapRole(String role) {
+        if("ROLE_USER".equals(role)) {
+            return "작업자";
+        } else if ("ROLE_ADMIN".equals(role)) {
+            return "관리자";
+        } else {
+            throw new BusinessException(AdminErrorCode.NOT_FOUND_USER_ROLE);
+        }
+    }
 }

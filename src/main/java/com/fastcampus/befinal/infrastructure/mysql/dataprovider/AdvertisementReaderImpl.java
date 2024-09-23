@@ -3,6 +3,7 @@ package com.fastcampus.befinal.infrastructure.mysql.dataprovider;
 import com.fastcampus.befinal.common.annotation.DataProvider;
 import com.fastcampus.befinal.common.response.error.exception.BusinessException;
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
@@ -102,5 +103,10 @@ public class AdvertisementReaderImpl implements AdvertisementReader {
     @Override
     public ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> findSameAdList(SameAdCommand.SameAdFilterConditionRequest command) {
         return advertisementRepositoryCustom.findSameAdListScrollByCursorId(command);
+    }
+
+    @Override
+    public ScrollPagination<String, AdminInfo.UserTaskDetailInfo> findUserTaskDetailScrollByCursorId(AdminCommand.FindUserTaskDetailListRequest command) {
+        return advertisementRepositoryCustom.findUserTaskDetailScrollByCursorId(command);
     }
 }

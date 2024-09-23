@@ -299,4 +299,29 @@ public class AdminControllerTest {
             .andExpect(jsonPath("code").value(ASSIGN_TASK_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(ASSIGN_TASK_SUCCESS.getMessage()));
     }
+
+    @Test
+    @WithMockUser(authorities = ADMIN_AUTHORITY)
+    @DisplayName("작업자 관리 상세 정보 조회 성공시, 200 OK와 정상 응답을 반환")
+    void findUserTaskDetailListTest() throws Exception {
+        //given
+        AdminDto.FindUserTaskDetailListRequest request = AdminDto.FindUserTaskDetailListRequest.builder()
+            .cursorId("202409N00147")
+            .id(2L)
+            .period("2024-9-2")
+            .state(true)
+            .build();
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/api/v1/admin/manage-emp/detail")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .characterEncoding(StandardCharsets.UTF_8)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        perform.andExpect(status().is(FIND_USER_TASK_DETAIL_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(FIND_USER_TASK_DETAIL_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(FIND_USER_TASK_DETAIL_LIST_SUCCESS.getMessage()));
+    }
 }

@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.domain.repository;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.entity.*;
@@ -39,13 +40,14 @@ public class AdvertisementRepositoryCustom {
             .select(Projections.constructor(DashboardInfo.AdCount.class,
                 ad.count().intValue(),
                 new CaseBuilder()
-                    .when(userIdEq(id)).then(1)
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
                     .when(isCompleted()).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
-                    .when(isCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
                     .otherwise(0).sum(),
                 new CaseBuilder()
                     .when(isNotCompleted()).then(1)
@@ -70,7 +72,7 @@ public class AdvertisementRepositoryCustom {
         List<Tuple> results = queryFactory
             .select(kstTaskDateTime, ad.count().intValue())
             .from(ad)
-            .where(userIdEq(id)
+            .where(modifierIdEq(id)
                 .and(isCompleted())
                 .and(isInCurrentPeriod())
                 .and(kstTaskDateTime.goe(startOfPeriod))
@@ -90,35 +92,17 @@ public class AdvertisementRepositoryCustom {
     public List<DashboardInfo.RecentDone> getRecentDoneList(String id) {
         return queryFactory
             .select(Projections.constructor(DashboardInfo.RecentDone.class,
-                ad.id.stringValue().as("adId"),
-                ad.product.as("adName"),
-                ad.taskDateTime.as("adTaskDateTime")
+                ad.id.substring(6),
+                ad.product,
+                ad.taskDateTime
             ))
             .from(ad)
-            .where(userIdEq(id)
+            .where(modifierIdEq(id)
                 .and(isCompleted())
                 .and(isInCurrentPeriod()))
             .orderBy(ad.taskDateTime.desc())
             .limit(5)
             .fetch();
-    }
-
-    public TaskInfo.AdCountInfo getMyTaskCount(String id) {
-        return queryFactory
-            .select(Projections.constructor(TaskInfo.AdCountInfo.class,
-                new CaseBuilder()
-                    .when(userIdEq(id)).then(1)
-                    .otherwise(0).sum(),
-                new CaseBuilder()
-                    .when(isCompleted().and(userIdEq(id))).then(1)
-                    .otherwise(0).sum(),
-                new CaseBuilder()
-                    .when(isNotCompleted().and(userIdEq(id))).then(1)
-                    .otherwise(0).sum()
-            ))
-            .from(ad)
-            .where(isInCurrentPeriod())
-            .fetchOne();
     }
 
     // 어드민 대시보드 기능
@@ -137,8 +121,21 @@ public class AdvertisementRepositoryCustom {
                     .otherwise(0).sum()
                 ))
             .from(ad)
-            .where(isInCurrentPeriod())
+            .where(isCurrentAdvertisementIdWithinPeriod())
             .fetchOne();
+    }
+
+    private BooleanExpression isCurrentAdvertisementIdWithinPeriod() {
+        LocalDate now = LocalDate.now();
+
+        String year = String.valueOf(now.getYear());
+        String month = String.format("%02d", now.getMonthValue());
+        String baseTerm = now.getDayOfMonth() > 15 ? "2" : "1";
+
+        String startAdvertisementId = baseTerm.equals("1") ? year + month + "A00001" : year + month + "N00001";
+        String endAdvertisementId = baseTerm.equals("1") ? year + month + "M99999" : year + month + "Z99999";
+
+        return ad.id.goe(startAdvertisementId).and(ad.id.loe(endAdvertisementId));
     }
 
     public List<DashboardInfo.TodayWork> getTodayWorkList() {
@@ -214,26 +211,46 @@ public class AdvertisementRepositoryCustom {
             .select(Projections.constructor(DashboardInfo.PersonalTask.class,
                 userSummary.name,
                 new CaseBuilder()
+                    .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
                     .when(ad.state.isFalse().and(ad.assignee.id.eq(userSummary.id))).then(1)
                     .otherwise(0).sum()
                     .add(
                         new CaseBuilder()
                             .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
                             .otherwise(0).sum()
-                    ),
-                new CaseBuilder()
-                    .when(ad.state.isTrue().and(ad.modifier.id.eq(userSummary.id))).then(1)
-                    .otherwise(0).sum()
+                    )
                 ))
             .from(ad)
             .join(userSummary)
             .on(ad.assignee.id.eq(userSummary.id)
                 .or(ad.modifier.id.eq(userSummary.id)))
+            .where(userSummary.name.ne("-"))
             .groupBy(userSummary.id)
             .fetch();
     }
 
     // 나의 작업 기능
+    public TaskInfo.AdCountInfo getMyTaskCount(String id) {
+        return queryFactory
+            .select(Projections.constructor(TaskInfo.AdCountInfo.class,
+                new CaseBuilder()
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isCompleted().and(modifierIdEq(id))).then(1)
+                    .otherwise(0).sum(),
+                new CaseBuilder()
+                    .when(isNotCompleted().and(userIdEq(id))).then(1)
+                    .otherwise(0).sum()
+            ))
+            .from(ad)
+            .where(isInCurrentPeriod())
+            .fetchOne();
+    }
+
     public ScrollPagination<TaskInfo.CursorInfo, TaskInfo.AdvertisementListInfo> getScrollByCursorInfo(String userId, TaskCommand.FilterConditionRequest taskCommand) {
 
         BooleanExpression filterExpression = createFilterCondition(taskCommand);
@@ -250,7 +267,13 @@ public class AdvertisementRepositoryCustom {
                 ad.issue
             ))
             .from(ad)
-            .where(filterExpression.and(cursorExpression).and(userIdEq(userId)))
+            .where(filterExpression.and(cursorExpression)
+                .and(
+                    new BooleanBuilder()
+                        .or(isNotCompleted().and(userIdEq(userId)))
+                        .or(isCompleted().and(modifierIdEq(userId)))
+                )
+            )
             .orderBy(
                 ad.state.asc(),
                 ad.id.asc()
@@ -263,7 +286,11 @@ public class AdvertisementRepositoryCustom {
         Long totalElements = queryFactory
             .select(ad.count())
             .from(ad)
-            .where(filterExpression.and(userIdEq(userId)))
+            .where(filterExpression.and(
+                new BooleanBuilder()
+                    .or(isNotCompleted().and(userIdEq(userId)))
+                    .or(isCompleted().and(modifierIdEq(userId)))
+            ))
             .fetchOne();
 
         return ScrollPagination.of(totalElements, nextCursorInfo, contents);
@@ -365,6 +392,52 @@ public class AdvertisementRepositoryCustom {
         return ScrollPagination.of(totalElements, nextCursorId, contents);
     }
 
+    public ScrollPagination<String, AdminInfo.UserTaskDetailInfo> findUserTaskDetailScrollByCursorId(AdminCommand.FindUserTaskDetailListRequest command) {
+        BooleanExpression expression = createUserTaskFilterCondition(command);
+
+        List<AdminInfo.UserTaskDetailInfo> contents = queryFactory
+            .select(Projections.constructor(AdminInfo.UserTaskDetailInfo.class,
+                ad.id,
+                ad.adMedia.name,
+                ad.adCategory.category,
+                ad.product,
+                ad.advertiser
+            ))
+            .from(ad)
+            .where(expression.and(gtCursorId(command.cursorId()))
+                .and(
+                    new BooleanBuilder()
+                        .or(isNotCompleted().and(ad.assignee.id.eq(command.id())))
+                        .or(isCompleted().and(ad.modifier.id.eq(command.id())))
+                ))
+            .orderBy(ad.id.asc())
+            .limit(MANAGE_EMP_SCROLL_SIZE)
+            .fetch();
+
+        String nextCursorId = getNextUserTaskCursorId(command.cursorId(), contents);
+
+        Long totalElements = queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression
+                .and(
+                    new BooleanBuilder()
+                        .or(isNotCompleted().and(ad.assignee.id.eq(command.id()))
+                        .or(isCompleted().and(ad.modifier.id.eq(command.id()))))
+                ))
+            .fetchOne();
+
+        return ScrollPagination.of(totalElements, nextCursorId, contents);
+    }
+
+    private String getNextUserTaskCursorId(String cursorId, List<AdminInfo.UserTaskDetailInfo> contents) {
+        if (!contents.isEmpty()) {
+            AdminInfo.UserTaskDetailInfo lastTaskInfo = contents.getLast();
+            return lastTaskInfo.adId();
+        }
+        return cursorId;
+    }
+
     // 조건 생성
     public Long countMediaByPeriod(AdMedia media, String period) {
         BooleanExpression expression;
@@ -461,6 +534,22 @@ public class AdvertisementRepositoryCustom {
 
         if (command.category() != null) {
             expression = expression.and(filterCategory(command.category()));
+        }
+
+        return expression;
+    }
+
+    private BooleanExpression createUserTaskFilterCondition(AdminCommand.FindUserTaskDetailListRequest command) {
+        BooleanExpression expression;
+
+        if (StringUtils.hasText(command.period())) {
+            expression = getByPeriod(command.period());
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        if (command.state() != null) {
+            expression = expression.and(filterState(command.state()));
         }
 
         return expression;
@@ -569,6 +658,8 @@ public class AdvertisementRepositoryCustom {
     private BooleanExpression userIdEq(String id) {
         return ad.assignee.id.eq(Long.valueOf(id));
     }
+
+    private BooleanExpression modifierIdEq(String id) { return ad.modifier.id.eq(Long.valueOf(id)); }
 
     private BooleanExpression isCompleted() {
         return ad.state.isTrue();

@@ -16,7 +16,7 @@ public class SameAdDto {
     @Builder
     @Schema(description = "동일광고 필터 조건 request")
     public record SameAdFilterConditionRequest(
-        @Schema(example = SWAGGER_AD_ID)
+        @Schema(example = SWAGGER_ADVERTISEMENT_ID)
         @Pattern(regexp = "^[1-9][0-9]{3}(0[1-9]|1[0-2])[A-Z][0-9]{5}$", message = PATTERN_MISMATCH_AD_ID, groups = RequestValidationGroups.PatternGroup.class)
         String cursorId,
 

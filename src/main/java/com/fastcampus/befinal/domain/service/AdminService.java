@@ -22,4 +22,6 @@ public interface AdminService {
     AdminInfo.AssigneeListInfo findAssigneeList();
 
     void assignTask(AdminCommand.AssignTaskRequest command);
+
+    AdminInfo.AdminFindUserDetailInfo findUserTaskDetailScroll(AdminCommand.FindUserTaskDetailListRequest command);
 }

@@ -43,4 +43,12 @@ public class AdminCommand {
     public record AssignTaskRequest(
         List<SelectedAssigneeInfo> selectedAssigneeList
     ) {}
+
+    @Builder
+    public record FindUserTaskDetailListRequest(
+        String cursorId,
+        Long id,
+        String period,
+        Boolean state
+    ) {}
 }
