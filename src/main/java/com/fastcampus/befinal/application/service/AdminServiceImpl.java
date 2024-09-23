@@ -158,6 +158,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AdminInfo.AdminFindUserDetailInfo findUserTaskDetailScroll(AdminCommand.FindUserTaskDetailListRequest command) {
         AdminInfo.UserDetailInfo userDetailInfo = userReader.findUserDetailInfo(command.id());
         ScrollPagination<String, AdminInfo.UserTaskDetailInfo> userTaskDetailScrollByCursorId = advertisementReader.findUserTaskDetailScrollByCursorId(command);
