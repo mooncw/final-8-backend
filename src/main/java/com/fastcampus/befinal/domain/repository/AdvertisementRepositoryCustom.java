@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.domain.repository;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.command.TaskCommand;
 import com.fastcampus.befinal.domain.entity.*;
@@ -391,6 +392,52 @@ public class AdvertisementRepositoryCustom {
         return ScrollPagination.of(totalElements, nextCursorId, contents);
     }
 
+    public ScrollPagination<String, AdminInfo.UserTaskDetailInfo> findUserTaskDetailScrollByCursorId(AdminCommand.FindUserTaskDetailListRequest command) {
+        BooleanExpression expression = createUserTaskFilterCondition(command);
+
+        List<AdminInfo.UserTaskDetailInfo> contents = queryFactory
+            .select(Projections.constructor(AdminInfo.UserTaskDetailInfo.class,
+                ad.id,
+                ad.adMedia.name,
+                ad.adCategory.category,
+                ad.product,
+                ad.advertiser
+            ))
+            .from(ad)
+            .where(expression.and(gtCursorId(command.cursorId()))
+                .and(
+                    new BooleanBuilder()
+                        .or(isNotCompleted().and(ad.assignee.id.eq(command.id())))
+                        .or(isCompleted().and(ad.modifier.id.eq(command.id())))
+                ))
+            .orderBy(ad.id.asc())
+            .limit(MANAGE_EMP_SCROLL_SIZE)
+            .fetch();
+
+        String nextCursorId = getNextUserTaskCursorId(command.cursorId(), contents);
+
+        Long totalElements = queryFactory
+            .select(ad.count())
+            .from(ad)
+            .where(expression
+                .and(
+                    new BooleanBuilder()
+                        .or(isNotCompleted().and(ad.assignee.id.eq(command.id()))
+                        .or(isCompleted().and(ad.modifier.id.eq(command.id()))))
+                ))
+            .fetchOne();
+
+        return ScrollPagination.of(totalElements, nextCursorId, contents);
+    }
+
+    private String getNextUserTaskCursorId(String cursorId, List<AdminInfo.UserTaskDetailInfo> contents) {
+        if (!contents.isEmpty()) {
+            AdminInfo.UserTaskDetailInfo lastTaskInfo = contents.getLast();
+            return lastTaskInfo.adId();
+        }
+        return cursorId;
+    }
+
     // 조건 생성
     public Long countMediaByPeriod(AdMedia media, String period) {
         BooleanExpression expression;
@@ -487,6 +534,22 @@ public class AdvertisementRepositoryCustom {
 
         if (command.category() != null) {
             expression = expression.and(filterCategory(command.category()));
+        }
+
+        return expression;
+    }
+
+    private BooleanExpression createUserTaskFilterCondition(AdminCommand.FindUserTaskDetailListRequest command) {
+        BooleanExpression expression;
+
+        if (StringUtils.hasText(command.period())) {
+            expression = getByPeriod(command.period());
+        } else {
+            expression = isInCurrentPeriod();
+        }
+
+        if (command.state() != null) {
+            expression = expression.and(filterState(command.state()));
         }
 
         return expression;

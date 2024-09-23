@@ -20,4 +20,6 @@ public interface UserReader {
     AdminInfo.AssigneeListInfo findAllAssignee();
 
     User findByUserIdAndNameAndPhoneNumber(AuthCommand.FindPasswordRequest command);
+
+    AdminInfo.UserDetailInfo findUserDetailInfo(Long id);
 }

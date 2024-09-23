@@ -1,5 +1,7 @@
 package com.fastcampus.befinal.domain.info;
 
+import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.presentation.dto.AdminDto;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -83,5 +85,33 @@ public class AdminInfo {
     @Builder
     public record UnassignedAdIdInfo(
         String id
+    ) {}
+
+    @Builder
+    public record AdminFindUserDetailInfo(
+        UserDetailInfo userDetailInfo,
+        ScrollPagination<String, UserTaskDetailInfo> userTaskDetailInfo
+    ) {
+        public static AdminFindUserDetailInfo of(AdminInfo.UserDetailInfo userDetailInfo, ScrollPagination<String, UserTaskDetailInfo> scrollPagination) {
+            return AdminFindUserDetailInfo.builder()
+                .userDetailInfo(userDetailInfo)
+                .userTaskDetailInfo(scrollPagination)
+                .build();
+        }
+    }
+
+    @Builder
+    public record UserDetailInfo(
+        String name,
+        String role
+    ) {}
+
+    @Builder
+    public record UserTaskDetailInfo(
+        String adId,
+        String media,
+        String category,
+        String product,
+        String advertiser
     ) {}
 }

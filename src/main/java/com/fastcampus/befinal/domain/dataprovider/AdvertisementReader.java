@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.domain.dataprovider;
 
+import com.fastcampus.befinal.domain.command.AdminCommand;
 import com.fastcampus.befinal.domain.command.SameAdCommand;
 import com.fastcampus.befinal.domain.entity.Advertisement;
 import com.fastcampus.befinal.common.util.ScrollPagination;
@@ -28,4 +29,5 @@ public interface AdvertisementReader {
     List<AdminInfo.UnassignedAdIdInfo> findAllUnassignedAdId(Long amount);
     SameAdInfo.InspectionAdInfo findInspectionAdInfo(String advertisementId);
     ScrollPagination<String, SameAdInfo.SameAdvertisementListInfo> findSameAdList(SameAdCommand.SameAdFilterConditionRequest command);
+    ScrollPagination<String, AdminInfo.UserTaskDetailInfo> findUserTaskDetailScrollByCursorId(AdminCommand.FindUserTaskDetailListRequest command);
 }

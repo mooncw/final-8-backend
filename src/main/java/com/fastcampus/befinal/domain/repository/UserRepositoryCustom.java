@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
 import static com.fastcampus.befinal.common.contant.ScrollConstant.MANAGE_EMP_SCROLL_SIZE;
@@ -119,6 +120,17 @@ public class UserRepositoryCustom {
             .fetchOne();
 
         return ScrollPagination.of(totalElements, command.cursorId(), contents);
+    }
+
+    public Optional<AdminInfo.UserDetailInfo> findUserDetailInfo(Long id) {
+        return Optional.ofNullable(queryFactory
+            .select(Projections.constructor(AdminInfo.UserDetailInfo.class,
+                user.name,
+                user.role
+            ))
+            .from(user)
+            .where(user.id.eq(id))
+            .fetchOne());
     }
 
     private BooleanExpression getByPeriod(String period) {
