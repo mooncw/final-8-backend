@@ -126,10 +126,7 @@ public class UserRepositoryCustom {
         return Optional.ofNullable(queryFactory
             .select(Projections.constructor(AdminInfo.UserDetailInfo.class,
                 user.name,
-                new CaseBuilder()
-                    .when(user.role.eq("ROLE_USER")).then("작업자")
-                    .when(user.role.eq("ROLE_ADMIN")).then("관리자")
-                    .otherwise("0")
+                user.role
             ))
             .from(user)
             .where(user.id.eq(id))

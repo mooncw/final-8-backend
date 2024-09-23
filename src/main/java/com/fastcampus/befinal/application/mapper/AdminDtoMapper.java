@@ -136,9 +136,26 @@ public interface AdminDtoMapper {
     AdminDto.FindAssigneeListResponse from(AdminInfo.AssigneeListInfo info);
 
     AdminDto.AdminFindUserDetailResponse from(AdminInfo.AdminFindUserDetailInfo info);
+
+    @Mapping(target = "role", qualifiedByName = "mapRole")
     AdminDto.UserDetailInfo from(AdminInfo.UserDetailInfo info);
-    AdminDto.TaskListResponse from(AdminInfo.TaskListInfo info);
+
+    @Mapping(target = "totalElements", source = "totalElements")
+    @Mapping(target = "cursorId", source = "currentCursorId")
+    @Mapping(target = "userTaskList", source = "contents")
+    AdminDto.TaskListResponse from(ScrollPagination<String, AdminInfo.UserTaskDetailInfo> scroll);
 
     @Mapping(source = "adId", target = "adId", qualifiedByName = "toAdIdValue")
     AdminDto.UserTaskDetailInfo from(AdminInfo.UserTaskDetailInfo info);
+
+    @Named("mapRole")
+    default String mapRole(String role) {
+        if("ROLE_USER".equals(role)) {
+            return "작업자";
+        } else if ("ROLE_ADMIN".equals(role)) {
+            return "관리자";
+        } else {
+            return "알 수 없음";
+        }
+    }
 }
