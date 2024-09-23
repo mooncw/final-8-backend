@@ -77,4 +77,14 @@ public class DashboardDto {
         Integer doneAd,
         Integer totalAd
     ) {}
+
+    @Builder
+    public record UserNameListResponse(
+        List<UserName> userNameList
+    ) {}
+
+    @Builder
+    public record UserName(
+        String userName
+    ) {}
 }

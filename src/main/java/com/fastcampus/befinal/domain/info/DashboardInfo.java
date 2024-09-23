@@ -1,6 +1,5 @@
 package com.fastcampus.befinal.domain.info;
 
-import com.fastcampus.befinal.presentation.dto.DashboardDto;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -164,9 +163,18 @@ public class DashboardInfo {
     }
 
     @Builder
-    public record PersonalModifierTask(
-        String assigneeName,
-        String modifierName,
-        Integer doneAd
+    public record UserNameListInfo(
+        List<UserName> userNameList
+    ) {
+        public static UserNameListInfo from(List<UserName> userNameList) {
+            return UserNameListInfo.builder()
+                .userNameList(userNameList)
+                .build();
+        }
+    }
+
+    @Builder
+    public record UserName(
+        String userName
     ) {}
 }

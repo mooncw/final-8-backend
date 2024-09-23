@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_ADMIN_DASHBOARD_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.*;
 
 @RestController
 @RequestMapping("/api/v1/dashboard")
@@ -123,5 +122,11 @@ public class UserBoardController {
     public ResponseEntity<AppApiResponse<DashboardDto.DashboardAdminDataResponse>> getAdminBoardData() {
         DashboardDto.DashboardAdminDataResponse response = boardFacade.loadAdminDashboardData();
         return ResponseEntityFactory.toResponseEntity(CHECK_ADMIN_DASHBOARD_SUCCESS, response);
+    }
+
+    @GetMapping("/username-list")
+    public ResponseEntity<AppApiResponse<DashboardDto.UserNameListResponse>> getUserNameList() {
+        DashboardDto.UserNameListResponse response = boardFacade.loadUserNameList();
+        return ResponseEntityFactory.toResponseEntity(GET_USER_NAME_LIST_SUCCESS, response);
     }
 }

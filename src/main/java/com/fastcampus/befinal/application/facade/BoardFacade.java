@@ -22,4 +22,9 @@ public class BoardFacade {
         DashboardInfo.DashboardAdminDataInfo info = userBoardService.loadAdminDashboardData();
         return dashBoardDtoMapper.from(info);
     }
+
+    public DashboardDto.UserNameListResponse loadUserNameList() {
+        DashboardInfo.UserNameListInfo info = userBoardService.findUserNameList();
+        return dashBoardDtoMapper.from(info);
+    }
 }
