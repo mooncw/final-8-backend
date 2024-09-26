@@ -23,6 +23,10 @@ public class DashboardDto {
         Integer totalNotDoneAd,
         Integer myNotDoneAd
     ) {}
+    @Builder
+    public record DailyDoneList(
+        List<DailyDone> dailyDoneList
+    ) {}
 
     @Builder
     public record DailyDone(
@@ -76,5 +80,16 @@ public class DashboardDto {
         String userName,
         Integer doneAd,
         Integer totalAd
+    ) {}
+
+    @Builder
+    public record UserNameListResponse(
+        List<UserName> userNameList
+    ) {}
+
+    @Builder
+    public record UserName(
+        Long id,
+        String userName
     ) {}
 }

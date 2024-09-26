@@ -21,6 +21,9 @@ public interface DashboardDtoMapper {
     DashboardDto.AdminAdCount from(DashboardInfo.AdminAdCount adCount);
     DashboardDto.TodayWork from(DashboardInfo.TodayWork todaywork);
     DashboardDto.PersonalTask from(DashboardInfo.PersonalTask personalTask);
+    DashboardDto.UserNameListResponse from(DashboardInfo.UserNameListInfo userNameList);
+    DashboardDto.UserName from(DashboardInfo.UserName userName);
+    DashboardDto.DailyDoneList from(DashboardInfo.DailyDoneList dailyDoneList);
 
     @Mapping(source = "adTaskDateTime", target = "adTaskDateTime", qualifiedByName = "toAdTaskDateTimeValue")
     DashboardDto.RecentDone from(DashboardInfo.RecentDone recentDone);

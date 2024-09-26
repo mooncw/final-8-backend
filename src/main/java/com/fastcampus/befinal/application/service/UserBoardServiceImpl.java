@@ -2,6 +2,7 @@ package com.fastcampus.befinal.application.service;
 
 import com.fastcampus.befinal.domain.dataprovider.AdvertisementReader;
 import com.fastcampus.befinal.domain.dataprovider.UserManagementReader;
+import com.fastcampus.befinal.domain.dataprovider.UserReader;
 import com.fastcampus.befinal.domain.info.DashboardInfo;
 import com.fastcampus.befinal.domain.service.UserBoardService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserBoardServiceImpl implements UserBoardService {
     private final AdvertisementReader advertisementReader;
     private final UserManagementReader userManagementReader;
+    private final UserReader userReader;
 
     @Override
     @Transactional(readOnly = true)
@@ -44,5 +46,19 @@ public class UserBoardServiceImpl implements UserBoardService {
         List<DashboardInfo.PersonalTask> personalTaskList = advertisementReader.findPersonalTaskList();
 
         return DashboardInfo.DashboardAdminDataInfo.of(adminTimeline, adminAdCount, todayWorkList, dailyAvgDoneList, personalTaskList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DashboardInfo.UserNameListInfo findUserNameList() {
+        List<DashboardInfo.UserName> userNameList = userReader.findUserNameList();
+        return DashboardInfo.UserNameListInfo.from(userNameList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DashboardInfo.DailyDoneList findDailyDoneListByUserId(String userId) {
+        List<DashboardInfo.DailyDone> dailyDoneList = advertisementReader.findDailyDone(userId);
+        return DashboardInfo.DailyDoneList.from(dailyDoneList);
     }
 }

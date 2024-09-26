@@ -1,5 +1,6 @@
 package com.fastcampus.befinal.common.config;
 
+import co.elastic.clients.elasticsearch.nodes.Http;
 import com.fastcampus.befinal.common.filter.JwtAuthenticationFilter;
 import com.fastcampus.befinal.domain.service.JwtAuthService;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +67,8 @@ public class SecurityConfig {
             // dashboard
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard").authenticated()
             .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/admin").hasAuthority(ADMIN_AUTHORITY)
+            .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/username-list").authenticated()
+            .requestMatchers(HttpMethod.GET, "api/v1/dashboard/daily-list/**").authenticated()
             // my-task
             .requestMatchers(HttpMethod.POST, "api/v1/user/my-task").authenticated()
             // admin

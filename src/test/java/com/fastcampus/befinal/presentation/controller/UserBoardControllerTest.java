@@ -18,15 +18,17 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.fastcampus.befinal.common.contant.AuthConstant.ADMIN_AUTHORITY;
 import static com.fastcampus.befinal.common.contant.AuthConstant.USER_AUTHORITY;
-import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_ADMIN_DASHBOARD_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,5 +127,51 @@ class UserBoardControllerTest {
         perform.andExpect(status().is(CHECK_ADMIN_DASHBOARD_SUCCESS.getHttpStatus().value()))
             .andExpect(jsonPath("code").value(CHECK_ADMIN_DASHBOARD_SUCCESS.getCode()))
             .andExpect(jsonPath("message").value(CHECK_ADMIN_DASHBOARD_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = USER_AUTHORITY)
+    @DisplayName("유저 리스트 조회 요청 성공시, 200 OK와 정상 응답을 반환")
+    void getUserNameListTest() throws Exception {
+        // given
+        DashboardDto.UserName response = new DashboardDto.UserName(1L,"홍길동");
+        DashboardDto.UserNameListResponse responses = new DashboardDto.UserNameListResponse(List.of(response));
+
+        doReturn(responses)
+            .when(boardFacade)
+            .loadUserNameList();
+
+        // when
+        ResultActions perform = mockMvc.perform(get("/api/v1/dashboard/username-list")
+            .with(csrf())
+            .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        perform.andExpect(status().is(GET_USER_NAME_LIST_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(GET_USER_NAME_LIST_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(GET_USER_NAME_LIST_SUCCESS.getMessage()));
+    }
+
+    @Test
+    @WithMockUser(authorities = USER_AUTHORITY)
+    @DisplayName("대시보드 유저 일일 작업량 조회 요청 성공시, 200 OK와 정상 응답을 반환")
+    void getDailyDoneByUserIdTest() throws Exception {
+        // given
+        DashboardDto.DailyDone response = new DashboardDto.DailyDone(LocalDate.now(),1);
+        DashboardDto.DailyDoneList responses = new DashboardDto.DailyDoneList(List.of(response));
+
+        doReturn(responses)
+            .when(boardFacade)
+            .loadDailyDoneListByUserId("1");
+
+        // when
+        ResultActions perform = mockMvc.perform(get("/api/v1/dashboard/daily-list/1")
+            .with(csrf())
+            .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        perform.andExpect(status().is(GET_DAILY_DONE_USER_ID_SUCCESS.getHttpStatus().value()))
+            .andExpect(jsonPath("code").value(GET_DAILY_DONE_USER_ID_SUCCESS.getCode()))
+            .andExpect(jsonPath("message").value(GET_DAILY_DONE_USER_ID_SUCCESS.getMessage()));
     }
 }

@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_ADMIN_DASHBOARD_SUCCESS;
-import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.CHECK_DASHBOARD_SUCCESS;
+import static com.fastcampus.befinal.common.response.success.info.DashboardSuccessCode.*;
 
 @RestController
 @RequestMapping("/api/v1/dashboard")
@@ -123,5 +123,64 @@ public class UserBoardController {
     public ResponseEntity<AppApiResponse<DashboardDto.DashboardAdminDataResponse>> getAdminBoardData() {
         DashboardDto.DashboardAdminDataResponse response = boardFacade.loadAdminDashboardData();
         return ResponseEntityFactory.toResponseEntity(CHECK_ADMIN_DASHBOARD_SUCCESS, response);
+    }
+
+    @GetMapping("/username-list")
+    @Operation(summary = "유저 리스트 조회")
+    @ApiResponse(responseCode = "200", description = "유저 네임 리스트 조회가 완료되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                        {
+                            "code": 3202,
+                            "message": "유저 네임 리스트 조회가 완료되었습니다.",
+                            "data": {
+                                "userNameList": [
+                                    {
+                                        "id": 1,
+                                        "userName": "홍길동"
+                                    }
+                                ]
+                            }
+                        }
+                        """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<DashboardDto.UserNameListResponse>> getUserNameList() {
+        DashboardDto.UserNameListResponse response = boardFacade.loadUserNameList();
+        return ResponseEntityFactory.toResponseEntity(GET_USER_NAME_LIST_SUCCESS, response);
+    }
+
+    @GetMapping("/daily-list/{userId}")
+    @Operation(summary = "관리자 대시보드 - user 일일 작업량")
+    @ApiResponse(responseCode = "200", description = "일별 작업량 조회가 완료되었습니다.",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                example = """
+                        {
+                            "code": 3203,
+                            "message": "일별 작업량 조회가 완료되었습니다.",
+                            "data": {
+                                "dailyDoneList": [
+                                    {
+                                        "date": "2024-09-16",
+                                        "dailyMyDoneAd": 2
+                                    }
+                                ]
+                            }
+                        }
+                        """
+            )
+        )
+    )
+    public ResponseEntity<AppApiResponse<DashboardDto.DailyDoneList>> getDailyDoneByUserId(
+        @PathVariable
+        String userId
+    ) {
+        DashboardDto.DailyDoneList response = boardFacade.loadDailyDoneListByUserId(userId);
+        return ResponseEntityFactory.toResponseEntity(GET_DAILY_DONE_USER_ID_SUCCESS, response);
     }
 }
