@@ -1,4 +1,4 @@
-package com.fastcampus.befinal.common.config;
+package com.fastcampus.befinal.infrastructure.elasticsearch;
 
 
 import org.springframework.beans.factory.annotation.Value;
