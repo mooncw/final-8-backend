@@ -1,6 +1,7 @@
 package com.fastcampus.befinal.domain.info;
 
 import com.fastcampus.befinal.common.util.ScrollPagination;
+import com.fastcampus.befinal.domain.entity.ESAdvertisement;
 import lombok.Builder;
 
 import java.util.List;
@@ -69,7 +70,20 @@ public class TaskInfo {
         Boolean state,
         Boolean issue,
         String assigneeName
-    ) {}
+    ) {
+        public static IssueAdvertisementListInfo from(ESAdvertisement esAdvertisement) {
+            return IssueAdvertisementListInfo.builder()
+                .adId(esAdvertisement.getAdvertisementId())
+                .media(esAdvertisement.getMedia())
+                .category(esAdvertisement.getCategory())
+                .product(esAdvertisement.getProduct())
+                .advertiser(esAdvertisement.getAdvertiser())
+                .state(esAdvertisement.getState())
+                .issue(esAdvertisement.getIssue())
+                .assigneeName(esAdvertisement.getAssignee())
+                .build();
+        }
+    }
 
     @Builder
     public record IssueAdListInfo(

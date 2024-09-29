@@ -36,7 +36,7 @@ public class ESAdvertisement {
 //    @Field(type = FieldType.Date, format = DateFormat.strict_date_time_no_millis, index = false, docValues = false)
 //    private LocalDateTime postDateTime;
 
-    @Field(type = FieldType.Date, format = DateFormat.strict_date_time_no_millis, index = false, docValues = false)
+    @Field(type = FieldType.Date, format = DateFormat.strict_date_time_no_millis, docValues = false)
     private LocalDateTime assignDateTime;
 //
 //    @Field(type = FieldType.Date, format = DateFormat.strict_date_time_no_millis, index = false, docValues = false)
